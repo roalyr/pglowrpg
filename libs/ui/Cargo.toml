@@ -1,0 +1,9 @@
+[package]
+name = "ui"
+version = "0.1.0"
+authors = ["roal_yr"]
+edition = "2018"
+
+[dependencies]
+rng_trait = "0.1"
+rand = "0.6"

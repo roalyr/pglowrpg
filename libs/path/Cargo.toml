@@ -1,0 +1,13 @@
+[package]
+name = "path"
+version = "0.1.0"
+authors = ["roal_yr"]
+edition = "2018"
+
+
+[dependencies]
+coords = { path = "../../libs/coords" }
+prng = { path = "../../libs/prng" }
+
+noise = { version = "0.6", default-features = false }
+pathfinding = "2.0"

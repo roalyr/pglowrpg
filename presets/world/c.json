@@ -1,0 +1,57 @@
+{
+	"seed" : 9,
+	
+	"abs_elev_min" : 0,
+	"abs_elev_max" : 8000,
+	
+	"abs_rain_min" : 0,
+	"abs_rain_max" : 4000,
+	
+	"abs_temp_min" : -20,
+	"abs_temp_max" : 50,
+	
+	"land_scope" : 1.7,
+	"land_continuity" : 0.7,
+	"land_concentrator" : 1.0,
+	"land_waterlevel" : 5,
+	
+	"erosion_factor" : 0.7,
+	"erosion_elev_shift" : 0.2,
+	"erosion_elev_width" : 0.7,
+	"elevation_noise_size" : 0.08,
+	"elevation_noise_weight" : 1.0,
+	
+	"temp_mode" : "south",
+	"temp_noise_size" : 0.005,
+	"temp_noise_weight" : 0.1,
+	
+	"rain_noise_size" : 0.007,
+	"rain_noise_weight" : 0.75,
+	
+	"source_density" : 0.0075,
+	"river_heuristic_factor" : 0.7,
+	"river_noise_size1" : 0.1,
+	"river_noise_size2" : 0.05,
+	"river_noise_blend" : 0.3,
+	"river_noise_weight" : 0.5,
+	"river_max_length" : 1000,
+	"pool_attractor_flag" : 13,
+	
+	"elev_low_margin" : 0,
+	"elev_high_margin" : 255,
+	"temp_low_margin" : 0,
+	"temp_high_margin" : 255,
+	"rain_low_margin" : 0,
+	"rain_high_margin" : 255,
+	"mineral_low_margin" : 0,
+	"mineral_high_margin" : 255,
+	
+	"noisemap_size" : 256,
+	"map_size" : 1024,
+	
+	"chunk_side" : 32,
+	"nested_files" : 64,
+	
+	
+	"end" : "end"
+}

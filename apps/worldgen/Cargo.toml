@@ -1,0 +1,30 @@
+[package]
+name = "worldgen"
+version = "0.1.0"
+authors = ["roal_yr"]
+edition = "2018"
+
+
+[dependencies]
+noise = { version = "0.6", default-features = false }
+#num = { version = "0.2", default-features = false }
+resize = "0.3"
+line_drawing = "0.8"
+flate2 = "1.0"
+deepsize = "0.1"
+#respk = "0.1"
+
+
+coords = { path = "../../libs/coords" }
+codec = { path = "../../libs/codec" }
+constants = { path = "../../libs/constants" }
+io = { path = "../../libs/io" }
+prng = { path = "../../libs/prng" }
+path = { path = "../../libs/path" }
+floodfill = { path = "../../libs/floodfill" }
+
+
+
+
+
+

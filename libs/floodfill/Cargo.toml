@@ -1,0 +1,9 @@
+[package]
+name = "floodfill"
+version = "0.1.0"
+authors = ["roal_yr"]
+edition = "2018"
+
+
+[dependencies]
+coords = { path = "../../libs/coords" }

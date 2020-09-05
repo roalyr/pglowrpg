@@ -1,0 +1,41 @@
+#binop_separator = "Front"
+
+#brace_style = "AlwaysNextLine"
+#control_brace_style = "AlwaysNextLine"
+
+#combine_control_expr = false
+#empty_item_single_line = true
+
+#error_on_line_overflow = true
+max_width = 70
+
+#wrap_comments = true
+#comment_width = 70
+#format_strings = true
+
+fn_args_layout = "Vertical"
+hard_tabs = true
+
+#imports_indent = "Block"
+#imports_layout = "Mixed"
+#merge_imports = true
+
+#indent_style = "Block"
+
+#match_block_trailing_comma = true
+#trailing_comma = "Always"
+remove_nested_parens = true
+
+reorder_imports = true
+reorder_modules = true
+#reorder_impl_items = true
+
+#space_after_colon = true
+#space_before_colon = true
+#spaces_around_ranges = true
+
+#trailing_semicolon = true
+
+#type_punctuation_density = "Wide"
+
+use_field_init_shorthand = true

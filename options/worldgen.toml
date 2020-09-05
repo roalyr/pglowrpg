@@ -1,0 +1,30 @@
+# ▒▒▒▒▒▒▒▒▒▒▒ WORLDGEN OPTIONS ▒▒▒▒▒▒▒▒▒▒▒▒▒
+# General options for the world generator.
+# ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+# Worlds to generate at the worldgen.
+# The seed value will be incremented for each
+# of the new world, so they will be different.
+# Valid values are: any integer number.
+
+	worlds_to_generate = 1
+	
+# The name of the world preset to be used by
+# default when no option is supplied to the
+# generator.
+# Valid values are: any string, that matches
+# the name of the files in the /presets/world
+# folder, without ".toml" file extension.
+
+	default_preset = "b"
+	
+# Render options control the png image output
+# of the generators.
+# Valid values are: true or false.
+		
+	render_topography = true
+	render_temperature = true
+	render_rainfall = true
+	render_biomes = true
+	render_georegions = true
+	render_rivers = true
