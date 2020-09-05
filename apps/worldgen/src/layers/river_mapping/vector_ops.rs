@@ -58,7 +58,6 @@ pub fn source_at_distance(
 	i: usize,
 	j: usize,
 	rg: &mut RgParams,
-	lp: &worldgen::LayerPack,
 	allowed: usize,
 ) -> bool {
 	let mut condition = true;
@@ -67,12 +66,12 @@ pub fn source_at_distance(
 	let mut x_max = i + allowed / 2;
 	let mut y_max = j + allowed / 2;
 
-	if x_max > lp.wi.map_size {
-		x_max = lp.wi.map_size;
+	if x_max > rg.lp.wi.map_size {
+		x_max = rg.lp.wi.map_size;
 	}
 
-	if y_max > lp.wi.map_size {
-		y_max = lp.wi.map_size;
+	if y_max > rg.lp.wi.map_size {
+		y_max = rg.lp.wi.map_size;
 	}
 
 	for x in x_min..x_max {
@@ -101,29 +100,23 @@ pub fn vector_start(
 	rg.dv.y0 = j;
 }
 
-pub fn vector_end(
-	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
-) {
+pub fn vector_end(rg: &mut RgParams) {
 	let mut water_bodies = false;
 
 	for cell_v in rg.wmask_map.iter() {
-		if *cell_v >= lp.wi.river_attr_pool_size_pow {
+		if *cell_v >= rg.lp.wi.river_attr_pool_size_pow {
 			water_bodies = true;
 		}
 	}
 
 	if water_bodies {
-		with_water(rg, lp);
+		with_water(rg);
 	} else {
-		without_water(rg, lp);
+		without_water(rg);
 	}
 }
 
-pub fn vector_end_stream(
-	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
-) {
-	rg.dv.x1 = lp.wi.map_size / 2;
-	rg.dv.y1 = lp.wi.map_size / 2;
+pub fn vector_end_stream(rg: &mut RgParams) {
+	rg.dv.x1 = rg.lp.wi.map_size / 2;
+	rg.dv.y1 = rg.lp.wi.map_size / 2;
 }

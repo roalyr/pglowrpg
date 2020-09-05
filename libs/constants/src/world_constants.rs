@@ -71,10 +71,10 @@ pub const RIVER_SEGMENT_DISPLACEMENT_MIN: f32 = 0.0;
 pub const RIVER_SEGMENT_DISPLACEMENT_MAX: f32 = 100.0;
 pub const RIVER_MIN_LENGTH: usize = 10;
 pub const RIVER_WIDTH_ORDER_MAX: u8 = 12;
-pub const RIVER_ATTR_POOL_SIZE_POW_MIN: u8 = 1;
-pub const RIVER_ATTR_POOL_SIZE_POW_MAX: u8 = 28;
-pub const RIVER_SINK_MIN_POOL_SIZE_POW_MIN: u8 = 1;
-pub const RIVER_SINK_MIN_POOL_SIZE_POW_MAX: u8 = 28;
+pub const RIVER_ATTR_POOL_SIZE_POW_MIN: u16 = 1;
+pub const RIVER_ATTR_POOL_SIZE_POW_MAX: u16 = 28;
+pub const RIVER_SINK_MIN_POOL_SIZE_POW_MIN: u16 = 1;
+pub const RIVER_SINK_MIN_POOL_SIZE_POW_MAX: u16 = 28;
 pub const RIVER_EROSION_WIDTH_MIN: usize = 0;
 pub const RIVER_EROSION_WIDTH_MAX: usize = 255;
 pub const RIVER_EROSION_SMOOTH_MIN: f32 = 0.0;
@@ -124,7 +124,7 @@ pub const NO_WATER: u16 = 0;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ RIVERS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub const RIVER_HEUR_INIT: usize = 1_000_000;
-pub const RIVER_MIN_WIDTH: u8 = 1;
+pub const RIVER_MIN_WIDTH: u16 = 1;
 
 //MASK
 //The values themselves are within u8 range.

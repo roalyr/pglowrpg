@@ -6,12 +6,11 @@ use std::f32::consts::PI;
 //▒▒▒▒▒▒▒▒▒▒▒▒ INIT PATHS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn set_paths(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
 	_wg_str: &strings::worldgen_strings::Stuff,
 ) {
-	for i in 0..lp.wi.map_size {
-		for j in 0..lp.wi.map_size {
-			make_paths(i, j, rg, lp);
+	for i in 0..rg.lp.wi.map_size {
+		for j in 0..rg.lp.wi.map_size {
+			make_paths(i, j, rg);
 		}
 	}
 }
@@ -21,13 +20,12 @@ fn make_paths(
 	i: usize,
 	j: usize,
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
 ) {
 	let index = rg.xy.ind(i, j);
 
-	let random = prng::get(0.0, 1.0, lp.wi.seed, index);
+	let random = prng::get(0.0, 1.0, rg.lp.wi.seed, index);
 
-	let total_prob = prob(i, j, rg, lp);
+	let total_prob = prob(i, j, rg);
 
 	if (random <= total_prob) && (rg.wmask_map[index] == NO_WATER) {
 		//UI
@@ -40,20 +38,20 @@ fn make_paths(
 		//set vector according to waterbodies presence
 		//and randomization.
 		vector_start(rg, i, j);
-		vector_end(rg, lp);
+		vector_end(rg);
 
 		//store initial vector data
 		rg.river_source = (rg.dv.x0, rg.dv.y0);
 		rg.river_end = (rg.dv.x1, rg.dv.y1);
 
 		//return if river is too short
-		if vector_within_len(rg, lp.wi.river_min_length) {
+		if vector_within_len(rg, rg.lp.wi.river_min_length) {
 			return;
 		}
 
 		//make pathfinding for nodes, get a queue
 		//do "windows"  between nodes, iterate and fill them
-		let nodes = pathfinding_nodes(rg, lp);
+		let nodes = pathfinding_nodes(rg);
 
 		let mut segment_queue = Vec::new();
 		let mut joined_path = Vec::new();
@@ -66,7 +64,7 @@ fn make_paths(
 			rg.dv.x1 = node_pair[1].0;
 			rg.dv.y1 = node_pair[1].1;
 
-			let path_array_seg = pathfinding_segments(rg, lp);
+			let path_array_seg = pathfinding_segments(rg);
 			segment_queue.push(path_array_seg);
 		}
 
@@ -101,11 +99,8 @@ fn make_paths(
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ ROUTINES ▒▒▒▒▒▒▒▒▒▒▒▒
 //LIST MAKER
-fn path_segments(
-	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
-) {
-	let path_array_seg = pathfinding_segments(rg, lp);
+fn path_segments(rg: &mut RgParams) {
+	let path_array_seg = pathfinding_segments(rg);
 	//keep this check? maybe add bool flag on return
 	if path_array_seg.is_empty() {
 		return;
@@ -123,10 +118,7 @@ fn path_segments(
 }
 
 //ACTUAL PATHFINDING
-fn pathfinding_segments(
-	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
-) -> Vec<path::Pos> {
+fn pathfinding_segments(rg: &mut RgParams) -> Vec<path::Pos> {
 	rg.dv.path_heuristic = RIVER_HEUR_INIT;
 
 	//rivers go ortho
@@ -136,16 +128,16 @@ fn pathfinding_segments(
 	let result_init = path::make(
 		&rg.dv,
 		&rg.rtopog_map,
-		lp.wi.map_size,
+		rg.lp.wi.map_size,
 		diag_flag,
 		1,
 	);
 
 	let path_distance = distance(rg);
 
-	let estimated_heuristic = ((result_init.1 / (path_distance + 1))
-		as f32 * lp.wi.river_heuristic_factor)
-		as usize;
+	let estimated_heuristic =
+		((result_init.1 / (path_distance + 1)) as f32
+			* rg.lp.wi.river_heuristic_factor) as usize;
 
 	rg.dv.path_heuristic = estimated_heuristic;
 
@@ -153,7 +145,7 @@ fn pathfinding_segments(
 	let result = path::make(
 		&rg.dv,
 		&rg.rtopog_map,
-		lp.wi.map_size,
+		rg.lp.wi.map_size,
 		diag_flag,
 		1,
 	);
@@ -161,10 +153,7 @@ fn pathfinding_segments(
 }
 
 //NODES
-fn pathfinding_nodes(
-	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
-) -> Vec<path::Pos> {
+fn pathfinding_nodes(rg: &mut RgParams) -> Vec<path::Pos> {
 	rg.dv.path_heuristic = RIVER_HEUR_INIT;
 
 	//nodes go ortho and dia
@@ -174,16 +163,16 @@ fn pathfinding_nodes(
 	let result_init = path::make(
 		&rg.dv,
 		&rg.topog_map,
-		lp.wi.map_size,
+		rg.lp.wi.map_size,
 		diag_flag,
-		lp.wi.river_segment_length,
+		rg.lp.wi.river_segment_length,
 	);
 
 	let path_distance = distance(rg);
 
-	let estimated_heuristic = ((result_init.1 / (path_distance + 1))
-		as f32 * lp.wi.river_heuristic_factor)
-		as usize;
+	let estimated_heuristic =
+		((result_init.1 / (path_distance + 1)) as f32
+			* rg.lp.wi.river_heuristic_factor) as usize;
 
 	rg.dv.path_heuristic = estimated_heuristic;
 
@@ -191,9 +180,9 @@ fn pathfinding_nodes(
 	let result = path::make(
 		&rg.dv,
 		&rg.topog_map,
-		lp.wi.map_size,
+		rg.lp.wi.map_size,
 		diag_flag,
-		lp.wi.river_segment_length,
+		rg.lp.wi.river_segment_length,
 	);
 	//println!("nodes {:?}", result.0);
 	result.0

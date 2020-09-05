@@ -7,43 +7,57 @@ use constants::world_constants::*;
 use std::cmp::Ordering;
 
 //▒▒▒▒▒▒▒▒▒▒▒ MAP PATHS ▒▒▒▒▒▒▒▒▒▒▒
-//PICK FROM LIST
-pub fn map_paths(
-	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
-) {
-	for river_entry in rg.rivers.list.clone().iter().rev() {
-		map_rivers_reverse(rg, lp, river_entry);
+pub fn map_paths(rg: &mut RgParams) {
+	for river_entry in rg.rivers_paths.list.clone().iter().rev() {
+		map_rivers_reverse(rg, river_entry);
 	}
 }
 
-//▒▒▒▒▒▒▒▒▒▒ river MAPPING ▒▒▒▒▒▒▒▒▒▒▒
-//REVERSE
+//▒▒▒▒▒▒▒▒▒▒ RIVER MAPPING ▒▒▒▒▒▒▒▒▒▒▒
 fn map_rivers_reverse(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
 	river_entry: &RiverEntry,
 ) {
+	//Aliases
+	//Maps
+	let topog_map = rg.lp.topography;
+	let rivers_map = rg.lp.rivers;
+	let rivers_id_map = rg.lp.rivers_id;
+	let climate_map = rg.lp.climate;
+
+	//Maps masks
+	let m_terrain = rg.lp.topography.masks.terrain;
+	let m_watermask = rg.lp.topography.masks.watermask;
+	let m_river_elem = rg.lp.rivers.masks.element;
+	let m_upstream = rg.lp.rivers.masks.upstream;
+	let m_downstream = rg.lp.rivers.masks.downstream;
+	let m_temp = rg.lp.climate.masks.temperature;
+
 	let path_array = &river_entry.path_array;
-	rg.river_id = river_entry.river_id;
 
-	rg.river_id = river_entry.river_id;
-	rg.river_width = river_entry.width;
-	rg.river_source = river_entry.source;
-
-	rg.river_end = river_entry.end;
-
-	//initiate
+	let i_source = path_array[0].0;
+	let j_source = path_array[0].1;
+	let index_source = rg.xy.ind(i_source, j_source);
 	let index_river_source =
 		rg.xy.ind(rg.river_source.0, rg.river_source.1);
 	let index_end = rg.xy.ind(rg.river_end.0, rg.river_end.1);
+
+	let terrain_source = topog_map.read(m_terrain, index_source);
+
+	//Store temporary values
+	rg.river_id = river_entry.river_id;
+	rg.river_width = river_entry.width;
+	rg.river_source = river_entry.source;
+	rg.river_end = river_entry.end;
+
 	let mut river_length = 0;
 
-	//cold run to cull short rivers
-
+	//Cold run to figure out river lengths and truncate short ones
 	for n in path_array.windows(2) {
+		//Must be here
 		river_length += 1;
 
+		//Aliases
 		let i0 = n[0].0;
 		let j0 = n[0].1;
 		let i1 = n[1].0;
@@ -52,90 +66,85 @@ fn map_rivers_reverse(
 		let index_current = rg.xy.ind(i0, j0);
 		let index_downstr = rg.xy.ind(i1, j1);
 
-		//stop if the temperature is too low
+		let temp_current = climate_map.read(m_temp, index_current);
+		let river_elem_current =
+			rivers_map.read(m_river_elem, index_current);
+		let river_elem_downstr =
+			rivers_map.read(m_river_elem, index_downstr);
+		let river_id_downstr = rivers_id_map.read(index_downstr);
+		let wmask_current =
+			topog_map.read(m_watermask, index_current);
+
+		//Stop if the temperature is too low
 		let temp = translate::get_abs(
-			rg.temp_map[index_current] as f32,
+			temp_current as f32,
 			255.0,
-			lp.wi.abs_temp_min as f32,
-			lp.wi.abs_temp_max as f32,
+			rg.lp.wi.abs_temp_min as f32,
+			rg.lp.wi.abs_temp_max as f32,
 		) as isize;
 
 		if temp <= TEMP_POLAR {
 			break;
 		}
 
-		//minimum sink size check and stop if sink is big enough
-		if rg.wmask_map[index_current]
-			> lp.wi.river_sink_min_pool_size_pow
-		{
+		//Minimum sink size check and stop if sink is big enough
+		if wmask_current > rg.lp.wi.river_sink_min_pool_size_pow {
 			break;
 		}
 
-		//check if river spawns on an existing one
+		//Check if river spawns on an existing one
 		//also terminates rivers upon crossing
 		//but allows loops, which should be adressed below
 		//enabling makes rivers disappear sometimes
-		if (river_mask_get(rg.river_mask_map[index_current])
-			!= NO_RIVER) && (river_length == 1)
-		{
+		if (river_elem_current != NO_RIVER) && (river_length == 1) {
 			break;
 		}
 
-		//map according to mask
-		match river_mask_get(rg.river_mask_map[index_downstr]) {
-			//▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒
+		match river_elem_downstr {
 			NO_RIVER => {}
-			//▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒
 			RIVER_BODY => {
-				if rg.river_id != rg.river_id_map[index_downstr] {
+				if rg.river_id != river_id_downstr {
 					break;
 				}
 			}
-			//▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒
 			RIVER_WATERFALL => {
-				if rg.river_id != rg.river_id_map[index_downstr] {
+				if rg.river_id != river_id_downstr {
 					break;
 				}
 			}
-			//▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒
 			RIVER_WATERFALLS_MUL => {
-				if rg.river_id != rg.river_id_map[index_downstr] {
+				if rg.river_id != river_id_downstr {
 					break;
 				}
 			}
-			//▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒
 			RIVER_SOURCE => {
-				if rg.river_id != rg.river_id_map[index_downstr] {
+				if rg.river_id != river_id_downstr {
 					break;
 				}
 			}
-			//▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒
 			RIVER_END => {}
-			//▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒
 			_ => {
-				println!(
-					"Mask downstream: {:?}",
-					rg.river_mask_map[index_downstr]
-				);
-				panic!("Unexpected river mask value");
+				println!("Mask downstream: {:?}", river_elem_downstr);
+				panic!("Unexpected river element type value");
 			}
 		}
 	}
 
-	//check by river length
-	if river_length <= lp.wi.river_min_length {
-		//println!("{:?}", river_length);
+	if river_length <= rg.lp.wi.river_min_length {
 		return;
 	}
 
-	//reset
+	//Reset
 	let mut river_length = 0;
+	//Push to the queue for future
 	erosion_initiate(rg, rg.river_id);
 
+	//Main run
 	for n in path_array.windows(2) {
-		//println!("▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒",);
+		//Must be here
 		river_length += 1;
 
+		//Aliases
 		let i0 = n[0].0;
 		let j0 = n[0].1;
 		let i1 = n[1].0;
@@ -144,52 +153,66 @@ fn map_rivers_reverse(
 		let index_current = rg.xy.ind(i0, j0);
 		let index_downstr = rg.xy.ind(i1, j1);
 
-		//stop if the temperature is too low
+		let temp_current = climate_map.read(m_temp, index_current);
+		let river_elem_current =
+			rivers_map.read(m_river_elem, index_current);
+		let river_elem_downstr =
+			rivers_map.read(m_river_elem, index_downstr);
+		let river_id_downstr = rivers_id_map.read(index_downstr);
+		let wmask_current =
+			topog_map.read(m_watermask, index_current);
+		let wmask_downstr =
+			topog_map.read(m_watermask, index_downstr);
+		let terrain_current =
+			topog_map.read(m_terrain, index_current);
+		let terrain_downstr =
+			topog_map.read(m_terrain, index_downstr);
+
+		//Stop if the temperature is too low
 		let temp = translate::get_abs(
-			rg.temp_map[index_current] as f32,
+			temp_current as f32,
 			255.0,
-			lp.wi.abs_temp_min as f32,
-			lp.wi.abs_temp_max as f32,
+			rg.lp.wi.abs_temp_min as f32,
+			rg.lp.wi.abs_temp_max as f32,
 		) as isize;
 
 		if temp <= TEMP_POLAR {
 			break;
 		}
 
-		//minimum sink size check and stop if sink is big enough
-		if rg.wmask_map[index_current]
-			> lp.wi.river_sink_min_pool_size_pow
-		{
+		//Minimum sink size check and stop if sink is big enough
+		if wmask_current > rg.lp.wi.river_sink_min_pool_size_pow {
 			break;
 		}
 
-		//check if river spawns on an existing one
+		//Check if river spawns on an existing one
 		//also terminates rivers upon crossing
 		//but allows loops, which should be adressed below
 		//enabling makes rivers disappear sometimes
-		if (river_mask_get(rg.river_mask_map[index_current])
-			!= NO_RIVER) && (river_length == 1)
-		{
+		if (river_elem_current != NO_RIVER) && (river_length == 1) {
 			break;
 		}
 
-		//mark upstream neighbor
+		//Mark upstream neighbor
 		//skip first cell, which is source
 		if river_length > 1 {
 			let i0_prev = rg.upstream_neighbor.0;
 			let j0_prev = rg.upstream_neighbor.1;
 
-			river_upstream_set(
-				&mut rg.river_mask_map[index_current],
-				mark_neighbor(i0, j0, i0_prev, j0_prev),
+			let upstream_neighbor =
+				neighbor_flag(i0, j0, i0_prev, j0_prev);
+			rg.lp.rivers.write(
+				upstream_neighbor,
+				m_upstream,
+				index_current,
 			);
 		}
-		//remember for next step
+
+		//Remember for next step
 		rg.upstream_neighbor = (i0, j0);
 
 		//map according to mask
-		match river_mask_get(rg.river_mask_map[index_downstr]) {
-			//▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒
+		match river_elem_downstr {
 			NO_RIVER => {
 				sort_uninterrupted(
 					rg,
@@ -197,123 +220,125 @@ fn map_rivers_reverse(
 					index_river_source,
 				);
 
-				//write down downstream neighbor direction
-				river_downstream_set(
-					&mut rg.river_mask_map[index_current],
-					mark_neighbor(i0, j0, i1, j1),
+				//Write down downstream neighbor direction
+				let downstream_neighbor =
+					neighbor_flag(i0, j0, i1, j1);
+				rg.lp.rivers.write(
+					downstream_neighbor,
+					m_downstream,
+					index_current,
 				);
 
-				//if the end of the river is on land (map border)
+				//If the end of the river is on land (map border)
 				//then make sure the last cell is marked
-				if (rg.wmask_map[index_downstr] == NO_WATER)
+				if (wmask_downstr == NO_WATER)
 					&& (index_downstr == index_end)
 				{
-					river_mask_set(
-						&mut rg.river_mask_map[index_downstr],
+					rg.lp.rivers.write(
 						RIVER_BODY,
+						m_river_elem,
+						index_downstr,
 					);
 				}
 			}
-			//▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒
+
 			RIVER_BODY => {
 				sort_crossing(
 					rg,
-					lp,
 					index_current,
 					index_river_source,
 					index_downstr,
 				);
-				if rg.topog_map[index_downstr]
-					< rg.topog_map[index_current]
-				{
-					river_mask_set(
-						&mut rg.river_mask_map[index_downstr],
+
+				//Make a waterfall if elevation differs
+				if terrain_downstr < terrain_current {
+					rg.lp.rivers.write(
 						RIVER_WATERFALL,
+						m_river_elem,
+						index_downstr,
 					);
 				}
 
-				//break river if it is not a loop, let loops go on
-				if rg.river_id != rg.river_id_map[index_downstr] {
+				//Break river if it is not a loop, let loops go on
+				if rg.river_id != river_id_downstr {
 					break;
 				}
 			}
-			//▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒
+
 			RIVER_WATERFALL => {
 				sort_crossing(
 					rg,
-					lp,
 					index_current,
 					index_river_source,
 					index_downstr,
 				);
-				if rg.topog_map[index_downstr]
-					< rg.topog_map[index_current]
-				{
-					river_mask_set(
-						&mut rg.river_mask_map[index_downstr],
+
+				//Make a waterfalls if elevation differs and waterfall exist
+				if terrain_downstr < terrain_current {
+					rg.lp.rivers.write(
 						RIVER_WATERFALLS_MUL,
+						m_river_elem,
+						index_downstr,
 					);
 				}
 
-				//break river if it is not a loop, let loops go on
-				if rg.river_id != rg.river_id_map[index_downstr] {
+				//Break river if it is not a loop, let loops go on
+				if rg.river_id != river_id_downstr {
 					break;
 				}
 			}
-			//▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒
+
 			RIVER_WATERFALLS_MUL => {
 				sort_crossing(
 					rg,
-					lp,
 					index_current,
 					index_river_source,
 					index_downstr,
 				);
 
-				//break river if it is not a loop, let loops go on
-				if rg.river_id != rg.river_id_map[index_downstr] {
+				//Break river if it is not a loop, let loops go on
+				if rg.river_id != river_id_downstr {
 					break;
 				}
 			}
-			//▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒
+
 			RIVER_SOURCE => {
 				sort_crossing(
 					rg,
-					lp,
 					index_current,
 					index_river_source,
 					index_downstr,
 				);
 
-				//break river if it is not a loop, let loops go on
-				if rg.river_id != rg.river_id_map[index_downstr] {
+				//Break river if it is not a loop, let loops go on
+				if rg.river_id != river_id_downstr {
 					break;
 				}
 			}
-			//▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒
+
 			RIVER_END => {
 				sort_uninterrupted(
 					rg,
 					index_current,
 					index_river_source,
 				);
-				//write down downstream neighbor direction
-				river_downstream_set(
-					&mut rg.river_mask_map[index_current],
-					mark_neighbor(i0, j0, i1, j1),
+
+				//Write down downstream neighbor direction
+				let downstream_neighbor =
+					neighbor_flag(i0, j0, i1, j1);
+				rg.lp.rivers.write(
+					downstream_neighbor,
+					m_downstream,
+					index_current,
 				);
 			}
-			//▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒
+
 			_ => {
-				println!(
-					"Mask downstream: {:?}",
-					rg.river_mask_map[index_downstr]
-				);
+				println!("Mask downstream: {:?}", river_elem_downstr);
 				panic!("Unexpected river mask value");
 			}
 		} //match
 	}
-	//println!("{:?}", river_length);
 }
 
 //▒▒▒▒▒▒▒▒▒ SORT INTERSECTIONS ▒▒▒▒▒▒▒▒▒
@@ -323,38 +348,52 @@ fn sort_uninterrupted(
 	index_current: usize,
 	index_source: usize,
 ) {
-	river_mask_set(&mut rg.river_mask_map[index_current], RIVER_BODY);
-	river_mask_set(
-		&mut rg.river_mask_map[index_source],
-		RIVER_SOURCE,
-	);
+	//Aliases
+	let m_terrain = rg.lp.topography.masks.terrain;
+	let m_watermask = rg.lp.topography.masks.watermask;
+	let m_river_elem = rg.lp.rivers.masks.element;
+	let m_river_width = rg.lp.rivers.masks.width;
+	let m_upstream = rg.lp.rivers.masks.upstream;
+	let m_downstream = rg.lp.rivers.masks.downstream;
+	let m_temp = rg.lp.climate.masks.temperature;
 
-	rg.river_id_map[index_current] = rg.river_id;
-	rg.river_id_map[index_current] = rg.river_id;
-	rg.river_width_map[index_current] = rg.river_width;
+	rg.lp.rivers.write(RIVER_BODY, m_river_elem, index_current);
+	rg.lp.rivers.write(RIVER_SOURCE, m_river_elem, index_source);
+
+	rg.lp.rivers_id.write(rg.river_id, index_current);
+
+	rg.lp
+		.rivers
+		.write(rg.river_width, m_river_width, index_current);
 }
 
 //CROSSING
 fn sort_crossing(
 	rg: &mut RgParams,
-	lp: &worldgen::LayerPack,
 	index_current: usize,
 	index_source: usize,
 	index_downstr: usize,
 ) {
-	//last cell in the river before termination
-	river_mask_set(&mut rg.river_mask_map[index_current], RIVER_BODY);
-	river_mask_set(
-		&mut rg.river_mask_map[index_source],
-		RIVER_SOURCE,
-	);
+	//Aliases
+	let m_terrain = rg.lp.topography.masks.terrain;
+	let m_watermask = rg.lp.topography.masks.watermask;
+	let m_river_elem = rg.lp.rivers.masks.element;
+	let m_river_width = rg.lp.rivers.masks.width;
+	let m_upstream = rg.lp.rivers.masks.upstream;
+	let m_downstream = rg.lp.rivers.masks.downstream;
+	let m_temp = rg.lp.climate.masks.temperature;
 
-	rg.river_id_map[index_current] = rg.river_id;
-	rg.river_id_map[index_current] = rg.river_id;
-	rg.river_width_map[index_current] = rg.river_width;
+	rg.lp.rivers.write(RIVER_BODY, m_river_elem, index_current);
+	rg.lp.rivers.write(RIVER_SOURCE, m_river_elem, index_source);
 
-	//modify river downstream
-	width_routine(rg, lp, index_current, index_downstr);
+	rg.lp.rivers_id.write(rg.river_id, index_current);
+
+	rg.lp
+		.rivers
+		.write(rg.river_width, m_river_width, index_current);
+
+	//Modify river downstream
+	width_routine(rg, index_current, index_downstr);
 	erosion_adjust(rg, index_current, index_downstr);
 }
 
@@ -362,43 +401,49 @@ fn sort_crossing(
 //WIDTH ROUTINE
 fn width_routine(
 	rg: &mut RgParams,
-	_lp: &worldgen::LayerPack,
 	_index_current: usize,
 	index_downstr: usize,
 ) {
-	//if rg.river_id_map[index_downstr] == 0 {
-	//return;
-	//}
+	//Aliases
+	let rivers_id_map = rg.lp.rivers_id;
+	let rivers_map = rg.lp.rivers;
+	let m_river_width = rg.lp.rivers.masks.width;
 
-	//find the downstream river in queue and its width
-	let result = rg.rivers.width_queue.iter().rev().by_ref().find(
-		|WidthEntry {
-		     river_id_downstr, ..
-		 }| { *river_id_downstr == rg.river_id_map[index_downstr] },
-	);
+	let river_id_downstr = rivers_id_map.read(index_downstr);
+	let river_width_downstr =
+		rivers_map.read(m_river_width, index_downstr);
+
+	//Find the downstream river in queue and its width
+	let result =
+		rg.rivers_paths.width_queue.iter().rev().by_ref().find(
+			|WidthEntry {
+			     river_id_downstr, ..
+			 }| { *river_id_downstr == river_id_downstr },
+		);
 
 	//Get the width value from river downstream
 	let width_downstr = match result {
 		Some(x) => {
-			//if in queue - return its last recorded value
+			//If in queue - return its last recorded value
 			x.width_new
 		}
 		None => {
-			//if not in queue - just take its width as is
-			rg.river_width_map[index_downstr]
+			//If not in queue - just take its width as is
+			river_width_downstr
 		}
 	};
 
-	//increment the width downstream
+	//Increment the width downstream
 	let mut width_downstr_new = width_downstr.saturating_add(1);
 
-	//bound upper value by 12 order
+	//Bound upper value by 12 order
 	if width_downstr_new > RIVER_WIDTH_ORDER_MAX {
 		width_downstr_new = RIVER_WIDTH_ORDER_MAX;
 	}
 
-	rg.rivers.width_queue.push(WidthEntry {
-		river_id_downstr: rg.river_id_map[index_downstr],
+	//Store new value for future
+	rg.rivers_paths.width_queue.push(WidthEntry {
+		river_id_downstr,
 		width_new: width_downstr_new,
 	});
 }
@@ -409,23 +454,26 @@ fn erosion_adjust(
 	index_current: usize,
 	index_downstr: usize,
 ) {
-	//if rg.river_id_map[index_downstr] == 0 {
-	//return;
-	//}
+	//Aliases
+	let topog_map = rg.lp.topography;
+	let rivers_id_map = rg.lp.rivers_id;
+	let m_river_width = rg.lp.rivers.masks.width;
+	let m_terrain = rg.lp.topography.masks.terrain;
 
-	//add difference in topography to queue
-	let terrain_diff = match rg.topog_map[index_downstr]
-		.cmp(&rg.topog_map[index_current])
-	{
-		Ordering::Greater => {
-			rg.topog_map[index_downstr] - rg.topog_map[index_current]
-		}
+	let river_id_downstr = rivers_id_map.read(index_downstr);
+	let terrain_current = topog_map.read(m_terrain, index_current);
+	let terrain_downstr = topog_map.read(m_terrain, index_downstr);
+
+	//Add difference in topography to queue
+	let terrain_diff = match terrain_downstr.cmp(&terrain_current) {
+		Ordering::Greater => terrain_downstr - terrain_current,
 		Ordering::Equal => 0,
 		Ordering::Less => return,
 	};
 
-	rg.rivers.erosion_queue.push(ErosionEntry {
-		river_id_downstr: rg.river_id_map[index_downstr],
+	//Store for future use
+	rg.rivers_paths.erosion_queue.push(ErosionEntry {
+		river_id_downstr,
 		terrain_diff,
 	});
 }
@@ -440,12 +488,12 @@ fn erosion_initiate(
 	});
 }
 
-fn mark_neighbor(
+fn neighbor_flag(
 	i0: usize,
 	j0: usize,
 	i1: usize,
 	j1: usize,
-) -> u8 {
+) -> u16 {
 	let di: isize = i1 as isize - i0 as isize;
 	let dj: isize = j1 as isize - j0 as isize;
 
@@ -462,6 +510,5 @@ fn mark_neighbor(
 
 		(_, _) => panic!("unexpected neighbor {:?}", (di, dj)),
 	};
-
 	neighbor
 }
