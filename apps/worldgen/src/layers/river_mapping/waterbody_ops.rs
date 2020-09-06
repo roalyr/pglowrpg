@@ -1,5 +1,5 @@
 use crate::layers::river_mapping::*;
-use crate::worldgen;
+//use crate::worldgen;
 use constants::world_constants::*;
 
 //▒▒▒▒▒▒▒▒▒▒ WITH OR WITHOUT ▒▒▒▒▒▒▒▒▒▒▒
@@ -31,8 +31,6 @@ pub fn without_water_no_pole(
 	rg: &mut RgParams,
 	lp: &mut worldgen::LayerPack,
 ) {
-	//init
-
 	project_randomly(rg, lp);
 }
 
@@ -41,7 +39,10 @@ fn seek_waterbodies(
 	rg: &mut RgParams,
 	lp: &mut worldgen::LayerPack,
 ) {
+	//Aliases
 	let size = lp.wi.map_size;
+	let m_watermask = lp.topography.masks.watermask;
+	let m_temp = lp.climate.masks.temperature;
 
 	//take a bit more than sqrt(2)
 	let diag = size * 15 / 10;
@@ -57,17 +58,18 @@ fn seek_waterbodies(
 
 			if (i < size) && (j < size) {
 				let index = rg.xy.ind(i, j);
+				let wmask = lp.topography.read(m_watermask, index);
+				let temp = lp.climate.read(m_temp, index);
 
-				let temp = translate::get_abs(
-					rg.temp_map[index] as f32,
+				let temp_abs = translate::get_abs(
+					temp as f32,
 					255.0,
 					lp.wi.abs_temp_min as f32,
 					lp.wi.abs_temp_max as f32,
 				) as isize;
 
-				if (rg.wmask_map[index]
-					>= lp.wi.river_attr_pool_size_pow)
-					&& (temp > TEMP_POLAR)
+				if (wmask >= lp.wi.river_attr_pool_size_pow)
+					&& (temp_abs > TEMP_POLAR)
 				{
 					rg.dv.x1 = i;
 					rg.dv.y1 = j;
@@ -96,11 +98,12 @@ fn project_randomly(
 	rg: &mut RgParams,
 	lp: &mut worldgen::LayerPack,
 ) {
+	//Aliases
 	let vec_angle = lp.wi.river_vect_angle;
 	let vec_deviation = lp.wi.river_vect_angle_max_deviation;
-
 	let noise_factor = lp.wi.river_vect_angle_noise;
 	let size = lp.wi.map_size as f32;
+
 	let radius = size * 1.5;
 	let random = prng::get(
 		0.0,
@@ -162,6 +165,4 @@ fn project_randomly(
 
 	rg.dv.x1 = x1 as usize;
 	rg.dv.y1 = y1 as usize;
-	//println!("str x:{:?}, y:{}", rg.dv.x0, rg.dv.y0);
-	//println!("fin x:{:?}, y:{}", rg.dv.x1, rg.dv.y1);
 }

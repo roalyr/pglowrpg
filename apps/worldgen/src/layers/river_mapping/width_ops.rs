@@ -2,17 +2,15 @@ use crate::layers::river_mapping::*;
 //use crate::worldgen;
 //use constants::world_constants::*;
 
-pub fn map_width(rg: &mut RgParams) {
+pub fn map_width(
+	rg: &mut RgParams,
+	lp: &mut worldgen::LayerPack,
+) {
 	//Aliases
-	//Maps
-	let topog_map = rg.lp.topography;
-	let rivers_map = rg.lp.rivers;
-	let rivers_id_map = rg.lp.rivers_id;
-
 	//Maps masks
-	let m_terrain = rg.lp.topography.masks.terrain;
-	let m_river_elem = rg.lp.rivers.masks.element;
-	let m_river_width = rg.lp.rivers.masks.width;
+	let m_terrain = lp.topography.masks.terrain;
+	let m_river_elem = lp.rivers.masks.element;
+	let m_river_width = lp.rivers.masks.width;
 
 	//Must be cloned
 	let width_queue = rg.rivers_paths.width_queue.clone();
@@ -64,14 +62,14 @@ pub fn map_width(rg: &mut RgParams) {
 			let j = pos.1;
 			let index = rg.xy.ind(i, j);
 
-			let river_element = rivers_map.read(m_river_elem, index);
-			let river_id = rivers_id_map.read(index);
+			let river_element = lp.rivers.read(m_river_elem, index);
+			let river_id = lp.rivers_id.read(index);
 
 			//Map width
 			if (river_element != NO_RIVER)
 				&& (river_id == river_id_downstr)
 			{
-				rg.lp.rivers.write(width_new, m_river_width, index);
+				lp.rivers.write(width_new, m_river_width, index);
 			}
 		}
 
@@ -83,7 +81,7 @@ pub fn map_width(rg: &mut RgParams) {
 
 		loop {
 			if !path_array_next.is_empty() {
-				path_array_next = fix_width(rg, path_array_next);
+				path_array_next = fix_width(rg, lp, path_array_next);
 			} else {
 				break;
 			}
@@ -98,18 +96,14 @@ pub fn map_width(rg: &mut RgParams) {
 
 fn fix_width(
 	rg: &mut RgParams,
+	lp: &mut worldgen::LayerPack,
 	path_array: Vec<path::Pos>,
 ) -> Vec<path::Pos> {
 	//Aliases
-	//Maps
-	let topog_map = rg.lp.topography;
-	let rivers_map = rg.lp.rivers;
-	let rivers_id_map = rg.lp.rivers_id;
-
 	//Maps masks
-	let m_terrain = rg.lp.topography.masks.terrain;
-	let m_river_elem = rg.lp.rivers.masks.element;
-	let m_river_width = rg.lp.rivers.masks.width;
+	let m_terrain = lp.topography.masks.terrain;
+	let m_river_elem = lp.rivers.masks.element;
+	let m_river_width = lp.rivers.masks.width;
 
 	let mut path_array_downstr = Vec::new();
 
@@ -123,14 +117,14 @@ fn fix_width(
 		let index_downstr = rg.xy.ind(i1, j1);
 		let index_current = rg.xy.ind(i0, j0);
 
-		let cell_river_id_current = rivers_id_map.read(index_current);
-		let cell_river_id_downstr = rivers_id_map.read(index_downstr);
+		let cell_river_id_current = lp.rivers_id.read(index_current);
+		let cell_river_id_downstr = lp.rivers_id.read(index_downstr);
 		let cell_element_current =
-			rivers_map.read(m_river_elem, index_current);
+			lp.rivers.read(m_river_elem, index_current);
 		let cell_width_downstr =
-			rivers_map.read(m_river_width, index_downstr);
+			lp.rivers.read(m_river_width, index_downstr);
 		let cell_width_current =
-			rivers_map.read(m_river_width, index_current);
+			lp.rivers.read(m_river_width, index_current);
 
 		//Skip blank ID
 		if cell_river_id_downstr == NONE_ID_U16 {
@@ -173,14 +167,14 @@ fn fix_width(
 				let j = pos.1;
 				let index = rg.xy.ind(i, j);
 				let cell_element_next =
-					rivers_map.read(m_river_elem, index);
-				let cell_id_next = rivers_id_map.read(index);
+					lp.rivers.read(m_river_elem, index);
+				let cell_id_next = lp.rivers_id.read(index);
 
 				//Map width
 				if (cell_element_next != NO_RIVER)
 					&& (cell_id_next == cell_river_id_downstr)
 				{
-					rg.lp.rivers.write(
+					lp.rivers.write(
 						cell_width_downstr,
 						m_river_width,
 						index,

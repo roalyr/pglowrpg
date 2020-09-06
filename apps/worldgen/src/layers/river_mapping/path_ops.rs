@@ -1,16 +1,19 @@
 use crate::layers::river_mapping::*;
 //use crate::worldgen;
+use crate::array_ops::noise_maps::NoiseMode::*;
 use constants::world_constants::*;
+use coords::Index;
 //use std::f32::consts::PI;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ INIT PATHS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn set_paths(
 	rg: &mut RgParams,
+	lp: &mut worldgen::LayerPack,
 	_wg_str: &strings::worldgen_strings::Stuff,
 ) {
-	for i in 0..rg.lp.wi.map_size {
-		for j in 0..rg.lp.wi.map_size {
-			make_paths(i, j, rg);
+	for i in 0..lp.wi.map_size {
+		for j in 0..lp.wi.map_size {
+			make_paths(i, j, rg, lp);
 		}
 	}
 }
@@ -20,16 +23,22 @@ fn make_paths(
 	i: usize,
 	j: usize,
 	rg: &mut RgParams,
+	lp: &mut worldgen::LayerPack,
 ) {
 	//Aliases
-	let topog_map = rg.lp.topography;
-	let m_watermask = rg.lp.topography.masks.watermask;
+	let m_watermask = lp.topography.masks.watermask;
+
 	let index = rg.xy.ind(i, j);
-	let wmask = topog_map.read(m_watermask, index);
+	let wmask = lp.topography.read(m_watermask, index);
+	let map_size = lp.wi.map_size;
 
-	let random = prng::get(0.0, 1.0, rg.lp.wi.seed, index);
+	//Maps for pathfinding
+	let terrain_map = get_terrain_map(rg, lp);
+	let random_map = get_random_map(rg, lp);
 
-	let total_prob = prob(i, j, rg);
+	//To spawn or not to spawn?
+	let random = prng::get(0.0, 1.0, lp.wi.seed, index);
+	let total_prob = prob(i, j, rg, lp);
 
 	if (random <= total_prob) && (wmask == NO_WATER) {
 		//UI
@@ -39,61 +48,60 @@ fn make_paths(
 			rg.river_est_number,
 		);
 
-		//set vector according to waterbodies presence
+		//Set vector according to waterbodies presence
 		//and randomization.
-		vector_start(rg, i, j);
-		vector_end(rg);
+		vector_start(rg, lp, i, j);
+		vector_end(rg, lp);
 
-		//store initial vector data
+		//Store initial vector data
 		rg.river_source = (rg.dv.x0, rg.dv.y0);
 		rg.river_end = (rg.dv.x1, rg.dv.y1);
 
-		//return if river is too short
-		if vector_within_len(rg, rg.lp.wi.river_min_length) {
+		//Return if river is too short
+		if vector_within_len(rg, lp.wi.river_min_length) {
 			return;
 		}
 
-		//make pathfinding for nodes, get a queue
+		//Make pathfinding for nodes, get a queue,
 		//do "windows"  between nodes, iterate and fill them
-		let nodes = pathfinding_nodes(rg);
+		let nodes = pathfinding_nodes(rg, lp, terrain_map);
 
 		let mut segment_queue = Vec::new();
 		let mut joined_path = Vec::new();
 
-		//segment goes between those nodes
+		//Segment goes between those two nodes
 		for node_pair in nodes.windows(2) {
-			//set temporary vector points for each segment
+			//Set temporary vector points for each segment
 			rg.dv.x0 = node_pair[0].0;
 			rg.dv.y0 = node_pair[0].1;
 			rg.dv.x1 = node_pair[1].0;
 			rg.dv.y1 = node_pair[1].1;
 
-			let path_array_seg = pathfinding_segments(rg);
+			let path_array_seg =
+				pathfinding_segments(rg, lp, &random_map);
 			segment_queue.push(path_array_seg);
 		}
 
-		//take segment queue and map the content into a single path
+		//Take segment queue and map the content into a single path
 		for entry in segment_queue.iter_mut() {
 			for pos in entry.iter() {
-				//println!("x {:?}, y {:?}", pos.0, pos.1);
 				joined_path.push(*pos);
 			}
 		}
 
-		//remove duplicates
+		//Remove duplicated cells
 		joined_path.dedup();
 
-		//push river data to list
+		//Push river data to list
 		rg.rivers_paths.list.push(RiverEntry {
 			path_array: joined_path,
 			river_id: rg.river_id,
 			width: rg.river_width,
 			source: rg.river_source,
-
 			end: rg.river_end,
 		});
 
-		//river id increment
+		//River id increment
 		rg.river_id = rg
 			.river_id
 			.checked_add(1)
@@ -102,92 +110,125 @@ fn make_paths(
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ ROUTINES ▒▒▒▒▒▒▒▒▒▒▒▒
-//LIST MAKER
-fn path_segments(rg: &mut RgParams) {
-	let path_array_seg = pathfinding_segments(rg);
-	//keep this check? maybe add bool flag on return
-	if path_array_seg.is_empty() {
-		return;
-	}
-
-	//push river data to list
-	rg.rivers_paths.list.push(RiverEntry {
-		path_array: path_array_seg.to_vec(),
-		river_id: rg.river_id,
-		width: rg.river_width,
-		source: rg.river_source,
-
-		end: rg.river_end,
-	});
-}
-
 //ACTUAL PATHFINDING
-fn pathfinding_segments(rg: &mut RgParams) -> Vec<path::Pos> {
+fn pathfinding_segments(
+	rg: &mut RgParams,
+	lp: &mut worldgen::LayerPack,
+	random_map: &Vec<u8>,
+) -> Vec<path::Pos> {
 	rg.dv.path_heuristic = RIVER_HEUR_INIT;
 
-	//rivers go ortho
+	//Must be false, because actual river bodies
 	let diag_flag = false;
 
 	//iter 1
-	let result_init = path::make(
-		&rg.dv,
-		&rg.rtopog_map,
-		rg.lp.wi.map_size,
-		diag_flag,
-		1,
-	);
+	let result_init =
+		path::make(&rg.dv, &random_map, lp.wi.map_size, diag_flag, 1);
 
 	let path_distance = distance(rg);
 
-	let estimated_heuristic =
-		((result_init.1 / (path_distance + 1)) as f32
-			* rg.lp.wi.river_heuristic_factor) as usize;
+	let estimated_heuristic = ((result_init.1 / (path_distance + 1))
+		as f32 * lp.wi.river_heuristic_factor)
+		as usize;
 
 	rg.dv.path_heuristic = estimated_heuristic;
 
 	//iter 2
-	let result = path::make(
-		&rg.dv,
-		&rg.rtopog_map,
-		rg.lp.wi.map_size,
-		diag_flag,
-		1,
-	);
+	let result =
+		path::make(&rg.dv, &random_map, lp.wi.map_size, diag_flag, 1);
 	result.0
 }
 
 //NODES
-fn pathfinding_nodes(rg: &mut RgParams) -> Vec<path::Pos> {
+fn pathfinding_nodes(
+	rg: &mut RgParams,
+	lp: &mut worldgen::LayerPack,
+	terrain_map: Vec<u8>,
+) -> Vec<path::Pos> {
 	rg.dv.path_heuristic = RIVER_HEUR_INIT;
 
-	//nodes go ortho and dia
+	//Must be true, because nodes
 	let diag_flag = true;
 
 	//iter 1
 	let result_init = path::make(
 		&rg.dv,
-		&rg.topog_map,
-		rg.lp.wi.map_size,
+		&terrain_map,
+		lp.wi.map_size,
 		diag_flag,
-		rg.lp.wi.river_segment_length,
+		lp.wi.river_segment_length,
 	);
 
 	let path_distance = distance(rg);
 
-	let estimated_heuristic =
-		((result_init.1 / (path_distance + 1)) as f32
-			* rg.lp.wi.river_heuristic_factor) as usize;
+	let estimated_heuristic = ((result_init.1 / (path_distance + 1))
+		as f32 * lp.wi.river_heuristic_factor)
+		as usize;
 
 	rg.dv.path_heuristic = estimated_heuristic;
 
 	//iter 2
 	let result = path::make(
 		&rg.dv,
-		&rg.topog_map,
-		rg.lp.wi.map_size,
+		&terrain_map,
+		lp.wi.map_size,
 		diag_flag,
-		rg.lp.wi.river_segment_length,
+		lp.wi.river_segment_length,
 	);
-	//println!("nodes {:?}", result.0);
 	result.0
+}
+
+//▒▒▒▒▒▒▒▒▒▒▒▒ MAPS ▒▒▒▒▒▒▒▒▒▒▒▒▒
+fn get_random_map(
+	rg: &mut RgParams,
+	lp: &mut worldgen::LayerPack,
+) -> Vec<u8> {
+	//Random noise map for river path meandering
+	//river segments would be using this
+	let mut random_map = vec![0; lp.layer_vec_len];
+
+	let array_noise1 = crate::array_ops::noise_maps::get(
+		lp.wi.map_size,
+		lp.wi.river_noise_size1,
+		lp.wi.seed,
+		Multi,
+	);
+
+	let array_noise2 = crate::array_ops::noise_maps::get(
+		lp.wi.map_size,
+		lp.wi.river_noise_size2 * 2.0,
+		lp.wi.seed + 1000,
+		Perlin,
+	);
+
+	for (index, cell_v) in
+		random_map.iter_mut().enumerate().take(lp.layer_vec_len)
+	{
+		*cell_v = (array_noise1[index]
+			* 255.0 * (1.0 - lp.wi.river_noise_blend)
+			+ array_noise2[index] * 255.0 * lp.wi.river_noise_blend)
+			as u8;
+	}
+	random_map
+}
+
+fn get_terrain_map(
+	rg: &mut RgParams,
+	lp: &mut worldgen::LayerPack,
+) -> Vec<u8> {
+	//Write terrain map into a temporary array for future pathfinding
+	//river nodes would be done on this
+	let m_terrain = lp.topography.masks.terrain;
+
+	let mut terrain_map = Vec::new();
+	let map_size = lp.wi.map_size;
+	let xy = Index { map_size };
+	for i in 0..map_size {
+		for j in 0..map_size {
+			let index = xy.ind(i, j);
+			terrain_map[index] =
+				lp.topography.read(m_terrain, index) as u8;
+		}
+	}
+	terrain_map
 }

@@ -1,6 +1,6 @@
 pub mod erosion_ops;
 pub mod mapping_ops;
-pub mod mask_ops;
+//pub mod mask_ops;
 pub mod path_ops;
 pub mod probability_ops;
 pub mod vector_ops;
@@ -9,7 +9,7 @@ pub mod width_ops;
 
 use erosion_ops::*;
 use mapping_ops::*;
-use mask_ops::*;
+//use mask_ops::*;
 use path_ops::*;
 use probability_ops::*;
 use vector_ops::*;
@@ -62,12 +62,9 @@ pub struct RiversPaths {
 }
 
 //global rivergen param structure for data transfer
-pub struct RgParams<'a> {
+pub struct RgParams {
 	//coordinate system function
 	xy: Index,
-
-	//layer maps
-	lp: &'a mut worldgen::LayerPack<'a>,
 
 	//temporary value storage
 	river_id: u16,    //check for overflow?
@@ -84,8 +81,8 @@ pub struct RgParams<'a> {
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ MAIN ▒▒▒▒▒▒▒▒▒▒▒▒▒
-pub fn get<'a>(
-	lp: &'a mut worldgen::LayerPack<'a>,
+pub fn get(
+	lp: &mut worldgen::LayerPack,
 	wg_str: &strings::worldgen_strings::Stuff,
 ) {
 	//initiate the parameter structure
@@ -94,9 +91,6 @@ pub fn get<'a>(
 		xy: Index {
 			map_size: lp.wi.map_size,
 		},
-
-		//store for convenience of access
-		lp,
 
 		//temporary value storage
 		river_id: INIT_ID_U16,
@@ -125,11 +119,11 @@ pub fn get<'a>(
 	};
 
 	//perform rivergen
-	estimate_sources_number(&mut rg, wg_str);
-	set_paths(&mut rg, wg_str);
-	map_paths(&mut rg);
-	map_width(&mut rg);
-	map_erosion(&mut rg);
+	estimate_sources_number(&mut rg, lp, wg_str);
+	set_paths(&mut rg, lp, wg_str);
+	map_paths(&mut rg, lp);
+	map_width(&mut rg, lp);
+	map_erosion(&mut rg, lp);
 
 	//store stuff back
 	//lp.ri_mask.array_map = translate::encode16(rg.river_mask_map);
@@ -141,22 +135,23 @@ pub fn get<'a>(
 //▒▒▒▒▒▒▒▒ RIVER QUANTITY ESTIMATION ▒▒▒▒▒▒▒▒
 fn estimate_sources_number(
 	rg: &mut RgParams,
+	lp: &mut worldgen::LayerPack,
 	wg_str: &strings::worldgen_strings::Stuff,
 ) {
 	//Aliases
-	let topog_map = rg.lp.topography;
-	let m_watermask = rg.lp.topography.masks.watermask;
+	let m_watermask = lp.topography.masks.watermask;
 
-	for i in 0..rg.lp.wi.map_size {
-		for j in 0..rg.lp.wi.map_size {
+	for i in 0..lp.wi.map_size {
+		for j in 0..lp.wi.map_size {
 			let index = rg.xy.ind(i, j);
 
-			let random = prng::get(0.0, 1.0, rg.lp.wi.seed, index);
+			let random = prng::get(0.0, 1.0, lp.wi.seed, index);
 
-			let total_prob = prob(i, j, rg);
+			let total_prob = prob(i, j, rg, lp);
 
 			if (random <= total_prob)
-				&& (topog_map.read(m_watermask, index) == NO_WATER)
+				&& (lp.topography.read(m_watermask, index)
+					== NO_WATER)
 			{
 				rg.river_est_number += 1;
 			}

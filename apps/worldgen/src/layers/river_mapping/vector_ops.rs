@@ -21,6 +21,7 @@ pub fn vector_within_len(
 
 pub fn vector_bound(
 	rg: &mut RgParams,
+	lp: &mut worldgen::LayerPack,
 	allowed: usize,
 ) {
 	//bound up
@@ -52,47 +53,9 @@ pub fn vector_bound(
 	}
 }
 
-//doesn't work since mapping is later maybe sort out on
-//intersections by dropping the paths that start too close?
-pub fn source_at_distance(
-	i: usize,
-	j: usize,
-	rg: &mut RgParams,
-	allowed: usize,
-) -> bool {
-	let mut condition = true;
-	let x_min = i.saturating_sub(allowed / 2);
-	let y_min = j.saturating_sub(allowed / 2);
-	let mut x_max = i + allowed / 2;
-	let mut y_max = j + allowed / 2;
-
-	if x_max > rg.lp.wi.map_size {
-		x_max = rg.lp.wi.map_size;
-	}
-
-	if y_max > rg.lp.wi.map_size {
-		y_max = rg.lp.wi.map_size;
-	}
-
-	for x in x_min..x_max {
-		for y in y_min..y_max {
-			let index = rg.xy.ind(x, y);
-
-			if river_mask_get(rg.river_mask_map[index]) != NO_RIVER {
-				condition = false;
-				break;
-			}
-		}
-		if !condition {
-			break;
-		}
-	}
-	//println!("{:?}", condition);
-	condition
-}
-
 pub fn vector_start(
 	rg: &mut RgParams,
+	lp: &mut worldgen::LayerPack,
 	i: usize,
 	j: usize,
 ) {
@@ -100,23 +63,31 @@ pub fn vector_start(
 	rg.dv.y0 = j;
 }
 
-pub fn vector_end(rg: &mut RgParams) {
-	let mut water_bodies = false;
+pub fn vector_end(
+	rg: &mut RgParams,
+	lp: &mut worldgen::LayerPack,
+) {
+	let m_wmask = lp.topography.masks.watermask;
 
-	for cell_v in rg.wmask_map.iter() {
-		if *cell_v >= rg.lp.wi.river_attr_pool_size_pow {
+	let mut water_bodies = false;
+	for index in 0..lp.layer_vec_len {
+		let wmask = lp.topography.read(m_wmask, index);
+		if wmask >= lp.wi.river_attr_pool_size_pow {
 			water_bodies = true;
 		}
 	}
 
 	if water_bodies {
-		with_water(rg);
+		with_water(rg, lp);
 	} else {
-		without_water(rg);
+		without_water(rg, lp);
 	}
 }
 
-pub fn vector_end_stream(rg: &mut RgParams) {
-	rg.dv.x1 = rg.lp.wi.map_size / 2;
-	rg.dv.y1 = rg.lp.wi.map_size / 2;
+pub fn vector_end_stream(
+	rg: &mut RgParams,
+	lp: &mut worldgen::LayerPack,
+) {
+	rg.dv.x1 = lp.wi.map_size / 2;
+	rg.dv.y1 = lp.wi.map_size / 2;
 }

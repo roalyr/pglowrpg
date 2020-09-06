@@ -253,6 +253,7 @@ def main_menu():
 		clear_bk()
 	elif inp == "t":
 		os.system('clear')
+		clear_bk()
 		git_menu()
 
 #Start

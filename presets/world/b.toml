@@ -157,7 +157,7 @@
 # Valid values are: 0...100, 0 to disable.
 
 	river_noise_blend = 75 
-	river_noise_weight = 100 
+	river_noise_weight = 100 #obsolete
 	
 # The width of the eroded landmass around the rivers 
 # (number of cells).

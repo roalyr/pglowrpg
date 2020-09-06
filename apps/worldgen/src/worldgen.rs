@@ -1,7 +1,7 @@
-//pub mod writing_ops;
+pub mod writing_ops;
 
 //use crate::array_ops::translate;
-//use crate::layers::*;
+use crate::layers::*;
 use crate::preset_validate;
 use crate::seed_generating;
 
@@ -9,12 +9,9 @@ use codec::*;
 use coords::Index;
 use io::prompt;
 use io::toml::{options, presets, strings};
-//use io::writepng::*;
-//use writing_ops::*;
+use io::writepng::*;
+use writing_ops::*;
 
-use deepsize::DeepSizeOf;
-
-#[derive(DeepSizeOf)]
 pub struct Layer {
 	pub array_map: Vec<u8>,
 	pub layer_name: String,
@@ -150,32 +147,31 @@ fn run(
 
 	//▒▒▒▒▒▒▒▒▒▒ GENERATION ▒▒▒▒▒▒▒▒▒▒▒
 	println!("{}", wg_str.wg7);
-	//terrain_mapping::get(&mut lp);
+	terrain_mapping::get(&mut lp);
 
 	println!("{}", wg_str.wg9);
-	//climate_mapping::get(&mut lp);
+	climate_mapping::get(&mut lp);
 
 	//need temperature
 	println!("{}", wg_str.wg13);
-	//watermask_mapping::get(&mut lp);
+	watermask_mapping::get(&mut lp);
 
 	//needs terrain, watermask, temperature, rainfall
 	println!("{}", wg_str.wg17);
-	//river_mapping::get(&mut lp, &wg_str);
+	river_mapping::get(&mut lp, &wg_str);
 
 	//needs the above, must be called after rivers (erosion)
 	println!("{}", wg_str.wg19);
-	//biome_mapping::get(&mut lp);
+	biome_mapping::get(&mut lp);
 
 	//needs biomes
 	println!("{}", wg_str.wg21);
-	//georegion_mapping::get(&mut lp, &wg_str);
+	georegion_mapping::get(&mut lp, &wg_str);
 
 	//WRITING DATA
 	//["topog_", &{ lp.wi.seed.to_string() }].concat();
-	//get_data_size(&lp);
-	//write_images(&mut lp, wg_str,
-	//options_worldgen, options_debug);
+
+	write_images(&mut lp, wg_str, options_worldgen, options_debug);
 	//write raws
 	//write data files
 }

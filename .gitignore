@@ -1,4 +1,5 @@
 target/
 save/
 *.png
+*.bk
 Cargo.lock

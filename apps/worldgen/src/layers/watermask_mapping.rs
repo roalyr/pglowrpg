@@ -59,7 +59,7 @@ pub fn get(lp: &mut worldgen::LayerPack) {
 
 fn write_map(
 	lp: &mut worldgen::LayerPack,
-	ff: &mut floodfill::FloodFill<u8>,
+	ff: &mut floodfill::FloodFill<u16>,
 ) {
 	let xy = Index {
 		map_size: lp.wi.map_size,

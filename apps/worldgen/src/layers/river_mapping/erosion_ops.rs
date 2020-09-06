@@ -2,7 +2,10 @@ use crate::layers::river_mapping::*;
 //use crate::worldgen;
 use constants::world_constants::*;
 
-pub fn map_erosion(rg: &mut RgParams) {
+pub fn map_erosion(
+	rg: &mut RgParams,
+	lp: &mut worldgen::LayerPack,
+) {
 	//Must be cloned
 	let erosion_queue = rg.rivers_paths.erosion_queue.clone();
 	let mut to_do_queue = Vec::new();
@@ -56,44 +59,40 @@ pub fn map_erosion(rg: &mut RgParams) {
 			.clone();
 
 		let path_array = river_entry.path_array;
-		erode_path(rg, path_array, terrain_diff);
+		erode_path(rg, lp, path_array, terrain_diff);
 	}
 }
 
 fn erode_path(
 	rg: &mut RgParams,
+	lp: &mut worldgen::LayerPack,
 	path_array: Vec<path::Pos>,
 	terrain_diff: u16,
 ) {
 	//Aliases
-	let erosion_width_max = rg.lp.wi.river_erosion_width;
-
-	//Maps
-	let topog_map = rg.lp.topography;
-	let rivers_map = rg.lp.rivers;
+	let erosion_width_max = lp.wi.river_erosion_width;
 
 	//Maps masks
-	let m_terrain = rg.lp.topography.masks.terrain;
-	let m_river_elem = rg.lp.rivers.masks.element;
+	let m_terrain = lp.topography.masks.terrain;
+	let m_river_elem = lp.rivers.masks.element;
 
 	let i_source = path_array[0].0;
 	let j_source = path_array[0].1;
 	let index_source = rg.xy.ind(i_source, j_source);
 
 	//Level at source of river
-	let terrain_source = topog_map.read(m_terrain, index_source);
+	let terrain_source = lp.topography.read(m_terrain, index_source);
 
 	//Lower down the river if needed in order to avoid rivers flowing
 	//above each other
-	let erosion_floor = if rg.lp.wi.waterlevel < rg.lp.wi.abs_elev_min
-	{
+	let erosion_floor = if lp.wi.waterlevel < lp.wi.abs_elev_min {
 		0u16
 	} else {
 		translate::get_rel(
-			rg.lp.wi.waterlevel as f32,
+			lp.wi.waterlevel as f32,
 			255.0,
-			rg.lp.wi.abs_elev_min as f32,
-			rg.lp.wi.abs_elev_max as f32,
+			lp.wi.abs_elev_min as f32,
+			lp.wi.abs_elev_max as f32,
 		) as u16
 	};
 
@@ -116,11 +115,11 @@ fn erode_path(
 		let index_downstr = rg.xy.ind(i1, j1);
 		let index_current = rg.xy.ind(i0, j0);
 		let terrain_current =
-			topog_map.read(m_terrain, index_current);
+			lp.topography.read(m_terrain, index_current);
 		let terrain_downstr =
-			topog_map.read(m_terrain, index_downstr);
+			lp.topography.read(m_terrain, index_downstr);
 		let river_elem_downstr =
-			rivers_map.read(m_river_elem, index_downstr);
+			lp.rivers.read(m_river_elem, index_downstr);
 
 		//Cease if reached the end
 		if river_elem_downstr == NO_RIVER {
@@ -129,7 +128,7 @@ fn erode_path(
 
 		//Make sure current doesn't go up
 		if terrain_current > terrain_stream {
-			rg.lp.topography.write(
+			lp.topography.write(
 				terrain_stream,
 				m_terrain,
 				index_current,
@@ -143,7 +142,7 @@ fn erode_path(
 
 		//Erode if downstream goes up
 		if terrain_downstr > terrain_current {
-			rg.lp.topography.write(
+			lp.topography.write(
 				terrain_current,
 				m_terrain,
 				index_downstr,
@@ -171,6 +170,7 @@ fn erode_path(
 
 					erosion(
 						rg,
+						lp,
 						erosion_width,
 						erosion_i,
 						erosion_j,
@@ -184,24 +184,24 @@ fn erode_path(
 
 fn erosion(
 	rg: &mut RgParams,
+	lp: &mut worldgen::LayerPack,
 	erosion_width_iter: usize,
 	erosion_i: usize,
 	erosion_j: usize,
 	terrain_current: u16,
 ) {
 	//Aliases
-	let topog_map = rg.lp.topography;
-	let m_terrain = rg.lp.topography.masks.terrain;
-	let map_size = rg.lp.wi.map_size;
+	let m_terrain = lp.topography.masks.terrain;
+	let map_size = lp.wi.map_size;
 
 	//Check if within the map
 	if (erosion_i < map_size) && (erosion_j < map_size) {
 		let index = rg.xy.ind(erosion_i, erosion_j);
 
-		if topog_map.read(m_terrain, index) > terrain_current {
+		if lp.topography.read(m_terrain, index) > terrain_current {
 			let terrain_current = terrain_current as f32;
 			let terrain_to_erode =
-				topog_map.read(m_terrain, index) as f32;
+				lp.topography.read(m_terrain, index) as f32;
 
 			let terrain_relative: f32 = terrain_to_erode / 255.0;
 
@@ -209,19 +209,19 @@ fn erosion(
 				(1.0 - terrain_relative).powf(
 					terrain_relative
 						/ ((erosion_width_iter as f32)
-							.powf(rg.lp.wi.river_erosion_smooth)
+							.powf(lp.wi.river_erosion_smooth)
 							* (1.0 - terrain_relative)),
 				),
 			)) as u16;
 
 			//Write the eroded terrain back onto map
-			rg.lp.topography.write(value, m_terrain, index);
+			lp.topography.write(value, m_terrain, index);
 
 			//Bound so as to avoid excessive erosion
-			if topog_map.read(m_terrain, index)
+			if lp.topography.read(m_terrain, index)
 				< terrain_current as u16
 			{
-				rg.lp.topography.write(
+				lp.topography.write(
 					terrain_current as u16,
 					m_terrain,
 					index,
