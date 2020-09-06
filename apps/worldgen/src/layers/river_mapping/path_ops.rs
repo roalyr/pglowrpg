@@ -11,9 +11,13 @@ pub fn set_paths(
 	lp: &mut worldgen::LayerPack,
 	_wg_str: &strings::worldgen_strings::Stuff,
 ) {
+	//Maps for pathfinding
+	let terrain_map = get_terrain_map(rg, lp);
+	let random_map = get_random_map(rg, lp);
+	
 	for i in 0..lp.wi.map_size {
 		for j in 0..lp.wi.map_size {
-			make_paths(i, j, rg, lp);
+			make_paths(i, j, rg, lp, &terrain_map, &random_map);
 		}
 	}
 }
@@ -24,6 +28,8 @@ fn make_paths(
 	j: usize,
 	rg: &mut RgParams,
 	lp: &mut worldgen::LayerPack,
+	terrain_map: &Vec<u8>, 
+	random_map: &Vec<u8>, 
 ) {
 	//Aliases
 	let m_watermask = lp.topography.masks.watermask;
@@ -31,10 +37,6 @@ fn make_paths(
 	let index = rg.xy.ind(i, j);
 	let wmask = lp.topography.read(m_watermask, index);
 	let map_size = lp.wi.map_size;
-
-	//Maps for pathfinding
-	let terrain_map = get_terrain_map(rg, lp);
-	let random_map = get_random_map(rg, lp);
 
 	//To spawn or not to spawn?
 	let random = prng::get(0.0, 1.0, lp.wi.seed, index);
@@ -64,7 +66,7 @@ fn make_paths(
 
 		//Make pathfinding for nodes, get a queue,
 		//do "windows"  between nodes, iterate and fill them
-		let nodes = pathfinding_nodes(rg, lp, terrain_map);
+		let nodes = pathfinding_nodes(rg, lp, &terrain_map);
 
 		let mut segment_queue = Vec::new();
 		let mut joined_path = Vec::new();
@@ -143,7 +145,7 @@ fn pathfinding_segments(
 fn pathfinding_nodes(
 	rg: &mut RgParams,
 	lp: &mut worldgen::LayerPack,
-	terrain_map: Vec<u8>,
+	terrain_map: &Vec<u8>,
 ) -> Vec<path::Pos> {
 	rg.dv.path_heuristic = RIVER_HEUR_INIT;
 
@@ -179,7 +181,7 @@ fn pathfinding_nodes(
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ MAPS ▒▒▒▒▒▒▒▒▒▒▒▒▒
-fn get_random_map(
+pub fn get_random_map(
 	rg: &mut RgParams,
 	lp: &mut worldgen::LayerPack,
 ) -> Vec<u8> {
@@ -212,7 +214,7 @@ fn get_random_map(
 	random_map
 }
 
-fn get_terrain_map(
+pub fn get_terrain_map(
 	rg: &mut RgParams,
 	lp: &mut worldgen::LayerPack,
 ) -> Vec<u8> {

@@ -52,6 +52,7 @@ fn map_rivers_reverse(
 
 	//Cold run to figure out river lengths and truncate short ones
 	for n in path_array.windows(2) {
+		
 		//Must be here
 		river_length += 1;
 
@@ -72,7 +73,8 @@ fn map_rivers_reverse(
 		let river_id_downstr = lp.rivers_id.read(index_downstr);
 		let wmask_current =
 			lp.topography.read(m_watermask, index_current);
-
+		
+		
 		//Stop if the temperature is too low
 		let temp = translate::get_abs(
 			temp_current as f32,
@@ -97,7 +99,7 @@ fn map_rivers_reverse(
 		if (river_elem_current != NO_RIVER) && (river_length == 1) {
 			break;
 		}
-
+		
 		match river_elem_downstr {
 			NO_RIVER => {}
 			RIVER_BODY => {
@@ -122,7 +124,8 @@ fn map_rivers_reverse(
 			}
 			RIVER_END => {}
 			_ => {
-				println!("Mask downstream: {:?}", river_elem_downstr);
+				println!("Elem downstream: {:?}", river_elem_downstr);
+				println!("{:?}", lp.rivers.expose(index_downstr));
 				panic!("Unexpected river element type value");
 			}
 		}
@@ -338,7 +341,8 @@ fn map_rivers_reverse(
 			}
 
 			_ => {
-				println!("Mask downstream: {:?}", river_elem_downstr);
+				println!("Elem downstream: {:?}", river_elem_downstr);
+				println!("{:?}", lp.rivers.expose(index_downstr));
 				panic!("Unexpected river mask value");
 			}
 		} //match

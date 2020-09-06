@@ -177,6 +177,7 @@ def main_menu():
 		os.system('mkdir -p'+' '+path_target+'save')
 		os.system('cd'+' '+path_target+' && '+'cargo run')
 		os.system('cp'+' '+path_target+'save/*.png'+' '+path_output+'save/')
+		print('\n')
 		print('results copied:')
 		os.system('ls'+' '+path_output+'save')
 		
