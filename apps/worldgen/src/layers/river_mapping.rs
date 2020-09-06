@@ -120,10 +120,10 @@ pub fn get(
 
 	//perform rivergen
 	estimate_sources_number(&mut rg, lp, wg_str);
-	set_paths(&mut rg, lp, wg_str);
-	map_paths(&mut rg, lp);
-	map_width(&mut rg, lp);
-	map_erosion(&mut rg, lp);
+	//set_paths(&mut rg, lp, wg_str);
+	//map_paths(&mut rg, lp);
+	//map_width(&mut rg, lp);
+	//map_erosion(&mut rg, lp);
 
 	//store stuff back
 	//lp.ri_mask.array_map = translate::encode16(rg.river_mask_map);

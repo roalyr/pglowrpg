@@ -6,6 +6,7 @@ path_target = "/data/data/com.termux/files/home/pglowrpg/"
 path_output = "/data/data/com.termux/files/home/storage/shared/project_output/"
 
 os.system("mkdir -p"+" "+path_target)
+os.system("mkdir -p"+" "+path_target+"/save")
 
 banner_git      = '▒▒▒▒▒▒▒▒▒▒▒▒GIT MENU▒▒▒▒▒▒▒▒▒▒▒▒▒'
 banner_log      = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒LOG▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'

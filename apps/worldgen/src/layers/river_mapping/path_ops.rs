@@ -220,8 +220,10 @@ fn get_terrain_map(
 	//river nodes would be done on this
 	let m_terrain = lp.topography.masks.terrain;
 
-	let mut terrain_map = Vec::new();
 	let map_size = lp.wi.map_size;
+	
+	let mut terrain_map = vec![0; lp.layer_vec_len];
+	
 	let xy = Index { map_size };
 	for i in 0..map_size {
 		for j in 0..map_size {

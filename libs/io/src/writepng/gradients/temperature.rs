@@ -2,7 +2,7 @@ use crate::toml::colors::colors_temperature;
 
 use crate::writepng::from_hex;
 
-pub fn get(array: Vec<u8>) -> Vec<u8> {
+pub fn get(array: &Vec<u8>) -> Vec<u8> {
 	let size = array.len();
 	let mut idat = vec![0; size * 4];
 

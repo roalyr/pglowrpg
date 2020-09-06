@@ -39,8 +39,8 @@ pub enum GradMode {
 }
 
 pub fn combined_png(
-	array_bg: Vec<u8>,
-	array_fg: Vec<u8>,
+	array_bg: &Vec<u8>,
+	array_fg: &Vec<u8>,
 	pngname: &str,
 	grad_bg_mode: GradMode,
 	grad_fg_mode: GradMode,
@@ -62,9 +62,9 @@ pub fn combined_png(
 
 	let mut writer = encoder.write_header().unwrap();
 
-	let idat_bg = match_grad(array_bg, grad_bg_mode);
+	let idat_bg = match_grad(&array_bg, grad_bg_mode);
 
-	let idat_fg = match_grad(array_fg, grad_fg_mode);
+	let idat_fg = match_grad(&array_fg, grad_fg_mode);
 
 	match mode {
 		Mode::OnlyBg => {
@@ -99,7 +99,7 @@ pub fn combined_png(
 }
 
 fn match_grad(
-	array: Vec<u8>,
+	array: &Vec<u8>,
 	grad_mode: GradMode,
 ) -> Vec<u8> {
 	match grad_mode {
