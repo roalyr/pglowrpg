@@ -34,6 +34,8 @@ def git_menu():
 		print('(l) - log')
 		print('() - current')
 		print(banner_git)
+		print('\n')
+		print('(u) - launch "gitui"')
 	
 	def git_log_f():
 		print(banner_log)
@@ -102,6 +104,8 @@ def git_menu():
 			git_reset_hard_f()
 		elif inp == "?":
 			print_git_ops()
+		elif inp == "u":
+			os.system('gitui')
 		elif inp == "q":
 			quit()
 
@@ -118,6 +122,7 @@ def main_menu():
 		print('(e) - "rustc --explain"')
 		print('(r) - do "rustfmt" with options from rustfmt.toml')
 		print('(clear) - clear ".bk" files')
+		print('(u) - do "cargo update"')
 		print(banner_rust)
 		print('\n')
 		print('(t) - git menu')
@@ -205,6 +210,10 @@ def main_menu():
 		copy_libs()
 		cargo_deps()
 		
+	def cargo_update():
+		os.system('cd'+' '+path_target+' && '+'cargo update')
+		print('dependencies updated')
+		
 	def explain():
 		inp = input("Error code » ").strip()
 		os.system('rustc --explain'+' '+inp)
@@ -238,6 +247,8 @@ def main_menu():
 		explain()
 	elif inp == "r":
 		rustfmt()
+	elif inp == "u":
+		cargo_update()
 	elif inp == "clear":
 		clear_bk()
 	elif inp == "t":
