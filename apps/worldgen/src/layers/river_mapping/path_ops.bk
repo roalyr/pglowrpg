@@ -22,16 +22,37 @@ fn make_paths(
 	rg: &mut RgParams,
 ) {
 	//Aliases
+	//Maps
 	let topog_map = rg.lp.topography;
+	let rivers_map = rg.lp.rivers;
+	let rivers_id_map = rg.lp.rivers_id;
+	let climate_map = rg.lp.climate;
+
+	//Maps masks
+	let m_terrain = rg.lp.topography.masks.terrain;
 	let m_watermask = rg.lp.topography.masks.watermask;
+	let m_river_elem = rg.lp.rivers.masks.element;
+	let m_upstream = rg.lp.rivers.masks.upstream;
+	let m_downstream = rg.lp.rivers.masks.downstream;
+	let m_temp = rg.lp.climate.masks.temperature;
+	
 	let index = rg.xy.ind(i, j);
-	let wmask = topog_map.read(m_watermask, index);
+	
+	let temp = climate_map.read(m_temp, index);
+	let river_elem =
+		rivers_map.read(m_river_elem, index);
+	let river_elem =
+		rivers_map.read(m_river_elem, index);
+	let river_id = rivers_id_map.read(index);
+	let wmask =
+		topog_map.read(m_watermask, index);
+	
 
 	let random = prng::get(0.0, 1.0, rg.lp.wi.seed, index);
 
 	let total_prob = prob(i, j, rg);
 
-	if (random <= total_prob) && (wmask == NO_WATER) {
+	if (random <= total_prob) && (rg.wmask_map[index] == NO_WATER) {
 		//UI
 		rg.river_count_number += 1;
 		progress::five_percent_step(
@@ -84,7 +105,7 @@ fn make_paths(
 		joined_path.dedup();
 
 		//push river data to list
-		rg.rivers_paths.list.push(RiverEntry {
+		rg.rivers.list.push(RiverEntry {
 			path_array: joined_path,
 			river_id: rg.river_id,
 			width: rg.river_width,
@@ -111,7 +132,7 @@ fn path_segments(rg: &mut RgParams) {
 	}
 
 	//push river data to list
-	rg.rivers_paths.list.push(RiverEntry {
+	rg.rivers.list.push(RiverEntry {
 		path_array: path_array_seg.to_vec(),
 		river_id: rg.river_id,
 		width: rg.river_width,

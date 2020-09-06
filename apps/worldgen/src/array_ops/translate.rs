@@ -1,6 +1,6 @@
 use flate2::write::{GzDecoder, GzEncoder};
 use flate2::Compression;
-use std::cmp::Ordering;
+//use std::cmp::Ordering;
 use std::io::prelude::*;
 
 pub fn read_small_int16_(

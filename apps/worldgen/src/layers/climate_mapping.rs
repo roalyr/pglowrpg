@@ -1,6 +1,6 @@
 use crate::array_ops;
 use crate::array_ops::noise_maps::NoiseMode::*;
-use crate::array_ops::translate;
+//use crate::array_ops::translate;
 use crate::worldgen;
 
 pub fn get(lp: &mut worldgen::LayerPack) {

@@ -1,6 +1,6 @@
 //pub mod writing_ops;
 
-use crate::array_ops::translate;
+//use crate::array_ops::translate;
 //use crate::layers::*;
 use crate::preset_validate;
 use crate::seed_generating;
@@ -9,7 +9,7 @@ use codec::*;
 use coords::Index;
 use io::prompt;
 use io::toml::{options, presets, strings};
-use io::writepng::*;
+//use io::writepng::*;
 //use writing_ops::*;
 
 use deepsize::DeepSizeOf;

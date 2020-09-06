@@ -1,6 +1,6 @@
 //use crate::array_ops::noise_maps::point_multi;
 use crate::layers::river_mapping::*;
-use crate::worldgen;
+//use crate::worldgen;
 use constants::world_constants::*;
 //use prng::prng;
 
@@ -418,7 +418,7 @@ fn width_routine(
 		rg.rivers_paths.width_queue.iter().rev().by_ref().find(
 			|WidthEntry {
 			     river_id_downstr, ..
-			 }| { *river_id_downstr == river_id_downstr },
+			 }| { river_id_downstr == river_id_downstr },
 		);
 
 	//Get the width value from river downstream
@@ -482,7 +482,7 @@ fn erosion_initiate(
 	rg: &mut RgParams,
 	river_id: u16,
 ) {
-	rg.rivers.erosion_queue.push(ErosionEntry {
+	rg.rivers_paths.erosion_queue.push(ErosionEntry {
 		river_id_downstr: river_id,
 		terrain_diff: 0,
 	});

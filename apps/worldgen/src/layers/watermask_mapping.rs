@@ -21,13 +21,13 @@ pub fn get(lp: &mut worldgen::LayerPack) {
 		for j in 0..lp.wi.map_size {
 			let index = xy.ind(i, j);
 
-			let elev = (translate::get_abs(
+			let elev = translate::get_abs(
 				lp.topography.read(lp.topography.masks.terrain, index)
 					as f32,
 				255.0,
 				lp.wi.abs_elev_min as f32,
 				lp.wi.abs_elev_max as f32,
-			) as usize);
+			) as usize;
 
 			let temp = translate::get_abs(
 				lp.climate.read(lp.climate.masks.temperature, index)

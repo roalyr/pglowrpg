@@ -1,7 +1,7 @@
 use crate::array_ops;
 use crate::worldgen;
 
-use crate::array_ops::translate;
+//use crate::array_ops::translate;
 
 pub fn get(lp: &mut worldgen::LayerPack) {
 	let mut array = array_ops::diamond_square::get(

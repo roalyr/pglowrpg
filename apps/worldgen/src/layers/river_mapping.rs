@@ -20,14 +20,14 @@ use crate::array_ops::noise_maps;
 use crate::array_ops::translate;
 use crate::worldgen;
 
-use constants::general::*;
+//use constants::general::*;
 use constants::world_constants::*;
 use coords::Index;
 use io::progress;
 use io::toml::strings;
 
 use line_drawing::BresenhamCircle;
-use std::convert::TryInto;
+//use std::convert::TryInto;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ STRUCTURES ▒▒▒▒▒▒▒▒▒▒▒▒▒
 //river entry stores all the relevant river data
