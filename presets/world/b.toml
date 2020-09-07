@@ -14,7 +14,7 @@
 # 300x300 meters.
 # Valid values are: 256, 512, 1024, 2048, 4096, 8192, 16384 (integer).
 
-	map_size = 256
+	map_size = 1024
 	
 
 # Temperature mode for the world map. It determines where the 
@@ -55,7 +55,7 @@
 # to be generated relative to map size, precipitation etc.
 # Valid values are: 0...100, 0 to disable.
 
-	river_source_density = 30
+	river_source_density = 10
 
 # ▓▓▓▓▓▓▓▓▓▓ ADVANCED OPTIONS ▓▓▓▓▓▓▓▓▓▓
 # These options, when adjusted, will affect other options in this 
@@ -69,7 +69,7 @@
 # be equal or less than "map_size".
 # Valid values are: 256, 512, 1024 (integer).
 
-	noisemap_size = 256
+	noisemap_size = 512
 	
 
 # Filter the topography map from the bottom. Values below this 
@@ -147,7 +147,7 @@
 # finer noise, while larger values produce larger noise.
 # Valid values are: 1...100.
 
-	river_noise_size1 = 25 
+	river_noise_size1 = 10 #must be less than segment size
 	river_noise_size2 = 1 #can be hardcoded
 	
 	
@@ -156,7 +156,7 @@
 # pathfinding map based on topography.
 # Valid values are: 0...100, 0 to disable.
 
-	river_noise_blend = 75 
+	river_noise_blend = 50 
 	river_noise_weight = 100 #obsolete
 	
 # The width of the eroded landmass around the rivers 
@@ -174,7 +174,7 @@
 	
 # meandering
 
-	river_segment_displacement = 30
+	river_segment_displacement = 30 #obsolete?
 
 	
 # River heuristics factor controls river pathfinding approximate
@@ -183,7 +183,7 @@
 # natural paths.
 # Valid values are: 0...200.
 
-	river_heuristic_factor = 50 
+	river_heuristic_factor = 65 
 	
 	
 # River segment length. Rivers that have length above this value
@@ -191,7 +191,7 @@
 # performance. This is mean value.
 # Valid values are: 100...map_size (integer).
 
-	river_segment_length = 5
+	river_segment_length = 10
 
 # River attractor pool size power. Makes rivers be attracted to 
 # water bodies whose size is greater than 2^pow.

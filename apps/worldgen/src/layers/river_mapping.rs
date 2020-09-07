@@ -124,7 +124,6 @@ pub fn get(
 	map_paths(&mut rg, lp);
 	map_width(&mut rg, lp);
 	map_erosion(&mut rg, lp);
-
 }
 
 //▒▒▒▒▒▒▒▒ RIVER QUANTITY ESTIMATION ▒▒▒▒▒▒▒▒

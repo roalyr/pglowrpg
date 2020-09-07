@@ -146,7 +146,6 @@ pub fn write_images(
 		println!("{}", wg_str.wg18);
 
 		//ids
-
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = xy.ind(i, j);
@@ -168,12 +167,12 @@ pub fn write_images(
 		);
 
 		//widths
-
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = xy.ind(i, j);
 				let bg = lp.topography.read(m_wmask, index);
 				let fg = lp.rivers.read(m_width, index);
+
 				array_bg[index] = bg as u8;
 				array_fg[index] = fg as u8;
 			}

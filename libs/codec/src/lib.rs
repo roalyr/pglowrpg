@@ -59,12 +59,12 @@ macro_rules! impl_with_masks {
 				index: usize,
 			) {
 				let zeros = mask.trailing_zeros();
-				
+
 				//overflow guard
 				if val > (mask >> zeros) {
 					panic!("bit layer value overflow for mask {:#0b}", mask)
 				}
-				
+
 				//flush then write
 				self.data[index] = (self.data[index] & !mask) | (((mask >> zeros) & val) << zeros);
 			}
@@ -76,7 +76,7 @@ macro_rules! impl_with_masks {
 			) -> $val_type {
 				(self.data[index] & mask) >> mask.trailing_zeros()
 			}
-			
+
 			pub fn expose(
 				&self,
 				index: usize,

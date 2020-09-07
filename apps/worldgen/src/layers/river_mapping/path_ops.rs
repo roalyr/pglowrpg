@@ -14,7 +14,8 @@ pub fn set_paths(
 	//Maps for pathfinding
 	let terrain_map = get_terrain_map(rg, lp);
 	let random_map = get_random_map(rg, lp);
-	
+	println!("Accessory maps written", );
+
 	for i in 0..lp.wi.map_size {
 		for j in 0..lp.wi.map_size {
 			make_paths(i, j, rg, lp, &terrain_map, &random_map);
@@ -28,8 +29,8 @@ fn make_paths(
 	j: usize,
 	rg: &mut RgParams,
 	lp: &mut worldgen::LayerPack,
-	terrain_map: &Vec<u8>, 
-	random_map: &Vec<u8>, 
+	terrain_map: &Vec<u8>,
+	random_map: &Vec<u8>,
 ) {
 	//Aliases
 	let m_watermask = lp.topography.masks.watermask;
@@ -223,9 +224,9 @@ pub fn get_terrain_map(
 	let m_terrain = lp.topography.masks.terrain;
 
 	let map_size = lp.wi.map_size;
-	
+
 	let mut terrain_map = vec![0; lp.layer_vec_len];
-	
+
 	let xy = Index { map_size };
 	for i in 0..map_size {
 		for j in 0..map_size {
