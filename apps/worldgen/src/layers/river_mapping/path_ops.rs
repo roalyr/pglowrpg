@@ -68,68 +68,94 @@ fn make_paths(
 		//▒▒▒▒▒▒▒▒▒▒▒▒ STEP 1 ▒▒▒▒▒▒▒▒▒▒▒▒▒
 		//Make pathfinding for nodes, get a queue,
 		//do "windows"  between nodes, iterate and fill them
-		let seg_len_small = lp.wi.river_segment_length;
-		let seg_len_big = lp.wi.magic1 as usize;
-
-		let nodes =
-			pathfinding_nodes(rg, lp, seg_len_big, &terrain_map);
-
-		let mut segment_queue_1 = Vec::new();
-		let mut segment_queue_2 = Vec::new();
-		let mut joined_path_1 = Vec::new();
-		let mut joined_path_2 = Vec::new();
-
+		let optimal_min_seg_len = lp.wi.magic1;
+		let mut seg_len = lp.wi.river_segment_length;
+		let mut joined_path = Vec::new();
+		let mut segment_queue = Vec::new();
+		let mut diag_flag = true;
+		let mut last_run = false;
+		let mut path_map = &terrain_map;
+		
+		//Initial set of nodes
+		let mut nodes =
+			pathfinding_nodes(rg, lp, seg_len, &terrain_map, diag_flag);
+		
 		//▒▒▒▒▒▒▒▒▒▒▒▒ Step 2 ▒▒▒▒▒▒▒▒▒▒▒▒▒
 		//Segment goes between those two nodes
-		for node_pair in nodes.windows(2) {
-			//Set temporary vector points for each segment
-			rg.dv.x0 = node_pair[0].0;
-			rg.dv.y0 = node_pair[0].1;
-			rg.dv.x1 = node_pair[1].0;
-			rg.dv.y1 = node_pair[1].1;
-
-			let path_array_seg_1 = pathfinding_nodes(
-				rg,
-				lp,
-				seg_len_small,
-				&terrain_map,
-			);
-			segment_queue_1.push(path_array_seg_1);
-		}
-
-		//Take segment queue and map the content into a single path
-		for entry in segment_queue_1.iter_mut() {
-			for pos in entry.iter() {
-				joined_path_1.push(*pos);
+		loop{
+			//Refresh queues
+			segment_queue.clear();
+			joined_path.clear();
+			
+			//Stop segmentation if reached optimal segment length
+			if seg_len <= optimal_min_seg_len as usize {
+				seg_len = 1;
 			}
-		}
-		//▒▒▒▒▒▒▒▒▒▒▒▒ Step 3 ▒▒▒▒▒▒▒▒▒▒▒▒▒
-		//Segment goes between those two nodes
-		for node_pair in joined_path_1.windows(2) {
-			//Set temporary vector points for each segment
-			rg.dv.x0 = node_pair[0].0;
-			rg.dv.y0 = node_pair[0].1;
-			rg.dv.x1 = node_pair[1].0;
-			rg.dv.y1 = node_pair[1].1;
-
-			let path_array_seg_2 =
-				pathfinding_segments(rg, lp, &random_map);
-			segment_queue_2.push(path_array_seg_2);
-		}
-
-		//Take segment queue and map the content into a single path
-		for entry in segment_queue_2.iter_mut() {
-			for pos in entry.iter() {
-				joined_path_2.push(*pos);
+			
+			//Conditions to stop segmentation to avoid bloat and long
+			//generation time. It gives the number of optimal segments
+			//for given path to cover it
+			let optimal_segs = nodes.len() * seg_len / optimal_min_seg_len as usize;
+			
+			//Drop segmentation to the last step (where segment length is
+			//optimal) and skip intermediate steps to avoid long generation
+			if (optimal_segs > lp.wi.magic2 as usize) && (seg_len != 1) {
+				println!("--------", );
+				println!("Val {:?}", optimal_segs);
+				println!("Old seg len {:?}", seg_len);
+				//println!("Nodes {:?}", nodes.len());
+				seg_len = optimal_min_seg_len as usize;
+				
 			}
+			
+			//For the last step set those to be like this
+			if seg_len == 1{
+				diag_flag = false;
+				last_run = true;
+				path_map = &random_map;
+			}
+			
+			//println!("--- Seg len {:?}", seg_len);
+			
+			for node_pair in nodes.windows(2) {
+				
+				rg.dv.x0 = node_pair[0].0;
+				rg.dv.y0 = node_pair[0].1;
+				rg.dv.x1 = node_pair[1].0;
+				rg.dv.y1 = node_pair[1].1;
+	
+				let path_array_seg = pathfinding_nodes(
+					rg,
+					lp,
+					seg_len,
+					path_map, //swap in turns?
+					diag_flag,
+				);
+				segment_queue.push(path_array_seg);
+			}
+	
+			//Take segment queue and map the content into a single path
+			for entry in segment_queue.iter_mut() {
+				for pos in entry.iter() {
+					joined_path.push(*pos);
+				}
+			}
+			
+			if last_run {break}
+			
+			//Swap to repeat
+			nodes = joined_path.clone();
+			seg_len /= 2;
+			
 		}
+		
 		//▒▒▒▒▒▒▒▒▒▒▒▒ DONE ▒▒▒▒▒▒▒▒▒▒▒▒▒
 		//Remove duplicated cells
-		joined_path_2.dedup();
+		joined_path.dedup();
 
 		//Push river data to list
 		rg.rivers_paths.list.push(RiverEntry {
-			path_array: joined_path_2,
+			path_array: joined_path,
 			river_id: rg.river_id,
 			width: rg.river_width,
 			source: rg.river_source,
@@ -145,46 +171,15 @@ fn make_paths(
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ ROUTINES ▒▒▒▒▒▒▒▒▒▒▒▒
-//ACTUAL PATHFINDING
-fn pathfinding_segments(
-	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
-	random_map: &Vec<u8>,
-) -> Vec<path::Pos> {
-	rg.dv.path_heuristic = RIVER_HEUR_INIT;
-
-	//Must be false, because actual river bodies
-	let diag_flag = false;
-
-	//iter 1
-	let result_init =
-		path::make(&rg.dv, &random_map, lp.wi.map_size, diag_flag, 1);
-
-	let path_distance = distance(rg);
-
-	let estimated_heuristic = ((result_init.1 / (path_distance + 1))
-		as f32 * lp.wi.river_heuristic_factor)
-		as usize;
-
-	rg.dv.path_heuristic = estimated_heuristic;
-
-	//iter 2
-	let result =
-		path::make(&rg.dv, &random_map, lp.wi.map_size, diag_flag, 1);
-	result.0
-}
-
 //NODES
 fn pathfinding_nodes(
 	rg: &mut RgParams,
 	lp: &mut worldgen::LayerPack,
 	seg_len: usize,
 	terrain_map: &Vec<u8>,
+	diag_flag: bool,
 ) -> Vec<path::Pos> {
 	rg.dv.path_heuristic = RIVER_HEUR_INIT;
-
-	//Must be true, because nodes
-	let diag_flag = true;
 
 	//iter 1
 	let result_init = path::make(
