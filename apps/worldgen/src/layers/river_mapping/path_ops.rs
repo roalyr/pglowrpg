@@ -100,7 +100,7 @@ fn make_paths(
 			//Drop segmentation to the last step (where segment length is
 			//optimal) and skip intermediate steps to avoid long generation
 			if (optimal_segs > lp.wi.magic2 as usize) && (seg_len != 1) {
-				println!("--------", );
+				//println!("--------", );
 				println!("Val {:?}", optimal_segs);
 				println!("Old seg len {:?}", seg_len);
 				//println!("Nodes {:?}", nodes.len());
@@ -116,7 +116,7 @@ fn make_paths(
 			}
 			
 			//println!("--- Seg len {:?}", seg_len);
-			
+			//println!("Old seg len {:?}", seg_len);
 			for node_pair in nodes.windows(2) {
 				
 				rg.dv.x0 = node_pair[0].0;
@@ -145,7 +145,7 @@ fn make_paths(
 			
 			//Swap to repeat
 			nodes = joined_path.clone();
-			seg_len /= 2;
+			seg_len = (seg_len as f32 / lp.wi.magic3) as usize;
 			
 		}
 		

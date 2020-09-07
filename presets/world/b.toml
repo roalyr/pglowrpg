@@ -14,7 +14,7 @@
 # 300x300 meters.
 # Valid values are: 256, 512, 1024, 2048, 4096, 8192, 16384 (integer).
 
-	map_size = 1024
+	map_size = 2048
 	
 
 # Temperature mode for the world map. It determines where the 
@@ -69,7 +69,7 @@
 # be equal or less than "map_size".
 # Valid values are: 256, 512, 1024 (integer).
 
-	noisemap_size = 512
+	noisemap_size = 1024
 	
 
 # Filter the topography map from the bottom. Values below this 
@@ -156,7 +156,7 @@
 # pathfinding map based on topography.
 # Valid values are: 0...100, 0 to disable.
 
-	river_noise_blend = 75 
+	river_noise_blend = 100 
 	river_noise_weight = 100 #obsolete
 	
 # The width of the eroded landmass around the rivers 
@@ -183,7 +183,7 @@
 # natural paths.
 # Valid values are: 0...200.
 
-	river_heuristic_factor = 65 
+	river_heuristic_factor = 50
 	
 	
 # River segment length. Rivers that have length above this value
@@ -222,6 +222,6 @@
 # Mysterious debug option.
 
 	magic = 0 #
-	magic1 = 10  #optimal min seg len CONST
-	magic2 = 500 #number of optimal segs CONST
-	magic3 = 10.3 #
+	magic1 = 10  #optimal min seg len bigher for bigger maps
+	magic2 = 20 #number of optimal segs ?
+	magic3 = 4 #segment divider
