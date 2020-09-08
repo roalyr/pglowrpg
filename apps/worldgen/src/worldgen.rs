@@ -110,30 +110,27 @@ fn run(
 
 		topography: BitLayerTopography {
 			data: vec![0; layer_vec_len],
-			masks: MasksTopography {
-				terrain: 0b_0000_0000_1111_1111,
-				watermask: 0b_0001_1111_0000_0000,
-				_placeholder: 0b_1110_0000_0000_0000,
-			},
+
+			TERRAIN: 0b_0000_0000_1111_1111,
+			WATERMASK: 0b_0001_1111_0000_0000,
+			_placeholder: 0b_1110_0000_0000_0000,
 		},
 
 		climate: BitLayerClimate {
 			data: vec![0; layer_vec_len],
-			masks: MasksClimate {
-				temperature: 0b_0000_0000_1111_1111,
-				rainfall: 0b_1111_1111_0000_0000,
-			},
+
+			TEMPERATURE: 0b_0000_0000_1111_1111,
+			RAINFALL: 0b_1111_1111_0000_0000,
 		},
 
 		rivers: BitLayerRivers {
 			data: vec![0; layer_vec_len],
-			masks: MasksRivers {
-				element: 0b_0000_0000_0000_0111,
-				width: 0b_0000_0000_0111_1000,
-				upstream: 0b_0000_0011_1000_0000,
-				downstream: 0b_0001_1100_0000_0000,
-				_placeholder: 0b_1110_0000_0000_0000,
-			},
+
+			ELEMENT: 0b_0000_0000_0000_0111,
+			WIDTH: 0b_0000_0000_0111_1000,
+			UPSTREAM: 0b_0000_0011_1000_0000,
+			DOWNSTREAM: 0b_0001_1100_0000_0000,
+			_placeholder: 0b_1110_0000_0000_0000,
 		},
 
 		rivers_id: BitLayerRiversID {

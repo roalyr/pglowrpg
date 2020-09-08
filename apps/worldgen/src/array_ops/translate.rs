@@ -3,32 +3,6 @@ use flate2::Compression;
 //use std::cmp::Ordering;
 use std::io::prelude::*;
 
-pub fn read_small_int16_(
-	storage: u16,
-	offset: u8,
-	n_bits: u8,
-) -> u8 {
-	//println!("{:?}", ((storage >> offset as u16) & n_bits as u16).to_be_bytes());
-	((storage >> offset as u16) & n_bits as u16).to_be_bytes()[1]
-}
-
-pub fn store_small_int16_(
-	mut storage: u16,
-	value: u8,
-	offset: u8,
-	cap: u8,
-) {
-	println!("{:?}", value);
-	//check for overflow
-	let integer: u16 = if (value as u16) < (cap as u16) {
-		value as u16
-	} else {
-		panic!("the value is greater than {}", cap);
-	};
-	storage |= integer << offset;
-	//println!("{:?}", storage);
-}
-
 pub fn to_byte(array: Vec<f32>) -> Vec<u8> {
 	let size = array.len();
 	let mut array_new = vec![0; size];

@@ -12,15 +12,6 @@ pub fn write_images(
 	let mut array_bg = vec![0; lp.layer_vec_len];
 	let mut array_fg = vec![0; lp.layer_vec_len];
 
-	let m_terrain = lp.topography.masks.terrain;
-	let m_wmask = lp.topography.masks.watermask;
-
-	let m_temp = lp.climate.masks.temperature;
-	let m_rain = lp.climate.masks.rainfall;
-
-	let m_elem = lp.rivers.masks.element;
-	let m_width = lp.rivers.masks.width;
-
 	let xy = Index { map_size };
 
 	//▒▒▒▒▒▒▒▒▒▒▒▒ WRITE ▒▒▒▒▒▒▒▒▒▒▒▒▒
@@ -29,8 +20,9 @@ pub fn write_images(
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = xy.ind(i, j);
-				let bg = lp.topography.read(m_terrain, index);
-				let fg = lp.rivers.read(m_elem, index);
+				let bg =
+					lp.topography.read(lp.topography.TERRAIN, index);
+				let fg = lp.rivers.read(lp.rivers.ELEMENT, index);
 				array_bg[index] = bg as u8;
 				array_fg[index] = fg as u8;
 			}
@@ -53,8 +45,9 @@ pub fn write_images(
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = xy.ind(i, j);
-				let bg = lp.climate.read(m_temp, index);
-				//let fg = lp.rivers.read(m_elem, index);
+				let bg =
+					lp.climate.read(lp.climate.TEMPERATURE, index);
+				//let fg = lp.rivers.read(lp.rivers.ELEMENT, index);
 				array_bg[index] = bg as u8;
 				//array_fg[index] = fg as u8;
 			}
@@ -77,8 +70,8 @@ pub fn write_images(
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = xy.ind(i, j);
-				let bg = lp.climate.read(m_rain, index);
-				//let fg = lp.rivers.read(m_elem, index);
+				let bg = lp.climate.read(lp.climate.RAINFALL, index);
+				//let fg = lp.rivers.read(lp.rivers.ELEMENT, index);
 				array_bg[index] = bg as u8;
 				//array_fg[index] = fg as u8;
 			}
@@ -103,8 +96,10 @@ pub fn write_images(
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = xy.ind(i, j);
-				let bg = lp.topography.read(m_wmask, index);
-				let fg = lp.rivers.read(m_elem, index);
+				let bg = lp
+					.topography
+					.read(lp.topography.WATERMASK, index);
+				let fg = lp.rivers.read(lp.rivers.ELEMENT, index);
 				array_bg[index] = bg as u8;
 				array_fg[index] = fg as u8;
 			}
@@ -124,8 +119,11 @@ pub fn write_images(
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = xy.ind(i, j);
-				let bg = lp.topography.read(m_terrain, index);
-				let fg = lp.topography.read(m_wmask, index);
+				let bg =
+					lp.topography.read(lp.topography.TERRAIN, index);
+				let fg = lp
+					.topography
+					.read(lp.topography.WATERMASK, index);
 				array_bg[index] = bg as u8;
 				array_fg[index] = fg as u8;
 			}
@@ -149,7 +147,9 @@ pub fn write_images(
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = xy.ind(i, j);
-				let bg = lp.topography.read(m_wmask, index);
+				let bg = lp
+					.topography
+					.read(lp.topography.WATERMASK, index);
 				let fg = lp.rivers_id.read(index);
 				array_bg[index] = bg as u8;
 				array_fg[index] = fg as u8;
@@ -170,8 +170,10 @@ pub fn write_images(
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = xy.ind(i, j);
-				let bg = lp.topography.read(m_wmask, index);
-				let fg = lp.rivers.read(m_width, index);
+				let bg = lp
+					.topography
+					.read(lp.topography.WATERMASK, index);
+				let fg = lp.rivers.read(lp.rivers.WIDTH, index);
 
 				array_bg[index] = bg as u8;
 				array_fg[index] = fg as u8;
@@ -195,7 +197,7 @@ pub fn write_images(
 		for j in 0..map_size {
 			let index = xy.ind(i, j);
 			let bg = lp.biomes.read(index);
-			//let fg = lp.rivers.read(m_elem, index);
+			//let fg = lp.rivers.read(lp.rivers.ELEMENT, index);
 			array_bg[index] = bg as u8;
 			//array_fg[index] = fg as u8;
 		}
@@ -220,7 +222,7 @@ pub fn write_images(
 		for j in 0..map_size {
 			let index = xy.ind(i, j);
 			let bg = lp.georeg_id.read(index);
-			//let fg = lp.rivers.read(m_elem, index);
+			//let fg = lp.rivers.read(lp.rivers.ELEMENT, index);
 			array_bg[index] = bg as u8;
 			//array_fg[index] = fg as u8;
 		}

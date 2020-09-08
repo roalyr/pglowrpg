@@ -66,7 +66,7 @@ fn temperature(lp: &mut worldgen::LayerPack) {
 	for index in 0..lp.layer_vec_len {
 		lp.climate.write(
 			temp_map[index] as u16,
-			lp.climate.masks.temperature,
+			lp.climate.TEMPERATURE,
 			index,
 		)
 	}
@@ -128,7 +128,7 @@ fn rainfall(lp: &mut worldgen::LayerPack) {
 	for index in 0..lp.layer_vec_len {
 		lp.climate.write(
 			rain_map[index] as u16,
-			lp.climate.masks.rainfall,
+			lp.climate.RAINFALL,
 			index,
 		)
 	}

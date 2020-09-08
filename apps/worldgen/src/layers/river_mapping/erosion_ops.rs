@@ -72,16 +72,13 @@ fn erode_path(
 	//Aliases
 	let erosion_width_max = lp.wi.river_erosion_width;
 
-	//Maps masks
-	let m_terrain = lp.topography.masks.terrain;
-	let m_river_elem = lp.rivers.masks.element;
-
 	let i_source = path_array[0].0;
 	let j_source = path_array[0].1;
 	let index_source = rg.xy.ind(i_source, j_source);
 
 	//Level at source of river
-	let terrain_source = lp.topography.read(m_terrain, index_source);
+	let terrain_source =
+		lp.topography.read(lp.topography.TERRAIN, index_source);
 
 	//Lower down the river if needed in order to avoid rivers flowing
 	//above each other
@@ -115,11 +112,11 @@ fn erode_path(
 		let index_downstr = rg.xy.ind(i1, j1);
 		let index_current = rg.xy.ind(i0, j0);
 		let terrain_current =
-			lp.topography.read(m_terrain, index_current);
+			lp.topography.read(lp.topography.TERRAIN, index_current);
 		let terrain_downstr =
-			lp.topography.read(m_terrain, index_downstr);
+			lp.topography.read(lp.topography.TERRAIN, index_downstr);
 		let river_elem_downstr =
-			lp.rivers.read(m_river_elem, index_downstr);
+			lp.rivers.read(lp.rivers.ELEMENT, index_downstr);
 
 		//Cease if reached the end
 		if river_elem_downstr == NO_RIVER {
@@ -130,7 +127,7 @@ fn erode_path(
 		if terrain_current > terrain_stream {
 			lp.topography.write(
 				terrain_stream,
-				m_terrain,
+				lp.topography.TERRAIN,
 				index_current,
 			);
 		}
@@ -144,14 +141,10 @@ fn erode_path(
 		if terrain_downstr > terrain_current {
 			lp.topography.write(
 				terrain_current,
-				m_terrain,
+				lp.topography.TERRAIN,
 				index_downstr,
 			);
 		}
-
-		//Store coords for sub-function
-		let mut erosion_i = i0;
-		let mut erosion_j = j0;
 
 		//Erode a square area of terrain of given width
 		for erosion_width in 1..erosion_width_max {
@@ -160,13 +153,13 @@ fn erode_path(
 				let shif_i: isize =
 					i as isize - erosion_width as isize;
 
-				erosion_i = (i0 as isize + shif_i) as usize;
+				let erosion_i = (i0 as isize + shif_i) as usize;
 
 				for j in 0..double_width {
 					let shif_j: isize =
 						j as isize - erosion_width as isize;
 
-					erosion_j = (j0 as isize + shif_j) as usize;
+					let erosion_j = (j0 as isize + shif_j) as usize;
 
 					erosion(
 						rg,
@@ -191,17 +184,19 @@ fn erosion(
 	terrain_current: u16,
 ) {
 	//Aliases
-	let m_terrain = lp.topography.masks.terrain;
 	let map_size = lp.wi.map_size;
 
 	//Check if within the map
 	if (erosion_i < map_size) && (erosion_j < map_size) {
 		let index = rg.xy.ind(erosion_i, erosion_j);
 
-		if lp.topography.read(m_terrain, index) > terrain_current {
+		if lp.topography.read(lp.topography.TERRAIN, index)
+			> terrain_current
+		{
 			let terrain_current = terrain_current as f32;
 			let terrain_to_erode =
-				lp.topography.read(m_terrain, index) as f32;
+				lp.topography.read(lp.topography.TERRAIN, index)
+					as f32;
 
 			let terrain_relative: f32 = terrain_to_erode / 255.0;
 
@@ -215,15 +210,15 @@ fn erosion(
 			)) as u16;
 
 			//Write the eroded terrain back onto map
-			lp.topography.write(value, m_terrain, index);
+			lp.topography.write(value, lp.topography.TERRAIN, index);
 
 			//Bound so as to avoid excessive erosion
-			if lp.topography.read(m_terrain, index)
+			if lp.topography.read(lp.topography.TERRAIN, index)
 				< terrain_current as u16
 			{
 				lp.topography.write(
 					terrain_current as u16,
-					m_terrain,
+					lp.topography.TERRAIN,
 					index,
 				);
 			}

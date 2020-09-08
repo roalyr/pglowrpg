@@ -6,12 +6,6 @@ pub fn map_width(
 	rg: &mut RgParams,
 	lp: &mut worldgen::LayerPack,
 ) {
-	//Aliases
-	//Maps masks
-	let m_terrain = lp.topography.masks.terrain;
-	let m_river_elem = lp.rivers.masks.element;
-	let m_river_width = lp.rivers.masks.width;
-
 	//Must be cloned
 	let width_queue = rg.rivers_paths.width_queue.clone();
 	let mut exclusion_queue = Vec::new();
@@ -62,14 +56,15 @@ pub fn map_width(
 			let j = pos.1;
 			let index = rg.xy.ind(i, j);
 
-			let river_element = lp.rivers.read(m_river_elem, index);
+			let river_element =
+				lp.rivers.read(lp.rivers.ELEMENT, index);
 			let river_id = lp.rivers_id.read(index);
 
 			//Map width
 			if (river_element != NO_RIVER)
 				&& (river_id == river_id_downstr)
 			{
-				lp.rivers.write(width_new, m_river_width, index);
+				lp.rivers.write(width_new, lp.rivers.WIDTH, index);
 			}
 		}
 
@@ -99,12 +94,6 @@ fn fix_width(
 	lp: &mut worldgen::LayerPack,
 	path_array: Vec<path::Pos>,
 ) -> Vec<path::Pos> {
-	//Aliases
-	//Maps masks
-	let m_terrain = lp.topography.masks.terrain;
-	let m_river_elem = lp.rivers.masks.element;
-	let m_river_width = lp.rivers.masks.width;
-
 	let mut path_array_downstr = Vec::new();
 
 	for n in path_array.windows(2) {
@@ -120,11 +109,11 @@ fn fix_width(
 		let cell_river_id_current = lp.rivers_id.read(index_current);
 		let cell_river_id_downstr = lp.rivers_id.read(index_downstr);
 		let cell_element_current =
-			lp.rivers.read(m_river_elem, index_current);
+			lp.rivers.read(lp.rivers.ELEMENT, index_current);
 		let cell_width_downstr =
-			lp.rivers.read(m_river_width, index_downstr);
+			lp.rivers.read(lp.rivers.WIDTH, index_downstr);
 		let cell_width_current =
-			lp.rivers.read(m_river_width, index_current);
+			lp.rivers.read(lp.rivers.WIDTH, index_current);
 
 		//Skip blank ID
 		if cell_river_id_downstr == NONE_ID_U16 {
@@ -167,7 +156,7 @@ fn fix_width(
 				let j = pos.1;
 				let index = rg.xy.ind(i, j);
 				let cell_element_next =
-					lp.rivers.read(m_river_elem, index);
+					lp.rivers.read(lp.rivers.ELEMENT, index);
 				let cell_id_next = lp.rivers_id.read(index);
 
 				//Map width
@@ -176,7 +165,7 @@ fn fix_width(
 				{
 					lp.rivers.write(
 						cell_width_downstr,
-						m_river_width,
+						lp.rivers.WIDTH,
 						index,
 					);
 				}

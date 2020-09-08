@@ -15,14 +15,14 @@ fn match_biomes(
 	index: usize,
 ) -> u8 {
 	let temp = translate::get_abs(
-		lp.climate.read(lp.climate.masks.temperature, index) as f32,
+		lp.climate.read(lp.climate.TEMPERATURE, index) as f32,
 		255.0,
 		lp.wi.abs_temp_min as f32,
 		lp.wi.abs_temp_max as f32,
 	) as isize;
 
 	let rain = translate::get_abs(
-		lp.climate.read(lp.climate.masks.rainfall, index) as f32,
+		lp.climate.read(lp.climate.RAINFALL, index) as f32,
 		255.0,
 		lp.wi.abs_rain_min as f32,
 		lp.wi.abs_rain_max as f32,
@@ -30,7 +30,7 @@ fn match_biomes(
 
 	//take above waterlevel, waterlevel is "zero"
 	let elev = (translate::get_abs(
-		lp.topography.read(lp.topography.masks.terrain, index) as f32,
+		lp.topography.read(lp.topography.TERRAIN, index) as f32,
 		255.0,
 		lp.wi.abs_elev_min as f32,
 		lp.wi.abs_elev_max as f32,
@@ -49,18 +49,18 @@ fn match_biomes(
 	};
 
 	let watermask =
-		lp.topography.read(lp.topography.masks.watermask, index);
+		lp.topography.read(lp.topography.WATERMASK, index);
 
-	#[allow(overlapping_patterns)]
+	#[allow(overlapping_patterns, clippy::match_overlapping_arm)]
 	match temp {
 		//▒▒▒▒▒▒▒▒▒▒ PERM ICE ▒▒▒▒▒▒▒▒▒▒
 		TEMP_MIN..=TEMP_PERM_ICE => {
-			if lp.topography.read(lp.topography.masks.terrain, index)
+			if lp.topography.read(lp.topography.TERRAIN, index)
 				< waterlevel_rel as u16
 			{
 				lp.topography.write(
 					waterlevel_rel as u16,
-					lp.topography.masks.terrain,
+					lp.topography.TERRAIN,
 					index,
 				) //fix elev
 			}

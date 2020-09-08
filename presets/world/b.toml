@@ -156,7 +156,7 @@
 # pathfinding map based on topography.
 # Valid values are: 0...100, 0 to disable.
 
-	river_noise_blend = 100 
+	river_noise_blend = 70
 	river_noise_weight = 100 #obsolete
 	
 # The width of the eroded landmass around the rivers 

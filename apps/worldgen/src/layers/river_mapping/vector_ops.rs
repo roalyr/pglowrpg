@@ -21,7 +21,7 @@ pub fn vector_within_len(
 
 pub fn vector_bound(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	_lp: &mut worldgen::LayerPack,
 	allowed: usize,
 ) {
 	//bound up
@@ -55,7 +55,7 @@ pub fn vector_bound(
 
 pub fn vector_start(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	_lp: &mut worldgen::LayerPack,
 	i: usize,
 	j: usize,
 ) {
@@ -67,11 +67,10 @@ pub fn vector_end(
 	rg: &mut RgParams,
 	lp: &mut worldgen::LayerPack,
 ) {
-	let m_wmask = lp.topography.masks.watermask;
-
 	let mut water_bodies = false;
 	for index in 0..lp.layer_vec_len {
-		let wmask = lp.topography.read(m_wmask, index);
+		let wmask =
+			lp.topography.read(lp.topography.WATERMASK, index);
 		if wmask >= lp.wi.river_attr_pool_size_pow {
 			water_bodies = true;
 		}

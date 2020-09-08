@@ -132,9 +132,6 @@ fn estimate_sources_number(
 	lp: &mut worldgen::LayerPack,
 	wg_str: &strings::worldgen_strings::Stuff,
 ) {
-	//Aliases
-	let m_watermask = lp.topography.masks.watermask;
-
 	for i in 0..lp.wi.map_size {
 		for j in 0..lp.wi.map_size {
 			let index = rg.xy.ind(i, j);
@@ -144,7 +141,9 @@ fn estimate_sources_number(
 			let total_prob = prob(i, j, rg, lp);
 
 			if (random <= total_prob)
-				&& (lp.topography.read(m_watermask, index)
+				&& (lp
+					.topography
+					.read(lp.topography.WATERMASK, index)
 					== NO_WATER)
 			{
 				rg.river_est_number += 1;

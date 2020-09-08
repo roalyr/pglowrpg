@@ -34,7 +34,7 @@ pub fn get(lp: &mut worldgen::LayerPack) {
 	for index in 0..lp.layer_vec_len {
 		lp.topography.write(
 			topog_map[index] as u16,
-			lp.topography.masks.terrain,
+			lp.topography.TERRAIN,
 			index,
 		)
 	}

@@ -1,40 +1,32 @@
+#![allow(non_snake_case)]
+
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
-//▒▒▒▒▒▒▒▒▒▒▒▒ Masks ▒▒▒▒▒▒▒▒▒▒▒▒▒
-pub struct MasksTopography {
-	pub terrain: u16,
-	pub watermask: u16,
-	pub _placeholder: u16,
-}
-
-pub struct MasksClimate {
-	pub temperature: u16,
-	pub rainfall: u16,
-}
-
-pub struct MasksRivers {
-	pub element: u16,
-	pub width: u16,
-	pub upstream: u16,
-	pub downstream: u16,
-	pub _placeholder: u16,
-}
-
 //▒▒▒▒▒▒▒▒▒▒▒▒ Layers ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub struct BitLayerTopography {
 	pub data: Vec<u16>,
-	pub masks: MasksTopography,
+	//Masks
+	pub TERRAIN: u16,
+	pub WATERMASK: u16,
+	pub _placeholder: u16,
 }
 
 pub struct BitLayerClimate {
 	pub data: Vec<u16>,
-	pub masks: MasksClimate,
+	//Masks
+	pub TEMPERATURE: u16,
+	pub RAINFALL: u16,
 }
 
 pub struct BitLayerRivers {
 	pub data: Vec<u16>,
-	pub masks: MasksRivers,
+	//Masks
+	pub ELEMENT: u16,
+	pub WIDTH: u16,
+	pub UPSTREAM: u16,
+	pub DOWNSTREAM: u16,
+	pub _placeholder: u16,
 }
 
 pub struct BitLayerBiomes {

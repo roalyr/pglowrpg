@@ -10,8 +10,6 @@ pub fn get(lp: &mut worldgen::LayerPack) {
 		map_size: lp.wi.map_size,
 	};
 
-	let mut wmask_map = vec![NO_WATER; lp.layer_vec_len];
-
 	let blank = vec![NO_WATER; lp.layer_vec_len];
 
 	let mut ff = floodfill::FloodFill::new(&blank, lp.wi.map_size);
@@ -22,7 +20,7 @@ pub fn get(lp: &mut worldgen::LayerPack) {
 			let index = xy.ind(i, j);
 
 			let elev = translate::get_abs(
-				lp.topography.read(lp.topography.masks.terrain, index)
+				lp.topography.read(lp.topography.TERRAIN, index)
 					as f32,
 				255.0,
 				lp.wi.abs_elev_min as f32,
@@ -30,8 +28,7 @@ pub fn get(lp: &mut worldgen::LayerPack) {
 			) as usize;
 
 			let temp = translate::get_abs(
-				lp.climate.read(lp.climate.masks.temperature, index)
-					as f32,
+				lp.climate.read(lp.climate.TEMPERATURE, index) as f32,
 				255.0,
 				lp.wi.abs_temp_min as f32,
 				lp.wi.abs_temp_max as f32,
@@ -72,7 +69,7 @@ fn write_map(
 
 				lp.topography.write(
 					val as u16,
-					lp.topography.masks.watermask,
+					lp.topography.WATERMASK,
 					xy.ind(x as usize, y as usize),
 				)
 			}

@@ -33,11 +33,8 @@ fn make_paths(
 	random_map: &Vec<u8>,
 ) {
 	//Aliases
-	let m_watermask = lp.topography.masks.watermask;
-
 	let index = rg.xy.ind(i, j);
-	let wmask = lp.topography.read(m_watermask, index);
-	let map_size = lp.wi.map_size;
+	let wmask = lp.topography.read(lp.topography.WATERMASK, index);
 
 	//To spawn or not to spawn?
 	let random = prng::get(0.0, 1.0, lp.wi.seed, index);
@@ -67,20 +64,20 @@ fn make_paths(
 
 		//Make pathfinding for nodes, get a queue,
 		//do "windows"  between nodes, iterate and fill them
-		let mut seg_len = lp.wi.river_segment_length;
+		let seg_len = lp.wi.river_segment_length;
 		let mut joined_path = Vec::new();
 		let mut segment_queue = Vec::new();
 		let mut diag_flag = true;
 
 		//Initial set of nodes
-		let mut nodes = pathfinding_nodes(
+		let nodes = pathfinding_nodes(
 			rg,
 			lp,
 			seg_len,
 			&terrain_map,
 			diag_flag,
 		);
-		
+
 		//Rivers should go ortho, so that there are no gaps
 		diag_flag = false;
 
@@ -89,7 +86,7 @@ fn make_paths(
 			rg.dv.y0 = node_pair[0].1;
 			rg.dv.x1 = node_pair[1].0;
 			rg.dv.y1 = node_pair[1].1;
-			
+
 			//Fill paths between nodes
 			let path_array_seg =
 				pathfinding_nodes(rg, lp, 1, &random_map, diag_flag);
@@ -164,7 +161,7 @@ fn pathfinding_nodes(
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ MAPS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn get_random_map(
-	rg: &mut RgParams,
+	_rg: &mut RgParams,
 	lp: &mut worldgen::LayerPack,
 ) -> Vec<u8> {
 	//Random noise map for river path meandering
@@ -197,13 +194,11 @@ pub fn get_random_map(
 }
 
 pub fn get_terrain_map(
-	rg: &mut RgParams,
+	_rg: &mut RgParams,
 	lp: &mut worldgen::LayerPack,
 ) -> Vec<u8> {
 	//Write terrain map into a temporary array for future pathfinding
 	//river nodes would be done on this
-	let m_terrain = lp.topography.masks.terrain;
-
 	let map_size = lp.wi.map_size;
 
 	let mut terrain_map = vec![0; lp.layer_vec_len];
@@ -213,7 +208,8 @@ pub fn get_terrain_map(
 		for j in 0..map_size {
 			let index = xy.ind(i, j);
 			terrain_map[index] =
-				lp.topography.read(m_terrain, index) as u8;
+				lp.topography.read(lp.topography.TERRAIN, index)
+					as u8;
 		}
 	}
 	terrain_map

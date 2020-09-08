@@ -1,6 +1,5 @@
 use coords::Index;
 use pathfinding::prelude::astar;
-use std::io::Read;
 
 const W_ORT: usize = 100;
 const W_DIA: usize = 141; //aka sqrt from 2

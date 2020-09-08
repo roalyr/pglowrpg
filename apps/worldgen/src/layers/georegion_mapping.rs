@@ -20,8 +20,7 @@ pub fn get(
 
 	for index in 0..lp.layer_vec_len {
 		wmask_map[index] =
-			lp.topography.read(lp.topography.masks.watermask, index)
-				as u8;
+			lp.topography.read(lp.topography.WATERMASK, index) as u8;
 
 		biome_map[index] = lp.biomes.read(index);
 	}

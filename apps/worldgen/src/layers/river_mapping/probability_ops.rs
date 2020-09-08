@@ -9,15 +9,11 @@ pub fn prob(
 	lp: &mut worldgen::LayerPack,
 ) -> f32 {
 	//Aliases
-	let m_terrain = lp.topography.masks.terrain;
-	let m_temp = lp.climate.masks.temperature;
-	let m_rain = lp.climate.masks.rainfall;
-
 	let index = rg.xy.ind(i, j);
 
-	let terrain = lp.topography.read(m_terrain, index);
-	let rainfall = lp.climate.read(m_rain, index);
-	let temperature = lp.climate.read(m_temp, index);
+	let terrain = lp.topography.read(lp.topography.TERRAIN, index);
+	let rainfall = lp.climate.read(lp.climate.RAINFALL, index);
+	let temperature = lp.climate.read(lp.climate.TEMPERATURE, index);
 
 	let rain_prob = f32::from(rainfall) / 255.0;
 	let temp_prob = f32::from(temperature) / 255.0;

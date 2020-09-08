@@ -25,14 +25,6 @@ fn map_rivers_reverse(
 	//Aliases
 	let path_array = &river_entry.path_array;
 
-	//Maps masks
-	let m_terrain = lp.topography.masks.terrain;
-	let m_watermask = lp.topography.masks.watermask;
-	let m_river_elem = lp.rivers.masks.element;
-	let m_upstream = lp.rivers.masks.upstream;
-	let m_downstream = lp.rivers.masks.downstream;
-	let m_temp = lp.climate.masks.temperature;
-
 	//Store temporary values, must be here
 	rg.river_id = river_entry.river_id;
 	rg.river_width = river_entry.width;
@@ -42,9 +34,6 @@ fn map_rivers_reverse(
 	let index_river_source =
 		rg.xy.ind(rg.river_source.0, rg.river_source.1);
 	let index_end = rg.xy.ind(rg.river_end.0, rg.river_end.1);
-
-	let terrain_source =
-		lp.topography.read(m_terrain, index_river_source);
 
 	let mut river_length = 0;
 
@@ -62,14 +51,16 @@ fn map_rivers_reverse(
 		let index_current = rg.xy.ind(i0, j0);
 		let index_downstr = rg.xy.ind(i1, j1);
 
-		let temp_current = lp.climate.read(m_temp, index_current);
+		let temp_current =
+			lp.climate.read(lp.climate.TEMPERATURE, index_current);
 		let river_elem_current =
-			lp.rivers.read(m_river_elem, index_current);
+			lp.rivers.read(lp.rivers.ELEMENT, index_current);
 		let river_elem_downstr =
-			lp.rivers.read(m_river_elem, index_downstr);
+			lp.rivers.read(lp.rivers.ELEMENT, index_downstr);
 		let river_id_downstr = lp.rivers_id.read(index_downstr);
-		let wmask_current =
-			lp.topography.read(m_watermask, index_current);
+		let wmask_current = lp
+			.topography
+			.read(lp.topography.WATERMASK, index_current);
 
 		//Stop if the temperature is too low
 		let temp = translate::get_abs(
@@ -147,20 +138,26 @@ fn map_rivers_reverse(
 			let index_current = rg.xy.ind(i0, j0);
 			let index_downstr = rg.xy.ind(i1, j1);
 
-			let temp_current = lp.climate.read(m_temp, index_current);
+			let temp_current = lp
+				.climate
+				.read(lp.climate.TEMPERATURE, index_current);
 			let river_elem_current =
-				lp.rivers.read(m_river_elem, index_current);
+				lp.rivers.read(lp.rivers.ELEMENT, index_current);
 			let river_elem_downstr =
-				lp.rivers.read(m_river_elem, index_downstr);
+				lp.rivers.read(lp.rivers.ELEMENT, index_downstr);
 			let river_id_downstr = lp.rivers_id.read(index_downstr);
-			let wmask_current =
-				lp.topography.read(m_watermask, index_current);
-			let wmask_downstr =
-				lp.topography.read(m_watermask, index_downstr);
-			let terrain_current =
-				lp.topography.read(m_terrain, index_current);
-			let terrain_downstr =
-				lp.topography.read(m_terrain, index_downstr);
+			let wmask_current = lp
+				.topography
+				.read(lp.topography.WATERMASK, index_current);
+			let wmask_downstr = lp
+				.topography
+				.read(lp.topography.WATERMASK, index_downstr);
+			let terrain_current = lp
+				.topography
+				.read(lp.topography.TERRAIN, index_current);
+			let terrain_downstr = lp
+				.topography
+				.read(lp.topography.TERRAIN, index_downstr);
 
 			//Stop if the temperature is too low
 			let temp = translate::get_abs(
@@ -198,7 +195,7 @@ fn map_rivers_reverse(
 					neighbor_flag(i0, j0, i0_prev, j0_prev);
 				lp.rivers.write(
 					upstream_neighbor,
-					m_upstream,
+					lp.rivers.UPSTREAM,
 					index_current,
 				);
 			}
@@ -221,7 +218,7 @@ fn map_rivers_reverse(
 						neighbor_flag(i0, j0, i1, j1);
 					lp.rivers.write(
 						downstream_neighbor,
-						m_downstream,
+						lp.rivers.DOWNSTREAM,
 						index_current,
 					);
 
@@ -232,7 +229,7 @@ fn map_rivers_reverse(
 					{
 						lp.rivers.write(
 							RIVER_BODY,
-							m_river_elem,
+							lp.rivers.ELEMENT,
 							index_downstr,
 						);
 					}
@@ -251,7 +248,7 @@ fn map_rivers_reverse(
 					if terrain_downstr < terrain_current {
 						lp.rivers.write(
 							RIVER_WATERFALL,
-							m_river_elem,
+							lp.rivers.ELEMENT,
 							index_downstr,
 						);
 					}
@@ -275,7 +272,7 @@ fn map_rivers_reverse(
 					if terrain_downstr < terrain_current {
 						lp.rivers.write(
 							RIVER_WATERFALLS_MUL,
-							m_river_elem,
+							lp.rivers.ELEMENT,
 							index_downstr,
 						);
 					}
@@ -329,7 +326,7 @@ fn map_rivers_reverse(
 						neighbor_flag(i0, j0, i1, j1);
 					lp.rivers.write(
 						downstream_neighbor,
-						m_downstream,
+						lp.rivers.DOWNSTREAM,
 						index_current,
 					);
 				}
@@ -355,23 +352,18 @@ fn sort_uninterrupted(
 	index_current: usize,
 	index_river_source: usize,
 ) {
-	//Aliases
-	let m_terrain = lp.topography.masks.terrain;
-	let m_watermask = lp.topography.masks.watermask;
-	let m_river_elem = lp.rivers.masks.element;
-	let m_river_width = lp.rivers.masks.width;
-	let m_upstream = lp.rivers.masks.upstream;
-	let m_downstream = lp.rivers.masks.downstream;
-	let m_temp = lp.climate.masks.temperature;
-
-	lp.rivers.write(RIVER_BODY, m_river_elem, index_current);
 	lp.rivers
-		.write(RIVER_SOURCE, m_river_elem, index_river_source);
+		.write(RIVER_BODY, lp.rivers.ELEMENT, index_current);
+	lp.rivers.write(
+		RIVER_SOURCE,
+		lp.rivers.ELEMENT,
+		index_river_source,
+	);
 
 	lp.rivers_id.write(rg.river_id, index_current);
 
 	lp.rivers
-		.write(rg.river_width, m_river_width, index_current);
+		.write(rg.river_width, lp.rivers.WIDTH, index_current);
 }
 
 //CROSSING
@@ -382,23 +374,18 @@ fn sort_crossing(
 	index_river_source: usize,
 	index_downstr: usize,
 ) {
-	//Aliases
-	let m_terrain = lp.topography.masks.terrain;
-	let m_watermask = lp.topography.masks.watermask;
-	let m_river_elem = lp.rivers.masks.element;
-	let m_river_width = lp.rivers.masks.width;
-	let m_upstream = lp.rivers.masks.upstream;
-	let m_downstream = lp.rivers.masks.downstream;
-	let m_temp = lp.climate.masks.temperature;
-
-	lp.rivers.write(RIVER_BODY, m_river_elem, index_current);
 	lp.rivers
-		.write(RIVER_SOURCE, m_river_elem, index_river_source);
+		.write(RIVER_BODY, lp.rivers.ELEMENT, index_current);
+	lp.rivers.write(
+		RIVER_SOURCE,
+		lp.rivers.ELEMENT,
+		index_river_source,
+	);
 
 	lp.rivers_id.write(rg.river_id, index_current);
 
 	lp.rivers
-		.write(rg.river_width, m_river_width, index_current);
+		.write(rg.river_width, lp.rivers.WIDTH, index_current);
 
 	//Modify river downstream
 	width_routine(rg, lp, index_current, index_downstr);
@@ -413,9 +400,6 @@ fn width_routine(
 	_index_current: usize,
 	index_downstr: usize,
 ) {
-	//Aliases
-	let m_river_width = lp.rivers.masks.width;
-
 	//Find the downstream river in queue and its width
 	let result =
 		rg.rivers_paths.width_queue.iter().rev().by_ref().find(
@@ -434,7 +418,7 @@ fn width_routine(
 		}
 		None => {
 			//If not in queue - just take its width as is
-			lp.rivers.read(m_river_width, index_downstr)
+			lp.rivers.read(lp.rivers.WIDTH, index_downstr)
 		}
 	};
 
@@ -460,15 +444,12 @@ fn erosion_adjust(
 	index_current: usize,
 	index_downstr: usize,
 ) {
-	//Aliases
-	let m_river_width = lp.rivers.masks.width;
-	let m_terrain = lp.topography.masks.terrain;
-
+	//Aliasess
 	let river_id_downstr = lp.rivers_id.read(index_downstr);
 	let terrain_current =
-		lp.topography.read(m_terrain, index_current);
+		lp.topography.read(lp.topography.TERRAIN, index_current);
 	let terrain_downstr =
-		lp.topography.read(m_terrain, index_downstr);
+		lp.topography.read(lp.topography.TERRAIN, index_downstr);
 
 	//Add difference in topography to queue
 	let terrain_diff = match terrain_downstr.cmp(&terrain_current) {
@@ -486,7 +467,7 @@ fn erosion_adjust(
 
 fn erosion_initiate(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	_lp: &mut worldgen::LayerPack,
 	river_id: u16,
 ) {
 	rg.rivers_paths.erosion_queue.push(ErosionEntry {

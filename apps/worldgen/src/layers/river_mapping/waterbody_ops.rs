@@ -41,8 +41,6 @@ fn seek_waterbodies(
 ) {
 	//Aliases
 	let size = lp.wi.map_size;
-	let m_watermask = lp.topography.masks.watermask;
-	let m_temp = lp.climate.masks.temperature;
 
 	//take a bit more than sqrt(2)
 	let diag = size * 15 / 10;
@@ -58,8 +56,11 @@ fn seek_waterbodies(
 
 			if (i < size) && (j < size) {
 				let index = rg.xy.ind(i, j);
-				let wmask = lp.topography.read(m_watermask, index);
-				let temp = lp.climate.read(m_temp, index);
+				let wmask = lp
+					.topography
+					.read(lp.topography.WATERMASK, index);
+				let temp =
+					lp.climate.read(lp.climate.TEMPERATURE, index);
 
 				let temp_abs = translate::get_abs(
 					temp as f32,
