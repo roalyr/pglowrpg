@@ -130,7 +130,7 @@ impl Pos {
 		};
 
 		//check to force pathfinding to converge
-		if self.distance(&goal) < step*2 {
+		if self.distance(&goal) < step * 2 {
 			vect.push((goal, 0))
 		}
 

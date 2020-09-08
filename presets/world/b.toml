@@ -8,13 +8,13 @@
 # the same seed will create the same world.
 # Valid values are: any integer number.
 
-	seed = 1595330164
+	seed = 1
 
 # A size of the world map (size x size). Each pixel is about 
 # 300x300 meters.
 # Valid values are: 256, 512, 1024, 2048, 4096, 8192, 16384 (integer).
 
-	map_size = 2048
+	map_size = 1024
 	
 
 # Temperature mode for the world map. It determines where the 
@@ -55,7 +55,7 @@
 # to be generated relative to map size, precipitation etc.
 # Valid values are: 0...100, 0 to disable.
 
-	river_source_density = 30
+	river_source_density = 20
 
 # ▓▓▓▓▓▓▓▓▓▓ ADVANCED OPTIONS ▓▓▓▓▓▓▓▓▓▓
 # These options, when adjusted, will affect other options in this 
@@ -87,12 +87,12 @@
 	topog_scope = 50
 	
 
-# Topography continuity lower values produce  maps which have 
+# Topography continuity lower values produce maps which have 
 # landmasses divided by water, while greater values produce 
 # more connected landmasses and continuous continents.
 # Valid values are: 0...100.
 
-	topog_continuity = 30
+	topog_continuity = 70
 	
 
 # Topography concentrator lower values produce maps with 
@@ -100,7 +100,7 @@
 # landmass towards the center of the map.
 # Valid values are: 0...100.
 
-	topog_concentrator = 0
+	topog_concentrator = 60
 	
 	
 # Topography erosion factor lower values produce maps with 
@@ -191,7 +191,7 @@
 # performance. This is mean value.
 # Valid values are: 100...map_size (integer).
 
-	river_segment_length = 2000 #obsolete, can be map size
+	river_segment_length = 15 #obsolete, can be map size
 
 # River attractor pool size power. Makes rivers be attracted to 
 # water bodies whose size is greater than 2^pow.
@@ -222,6 +222,6 @@
 # Mysterious debug option.
 
 	magic = 0 #
-	magic1 = 10  #optimal min seg len bigher for bigger maps
-	magic2 = 20 #number of optimal segs ?
-	magic3 = 4 #segment divider
+	magic1 = 10  #
+	magic2 = 20 #
+	magic3 = 4 #

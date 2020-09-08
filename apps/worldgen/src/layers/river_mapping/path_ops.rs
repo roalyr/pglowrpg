@@ -65,91 +65,44 @@ fn make_paths(
 			return;
 		}
 
-		//▒▒▒▒▒▒▒▒▒▒▒▒ STEP 1 ▒▒▒▒▒▒▒▒▒▒▒▒▒
 		//Make pathfinding for nodes, get a queue,
 		//do "windows"  between nodes, iterate and fill them
-		let optimal_min_seg_len = lp.wi.magic1;
 		let mut seg_len = lp.wi.river_segment_length;
 		let mut joined_path = Vec::new();
 		let mut segment_queue = Vec::new();
 		let mut diag_flag = true;
-		let mut last_run = false;
-		let mut path_map = &terrain_map;
-		
+
 		//Initial set of nodes
-		let mut nodes =
-			pathfinding_nodes(rg, lp, seg_len, &terrain_map, diag_flag);
+		let mut nodes = pathfinding_nodes(
+			rg,
+			lp,
+			seg_len,
+			&terrain_map,
+			diag_flag,
+		);
 		
-		//▒▒▒▒▒▒▒▒▒▒▒▒ Step 2 ▒▒▒▒▒▒▒▒▒▒▒▒▒
-		//Segment goes between those two nodes
-		loop{
-			//Refresh queues
-			segment_queue.clear();
-			joined_path.clear();
+		//Rivers should go ortho, so that there are no gaps
+		diag_flag = false;
+
+		for node_pair in nodes.windows(2) {
+			rg.dv.x0 = node_pair[0].0;
+			rg.dv.y0 = node_pair[0].1;
+			rg.dv.x1 = node_pair[1].0;
+			rg.dv.y1 = node_pair[1].1;
 			
-			//Stop segmentation if reached optimal segment length
-			if seg_len <= optimal_min_seg_len as usize {
-				seg_len = 1;
-			}
-			
-			//Conditions to stop segmentation to avoid bloat and long
-			//generation time. It gives the number of optimal segments
-			//for given path to cover it
-			let optimal_segs = nodes.len() * seg_len / optimal_min_seg_len as usize;
-			
-			//Drop segmentation to the last step (where segment length is
-			//optimal) and skip intermediate steps to avoid long generation
-			if (optimal_segs > lp.wi.magic2 as usize) && (seg_len != 1) {
-				//println!("--------", );
-				println!("Val {:?}", optimal_segs);
-				println!("Old seg len {:?}", seg_len);
-				//println!("Nodes {:?}", nodes.len());
-				seg_len = optimal_min_seg_len as usize;
-				
-			}
-			
-			//For the last step set those to be like this
-			if seg_len == 1{
-				diag_flag = false;
-				last_run = true;
-				path_map = &random_map;
-			}
-			
-			//println!("--- Seg len {:?}", seg_len);
-			//println!("Old seg len {:?}", seg_len);
-			for node_pair in nodes.windows(2) {
-				
-				rg.dv.x0 = node_pair[0].0;
-				rg.dv.y0 = node_pair[0].1;
-				rg.dv.x1 = node_pair[1].0;
-				rg.dv.y1 = node_pair[1].1;
-	
-				let path_array_seg = pathfinding_nodes(
-					rg,
-					lp,
-					seg_len,
-					path_map, //swap in turns?
-					diag_flag,
-				);
-				segment_queue.push(path_array_seg);
-			}
-	
-			//Take segment queue and map the content into a single path
-			for entry in segment_queue.iter_mut() {
-				for pos in entry.iter() {
-					joined_path.push(*pos);
-				}
-			}
-			
-			if last_run {break}
-			
-			//Swap to repeat
-			nodes = joined_path.clone();
-			seg_len = (seg_len as f32 / lp.wi.magic3) as usize;
-			
+			//Fill paths between nodes
+			let path_array_seg =
+				pathfinding_nodes(rg, lp, 1, &random_map, diag_flag);
+			segment_queue.push(path_array_seg);
 		}
-		
-		//▒▒▒▒▒▒▒▒▒▒▒▒ DONE ▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+		//Take segment queue and map the content into a single path
+		for entry in segment_queue.iter_mut() {
+			for pos in entry.iter() {
+				joined_path.push(*pos);
+			}
+		}
+
 		//Remove duplicated cells
 		joined_path.dedup();
 
