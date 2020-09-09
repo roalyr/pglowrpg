@@ -149,19 +149,19 @@ fn run(
 	println!("{}", wg_str.wg9);
 	climate_mapping::get(&mut lp);
 
-	//need temperature
+	//Requires temperature
 	println!("{}", wg_str.wg13);
 	watermask_mapping::get(&mut lp);
 
-	//needs terrain, watermask, temperature, rainfall
+	//Requires terrain, watermask, temperature, rainfall
 	println!("{}", wg_str.wg17);
 	river_mapping::get(&mut lp, &wg_str);
 
-	//needs the above, must be called after rivers (erosion)
+	//Requires the above, must be called after rivers (erosion)
 	println!("{}", wg_str.wg19);
 	biome_mapping::get(&mut lp);
 
-	//needs biomes
+	//Requires biomes
 	println!("{}", wg_str.wg21);
 	georegion_mapping::get(&mut lp, &wg_str);
 

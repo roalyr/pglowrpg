@@ -6,8 +6,8 @@ pub fn get(array: &Vec<u8>) -> Vec<u8> {
 		let index = i * 4;
 
 		idat[index + 3] = 255;
-		idat[index] = *cell_v;
-		idat[index + 1] = *cell_v;
+		idat[index] = 0;
+		idat[index + 1] = 0;
 		idat[index + 2] = *cell_v;
 	}
 	idat
@@ -22,8 +22,8 @@ pub fn get_binary(array: &Vec<u8>) -> Vec<u8> {
 
 		if *cell_v != 0 {
 			idat[index + 3] = 255;
-			idat[index] = 255;
-			idat[index + 1] = 255;
+			idat[index] = 0;
+			idat[index + 1] = 0;
 			idat[index + 2] = 255;
 		}
 	}
@@ -44,8 +44,8 @@ pub fn get_binary_inverse(array: &Vec<u8>) -> Vec<u8> {
 			idat[index + 2] = 0;
 		} else {
 			idat[index + 3] = 255;
-			idat[index] = 255;
-			idat[index + 1] = 255;
+			idat[index] = 0;
+			idat[index + 1] = 0;
 			idat[index + 2] = 255;
 		}
 	}
@@ -62,10 +62,8 @@ pub fn get_curved(array: &Vec<u8>) -> Vec<u8> {
 		let index = i * 4;
 
 		idat[index + 3] = 255;
-		idat[index] =
-			(255.0 * ((*cell_v as f32 / 255.0).powf(f))) as u8;
-		idat[index + 1] =
-			(255.0 * ((*cell_v as f32 / 255.0).powf(f))) as u8;
+		idat[index] = 0;
+		idat[index + 1] = 0;
 		idat[index + 2] =
 			(255.0 * ((*cell_v as f32 / 255.0).powf(f))) as u8;
 	}
@@ -80,8 +78,8 @@ pub fn get_inverse(array: &Vec<u8>) -> Vec<u8> {
 		let index = i * 4;
 
 		idat[index + 3] = 255;
-		idat[index] = 255 - *cell_v;
-		idat[index + 1] = 255 - *cell_v;
+		idat[index] = 0;
+		idat[index + 1] = 0;
 		idat[index + 2] = 255 - *cell_v;
 	}
 	idat

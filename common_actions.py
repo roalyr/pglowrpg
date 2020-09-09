@@ -5,15 +5,21 @@ path_source = "/data/data/com.termux/files/home/storage/shared/project_src/pglow
 path_target = "/data/data/com.termux/files/home/pglowrpg/"
 path_output = "/data/data/com.termux/files/home/storage/shared/project_output/"
 
+#I put these here for convenience of hanfling output
+main_command = 'busybox time -f "%E %M"  cargo run'
+
+#Work in termux only, requires termux-api
+main_command_tts_termux = main_command+" "+"| tee /dev/stderr | termux-tts-speak -r 1.2"
+
 os.system("mkdir -p"+" "+path_target)
 os.system("mkdir -p"+" "+path_target+"/save")
 
-banner_git      = '▒▒▒▒▒▒▒▒▒▒▒▒GIT MENU▒▒▒▒▒▒▒▒▒▒▒▒▒'
-banner_log      = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒LOG▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
-banner_commit   = '▒▒▒▒▒▒▒▒▒▒▒COMMITTING▒▒▒▒▒▒▒▒▒▒▒▒'
-banner_revert   = '▒▒▒▒▒▒▒▒▒▒▒REVERTING▒▒▒▒▒▒▒▒▒▒▒▒▒'
-banner_hreset   = '▒▒▒▒▒▒▒▒▒HARD RESETTING▒▒▒▒▒▒▒▒▒▒'
-banner_rust     = '▒▒▒▒▒▒▒▒▒▒▒▒RUST MENU▒▒▒▒▒▒▒▒▒▒▒▒'
+banner_git      = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒GIT MENU▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
+banner_log      = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒LOG▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
+banner_commit   = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒COMMITTING▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
+banner_revert   = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒REVERTING▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
+banner_hreset   = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒HARD RESETTING▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
+banner_rust     = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒RUST MENU▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
 
 def git_menu():
 
@@ -116,16 +122,19 @@ def main_menu():
 	def print_main_ops():
 		print(banner_rust)
 		print('( ) - sync presets, locals and "cargo run" the project')
+		print('(tts) - sync presets, locals and "cargo run" the project, output via terminal and text-to-speech (Termux only)')
+		print('')
 		print('(a) - sync the project and libs (all)')
 		print('(c) - sync all and "cargo check" it,')
 		print('(p) - sync all and "cargo clippy" it,')
-		print('(d) - "cargo dep-graph" the project,')
-		print('(e) - "rustc --explain"')
 		print('(r) - do "rustfmt" with options from rustfmt.toml')
 		print('(clear) - clear ".bk" files')
+		print('')
+		print('(d) - "cargo dep-graph" the project,')
+		print('(e) - "rustc --explain"')
 		print('(u) - do "cargo update"')
 		print(banner_rust)
-		print('\n')
+		print('')
 		print('(t) - git menu')
 	
 	#Lower-level functions
@@ -175,7 +184,19 @@ def main_menu():
 		os.system('rm -r'+' '+path_target+'save || echo "Shell: nothing to remove"')
 		os.system('mkdir -p'+' '+path_output+'save')
 		os.system('mkdir -p'+' '+path_target+'save')
-		os.system('cd'+' '+path_target+' && '+'busybox time -f "%E %M"  cargo run')
+		os.system('cd'+' '+path_target+' && '+main_command)
+		os.system('cp'+' '+path_target+'save/*.png'+' '+path_output+'save/')
+		print('\n')
+		
+		print('results copied:')
+		os.system('ls'+' '+path_output+'save')
+		
+	def result_sync_tts_termux():
+		os.system('rm -r'+' '+path_output+'save || echo "Shell: nothing to remove"')
+		os.system('rm -r'+' '+path_target+'save || echo "Shell: nothing to remove"')
+		os.system('mkdir -p'+' '+path_output+'save')
+		os.system('mkdir -p'+' '+path_target+'save')
+		os.system('cd'+' '+path_target+' && '+main_command_tts_termux)
 		os.system('cp'+' '+path_target+'save/*.png'+' '+path_output+'save/')
 		print('\n')
 		
@@ -189,6 +210,13 @@ def main_menu():
 		copy_options()
 		copy_presets()
 		result_sync()
+	
+	def sync_tts_termux():
+		os.system('clear')
+		copy_locales()
+		copy_options()
+		copy_presets()
+		result_sync_tts_termux()
 		
 	def sync_all():
 		copy_locales()
@@ -238,6 +266,8 @@ def main_menu():
 			
 	if inp == "":
 		sync()
+	elif inp == "tts":
+		sync_tts_termux()
 	elif inp == "a":
 		sync_all()
 	elif inp == "c":

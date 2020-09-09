@@ -1,15 +1,5 @@
-pub mod biomes;
-pub mod black_blue_bin;
-pub mod black_blue_pow;
-pub mod black_white_bin;
-pub mod black_white_pow;
-pub mod rainfall;
+pub mod palettes;
+
+pub mod blue;
 pub mod random;
 pub mod raw;
-pub mod raw_inverse;
-pub mod red_blue;
-pub mod reg_size;
-pub mod river_mask;
-pub mod river_size;
-pub mod temperature;
-pub mod topography;

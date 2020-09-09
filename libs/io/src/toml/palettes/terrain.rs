@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::Read;
 use std::path::Path;
 
-const PATH: &str = "presets/colorcodes/reg_size.toml";
+const PATH: &str = "presets/palettes/terrain.toml";
 
 #[derive(Serialize, Deserialize)]
 pub struct Stuff {
@@ -33,23 +33,18 @@ pub struct Stuff {
 	pub color_23: String,
 	pub color_24: String,
 	pub color_25: String,
-	pub color_26: String,
-	pub color_27: String,
-	pub color_28: String,
-
-	pub color_100: String,
 }
 
 pub fn get() -> Stuff {
 	let path = Path::new(&PATH);
 	let mut file =
-		File::open(&path).expect("no REGION SIZE COLORS file/folder");
+		File::open(&path).expect("no TERRAIN COLORS file/folder");
 
 	let mut data = String::new();
 	file.read_to_string(&mut data)
-		.expect("unable to read REGION SIZE COLORS file");
+		.expect("unable to read TERRAIN COLORS file");
 
 	let stuff: Stuff = toml::from_str(&data)
-		.expect("unable to deserialize REGION SIZE COLORS");
+		.expect("unable to deserialize TERRAIN COLORS");
 	stuff
 }

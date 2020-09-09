@@ -14,7 +14,7 @@
 # 300x300 meters.
 # Valid values are: 256, 512, 1024, 2048, 4096, 8192, 16384 (integer).
 
-	map_size = 512
+	map_size = 256
 	
 
 # Temperature mode for the world map. It determines where the 

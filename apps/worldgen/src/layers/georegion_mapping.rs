@@ -14,7 +14,7 @@ pub fn get(
 		map_size: lp.wi.map_size,
 	};
 
-	//we need those to perform floodfill
+	//Clean proxy maps for floodfill
 	let mut wmask_map = vec![0u8; lp.layer_vec_len];
 	let mut biome_map = vec![0u8; lp.layer_vec_len];
 

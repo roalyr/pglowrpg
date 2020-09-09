@@ -6,10 +6,6 @@ pub fn get(
 	let size = idat.len();
 
 	for (i, cell_v) in idat.iter_mut().enumerate().take(size) {
-		let mut val = idat_bg[i] as usize + idat_fg[i] as usize;
-		if val > 255 {
-			val = 255;
-		}
-		*cell_v = val as u8;
+		*cell_v = idat_bg[i].saturating_add(idat_fg[i]);
 	}
 }

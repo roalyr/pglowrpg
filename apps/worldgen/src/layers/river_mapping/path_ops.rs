@@ -11,7 +11,8 @@ pub fn set_paths(
 	lp: &mut worldgen::LayerPack,
 	_wg_str: &strings::worldgen_strings::Stuff,
 ) {
-	//Maps for pathfinding
+	//Maps for pathfinding must be copied into clean arrays from
+	//existing composite data structures
 	let terrain_map = get_terrain_map(rg, lp);
 	let random_map = get_random_map(rg, lp);
 	println!("Accessory maps written",);
@@ -43,9 +44,10 @@ fn make_paths(
 	if (random <= total_prob) && (wmask == NO_WATER) {
 		//UI
 		rg.river_count_number += 1;
-		progress::five_percent_step(
+		progress::percent_step(
 			rg.river_count_number,
 			rg.river_est_number,
+			10,
 		);
 
 		//Set vector according to waterbodies presence

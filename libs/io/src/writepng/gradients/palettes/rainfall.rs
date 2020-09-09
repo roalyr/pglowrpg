@@ -1,4 +1,4 @@
-use crate::toml::colors::colors_rainfall;
+use crate::toml::palettes::rainfall;
 
 use crate::writepng::from_hex;
 
@@ -6,7 +6,7 @@ pub fn get(array: &Vec<u8>) -> Vec<u8> {
 	let size = array.len();
 	let mut idat = vec![0; size * 4];
 
-	let ra: colors_rainfall::Stuff = colors_rainfall::get();
+	let ra: rainfall::Stuff = rainfall::get();
 
 	for (i, cell_v) in array.iter().enumerate().take(size) {
 		let argb: Vec<u8> = match *cell_v {
@@ -41,7 +41,7 @@ pub fn get(array: &Vec<u8>) -> Vec<u8> {
 		let index = i * 4;
 
 		idat[index + 3] = argb[0];
-		idat[index + 0] = argb[1];
+		idat[index] = argb[1];
 		idat[index + 1] = argb[2];
 		idat[index + 2] = argb[3];
 	}

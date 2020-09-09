@@ -14,7 +14,7 @@ pub fn get(lp: &mut worldgen::LayerPack) {
 
 	let mut ff = floodfill::FloodFill::new(&blank, lp.wi.map_size);
 
-	//exclude dry and ice regions at once
+	//Write down an exclusion map for dry and icy regions
 	for i in 0..lp.wi.map_size {
 		for j in 0..lp.wi.map_size {
 			let index = xy.ind(i, j);
@@ -44,6 +44,7 @@ pub fn get(lp: &mut worldgen::LayerPack) {
 		}
 	}
 
+	//Map the areas which are outside of exclusion zones
 	for i in 0..lp.wi.map_size {
 		for j in 0..lp.wi.map_size {
 			if !ff.exclusion_map[xy.ind(i, j)] {
@@ -65,6 +66,7 @@ fn write_map(
 	for x in ff.x_min..=ff.x_max {
 		for y in ff.y_min..=ff.y_max {
 			if ff.region_map[xy.ind(x, y)] {
+				//The stored value is the x in 2^x = size
 				let val = size_2_pow::map(ff.region_size);
 
 				lp.topography.write(

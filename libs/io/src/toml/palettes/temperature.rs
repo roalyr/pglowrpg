@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::Read;
 use std::path::Path;
 
-const PATH: &str = "presets/colorcodes/rainfall.toml";
+const PATH: &str = "presets/palettes/temperature.toml";
 
 #[derive(Serialize, Deserialize)]
 pub struct Stuff {
@@ -40,13 +40,13 @@ pub struct Stuff {
 pub fn get() -> Stuff {
 	let path = Path::new(&PATH);
 	let mut file =
-		File::open(&path).expect("no RAINFALL COLORS file/folder");
+		File::open(&path).expect("no TEMPERATURE COLORS file/folder");
 
 	let mut data = String::new();
 	file.read_to_string(&mut data)
-		.expect("unable to read RAINFALL COLORS file");
+		.expect("unable to read TEMPERATURE COLORS file");
 
 	let stuff: Stuff = toml::from_str(&data)
-		.expect("unable to deserialize RAINFALL COLORS");
+		.expect("unable to deserialize TEMPERATURE COLORS");
 	stuff
 }

@@ -1,6 +1,5 @@
 # ▒▒▒▒▒▒▒▒▒▒▒ WORLDGEN OPTIONS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 # General options for the world generator.
-# ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 
 # Worlds to generate at the worldgen.
 # The seed value will be incremented for each
@@ -16,7 +15,7 @@
 # the name of the files in the /presets/world
 # folder, without ".toml" file extension.
 
-	default_preset = "b"
+	default_preset = "a"
 	
 # Render options control the png image output
 # of the generators.
