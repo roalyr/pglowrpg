@@ -7,6 +7,18 @@ pub fn write_images(
 	_options_debug: &options::options_debug::Stuff,
 ) {
 	let save_dir = "save/";
+	match std::fs::create_dir(save_dir){
+		Err(e) => {
+			match e.kind() {
+				std::io::ErrorKind::AlreadyExists => println!("Using folder {}", save_dir),
+				_ => println!("UNACCOUNTED ERROR when making ./save dir: {:?}", e.kind()),
+			}
+		},
+		Ok(()) => {},
+	}
+		
+		
+		
 	let map_size = lp.wi.map_size;
 
 	//Clean proxy maps for rendering images

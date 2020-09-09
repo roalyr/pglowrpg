@@ -41,7 +41,7 @@ def git_menu():
 		print('(l) - log')
 		print('() - current')
 		print(banner_git)
-		print('\n')
+		print('')
 		print('(u) - launch "gitui"')
 	
 	def git_log_f():
@@ -124,10 +124,10 @@ def main_menu():
 		print('( ) - sync presets, locals and "cargo run" the project')
 		print('(tts) - sync presets, locals and "cargo run" the project, output via terminal and text-to-speech (Termux only)')
 		print('')
-		print('(a) - sync the project and libs (all)')
-		print('(c) - sync all and "cargo check" it,')
-		print('(p) - sync all and "cargo clippy" it,')
-		print('(r) - do "rustfmt" with options from rustfmt.toml')
+		print('(a) - sync all src of the project (apps and libs)')
+		print('(c) - sync APPS src ONLY and "cargo check" it,')
+		print('(p) - sync APPS src ONLY and "cargo clippy" it,')
+		print('(r) - do "rustfmt" on apps and libs')
 		print('(clear) - clear ".bk" files')
 		print('')
 		print('(d) - "cargo dep-graph" the project,')
@@ -233,7 +233,6 @@ def main_menu():
 	def clippy_check():
 		os.system('clear')
 		copy_source()
-		copy_libs()
 		os.system('cd'+' '+path_target+' && '+'cargo clippy')
 		
 	def deps():
