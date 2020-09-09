@@ -14,7 +14,8 @@ Procedurally generated living open worlds RPG
 
 ## Getting started
 It is quite straightforward when working on a computer (rust must be installed), just do this:
-- cargo build --release
 - cargo run --release
-Running pGLOWrpg must be from withing the root directory that contains
-"options", "presets", "locale" and "save folder", so there is no need to "cargo install".
+- Or use the "pglowrpg.sh" shell script which does the same
+
+You must run pGLOWrpg from the folder that contains "options", "presets", "locale" and "save"
+folders, so there is no need to do "cargo install".
