@@ -1,25 +1,40 @@
 import os
 
-#Must begin with /data/data/com.termux/files/home for Termux
+# A small dev wrapper for common tools and commands (rust, cargo, git, etc.)
+# I've made it because I am developing on a smartphone and this way it is more convenient.
+# Moreover, compiling and running binary files is only possible in /data/data/com.termux/
+# directory (I use Termux), due to Android security restrictions, so shifting source code
+# from the internal storage to Termux's folder, compiling and bringing output files back to
+# internal storage is done via this kind of automation, which is not required (but still could be used)
+# on a desktop.
+
+# Yes, this is a Python script to call bash commands.
+
+
+# Must begin with /data/data/com.termux/files/home for Termux. For the desktop feel free to
+# set any directory that you see fit, it will keep source, target and output separate.
 path_source = "/data/data/com.termux/files/home/storage/shared/project_src/pglowrpg/"
 path_target = "/data/data/com.termux/files/home/pglowrpg/"
 path_output = "/data/data/com.termux/files/home/storage/shared/project_output/"
 
-#I put these here for convenience of hanfling output
+#I put these here for convenience of handling output
 main_command = 'busybox time -f "%E %M"  cargo run'
 
-#Work in termux only, requires termux-api
+#Works in Termux only, requires termux-api
 main_command_tts_termux = main_command+" "+"| tee /dev/stderr | termux-tts-speak -r 1.2"
 
 os.system("mkdir -p"+" "+path_target)
 os.system("mkdir -p"+" "+path_target+"/save")
 
+#Just fancy stuff
 banner_git      = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒GIT MENU▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
-banner_log      = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒LOG▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
+banner_log      = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒LOG▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
 banner_commit   = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒COMMITTING▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
-banner_revert   = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒REVERTING▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
-banner_hreset   = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒HARD RESETTING▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
-banner_rust     = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒RUST MENU▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
+banner_revert   = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒REVERTING▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
+banner_hreset   = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒HARD RESETTING▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
+banner_rust     = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒RUST MENU▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
+
+
 
 def git_menu():
 
