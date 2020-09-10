@@ -1,7 +1,4 @@
-//######################################
-//#   https://docs.rs/fastblur/0.1.0/  #
-//#	src/fastblur/blur.rs.html#1-9   #
-//######################################
+//https://docs.rs/fastblur/0.1.0/src/fastblur/blur.rs.html#1-9
 
 use crate::array_ops::translate;
 use std::cmp::min;
@@ -263,8 +260,7 @@ fn box_blur_horz(
 	}
 }
 
-// Source:
-//https://stackoverflow.com/a/42386149/585725
+// Source:https://stackoverflow.com/a/42386149/585725
 fn round(mut x: f32) -> f32 {
 	x += 123.0;
 	x -= 123.0;

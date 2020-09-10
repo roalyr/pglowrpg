@@ -1,6 +1,5 @@
 pub fn start() {
-	println!("Select a tool");
-	println!("Worldgen selected");
-
+	
+	//Main memu screen and options will be here later
 	worldgen::worldgen::start();
 }

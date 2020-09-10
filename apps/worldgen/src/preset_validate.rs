@@ -15,9 +15,7 @@ pub fn all(
 	params(wi, panic_str);
 }
 
-//╔════════════════════════════════════╗
-//║    CHECK MAP AND NOISEMAP SIZES    ║
-//╚════════════════════════════════════╝
+//▒▒▒▒▒▒▒▒▒▒▒▒ CHECK SIZES ▒▒▒▒▒▒▒▒▒▒▒▒▒
 fn map_size(
 	wi: &presets::presets_worldgen::Stuff,
 	panic_str: &strings::panic_strings::Stuff,
@@ -57,9 +55,7 @@ fn noisemap_size(
 	}
 }
 
-//╔════════════════════════════════════╗
-//║        CHECK AND CAP VALUES        ║
-//╚════════════════════════════════════╝
+//▒▒▒▒▒▒▒▒▒▒▒▒ CHECK VALUES ▒▒▒▒▒▒▒▒▒▒▒▒▒
 fn params(
 	wi: &mut presets::presets_worldgen::Stuff,
 	_panic_str: &strings::panic_strings::Stuff,
@@ -296,10 +292,7 @@ fn params(
 		RIVER_VECT_ANGLE_MAX_DEVIATION_MAX,
 	);
 
-	//╔════════════════════════════════════╗
-	//║            CONVERSION              ║
-	//╚════════════════════════════════════╝
-	//wi.topog_filter is ok
+	//▒▒▒▒▒▒▒▒▒▒▒▒ CONVERSION ▒▒▒▒▒▒▒▒▒▒▒▒▒
 	wi.topog_scope /= 72.5 * 100.0;
 	wi.topog_continuity /= 1.3 * 100.0;
 	wi.topog_concentrator /= 26.5 * 100.0;
@@ -336,9 +329,7 @@ fn params(
 	) / 2.0;
 }
 
-//╔════════════════════════════════════╗
-//║         CAPPING FUNCTIONS          ║
-//╚════════════════════════════════════╝
+//▒▒▒▒▒▒▒▒▒▒▒▒ CAPPING FNS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 fn cap1<T>(
 	name: &str,
 	val: T,

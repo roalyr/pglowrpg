@@ -151,5 +151,5 @@ fn estimate_sources_number(
 		}
 	}
 
-	println!("{}{}", wg_str.rg1, rg.river_est_number);
+	//println!("{}{}", wg_str.rg1, rg.river_est_number);
 }

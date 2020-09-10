@@ -2,9 +2,10 @@
 Procedurally generated living open worlds RPG
 
 ## Requirements
+Main requirements:
 - rust
 
-### Optional requirements (for the "common actions" wrapper)
+Optional requirements (for the "common actions" wrapper):
 - python3
 - graphviz (to build the dependency tree visualization)
 - cargo-deps (to build the dependency tree visualization)

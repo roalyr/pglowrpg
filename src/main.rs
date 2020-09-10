@@ -1,22 +1,14 @@
 pub mod menu;
 
 fn main() {
-	println!();
-	println!();
-	println!();
-	println!();
-	println!();
-	println!();
-	println!();
-	println!();
-	println!();
-	println!();
-
-	println!("╔═══════════════════════════════════════╗");
-	println!("║     Procedurally Generated Living     ║");
-	println!("║            Open World RPG             ║");
-	println!("╠══════════════════════════════╦════════╣");
-	println!("║                    @Roal-Yr  ║  2020  ║");
-	println!("╚══════════════════════════════╩════════╝");
+	
+	//Just a logo
+	println!("\n");
+	println!("▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒", );
+	println!("Procedurally Generated Living Open World RPG");
+	println!("@Roal-Yr 2020");
+	println!("▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒", );
+	println!("\n");
+	
 	menu::start();
 }

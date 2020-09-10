@@ -12,12 +12,10 @@ fn grad_both(size: usize) -> Vec<f32> {
 
 	for i in 0..size {
 		for j in 0..size {
-			//----------------------------------------
 			array[xy.ind(i, j)] = (SQUARE_255
 				* ((PI * (2.0 / (size as f32) * (i as f32) - 1.0))
 					.cos() + 1.0))
 				.sqrt();
-			//----------------------------------------
 		}
 	}
 	array
@@ -35,12 +33,10 @@ fn grad_a(size: usize) -> Vec<f32> {
 
 	for i in 0..size {
 		for j in 0..size {
-			//----------------------------------------
 			array[xy.ind(i, j)] = (SQUARE_255
 				* ((PI * (1.3 / (size as f32) * (i as f32) - 1.0))
 					.cos() + 1.0))
 				.sqrt();
-			//----------------------------------------
 		}
 	}
 	array
@@ -53,12 +49,10 @@ fn grad_b(size: usize) -> Vec<f32> {
 
 	for i in 0..size {
 		for j in 0..size {
-			//----------------------------------------
 			array[xy.ind(size - i - 1, j)] = (SQUARE_255
 				* ((PI * (1.3 / (size as f32) * (i as f32) - 1.0))
 					.cos() + 1.0))
 				.sqrt();
-			//----------------------------------------
 		}
 	}
 	array

@@ -1,6 +1,5 @@
 pub mod writing_ops;
 
-//use crate::array_ops::translate;
 use crate::layers::*;
 use crate::preset_validate;
 use crate::seed_generating;
@@ -10,7 +9,11 @@ use coords::Index;
 use io::prompt;
 use io::toml::{options, presets, strings};
 use io::writepng::*;
+use constants::general::*;
 use writing_ops::*;
+
+use std::path::Path;
+use std::fs;
 
 pub struct Layer {
 	pub array_map: Vec<u8>,
@@ -51,8 +54,21 @@ pub fn start() {
 	let panic_str: strings::panic_strings::Stuff =
 		strings::panic_strings::get(&input_locale);
 
-	//UI
-	let mut input_preset = prompt::new_line_io(&wg_str.wg1);
+	//UI elements
+	println!("{}", &wg_str.wg1);
+	
+	//Move this to UI lib
+	//List files in dir
+	let presets = Path::new(PATH_PRESETS_WORLDGEN);
+	let p_files = fs::read_dir(presets).unwrap();
+	let mut p_str = "".to_owned();
+	for entry in p_files {
+		p_str.push_str(entry.unwrap().path().file_stem().unwrap().to_str().unwrap());
+		p_str.push_str(", ");
+	}
+	
+	
+	let mut input_preset = prompt::new_line_io(&p_str);
 	let input_seed = prompt::new_line_io(&wg_str.wg2);
 
 	//PRESET
@@ -88,6 +104,7 @@ fn run(
 	options_worldgen: &options::options_worldgen::Stuff,
 	options_debug: &options::options_debug::Stuff,
 ) {
+	
 	let layer_vec_len = wi.map_size * wi.map_size;
 	let noisemap_vec_len = wi.noisemap_size * wi.noisemap_size;
 
@@ -166,8 +183,6 @@ fn run(
 	georegion_mapping::get(&mut lp, &wg_str);
 
 	//WRITING DATA
-	//["topog_", &{ lp.wi.seed.to_string() }].concat();
-
 	write_images(&mut lp, wg_str, options_worldgen, options_debug);
 	//write raws
 	//write data files

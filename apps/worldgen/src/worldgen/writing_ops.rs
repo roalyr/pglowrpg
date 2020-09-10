@@ -6,6 +6,7 @@ pub fn write_images(
 	options_worldgen: &options::options_worldgen::Stuff,
 	_options_debug: &options::options_debug::Stuff,
 ) {
+	
 	let save_dir = "save/";
 	match std::fs::create_dir(save_dir){
 		Err(e) => {

@@ -38,26 +38,29 @@ banner_rust     = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒�
 
 def git_menu():
 
-	git_log = "git log --branches --oneline"
+	git_log = "git log --branches --oneline -n 20"
 	git_log_1 = "git log --branches --oneline -n 1"
 	git_status = "git status"
 	git_add = "git add . && git status --short"
 	git_push = "git push --all"
 	
 	def print_git_ops():
+		print('')
 		print(banner_git)
+		print('() - current')
+		print('(l) - log')
 		print('(s) - status')
+		print('')
 		print('(a) - add')
 		print('(t) - commit')
 		print('(p) - push')
+		print('')
 		print('(r) - revert')
 		print('(ha) - hard reset')
-		print('(q) - quit')
-		print('(l) - log')
-		print('() - current')
 		print(banner_git)
 		print('')
 		print('(u) - launch "gitui"')
+		print('(q) - quit to main')
 	
 	def git_log_f():
 		print(banner_log)
@@ -104,8 +107,9 @@ def git_menu():
 	#Begin
 	print_git_ops()
 	while True:
-		inp = input("('?' for commands) » ").strip()
-		print('\n')
+		print('')
+		inp = input("GIT MENU ('?' for commands) » ").strip()
+		print('')
 				
 		if inp == "l":
 			git_log_f()
@@ -129,12 +133,13 @@ def git_menu():
 		elif inp == "u":
 			os.system('gitui')
 		elif inp == "q":
-			quit()
+			break
 
 
 def main_menu():
 	
 	def print_main_ops():
+		print('')
 		print(banner_rust)
 		print('( ) - sync presets, locals and "cargo run" the project')
 		print('(tts) - sync presets, locals and "cargo run" the project, output via terminal and text-to-speech (Termux only)')
@@ -151,6 +156,7 @@ def main_menu():
 		print(banner_rust)
 		print('')
 		print('(t) - git menu')
+		print('(q) - quit')
 	
 	#Lower-level functions
 	def copy_locales():
@@ -275,33 +281,40 @@ def main_menu():
 	
 	#while True:
 	print_main_ops()
-	inp = input(" » ").strip()
-	print('\n')
-			
-	if inp == "":
-		sync()
-	elif inp == "tts":
-		sync_tts_termux()
-	elif inp == "a":
-		sync_all()
-	elif inp == "c":
-		check()
-	elif inp == "p":
-		clippy_check()
-	elif inp == "d":
-		deps()
-	elif inp == "e":
-		explain()
-	elif inp == "r":
-		rustfmt()
-	elif inp == "u":
-		cargo_update()
-	elif inp == "clear":
-		clear_bk()
-	elif inp == "t":
-		os.system('clear')
-		clear_bk()
-		git_menu()
+	while True:
+		print('')
+		inp = input("MAIN MENU ('?' for commands) » ").strip()
+		print('')
+				
+		if inp == "":
+			sync()
+		elif inp == "tts":
+			sync_tts_termux()
+		elif inp == "a":
+			sync_all()
+		elif inp == "c":
+			check()
+		elif inp == "p":
+			clippy_check()
+		elif inp == "d":
+			deps()
+		elif inp == "e":
+			explain()
+		elif inp == "r":
+			rustfmt()
+		elif inp == "u":
+			cargo_update()
+		elif inp == "clear":
+			clear_bk()
+		elif inp == "t":
+			os.system('clear')
+			clear_bk()
+			git_menu()
+		elif inp == "?":
+			print_main_ops()
+		elif inp == "q":
+				quit()
 
 #Start
-main_menu()
+while True:
+	main_menu()

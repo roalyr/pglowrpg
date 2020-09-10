@@ -123,7 +123,7 @@ pub fn get(
 	//}
 	//}
 
-	println!("{}{}", wg_str.gr1, region_id);
+	//println!("{}{}", wg_str.gr1, region_id);
 	for index in 0..lp.layer_vec_len {
 		lp.georeg_id.write(greg_map[index] as u16, index)
 	}
