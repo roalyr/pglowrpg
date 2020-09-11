@@ -15,7 +15,6 @@ pub struct Stuff {
 pub fn get(input: &str) -> Stuff {
 	let path = Path::new(PATH_LOCALES)
 		.join(&input)
-		.join(PATH_LOCALES_WORLDGEN)
 		.join(FILENAME)
 		.with_extension(EXTENSION_LOCALE);
 
