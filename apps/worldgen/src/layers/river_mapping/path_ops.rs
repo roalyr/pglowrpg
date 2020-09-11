@@ -1,8 +1,6 @@
 use crate::layers::river_mapping::*;
 //use crate::worldgen;
 use crate::array_ops::noise_maps::NoiseMode::*;
-use constants::world_constants::*;
-use coords::Index;
 //use std::f32::consts::PI;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ INIT PATHS ▒▒▒▒▒▒▒▒▒▒▒▒▒

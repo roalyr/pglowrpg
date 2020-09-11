@@ -9,7 +9,7 @@ use coords::Index;
 use io::prompt;
 use io::toml::{options, presets, strings};
 use io::writepng::*;
-use constants::general::*;
+use constants_app::*;
 use writing_ops::*;
 
 use std::path::Path;

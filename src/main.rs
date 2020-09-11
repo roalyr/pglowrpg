@@ -2,7 +2,7 @@ pub mod menu;
 
 fn main() {
 	
-	//Just a logo
+	//Just a logo, feel free to change / drop it
 	println!("\n");
 	println!("▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒", );
 	println!("Procedurally Generated Living Open World RPG");

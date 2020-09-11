@@ -1,4 +1,5 @@
-use constants::world_constants::*;
+use constants_world::*;
+
 use io::toml::{presets, strings};
 
 struct Cap2<T> {

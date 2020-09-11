@@ -1,1 +1,0 @@
-pub static PATH_PRESETS_WORLDGEN: &str = "./presets/world";

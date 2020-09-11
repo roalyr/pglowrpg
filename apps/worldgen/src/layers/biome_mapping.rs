@@ -1,6 +1,7 @@
 use crate::array_ops::translate;
 use crate::worldgen;
-use constants::world_constants::*;
+use constants_world::*;
+
 
 #[allow(clippy::cognitive_complexity)]
 pub fn get(lp: &mut worldgen::LayerPack) {

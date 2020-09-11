@@ -2,7 +2,8 @@ use crate::array_ops::size_2_pow;
 use crate::array_ops::translate;
 use crate::worldgen;
 
-use constants::world_constants::*;
+use constants_world::*;
+
 use coords::Index;
 
 pub fn get(lp: &mut worldgen::LayerPack) {

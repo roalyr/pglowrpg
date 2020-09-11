@@ -6,7 +6,7 @@ edition = "2018"
 
 
 [dependencies]
-constants = { path = "../../libs/constants" }
+constants_world = { path = "../../libs/constants_world" }
 prng = { path = "../../libs/prng" }
 
 serde = { version = "1.0", features = ["derive"]  }

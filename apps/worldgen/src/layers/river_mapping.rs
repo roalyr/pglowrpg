@@ -21,7 +21,7 @@ use crate::array_ops::translate;
 use crate::worldgen;
 
 //use constants::general::*;
-use constants::world_constants::*;
+use constants_world::*;
 use coords::Index;
 use io::progress;
 use io::toml::strings;

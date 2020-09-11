@@ -1,6 +1,5 @@
 use crate::layers::river_mapping::*;
 //use crate::worldgen;
-use constants::world_constants::*;
 
 pub fn map_erosion(
 	rg: &mut RgParams,

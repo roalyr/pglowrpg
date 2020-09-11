@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::Read;
 use std::path::Path;
 
-use constants::world_constants::*;
+use constants_world::*;
 
 const PATH: &str = "presets/world/";
 

@@ -1,7 +1,6 @@
 //use crate::array_ops::noise_maps::point_multi;
 use crate::layers::river_mapping::*;
 //use crate::worldgen;
-use constants::world_constants::*;
 //use prng::prng;
 
 use std::cmp::Ordering;
