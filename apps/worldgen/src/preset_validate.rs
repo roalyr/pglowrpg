@@ -1,6 +1,6 @@
 use constants_world::*;
 
-use io::toml::{presets, strings};
+use io_ops::toml::{presets, strings};
 
 struct Cap2<T> {
 	min: T,
@@ -24,13 +24,10 @@ fn map_size(
 	let size = MAP_SIZES.iter().find(|&&s| s == wi.map_size);
 
 	if size == None {
-		let line = &panic_str.line;
-		let msg = &panic_str.pm1;
-		let msg2 = &panic_str.pm2;
-		panic!(
-			"\n{}\n\n{}{:?}\n\n{}{}\n\n{}\n",
-			line, msg, MAP_SIZES, msg2, wi.map_size, line
-		);
+		let msg = &panic_str.map_size_1;
+		let msg2 = &panic_str.map_size_2;
+		println!("{}{:?}{}{}", msg, MAP_SIZES, msg2, wi.map_size,);
+		std::process::exit(0);
 	}
 }
 
@@ -42,17 +39,18 @@ fn noisemap_size(
 		NOISEMAP_SIZES.iter().find(|&&s| s == wi.noisemap_size);
 
 	if size == None {
-		let line = &panic_str.line;
-		let msg = &panic_str.pm3;
-		let msg2 = &panic_str.pm4;
-		panic!(
-			"\n{}\n\n{}{:?}\n\n{}{}\n\n{}\n",
-			line, msg, NOISEMAP_SIZES, msg2, wi.noisemap_size, line
+		let msg = &panic_str.noisemap_size_1;
+		let msg2 = &panic_str.noisemap_size_2;
+		println!(
+			"{}{:?}{}{}",
+			msg, NOISEMAP_SIZES, msg2, wi.noisemap_size,
 		);
+		std::process::exit(0);
 	}
 
 	if wi.noisemap_size > wi.map_size {
-		panic!("Noisemap should be less of equal to map size");
+		println!("Noisemap should be less of equal to map size");
+		std::process::exit(0);
 	}
 }
 

@@ -23,8 +23,8 @@ use crate::worldgen;
 //use constants::general::*;
 use constants_world::*;
 use coords::Index;
-use io::progress;
-use io::toml::strings;
+use io_ops::toml::strings;
+use ui::progress;
 
 use line_drawing::BresenhamCircle;
 //use std::convert::TryInto;

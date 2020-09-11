@@ -2,7 +2,6 @@ use crate::array_ops::translate;
 use crate::worldgen;
 use constants_world::*;
 
-
 #[allow(clippy::cognitive_complexity)]
 pub fn get(lp: &mut worldgen::LayerPack) {
 	for index in 0..lp.layer_vec_len {

@@ -1,11 +1,8 @@
+use constants_app::*;
 use serde::Deserialize;
-use std::fs::File;
-use std::io::Read;
 use std::path::Path;
 
-use constants_world::*;
-
-const PATH: &str = "presets/world/";
+use constants_world::TempGrad;
 
 #[derive(Deserialize)]
 pub struct Stuff {
@@ -56,19 +53,18 @@ pub struct Stuff {
 }
 
 pub fn get(input: &str) -> Stuff {
-	//takes only filename as arg
-	let p_str = [PATH, &input, ".toml"].concat();
+	let path = Path::new(PATH_PRESETS_WORLD)
+		.join(&input)
+		.with_extension(EXTENSION_PRESET_PALETTE);
 
-	let path = Path::new(&p_str);
-	let mut file =
-		File::open(&path).expect("no WORLDGEN PRESET file");
+	let data = crate::file_to_string(&path);
 
-	let mut data = String::new();
-	file.read_to_string(&mut data)
-		.expect("unable to read WORLDGEN PRESET file");
-
-	let stuff: Stuff = toml::from_str(&data)
-		.expect("unable to deserialize WORLDGEN PRESET file");
-
+	let stuff: Stuff = match toml::from_str(&data) {
+		Ok(f) => f,
+		Err(e) => {
+			println!("{}: {}", e.to_string(), path.to_str().unwrap());
+			std::process::exit(0);
+		}
+	};
 	stuff
 }

@@ -1,9 +1,8 @@
+use constants_app::*;
 use serde::{Deserialize, Serialize};
-use std::fs::File;
-use std::io::Read;
 use std::path::Path;
 
-const PATH: &str = "presets/palettes/temperature.toml";
+const FILENAME: &str = "rainfall";
 
 #[derive(Serialize, Deserialize)]
 pub struct Stuff {
@@ -38,15 +37,18 @@ pub struct Stuff {
 }
 
 pub fn get() -> Stuff {
-	let path = Path::new(&PATH);
-	let mut file =
-		File::open(&path).expect("no TEMPERATURE COLORS file/folder");
+	let path = Path::new(PATH_PRESETS_PALETTES)
+		.join(FILENAME)
+		.with_extension(EXTENSION_PRESET_PALETTE);
 
-	let mut data = String::new();
-	file.read_to_string(&mut data)
-		.expect("unable to read TEMPERATURE COLORS file");
+	let data = crate::file_to_string(&path);
 
-	let stuff: Stuff = toml::from_str(&data)
-		.expect("unable to deserialize TEMPERATURE COLORS");
+	let stuff: Stuff = match toml::from_str(&data) {
+		Ok(f) => f,
+		Err(e) => {
+			println!("{}: {}", e.to_string(), path.to_str().unwrap());
+			std::process::exit(0);
+		}
+	};
 	stuff
 }

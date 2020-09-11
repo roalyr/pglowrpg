@@ -1,5 +1,5 @@
 [package]
-name = "io"
+name = "io_ops"
 version = "0.1.0"
 authors = ["roal_yr"]
 edition = "2018"
@@ -7,6 +7,7 @@ edition = "2018"
 
 [dependencies]
 constants_world = { path = "../../libs/constants_world" }
+constants_app = { path = "../../libs/constants_app" }
 prng = { path = "../../libs/prng" }
 
 serde = { version = "1.0", features = ["derive"]  }

@@ -2,7 +2,7 @@
 use crate::worldgen;
 
 use coords::Index;
-use io::toml::strings;
+use io_ops::toml::strings;
 
 const ID_INIT: u16 = 1;
 

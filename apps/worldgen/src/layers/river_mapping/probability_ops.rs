@@ -1,7 +1,6 @@
 use crate::layers::river_mapping::*;
 //use crate::worldgen;
 
-
 pub fn prob(
 	i: usize,
 	j: usize,

@@ -5,15 +5,12 @@ use crate::preset_validate;
 use crate::seed_generating;
 
 use codec::*;
-use coords::Index;
-use io::prompt;
-use io::toml::{options, presets, strings};
-use io::writepng::*;
 use constants_app::*;
+use coords::Index;
+use io_ops::toml::{options, presets, strings};
+use io_ops::writepng::*;
+use ui::prompt;
 use writing_ops::*;
-
-use std::path::Path;
-use std::fs;
 
 pub struct Layer {
 	pub array_map: Vec<u8>,
@@ -35,49 +32,37 @@ pub struct LayerPack<'a> {
 	pub rivers: BitLayerRivers,
 }
 
-pub fn start() {
-	//LOAD OPTIONS
-	let options_worldgen: options::options_worldgen::Stuff =
-		options::options_worldgen::get();
-
-	let options_global: options::options_global::Stuff =
-		options::options_global::get();
-
-	let options_debug: options::options_debug::Stuff =
-		options::options_debug::get();
-
-	//LOAD UI STRINGS
-	let input_locale = options_global.locale;
-	let wg_str: strings::worldgen_strings::Stuff =
-		strings::worldgen_strings::get(&input_locale);
-
-	let panic_str: strings::panic_strings::Stuff =
-		strings::panic_strings::get(&input_locale);
-
-	//UI elements
+pub fn start(
+	options_worldgen: options::options_worldgen::Stuff,
+	options_global: options::options_global::Stuff,
+	options_debug: options::options_debug::Stuff,
+	wg_str: strings::worldgen_strings::Stuff,
+	panic_str: strings::panic_strings::Stuff,
+) {
+	//UI
 	println!("{}", &wg_str.wg1);
-	
-	//Move this to UI lib
+
 	//List files in dir
-	let presets = Path::new(PATH_PRESETS_WORLDGEN);
-	let p_files = fs::read_dir(presets).unwrap();
-	let mut p_str = "".to_owned();
-	for entry in p_files {
-		p_str.push_str(entry.unwrap().path().file_stem().unwrap().to_str().unwrap());
-		p_str.push_str(", ");
-	}
-	
-	
+	let p_str = prompt::dir_contents(
+		PATH_PRESETS_WORLD,
+		EXTENSION_PRESET_WORLD,
+		", ",
+		&panic_str,
+	);
+
+	//Input prompts
 	let mut input_preset = prompt::new_line_io(&p_str);
 	let input_seed = prompt::new_line_io(&wg_str.wg2);
 
-	//PRESET
+	//Preset selection
 	if input_preset.is_empty() {
 		input_preset = options_worldgen.default_preset.clone();
 	}
 
 	let mut wi: presets::presets_worldgen::Stuff =
 		presets::presets_worldgen::get(&input_preset);
+
+	//Show selected preset
 	prompt::selected(&wg_str.wg3, &input_preset);
 
 	//CHECK AND SEED
@@ -104,7 +89,6 @@ fn run(
 	options_worldgen: &options::options_worldgen::Stuff,
 	options_debug: &options::options_debug::Stuff,
 ) {
-	
 	let layer_vec_len = wi.map_size * wi.map_size;
 	let noisemap_vec_len = wi.noisemap_size * wi.noisemap_size;
 

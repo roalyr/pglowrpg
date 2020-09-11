@@ -1,11 +1,8 @@
+use constants_app::*;
 use serde::{Deserialize, Serialize};
-use std::fs::File;
-use std::io::Read;
 use std::path::Path;
 
-const PATH_PART1: &str = "locales/";
-
-const PATH_PART2: &str = "/worldgen/worldgen_strings.toml";
+const FILENAME: &str = "worldgen_strings";
 
 #[derive(Serialize, Deserialize)]
 pub struct Stuff {
@@ -61,19 +58,20 @@ pub struct Stuff {
 }
 
 pub fn get(input: &str) -> Stuff {
-	//takes only locale code as arg
-	let p_str = [PATH_PART1, &input, PATH_PART2].concat();
+	let path = Path::new(PATH_LOCALES)
+		.join(&input)
+		.join(PATH_LOCALES_WORLDGEN)
+		.join(FILENAME)
+		.with_extension(EXTENSION_LOCALE);
 
-	let path = Path::new(&p_str);
+	let data = crate::file_to_string(&path);
 
-	let mut file =
-		File::open(&path).expect("no WORLDGEN STRINGS file/folder");
-
-	let mut data = String::new();
-	file.read_to_string(&mut data)
-		.expect("unable to read WORLDGEN STRINGS");
-
-	let stuff: Stuff = toml::from_str(&data)
-		.expect("unable to deserialize WORLDGEN STRINGS");
+	let stuff: Stuff = match toml::from_str(&data) {
+		Ok(f) => f,
+		Err(e) => {
+			println!("{}: {}", e.to_string(), path.to_str().unwrap());
+			std::process::exit(0);
+		}
+	};
 	stuff
 }

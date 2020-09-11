@@ -1,5 +1,12 @@
-pm1 = "THE MAP MUST BE OF A PROPER SIZE: "
-pm2 = "The map size you've picked is "
-pm3 = "THE NOISEMAP MUST BE OF A PROPER SIZE: " 
-pm4 = "The noisemap size you've picked is "
-line = "══════════════════════════════════════"
+#Preset validation
+map_size_1 = """\n\n\
+══════════════════════════════════════════════════\n\
+THE MAP MUST BE OF A PROPER SIZE: \n"""
+
+map_size_2 = "\nThe map size you've picked is: "
+
+noisemap_size_1 = """\n\n\
+══════════════════════════════════════════════════\n\
+THE NOISEMAP MUST BE OF A PROPER SIZE: \n"""
+
+noisemap_size_2 = "\nThe noisemap size you've picked is:"
