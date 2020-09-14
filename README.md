@@ -1,5 +1,6 @@
 # pGLOWrpg
 Procedurally generated living open worlds RPG
+![Splash][splash]
 
 ## Requirements
 Main requirements:
@@ -25,3 +26,5 @@ Currently, pGLOWrpg's only feature is general world generation with
 image maps output (both colorized and raw, if you want to use them for something else).
 Feel free to play with world presets to find out interesting options combinations.
 The ***presets_user*** folder is ignored by git, so store your custom presets there.
+
+ [splash]: doc/images/biomes_example.png "Splash"

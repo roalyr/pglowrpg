@@ -6,6 +6,6 @@ save/
 target/
 
 #Outputs and artifacts
-**png
 **bk
 Cargo.lock
+
