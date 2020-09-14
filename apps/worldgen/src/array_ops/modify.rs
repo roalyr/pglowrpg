@@ -29,14 +29,12 @@ pub fn erode(
 	);
 
 	for index in 0..array.len() {
-		//-----------------------------------------
 		let noise =
 			(0.2 * nm1[index] + 0.4 * nm2[index] + 0.6 * nm3[index])
 				* elevation_noise_weight
 				+ (1.0 - elevation_noise_weight);
-
+				
 		array[index] = (array[index] * noise).powf(erosion_factor);
-		//-----------------------------------------
 	}
 }
 

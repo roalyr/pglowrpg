@@ -3,6 +3,8 @@ use flate2::Compression;
 //use std::cmp::Ordering;
 use std::io::prelude::*;
 
+//NOT USED
+
 pub fn to_byte(array: Vec<f32>) -> Vec<u8> {
 	let size = array.len();
 	let mut array_new = vec![0; size];
@@ -115,6 +117,9 @@ pub fn decode16(byte_array: &[u8]) -> Vec<u16> {
 	}
 	array_final
 }
+
+
+//IS USED
 
 pub fn get_abs(
 	val: f32,

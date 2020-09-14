@@ -1,5 +1,7 @@
 pub fn map(thing_size: usize) -> u8 {
-	//values must not be changed
+	
+	//Should be moved to libe?
+	//Vlues must not be changed
 	match thing_size {
 		0..=2 => 1,
 		3..=4 => 2,

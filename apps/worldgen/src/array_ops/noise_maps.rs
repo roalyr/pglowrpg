@@ -22,13 +22,11 @@ pub fn point_multi(
 
 	let abs = Abs::new(&rotate);
 
-	//----------------------------------------
 	abs.get([
 		(i as f64) * f64::from(noise_factor),
 		(j as f64) * f64::from(noise_factor),
 		(seed as f64),
 	]) as f32
-	//----------------------------------------
 }
 
 fn multi(
@@ -49,13 +47,11 @@ fn multi(
 
 	for i in 0..size {
 		for j in 0..size {
-			//----------------------------------------
 			array[xy.ind(i, j)] = abs.get([
 				(i as f64) * f64::from(noise_factor),
 				(j as f64) * f64::from(noise_factor),
 				(seed as f64),
 			]) as f32;
-			//----------------------------------------
 		}
 	}
 	array
@@ -79,13 +75,11 @@ fn perlin(
 
 	for i in 0..size {
 		for j in 0..size {
-			//----------------------------------------
 			array[xy.ind(i, j)] = abs.get([
 				(i as f64) * f64::from(noise_factor),
 				(j as f64) * f64::from(noise_factor),
 				(seed as f64),
 			]) as f32;
-			//----------------------------------------
 		}
 	}
 	array
