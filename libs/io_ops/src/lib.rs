@@ -9,7 +9,7 @@ pub fn file_to_string(path_vec: &Vec<std::path::PathBuf>) -> String {
 
 	for path in path_vec.iter() {
 		//Find the file
-		let file = match File::open(&path) {
+		match File::open(&path) {
 			Ok(mut file) => {
 				match file.read_to_string(&mut data) {
 					Ok(f) => f,
