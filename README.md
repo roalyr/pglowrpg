@@ -1,6 +1,6 @@
 # pGLOWrpg
 Procedurally generated living open worlds RPG
-![Splash][splash]
+![Biomes map of some medium continent][splash]
 
 ## Requirements
 Main requirements:
