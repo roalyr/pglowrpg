@@ -1,7 +1,6 @@
 use crate::worldgen::*;
 use io_ops::create_dir;
 use io_ops::writepng::*;
-use std::path::Path;
 
 pub fn write_images_raw(
 	lp: &mut LayerPack,
@@ -16,7 +15,6 @@ pub fn write_images_raw(
 	//Clean proxy maps for rendering images
 	let map_size = lp.wi.map_size;
 	let mut array_bg = vec![0u8; lp.layer_vec_len];
-	let mut array_fg = vec![0u8; lp.layer_vec_len];
 
 	let xy = Index { map_size };
 

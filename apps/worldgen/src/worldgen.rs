@@ -40,7 +40,7 @@ pub struct LayerPack<'a> {
 
 pub fn start(
 	options_worldgen: options::options_worldgen::Stuff,
-	options_global: options::options_global::Stuff,
+	_options_global: options::options_global::Stuff,
 	options_debug: options::options_debug::Stuff,
 	wg_str: strings::worldgen_strings::Stuff,
 	panic_str: strings::panic_strings::Stuff,
@@ -99,7 +99,7 @@ fn run(
 	wi: &presets::presets_worldgen::Stuff,
 	wg_str: &strings::worldgen_strings::Stuff,
 	options_worldgen: &options::options_worldgen::Stuff,
-	options_debug: &options::options_debug::Stuff,
+	_options_debug: &options::options_debug::Stuff,
 	preset_name: &str,
 ) {
 	let layer_vec_len = wi.map_size * wi.map_size;

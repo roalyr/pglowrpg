@@ -1,6 +1,5 @@
 use crate::worldgen::*;
 use io_ops::create_dir;
-use io_ops::writepng::*;
 use std::path::Path;
 
 pub fn write_save(
@@ -13,7 +12,7 @@ pub fn write_save(
 		[preset_name, "_", &lp.wi.seed.to_string()].concat();
 
 	//Make a save directory if none exists
-	let mut save_dir =
+	let save_dir =
 		Path::new(PATH_SAVE).to_path_buf().join(world_name);
 
 	create_dir(&save_dir);

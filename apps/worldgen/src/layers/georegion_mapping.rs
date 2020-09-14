@@ -8,7 +8,7 @@ const ID_INIT: u16 = 1;
 
 pub fn get(
 	lp: &mut worldgen::LayerPack,
-	wg_str: &strings::worldgen_strings::Stuff,
+	_wg_str: &strings::worldgen_strings::Stuff,
 ) {
 	let xy = Index {
 		map_size: lp.wi.map_size,

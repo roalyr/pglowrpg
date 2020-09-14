@@ -1,7 +1,6 @@
 use crate::worldgen::*;
 use io_ops::create_dir;
 use io_ops::writepng::*;
-use std::path::Path;
 
 pub fn write_images_color(
 	lp: &mut LayerPack,

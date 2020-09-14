@@ -31,7 +31,7 @@ pub fn dir_contents(
 	path_str: &str,
 	seek_extension: &str,
 	separator: &str,
-	panic_str: &strings::panic_strings::Stuff,
+	_panic_str: &strings::panic_strings::Stuff,
 ) -> String {
 	let path = Path::new(path_str);
 
@@ -46,7 +46,6 @@ pub fn dir_contents(
 
 	//Make a neat string
 	let mut contents_str = "".to_owned();
-	let mut entry_str = "";
 
 	for entry in contents_iter {
 		let entry_unwrapped = entry.unwrap().path();

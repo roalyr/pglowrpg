@@ -130,7 +130,7 @@ pub fn get(
 fn estimate_sources_number(
 	rg: &mut RgParams,
 	lp: &mut worldgen::LayerPack,
-	wg_str: &strings::worldgen_strings::Stuff,
+	_wg_str: &strings::worldgen_strings::Stuff,
 ) {
 	for i in 0..lp.wi.map_size {
 		for j in 0..lp.wi.map_size {

@@ -1,11 +1,10 @@
 use crate::worldgen::*;
 use io_ops::create_dir;
-use std::path::Path;
 
 pub fn write_data(
-	lp: &mut LayerPack,
-	wg_str: &strings::worldgen_strings::Stuff,
-	options_worldgen: &options::options_worldgen::Stuff,
+	_lp: &mut LayerPack,
+	_wg_str: &strings::worldgen_strings::Stuff,
+	_options_worldgen: &options::options_worldgen::Stuff,
 	save_dir: &std::path::PathBuf,
 ) {
 	//Make a directory if none exists
