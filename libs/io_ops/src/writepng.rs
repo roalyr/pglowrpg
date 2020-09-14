@@ -2,7 +2,7 @@ pub mod combine;
 pub mod gradients;
 
 use std::io::BufWriter;
-use std::path::Path;
+
 
 #[derive(Copy, Clone)]
 pub enum Mode {
