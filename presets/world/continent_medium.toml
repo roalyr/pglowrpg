@@ -8,13 +8,13 @@
 # the same seed will create the same world.
 # Valid values are: any integer number.
 
-	seed = 1
+	seed = 15092020
 
 # A size of the world map (size x size). Each pixel is about 
 # 300x300 meters.
 # Valid values are: 256, 512, 1024, 2048, 4096, 8192, 16384 (integer).
 
-	map_size = 4096
+	map_size = 1024
 	
 
 # Temperature mode for the world map. It determines where the 
@@ -55,7 +55,7 @@
 # to be generated relative to map size, precipitation etc.
 # Valid values are: 0...100, 0 to disable.
 
-	river_source_density = 50
+	river_source_density = 30
 
 # ▓▓▓▓▓▓▓▓▓▓ ADVANCED OPTIONS ▓▓▓▓▓▓▓▓▓▓
 # These options, when adjusted, will affect other options in this 
@@ -67,9 +67,9 @@
 # create topography, rainfall and temperature. This map is then 
 # interpolated to the "map_size" value. This value should
 # be equal or less than "map_size".
-# Valid values are: 256, 512, 1024 (integer).
+# Valid values are: 256, 512, 1024, 2048, 4096, 8192 (integer).
 
-	noisemap_size = 1024
+	noisemap_size = 512
 	
 
 # Filter the topography map from the bottom. Values below this 
@@ -92,7 +92,7 @@
 # more connected landmasses and continuous continents.
 # Valid values are: 0...100.
 
-	topog_continuity = 60
+	topog_continuity = 10
 	
 
 # Topography concentrator lower values produce maps with 
@@ -100,7 +100,7 @@
 # landmass towards the center of the map.
 # Valid values are: 0...100.
 
-	topog_concentrator = 40
+	topog_concentrator = 50
 	
 	
 # Topography erosion factor lower values produce maps with 
@@ -219,9 +219,10 @@
 
 
 
-# Mysterious debug option.
+# Mysterious debug options for when I don't want to recompile
+# too much. Ignore these.
 
 	magic = 0 #
-	magic1 = 10  #
-	magic2 = 20 #
-	magic3 = 4 #
+	magic1 = 0  #
+	magic2 = 0 #
+	magic3 = 0 #

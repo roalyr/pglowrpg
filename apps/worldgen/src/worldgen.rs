@@ -1,4 +1,12 @@
+pub mod data_ops;
+pub mod image_color_ops;
+pub mod image_raw_ops;
 pub mod writing_ops;
+
+use data_ops::*;
+use image_color_ops::*;
+use image_raw_ops::*;
+use writing_ops::*;
 
 use crate::layers::*;
 use crate::preset_validate;
@@ -8,9 +16,7 @@ use codec::*;
 use constants_app::*;
 use coords::Index;
 use io_ops::toml::{options, presets, strings};
-use io_ops::writepng::*;
 use ui::prompt;
-use writing_ops::*;
 
 pub struct Layer {
 	pub array_map: Vec<u8>,
@@ -39,7 +45,7 @@ pub fn start(
 	wg_str: strings::worldgen_strings::Stuff,
 	panic_str: strings::panic_strings::Stuff,
 ) {
-	//UI
+	//Intro message
 	println!("{}", &wg_str.wg1);
 
 	//List files in dir
@@ -65,7 +71,7 @@ pub fn start(
 	//Show selected preset
 	prompt::selected(&wg_str.wg3, &input_preset);
 
-	//CHECK AND SEED
+	//Check the preset values
 	preset_validate::all(&mut wi, &panic_str);
 
 	if input_seed == "r" {
@@ -77,7 +83,13 @@ pub fn start(
 
 	for _ in 0..w {
 		prompt::selected(&wg_str.wg5, &wi.seed.to_string());
-		run(&wi, &wg_str, &options_worldgen, &options_debug);
+		run(
+			&wi,
+			&wg_str,
+			&options_worldgen,
+			&options_debug,
+			&input_preset,
+		);
 		wi.seed += 1;
 	}
 }
@@ -88,6 +100,7 @@ fn run(
 	wg_str: &strings::worldgen_strings::Stuff,
 	options_worldgen: &options::options_worldgen::Stuff,
 	options_debug: &options::options_debug::Stuff,
+	preset_name: &str,
 ) {
 	let layer_vec_len = wi.map_size * wi.map_size;
 	let noisemap_vec_len = wi.noisemap_size * wi.noisemap_size;
@@ -167,7 +180,5 @@ fn run(
 	georegion_mapping::get(&mut lp, &wg_str);
 
 	//WRITING DATA
-	write_images(&mut lp, wg_str, options_worldgen, options_debug);
-	//write raws
-	//write data files
+	write_save(&mut lp, wg_str, options_worldgen, &preset_name);
 }

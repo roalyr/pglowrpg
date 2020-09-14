@@ -1,8 +1,8 @@
 wg1 = """Select a preset by entering its name. \n\
 Press Enter to use the preset from worldgen options. \n\
-Available presets are listed below:"""
+Available presets (see ./presets/world folder) are listed below:"""
 
-wg2 = "Use RANDOM seed (r) or keep seed from PRESET (p)?"
+wg2 = "Default seed is from preset, enter 'r' to make it random."
 wg3 = "Selected preset "
 wg4 = ""	
 wg5 = "Using seed "

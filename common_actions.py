@@ -201,28 +201,28 @@ def main_menu():
 		print('dependency graph executed')
 	
 	def result_sync():
-		os.system('rm -r'+' '+path_output+'save || echo "Shell: nothing to remove"')
+		#os.system('rm -r'+' '+path_output+'save || echo "Shell: nothing to remove"')
 		os.system('rm -r'+' '+path_target+'save || echo "Shell: nothing to remove"')
 		os.system('mkdir -p'+' '+path_output+'save')
 		os.system('mkdir -p'+' '+path_target+'save')
 		os.system('cd'+' '+path_target+' && '+main_command)
-		os.system('cp'+' '+path_target+'save/*.png'+' '+path_output+'save/')
+		os.system('cp -r'+' '+path_target+'save/*'+' '+path_output+'save/')
 		print('\n')
 		
 		print('results copied:')
-		os.system('ls'+' '+path_output+'save')
+		os.system('ls'+' '+path_target+'save')
 		
 	def result_sync_tts_termux():
-		os.system('rm -r'+' '+path_output+'save || echo "Shell: nothing to remove"')
+		#os.system('rm -r'+' '+path_output+'save || echo "Shell: nothing to remove"')
 		os.system('rm -r'+' '+path_target+'save || echo "Shell: nothing to remove"')
 		os.system('mkdir -p'+' '+path_output+'save')
 		os.system('mkdir -p'+' '+path_target+'save')
 		os.system('cd'+' '+path_target+' && '+main_command_tts_termux)
-		os.system('cp'+' '+path_target+'save/*.png'+' '+path_output+'save/')
+		os.system('cp -r'+' '+path_target+'save/*'+' '+path_output+'save/')
 		print('\n')
 		
 		print('results copied:')
-		os.system('ls'+' '+path_output+'save')
+		os.system('ls'+' '+path_target+'save')
 		
 	#Higher-level functions
 	def sync():

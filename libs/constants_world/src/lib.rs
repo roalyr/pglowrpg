@@ -92,7 +92,8 @@ pub const RIVER_VECT_ANGLE_MAX_DEVIATION_MAX: f32 =
 pub const MAP_SIZES: [usize; 7] =
 	[256, 512, 1024, 2048, 4096, 8192, 16384];
 
-pub const NOISEMAP_SIZES: [usize; 3] = [256, 512, 1024];
+pub const NOISEMAP_SIZES: [usize; 6] =
+	[256, 512, 1024, 2048, 4096, 8192];
 
 //▒▒▒▒▒▒▒▒▒▒ TEMPERATURE ▒▒▒▒▒▒▒▒▒▒▒▒
 pub const TEMP_MIN: isize = ABS_TEMP_MIN;

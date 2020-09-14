@@ -8,20 +8,20 @@
 # the same seed will create the same world.
 # Valid values are: any integer number.
 
-	seed = 1
+	seed = 15092020
 
 # A size of the world map (size x size). Each pixel is about 
 # 300x300 meters.
 # Valid values are: 256, 512, 1024, 2048, 4096, 8192, 16384 (integer).
 
-	map_size = 512
+	map_size = 256
 	
 
 # Temperature mode for the world map. It determines where the 
 # polar region is, by making a gemperature gradient.
 # Valid values are: "North", "South", "Both", "Neither".
 
-	temp_mode = "North"
+	temp_mode = "Neither"
 	
 
 # Absolute waterlevel value (in meters).
@@ -67,7 +67,7 @@
 # create topography, rainfall and temperature. This map is then 
 # interpolated to the "map_size" value. This value should
 # be equal or less than "map_size".
-# Valid values are: 256, 512, 1024 (integer).
+# Valid values are: 256, 512, 1024, 2048, 4096, 8192 (integer).
 
 	noisemap_size = 256
 	
@@ -76,7 +76,7 @@
 # would be assigned 0. Increasing this makes steeper topography
 # Valid values are: 0...255.
 
-	topog_filter = 0
+	topog_filter = 10
 	
 
 # Topography scope lower values make maps that look like 
@@ -84,7 +84,7 @@
 # encompass many landmasses and have extensive water bodies.
 # Valid values are: 0...100.
 
-	topog_scope = 50
+	topog_scope = 0
 	
 
 # Topography continuity lower values produce maps which have 
@@ -92,7 +92,7 @@
 # more connected landmasses and continuous continents.
 # Valid values are: 0...100.
 
-	topog_continuity = 60
+	topog_continuity = 0
 	
 
 # Topography concentrator lower values produce maps with 
@@ -100,14 +100,14 @@
 # landmass towards the center of the map.
 # Valid values are: 0...100.
 
-	topog_concentrator = 40
+	topog_concentrator = 100
 	
 	
 # Topography erosion factor lower values produce maps with 
 # more landmass bulk, higher values erode the landmass instead.
 # Valid values are: 0...100.
 
-	topog_erosion_factor = 80
+	topog_erosion_factor = 100
 	
 
 # River minimum length.
@@ -219,9 +219,10 @@
 
 
 
-# Mysterious debug option.
+# Mysterious debug options for when I don't want to recompile
+# too much. Ignore these.
 
 	magic = 0 #
-	magic1 = 10  #
-	magic2 = 20 #
-	magic3 = 4 #
+	magic1 = 0  #
+	magic2 = 0 #
+	magic3 = 0 #

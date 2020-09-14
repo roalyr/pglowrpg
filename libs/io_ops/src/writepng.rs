@@ -1,7 +1,6 @@
 pub mod combine;
 pub mod gradients;
 
-use std::fs::File;
 use std::io::BufWriter;
 use std::path::Path;
 
@@ -43,15 +42,14 @@ pub enum GradMode {
 pub fn combined_png(
 	array_bg: &Vec<u8>,
 	array_fg: &Vec<u8>,
-	pngname: &str,
+	path: &std::path::PathBuf,
 	grad_bg_mode: GradMode,
 	grad_fg_mode: GradMode,
 	mode: Mode,
 	png_size: usize,
 ) {
 	let size = array_bg.len();
-	let path = Path::new(&pngname);
-	let file = File::create(path).unwrap();
+	let file = crate::create_file_overwrite(&path);
 	let bufw = &mut BufWriter::new(file);
 	let mut encoder =
 		png::Encoder::new(bufw, png_size as u32, png_size as u32);
@@ -92,12 +90,11 @@ pub fn combined_png(
 
 pub fn simple_png(
 	array: &Vec<u8>,
-	pngname: &str,
+	path: &std::path::PathBuf,
 	grad_mode: GradMode,
 	png_size: usize,
 ) {
-	let path = Path::new(&pngname);
-	let file = File::create(path).unwrap();
+	let file = crate::create_file_overwrite(&path);
 	let bufw = &mut BufWriter::new(file);
 	let mut encoder =
 		png::Encoder::new(bufw, png_size as u32, png_size as u32);

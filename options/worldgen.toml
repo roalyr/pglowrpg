@@ -15,7 +15,7 @@
 # the name of the files in the /presets/world
 # folder, without ".toml" file extension.
 
-	default_preset = "a"
+	default_preset = "island_small"
 	
 # Render options control the png image output
 # of the generators.
@@ -27,3 +27,7 @@
 	render_biomes = true
 	render_georegions = true
 	render_rivers = true
+	
+# This will render raw (not colorized) images where applicable
+
+	render_raw_maps = true
