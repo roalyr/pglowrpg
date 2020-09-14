@@ -18,7 +18,7 @@ pub fn get(input: &str) -> Stuff {
 		.join(FILENAME)
 		.with_extension(EXTENSION_LOCALE);
 
-	let data = crate::file_to_string(&path);
+	let data = crate::file_to_string(&vec![path.clone()]);
 
 	let stuff: Stuff = match toml::from_str(&data) {
 		Ok(f) => f,

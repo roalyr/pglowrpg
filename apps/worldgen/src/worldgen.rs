@@ -48,13 +48,22 @@ pub fn start(
 	//Intro message
 	println!("{}", &wg_str.wg1);
 
-	//List files in dir
-	let p_str = prompt::dir_contents(
+	//List files in default and user dirs
+	let p_str_def = prompt::dir_contents(
 		PATH_PRESETS_WORLD,
 		EXTENSION_PRESET_WORLD,
 		", ",
 		&panic_str,
 	);
+
+	let p_str_usr = prompt::dir_contents(
+		PATH_PRESETS_WORLD_USER,
+		EXTENSION_PRESET_WORLD,
+		", ",
+		&panic_str,
+	);
+
+	let p_str = [p_str_def, p_str_usr].concat();
 
 	//Input prompts
 	let mut input_preset = prompt::new_line_io(&p_str);

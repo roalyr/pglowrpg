@@ -1,5 +1,4 @@
 pub fn map(thing_size: usize) -> u8 {
-	
 	//Should be moved to libe?
 	//Vlues must not be changed
 	match thing_size {

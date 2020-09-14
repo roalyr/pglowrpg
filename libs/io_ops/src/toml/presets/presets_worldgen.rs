@@ -53,16 +53,25 @@ pub struct Stuff {
 }
 
 pub fn get(input: &str) -> Stuff {
-	let path = Path::new(PATH_PRESETS_WORLD)
+	//Check both default and user paths
+	let path_def = Path::new(PATH_PRESETS_WORLD)
 		.join(&input)
 		.with_extension(EXTENSION_PRESET_PALETTE);
 
-	let data = crate::file_to_string(&path);
+	let path_usr = Path::new(PATH_PRESETS_WORLD_USER)
+		.join(&input)
+		.with_extension(EXTENSION_PRESET_PALETTE);
+
+	let mut path_vec = Vec::new();
+	path_vec.push(path_def);
+	path_vec.push(path_usr);
+
+	let data = crate::file_to_string(&path_vec);
 
 	let stuff: Stuff = match toml::from_str(&data) {
 		Ok(f) => f,
 		Err(e) => {
-			println!("{}: {}", e.to_string(), path.to_str().unwrap());
+			println!("{}", e.to_string());
 			std::process::exit(0);
 		}
 	};

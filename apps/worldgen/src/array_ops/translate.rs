@@ -118,7 +118,6 @@ pub fn decode16(byte_array: &[u8]) -> Vec<u16> {
 	array_final
 }
 
-
 //IS USED
 
 pub fn get_abs(

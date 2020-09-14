@@ -22,7 +22,7 @@ pub fn get() -> Stuff {
 		.join(FILENAME)
 		.with_extension(EXTENSION_PRESET_PALETTE);
 
-	let data = crate::file_to_string(&path);
+	let data = crate::file_to_string(&vec![path.clone()]);
 
 	let stuff: Stuff = match toml::from_str(&data) {
 		Ok(f) => f,

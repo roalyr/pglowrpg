@@ -172,10 +172,13 @@ def main_menu():
 		os.system('ls'+' '+path_target+'options')
 		
 	def copy_presets():
-		os.system('rm -r'+' '+path_target+'presets || echo "Shell: nothing to remove"')
-		os.system('cp -r'+' '+path_source+'presets'+' '+path_target+'presets')
+		os.system('rm -r'+' '+path_target+'presets_default || echo "Shell: nothing to remove"')
+		os.system('rm -r'+' '+path_target+'presets_user || echo "Shell: nothing to remove"')
+		os.system('cp -r'+' '+path_source+'presets_default'+' '+path_target+'presets_default')
+		os.system('cp -r'+' '+path_source+'presets_user'+' '+path_target+'presets_user')
 		print('presets copied:')
-		os.system('ls'+' '+path_target+'presets')
+		os.system('ls'+' '+path_target+'presets_default')
+		os.system('ls'+' '+path_target+'presets_user')
 		
 	def copy_source():
 		os.system('rm -r'+' '+path_target+'src || echo "Shell: nothing to remove"')
@@ -308,7 +311,7 @@ def main_menu():
 			clear_bk()
 		elif inp == "t":
 			os.system('clear')
-			clear_bk()
+			#clear_bk()
 			git_menu()
 		elif inp == "?":
 			print_main_ops()

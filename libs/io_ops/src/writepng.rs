@@ -3,7 +3,6 @@ pub mod gradients;
 
 use std::io::BufWriter;
 
-
 #[derive(Copy, Clone)]
 pub enum Mode {
 	Add,

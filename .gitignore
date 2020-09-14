@@ -1,5 +1,11 @@
-target/
+#User folders that shouldn't be touched
+presets_user/**/**toml
 save/
-*.png
-*.bk
+
+#Bins
+target/
+
+#Outputs and artifacts
+**png
+**bk
 Cargo.lock
