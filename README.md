@@ -27,4 +27,4 @@ image maps output (both colorized and raw, if you want to use them for something
 Feel free to play with world presets to find out interesting options combinations.
 The ***presets_user*** folder is ignored by git, so store your custom presets there.
 
- [splash]: doc/images/biomes_example.png "Splash"
+ [splash]: doc/images/biomes_example.png "Biomes map of some medium continent"
