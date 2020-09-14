@@ -3,7 +3,7 @@ Procedurally generated living open worlds RPG
 
 ## Requirements
 Main requirements:
-- rust
+- rust (https://www.rust-lang.org/)
 
 Optional requirements (for the "common actions" wrapper):
 - python3
@@ -15,13 +15,13 @@ Optional requirements (for the "common actions" wrapper):
 
 ## Getting started
 It is quite straightforward when working on a computer (rust must be installed), just do this:
-- cargo run --release
+- In the root directory execute `cargo run --release`
 - Or use the "pglowrpg.sh" shell script which does the same
 
 You must run pGLOWrpg from the folder that contains "options", "presets", "locale" and "save"
 folders, so there is no need to do "cargo install".
 
 Currently, pGLOWrpg's only feature is general world generation with
-image maps output (both colorized and raw).
+image maps output (both colorized and raw, if you want to use them for something else).
 Feel free to play with world presets to find out interesting options combinations.
-The **presets_user** folder is ignored by git, so store your custom presets there.
+The ***presets_user*** folder is ignored by git, so store your custom presets there.
