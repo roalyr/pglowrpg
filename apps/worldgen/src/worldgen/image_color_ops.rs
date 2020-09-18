@@ -6,10 +6,10 @@ pub fn write_images_color(
 	lp: &mut LayerPack,
 	wg_str: &strings::worldgen_strings::Stuff,
 	options_worldgen: &options::options_worldgen::Stuff,
-	save_dir: &std::path::PathBuf,
+	world_dir: &std::path::PathBuf,
 ) {
 	//Make a directory if none exists
-	let color_img_dir = save_dir.join(PATH_SAVE_IMAGES_COLOR);
+	let color_img_dir = world_dir.join(PATH_SAVE_IMAGES_COLOR);
 	create_dir(&color_img_dir);
 
 	//Clean proxy maps for rendering images
