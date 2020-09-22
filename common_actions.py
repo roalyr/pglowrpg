@@ -77,8 +77,10 @@ def git_menu():
 		commit_name = input("New commit name (' ' to abort) » ").strip()
 		if commit_name =="":
 			return
-		git_commit = "git commit -m "+commit_name
-		os.system(git_commit)
+		inp = input("Really commit? » ").strip()
+		if inp == "yes":
+			git_commit = "git commit -m "+commit_name
+			os.system(git_commit)
 		
 	def git_revert_f():
 		print(banner_revert)

@@ -6,6 +6,7 @@ save/
 target/
 
 #Outputs and artifacts
+**swp
 **bk
 Cargo.lock
 dep_graph.png
