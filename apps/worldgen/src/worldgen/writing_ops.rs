@@ -21,13 +21,22 @@ pub fn write_save(
 	create_dir(&world_dir);
 
 	//Write the data
-	write_data(lp, wg_str, options_worldgen, &world_dir);
+	if options_worldgen.write_data_files {
+		println!("{}", wg_str.wg25);
+		write_data(lp, wg_str, options_worldgen, &world_dir);
+	} else {
+		println!("{}", wg_str.wg26);
+	}
 
 	//Optionally render colorful images
-	write_images_color(lp, wg_str, options_worldgen, &world_dir);
+	if options_worldgen.render_colorized_maps {
+		println!("{}", wg_str.wg15);
+		write_images_color(lp, wg_str, options_worldgen, &world_dir);
+	}
 
 	//Optionally render raw images
 	if options_worldgen.render_raw_maps {
+		println!("{}", wg_str.wg16);
 		write_images_raw(lp, wg_str, options_worldgen, &world_dir);
 	}
 }

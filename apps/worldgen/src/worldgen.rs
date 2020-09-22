@@ -97,6 +97,8 @@ pub fn start(
 
 	//Decide how many worlds to generate
 	let input_world_num = prompt::new_line_io(&wg_str.wg24, &ui_el);
+	
+	#[allow(unused_assignments)]
 	let mut world_num = 0;
 
 	if input_world_num.is_empty() {

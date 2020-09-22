@@ -16,7 +16,9 @@ pub struct Stuff {
 	pub render_biomes: bool,
 	pub render_georegions: bool,
 
+	pub render_colorized_maps: bool,
 	pub render_raw_maps: bool,
+	pub write_data_files: bool,
 }
 
 pub fn get() -> Stuff {
