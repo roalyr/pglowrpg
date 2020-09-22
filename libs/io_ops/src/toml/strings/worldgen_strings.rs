@@ -9,6 +9,7 @@ pub struct Stuff {
 	pub wg1: String,
 	pub wg2: String,
 	pub wg3: String,
+	pub wg4: String,
 	pub wg5: String,
 	pub wg6: String,
 	pub wg7: String,

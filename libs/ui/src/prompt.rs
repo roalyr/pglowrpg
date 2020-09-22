@@ -5,14 +5,18 @@ use std::io;
 use std::io::Write;
 use std::path::Path;
 
-pub fn new_line_io(prompt_str: &str) -> String {
+//▒▒▒▒▒▒▒▒▒▒▒▒ INPUT ▒▒▒▒▒▒▒▒▒▒▒▒▒
+pub fn new_line_io(
+	prompt_str: &str,
+	ui_el: &strings::ui_elements::Stuff,
+) -> String {
 	let mut input = String::new();
 
 	//Print a prompt message
 	println!("{}", prompt_str);
 
 	//Print "ready" symbol
-	print!(" >> ");
+	print!("{}", ui_el.prompt_1);
 	let _ = io::stdout().flush();
 
 	//Read the input
@@ -20,6 +24,7 @@ pub fn new_line_io(prompt_str: &str) -> String {
 	input.trim().to_string()
 }
 
+//▒▒▒▒▒▒▒▒▒▒▒▒ CONFIRMATION ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn selected(
 	prompt: &str,
 	input: &str,
@@ -27,9 +32,11 @@ pub fn selected(
 	println!("{}", [&prompt, "\"", &input, "\""].concat());
 }
 
+//▒▒▒▒▒▒▒▒▒▒▒▒ FILESYSTEM ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn dir_contents(
 	path_str: &str,
 	seek_extension: &str,
+	prefix: &str,
 	separator: &str,
 	_panic_str: &strings::panic_strings::Stuff,
 ) -> String {
@@ -55,6 +62,7 @@ pub fn dir_contents(
 			&entry_unwrapped.extension().unwrap().to_str().unwrap();
 
 		if *entry_extension == seek_extension {
+			contents_str.push_str(prefix);
 			contents_str.push_str(entry_name);
 			contents_str.push_str(separator);
 		}

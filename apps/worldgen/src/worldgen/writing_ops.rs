@@ -12,9 +12,8 @@ pub fn write_save(
 		[preset_name, "_", &lp.wi.seed.to_string()].concat();
 
 	//Make a save directory if none exists
-	let save_dir =
-		Path::new(PATH_SAVE).to_path_buf();
-	
+	let save_dir = Path::new(PATH_SAVE).to_path_buf();
+
 	let world_dir =
 		Path::new(PATH_SAVE).to_path_buf().join(world_name);
 

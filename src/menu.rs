@@ -17,6 +17,9 @@ pub fn start() {
 
 	//▒▒▒▒▒▒▒▒▒▒▒▒ WORLDGEN ▒▒▒▒▒▒▒▒▒▒▒▒▒
 	//Load UI strings
+	let ui_el: strings::ui_elements::Stuff =
+		strings::ui_elements::get(&input_locale);
+
 	let wg_str: strings::worldgen_strings::Stuff =
 		strings::worldgen_strings::get(&input_locale);
 
@@ -29,5 +32,6 @@ pub fn start() {
 		options_debug,
 		wg_str,
 		panic_str,
+		ui_el,
 	);
 }

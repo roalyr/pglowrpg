@@ -44,32 +44,33 @@ pub fn start(
 	options_debug: options::options_debug::Stuff,
 	wg_str: strings::worldgen_strings::Stuff,
 	panic_str: strings::panic_strings::Stuff,
+	ui_el: strings::ui_elements::Stuff,
 ) {
 	//Intro message
 	println!("{}", &wg_str.wg1);
 
+	//Preset selection
 	//List files in default and user dirs
 	let p_str_def = prompt::dir_contents(
 		PATH_PRESETS_WORLD,
 		EXTENSION_PRESET_WORLD,
-		", ",
+		&ui_el.bullet_1,
+		&ui_el.separator_1,
 		&panic_str,
 	);
 
 	let p_str_usr = prompt::dir_contents(
 		PATH_PRESETS_WORLD_USER,
 		EXTENSION_PRESET_WORLD,
-		", ",
+		&ui_el.bullet_1,
+		&ui_el.separator_1,
 		&panic_str,
 	);
 
 	let p_str = [p_str_def, p_str_usr].concat();
 
-	//Input prompts
-	let mut input_preset = prompt::new_line_io(&p_str);
-	let input_seed = prompt::new_line_io(&wg_str.wg2);
+	let mut input_preset = prompt::new_line_io(&p_str, &ui_el);
 
-	//Preset selection
 	if input_preset.is_empty() {
 		input_preset = options_worldgen.default_preset.clone();
 	}
@@ -83,15 +84,34 @@ pub fn start(
 	//Check the preset values
 	preset_validate::all(&mut wi, &panic_str);
 
-	if input_seed == "r" {
+	//Seed selection
+	let input_seed = prompt::new_line_io(&wg_str.wg2, &ui_el);
+
+	if (input_seed == "r") || (input_seed == "R") {
 		wi.seed = seed_generating::get();
+		println!("{}", wg_str.wg4);
 	}
 
-	let w = options_worldgen.worlds_to_generate;
-	prompt::selected(&wg_str.wg6, &w.to_string());
+	//Show selected seed
+	prompt::selected(&wg_str.wg5, &(wi.seed.to_string()));
 
-	for _ in 0..w {
-		prompt::selected(&wg_str.wg5, &wi.seed.to_string());
+	//Decide how many worlds to generate
+	let input_world_num = prompt::new_line_io(&wg_str.wg24, &ui_el);
+	let mut world_num = 0;
+
+	if input_world_num.is_empty() {
+		world_num = options_worldgen.worlds_to_generate;
+	} else {
+		//proper panuc str later
+		world_num = input_world_num
+			.trim()
+			.parse::<usize>()
+			.expect("Expected an integer");
+	}
+	prompt::selected(&wg_str.wg6, &world_num.to_string());
+
+	for _ in 0..world_num {
+		prompt::selected(&wg_str.wg23, &wi.seed.to_string());
 		run(
 			&wi,
 			&wg_str,
