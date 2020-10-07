@@ -2,8 +2,8 @@
 
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize)]
 //▒▒▒▒▒▒▒▒▒▒▒▒ Layers ▒▒▒▒▒▒▒▒▒▒▒▒▒
+#[derive(Serialize, Deserialize, Debug)]
 pub struct BitLayerTopography {
 	pub data: Vec<u16>,
 	//Masks
@@ -12,6 +12,7 @@ pub struct BitLayerTopography {
 	pub _placeholder: u16,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
 pub struct BitLayerClimate {
 	pub data: Vec<u16>,
 	//Masks
@@ -19,6 +20,7 @@ pub struct BitLayerClimate {
 	pub RAINFALL: u16,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
 pub struct BitLayerRivers {
 	pub data: Vec<u16>,
 	//Masks
@@ -29,14 +31,17 @@ pub struct BitLayerRivers {
 	pub _placeholder: u16,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
 pub struct BitLayerBiomes {
 	pub data: Vec<u8>,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
 pub struct BitLayerRiversID {
 	pub data: Vec<u16>,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
 pub struct BitLayerGeoregID {
 	pub data: Vec<u16>,
 }

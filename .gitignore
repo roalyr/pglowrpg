@@ -8,5 +8,6 @@ target/
 #Outputs and artifacts
 **swp
 **bk
+**lz4
 Cargo.lock
 dep_graph.png

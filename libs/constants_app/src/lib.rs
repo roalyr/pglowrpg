@@ -22,3 +22,4 @@ pub const EXTENSION_OPTION: &str = "toml";
 pub const EXTENSION_LOCALE: &str = "toml";
 
 pub const EXTENSION_SAVE_IMAGE: &str = "png";
+pub const EXTENSION_SAVE_DATA: &str = "lz4";

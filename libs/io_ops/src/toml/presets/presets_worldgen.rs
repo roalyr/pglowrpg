@@ -1,10 +1,10 @@
 use constants_app::*;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use std::path::Path;
 
 use constants_world::TempGrad;
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Stuff {
 	pub seed: usize,
 	pub abs_elev_min: usize,

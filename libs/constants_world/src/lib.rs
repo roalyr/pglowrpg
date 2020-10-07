@@ -1,4 +1,4 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ GENERIC ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub const ONE_USIZE: usize = 1;
@@ -36,7 +36,7 @@ pub const TOPOG_NOISE_SIZE_MAX: f32 = 100.0;
 pub const TOPOG_NOISE_WEIGHT_MIN: f32 = 0.0;
 pub const TOPOG_NOISE_WEIGHT_MAX: f32 = 100.0;
 
-#[derive(Copy, Clone, Deserialize)]
+#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
 pub enum TempGrad {
 	South,
 	Neither,

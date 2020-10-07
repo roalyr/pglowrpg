@@ -18,14 +18,12 @@ use coords::Index;
 use io_ops::toml::{options, presets, strings};
 use ui::prompt;
 
-pub struct Layer {
-	pub array_map: Vec<u8>,
-	pub layer_name: String,
-}
+use serde::{Deserialize, Serialize};
 
-pub struct LayerPack<'a> {
+#[derive(Serialize, Deserialize, Debug)]
+pub struct LayerPack {
 	pub xy: Index,
-	pub wi: &'a presets::presets_worldgen::Stuff,
+	pub wi: presets::presets_worldgen::Stuff,
 
 	pub layer_vec_len: usize,
 	pub noisemap_vec_len: usize,
@@ -41,7 +39,7 @@ pub struct LayerPack<'a> {
 pub fn start(
 	options_worldgen: options::options_worldgen::Stuff,
 	_options_global: options::options_global::Stuff,
-	options_debug: options::options_debug::Stuff,
+	_options_debug: options::options_debug::Stuff,
 	wg_str: strings::worldgen_strings::Stuff,
 	panic_str: strings::panic_strings::Stuff,
 	ui_el: strings::ui_elements::Stuff,
@@ -92,47 +90,7 @@ pub fn start(
 		println!("{}", wg_str.wg4);
 	}
 
-	//Show selected seed
-	prompt::selected(&wg_str.wg5, &(wi.seed.to_string()));
-
-	//Decide how many worlds to generate
-	let input_world_num = prompt::new_line_io(&wg_str.wg24, &ui_el);
-	
-	#[allow(unused_assignments)]
-	let mut world_num = 0;
-
-	if input_world_num.is_empty() {
-		world_num = options_worldgen.worlds_to_generate;
-	} else {
-		//proper panuc str later
-		world_num = input_world_num
-			.trim()
-			.parse::<usize>()
-			.expect("Expected an integer");
-	}
-	prompt::selected(&wg_str.wg6, &world_num.to_string());
-
-	for _ in 0..world_num {
-		prompt::selected(&wg_str.wg23, &wi.seed.to_string());
-		run(
-			&wi,
-			&wg_str,
-			&options_worldgen,
-			&options_debug,
-			&input_preset,
-		);
-		wi.seed += 1;
-	}
-}
-
-//GENERATE
-fn run(
-	wi: &presets::presets_worldgen::Stuff,
-	wg_str: &strings::worldgen_strings::Stuff,
-	options_worldgen: &options::options_worldgen::Stuff,
-	_options_debug: &options::options_debug::Stuff,
-	preset_name: &str,
-) {
+	//Initialize the world
 	let layer_vec_len = wi.map_size * wi.map_size;
 	let noisemap_vec_len = wi.noisemap_size * wi.noisemap_size;
 
@@ -187,29 +145,59 @@ fn run(
 		},
 	};
 
+	//Decide how many worlds to generate
+	let input_world_num = prompt::new_line_io(&wg_str.wg24, &ui_el);
+
+	#[allow(unused_assignments)]
+	let mut world_num = 0;
+
+	if input_world_num.is_empty() {
+		world_num = options_worldgen.worlds_to_generate;
+	} else {
+		//proper panuc str later
+		world_num = input_world_num
+			.trim()
+			.parse::<usize>()
+			.expect("Expected an integer");
+	}
+	prompt::selected(&wg_str.wg6, &world_num.to_string());
+
 	//▒▒▒▒▒▒▒▒▒▒ GENERATION ▒▒▒▒▒▒▒▒▒▒▒
-	println!("{}", wg_str.wg7);
-	terrain_mapping::get(&mut lp);
+	for iter in 0..world_num {
+		//Show selected seed
+		prompt::selected(&wg_str.wg5, &(lp.wi.seed.to_string()));
 
-	println!("{}", wg_str.wg9);
-	climate_mapping::get(&mut lp);
+		println!("{}", wg_str.wg7);
+		terrain_mapping::get(&mut lp);
 
-	//Requires temperature
-	println!("{}", wg_str.wg13);
-	watermask_mapping::get(&mut lp);
+		println!("{}", wg_str.wg9);
+		climate_mapping::get(&mut lp);
 
-	//Requires terrain, watermask, temperature, rainfall
-	println!("{}", wg_str.wg17);
-	river_mapping::get(&mut lp, &wg_str);
+		//Requires temperature
+		println!("{}", wg_str.wg13);
+		watermask_mapping::get(&mut lp);
 
-	//Requires the above, must be called after rivers (erosion)
-	println!("{}", wg_str.wg19);
-	biome_mapping::get(&mut lp);
+		//Requires terrain, watermask, temperature, rainfall
+		println!("{}", wg_str.wg17);
+		river_mapping::get(&mut lp, &wg_str);
 
-	//Requires biomes
-	println!("{}", wg_str.wg21);
-	georegion_mapping::get(&mut lp, &wg_str);
+		//Requires the above, must be called after rivers (erosion)
+		println!("{}", wg_str.wg19);
+		biome_mapping::get(&mut lp);
 
-	//WRITING DATA
-	write_save(&mut lp, wg_str, options_worldgen, &preset_name);
+		//Requires biomes
+		println!("{}", wg_str.wg21);
+		georegion_mapping::get(&mut lp, &wg_str);
+
+		//WRITING DATA
+		write_save(
+			&mut lp,
+			&wg_str,
+			&options_worldgen,
+			&input_preset,
+		);
+
+		//Increment seed for multiple worlds
+		lp.wi.seed += iter;
+	}
 }
