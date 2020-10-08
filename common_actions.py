@@ -1,4 +1,4 @@
-import os
+import os, fnmatch, shutil, pathlib
 
 # A small dev wrapper for common tools and commands (rust, cargo, git, etc.)
 # I've made it because I am developing on a smartphone and this way it is more convenient.
@@ -32,8 +32,8 @@ banner_log      = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒�
 banner_commit   = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒COMMITTING▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
 banner_revert   = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒REVERTING▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
 banner_hreset   = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒HARD RESETTING▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
-banner_rust     = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒RUST MENU▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
-
+banner_rust     = '▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒SOURCE MENU▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒'
+divider = '-------------------------------------------------------'
 
 
 def git_menu():
@@ -143,14 +143,15 @@ def main_menu():
 	def print_main_ops():
 		print('')
 		print(banner_rust)
-		print('( ) - sync presets, locals and "cargo run" the project')
-		print('(tts) - sync presets, locals and "cargo run" the project, output via terminal and text-to-speech (Termux only)')
+		print('( ) - sync and "cargo run" the project')
+		print('(tts) - sync and "cargo run" the project, output via terminal and text-to-speech (Termux only)')
 		print('')
-		print('(a) - sync all src of the project (apps and libs)')
-		print('(c) - sync APPS src ONLY and "cargo check" it,')
-		print('(p) - sync APPS src ONLY and "cargo clippy" it,')
-		print('(r) - do "rustfmt" on apps and libs')
+		print('(a) - clear target folder and sync files anew')
+		print('(c) - sync and "cargo check" it,')
+		print('(p) - sync and "cargo clippy" it,')
+		print('(r) - do "rustfmt"')
 		print('(clear) - clear ".bk" files')
+		print('(ttree) - "tree" the target folder')
 		print('')
 		print('(d) - "cargo dep-graph" the project,')
 		print('(e) - "rustc --explain"')
@@ -160,42 +161,112 @@ def main_menu():
 		print('(t) - git menu')
 		print('(q) - quit')
 	
-	#Lower-level functions
-	def copy_locales():
-		os.system('rm -r'+' '+path_target+'locales || echo "Shell: nothing to remove"')
-		os.system('cp -r'+' '+path_source+'locales'+' '+path_target+'locales')
-		print('locales copied:')
-		os.system('ls'+' '+path_target+'locales')
+	#Main sync function
+	def flietype_sync(pattern, timestamp_file, path_source, path_target):
 		
-	def copy_options():
-		os.system('rm -r'+' '+path_target+'options || echo "Shell: nothing to remove"')
-		os.system('cp -r'+' '+path_source+'options'+' '+path_target+'options')
-		print('options copied:')
-		os.system('ls'+' '+path_target+'options')
+		queue_source = []
+		queue_names = []
+		timestamps_new = []
+		timestamps_old = []
 		
-	def copy_presets():
-		os.system('rm -r'+' '+path_target+'presets_default || echo "Shell: nothing to remove"')
-		os.system('rm -r'+' '+path_target+'presets_user || echo "Shell: nothing to remove"')
-		os.system('cp -r'+' '+path_source+'presets_default'+' '+path_target+'presets_default')
-		os.system('cp -r'+' '+path_source+'presets_user'+' '+path_target+'presets_user')
-		print('presets copied:')
-		os.system('ls'+' '+path_target+'presets_default')
-		os.system('ls'+' '+path_target+'presets_user')
+		#read existing timestamps
+		try:
+			timestamps_file = open(timestamp_file, 'r') 
+			lines = timestamps_file.readlines() 
+			for line in lines: 
+				timestamps_old.append(line.strip())
+		except:
+			print(divider)
+			print('no timestamp file: '+timestamp_file+' exist, it will be created')
+			print(divider)
+			
+		#get the current timestamps & paths from source directory
+		for root, dirs, files in os.walk(path_source):
+			for name in files:
+				if fnmatch.fnmatch(name, pattern):
+					file_path = os.path.join(root, name)
+					queue_source.append(file_path)
+					queue_names.append(name)
+					timestamps_new.append(os.path.getmtime(file_path))
+					
+		#pick up files that were modified
+		try:
+			#copy the new files to target
+			for entry in range(len(timestamps_new)):
+				if float(timestamps_new[entry]) != float(timestamps_old[entry]):
+					print(divider)
+					print('file modified:')
+					#make path relative
+					if path_source in queue_source[entry]:
+						rel_path = queue_source[entry].replace(path_source, '')
+						print(timestamps_new[entry], timestamps_old[entry], rel_path)
+						
+						#copy modified file to target folder
+						shutil.copyfile(queue_source[entry], path_target+rel_path)
+						
 		
-	def copy_source():
-		os.system('rm -r'+' '+path_target+'src || echo "Shell: nothing to remove"')
-		os.system('cp -r'+' '+path_source+'src'+' '+path_target+'src')
-		os.system('rm -r'+' '+path_target+'apps || echo "Shell: nothing to remove"')
-		os.system('cp -r'+' '+path_source+'apps'+' '+path_target+'apps')
-		os.system('cp'+' '+path_source+'Cargo.toml'+' '+path_target+'Cargo.toml')
-		print('src copied (apps):')
-		os.system('ls'+' '+path_target+'apps')
-
-	def copy_libs():
-		os.system('rm -r'+' '+path_target+'libs || echo "Shell: nothing to remove"')
-		os.system('cp -r'+' '+path_source+'libs'+' '+path_target+'libs')
-		print('libs copied:')
-		os.system('ls'+' '+path_target+'libs')
+		#or copy everything
+		except:
+			print(divider)
+			print('copying all files this time')
+			print(divider)
+			for entry in range(len(timestamps_new)):
+				
+				#make path relative
+				if path_source in queue_source[entry]:
+					rel_path = queue_source[entry].replace(path_source, '')
+					print(timestamps_new[entry], rel_path)
+					
+					#copy file to target
+					try:
+						shutil.copyfile(queue_source[entry], path_target+rel_path)
+					#if no folder exist, make it and then copy
+					except:
+						if queue_names[entry] in rel_path:
+							rel_path_stripped = rel_path.replace(queue_names[entry], '')
+						pathlib.Path(path_target+rel_path_stripped).mkdir(parents=True, exist_ok=True)
+						shutil.copyfile(queue_source[entry], path_target+rel_path)
+					
+		#write (new) timestamps
+		with open(timestamp_file, 'w') as f:
+		    for item in timestamps_new:
+		        f.write("%s\n" % item)
+	
+	
+	def dir_remove(folder_name, path):
+		shutil.rmtree(path+folder_name, ignore_errors=True)
+	
+	
+	#Functions-wrappers for commands
+	def sync_files():
+		flietype_sync('*.rs', '.timestamp_rs', path_source, path_target)
+		flietype_sync('*.toml', '.timestamp_toml', path_source, path_target)
+		print(divider)
+		print('files synchronized')
+		print(divider)
+		
+	def clear_target():
+		try:
+			#must be removed to trigger copying
+			os.remove('.timestamp_rs')
+			os.remove('.timestamp_toml')
+		except:
+			print(divider)
+			print('no timestamp file(s) to remove')
+			print(divider)
+		dir_remove('src', path_target)
+		dir_remove('apps', path_target)
+		dir_remove('libs', path_target)
+		dir_remove('locales', path_target)
+		dir_remove('presets_default', path_target)
+		dir_remove('presets_user', path_target)
+		dir_remove('options', path_target)
+		dir_remove('save', path_target)
+		print(divider)
+		print('target directory cleared, remaining files:')
+		os.system('ls'+' '+path_target)
+		print(divider)
+		
 		
 	def cargo_deps():
 		os.system('rm'+' '+path_target+'dep_graph.png || echo "Shell: nothing to remove"')
@@ -203,7 +274,9 @@ def main_menu():
 		os.system('mkdir -p'+' '+path_output+'dep_graph')
 		os.system('cd'+' '+path_target+' && '+'cargo deps --all-deps | dot -Tpng > "dep_graph.png"')
 		os.system('cp'+' '+path_target+'dep_graph.png'+' '+path_output+'dep_graph/dep_graph_$(date "+%Y%m%d-%H%M%S").png')
+		print(divider)
 		print('dependency graph executed')
+		print(divider)
 	
 	def result_sync():
 		#os.system('rm -r'+' '+path_output+'save || echo "Shell: nothing to remove"')
@@ -212,10 +285,10 @@ def main_menu():
 		os.system('mkdir -p'+' '+path_target+'save')
 		os.system('cd'+' '+path_target+' && '+main_command)
 		os.system('cp -r'+' '+path_target+'save/*'+' '+path_output+'save/')
-		print('\n')
-		
+		print(divider)
 		print('results copied:')
 		os.system('ls'+' '+path_target+'save')
+		print(divider)
 		
 	def result_sync_tts_termux():
 		#os.system('rm -r'+' '+path_output+'save || echo "Shell: nothing to remove"')
@@ -224,51 +297,48 @@ def main_menu():
 		os.system('mkdir -p'+' '+path_target+'save')
 		os.system('cd'+' '+path_target+' && '+main_command_tts_termux)
 		os.system('cp -r'+' '+path_target+'save/*'+' '+path_output+'save/')
-		print('\n')
-		
+		print(divider)
 		print('results copied:')
 		os.system('ls'+' '+path_target+'save')
+		print(divider)
 		
 	#Higher-level functions
 	def sync():
 		os.system('clear')
-		copy_locales()
-		copy_options()
-		copy_presets()
+		sync_files()
 		result_sync()
 	
 	def sync_tts_termux():
 		os.system('clear')
-		copy_locales()
-		copy_options()
-		copy_presets()
+		sync_files()
 		result_sync_tts_termux()
 		
 	def sync_all():
-		copy_locales()
-		copy_options()
-		copy_presets()
-		copy_source()
-		copy_libs()
-	
+		os.system('clear')
+		clear_target()
+		sync_files()
+		
 	def check():
 		os.system('clear')
-		copy_source()
+		sync_files()
 		os.system('cd'+' '+path_target+' && '+'cargo check')
 		
 	def clippy_check():
 		os.system('clear')
-		copy_source()
+		sync_files()
 		os.system('cd'+' '+path_target+' && '+'cargo clippy')
 		
 	def deps():
-		copy_source()
-		copy_libs()
+		os.system('clear')
+		sync_files()
 		cargo_deps()
 		
 	def cargo_update():
+		os.system('clear')
 		os.system('cd'+' '+path_target+' && '+'cargo update')
+		print(divider)
 		print('dependencies updated')
+		print(divider)
 		
 	def explain():
 		inp = input("Error code » ").strip()
@@ -278,14 +348,27 @@ def main_menu():
 		os.system('clear')
 		os.system('find'+' '+path_source+' '+'-type f -name "lib.rs" -o -name "main.rs"  | xargs -r rustfmt --check --config-path='+path_source+'rustfmt.toml')
 		os.system('find'+' '+path_source+' '+'-type f -name "lib.rs" -o -name "main.rs"  | xargs -r rustfmt --backup --config-path='+path_source+'rustfmt.toml')
+		print(divider)
 		print('formatting done')
+		print(divider)
 		
 	def clear_bk():
+		os.system('clear')
 		os.system('find'+' '+path_source+' '+'-name "*.bk" -print0 | xargs -r0 rm -rf')
+		print(divider)
 		print('.bk files cleared')
+		print(divider)
+		
+	def target_tree():
+		os.system('clear')
+		os.system('tree -I target'+' '+path_target)
+		print(divider)
+		print('target foldet tree rendred')
+		print(divider)
 	
 	#while True:
 	print_main_ops()
+	
 	while True:
 		print('')
 		inp = input("MAIN MENU ('?' for commands) » ").strip()
@@ -311,9 +394,10 @@ def main_menu():
 			cargo_update()
 		elif inp == "clear":
 			clear_bk()
+		elif inp == "ttree":
+			target_tree()
 		elif inp == "t":
 			os.system('clear')
-			#clear_bk()
 			git_menu()
 		elif inp == "?":
 			print_main_ops()
@@ -321,5 +405,6 @@ def main_menu():
 				quit()
 
 #Start
+os.system('clear')
 while True:
 	main_menu()

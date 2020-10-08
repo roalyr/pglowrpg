@@ -11,3 +11,6 @@ target/
 **lz4
 Cargo.lock
 dep_graph.png
+.timestamp_rs
+.timestamp_toml
+
