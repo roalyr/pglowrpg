@@ -1,3 +1,7 @@
+#▒▒▒▒▒▒▒▒▒▒▒▒ GENERAL OPTIONS ▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+	locale = "en"
+
 # ▒▒▒▒▒▒▒▒▒▒▒ WORLDGEN OPTIONS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 # General options for the world generator.
 

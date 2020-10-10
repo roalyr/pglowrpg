@@ -1,37 +1,58 @@
 use io_ops::toml::{options, strings};
-//use ui::prompt;
+use ui::prompt;
 
 pub fn start() {
 	//Load options, must be here
-	let options_worldgen: options::options_worldgen::Stuff =
-		options::options_worldgen::get();
-
-	let options_global: options::options_global::Stuff =
-		options::options_global::get();
-
-	let options_debug: options::options_debug::Stuff =
-		options::options_debug::get();
+	let options: options::Stuff = options::get();
 
 	//Load UI locale, must be here
-	let input_locale = options_global.locale.clone();
+	let input_locale = options.locale.clone();
 
-	//▒▒▒▒▒▒▒▒▒▒▒▒ WORLDGEN ▒▒▒▒▒▒▒▒▒▒▒▒▒
 	//Load UI strings
 	let ui_el: strings::ui_elements::Stuff =
 		strings::ui_elements::get(&input_locale);
 
+	let mn_str: strings::menu_strings::Stuff =
+		strings::menu_strings::get(&input_locale);
+
 	let wg_str: strings::worldgen_strings::Stuff =
 		strings::worldgen_strings::get(&input_locale);
+
+	let gm_str: strings::game_strings::Stuff =
+		strings::game_strings::get(&input_locale);
 
 	let panic_str: strings::panic_strings::Stuff =
 		strings::panic_strings::get(&input_locale);
 
-	worldgen::worldgen::start(
-		options_worldgen,
-		options_global,
-		options_debug,
-		wg_str,
-		panic_str,
-		ui_el,
-	);
+	//Intro message
+	println!("{}", mn_str.mn1);
+
+	//Menu loop
+	loop {
+		let mut input = prompt::new_line_io("", &ui_el);
+
+		if input.is_empty() {
+			continue;
+		}
+
+		if (input == "w") || (input == "W") {
+			println!("{}", mn_str.mn2);
+			worldgen::worldgen::start(
+				&options, &wg_str, &panic_str, &ui_el,
+			);
+			//Intro message repeated
+			println!("{}", mn_str.mn1);
+		}
+
+		if (input == "g") || (input == "G") {
+			println!("{}", mn_str.mn3);
+			game::game::start(&options, &gm_str, &panic_str, &ui_el);
+			//Intro message repeated
+			println!("{}", mn_str.mn1);
+		}
+
+		if (input == "q") || (input == "Q") {
+			return;
+		}
+	}
 }

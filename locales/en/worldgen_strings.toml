@@ -1,6 +1,7 @@
-#Order ospf strings is not important, because they can get rearranged
+#Order of strings is not important, because they can get rearranged
 
-wg1 = """Select a preset by entering its name, or\n\
+wg1 = """▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ WORLDGEN ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒\n\
+Select a preset by entering its name, or\n\
 leave empty to use the preset from worldgen options.\n\
 See ./presets_default/world and ./presets_user/world\n\
 for available presets:"""
@@ -17,10 +18,10 @@ leave empty to use the value from worldgen options."""
 wg6 = "The amount of worlds to generate is: "
 wg23 = "Generating a world with seed: "
 
-wg25 = "	Preparing data files:"
-wg26 = "	No data files were written (set in worldgen options)."
-wg15 = "	Preparing colorized maps:"
-wg16 = "	Preparing raw maps:"
+wg25 = "Preparing data files:"
+wg26 = "No data files were written (set in worldgen options)."
+wg15 = "Preparing colorized maps:"
+wg16 = "Preparing raw maps:"
 
 wg7 = "Preparing topography map..."
 wg9 = "Preparing temperature map..."

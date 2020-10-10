@@ -16,7 +16,7 @@ pub fn new_line_io(
 	println!("{}", prompt_str);
 
 	//Print "ready" symbol
-	print!("{}", ui_el.prompt_1);
+	print!("{}", ui_el.prompt1);
 	let _ = io::stdout().flush();
 
 	//Read the input
@@ -30,42 +30,4 @@ pub fn selected(
 	input: &str,
 ) {
 	println!("{}", [&prompt, "\"", &input, "\""].concat());
-}
-
-//▒▒▒▒▒▒▒▒▒▒▒▒ FILESYSTEM ▒▒▒▒▒▒▒▒▒▒▒▒▒
-pub fn dir_contents(
-	path_str: &str,
-	seek_extension: &str,
-	prefix: &str,
-	separator: &str,
-	_panic_str: &strings::panic_strings::Stuff,
-) -> String {
-	let path = Path::new(path_str);
-
-	//Get directory contents
-	let contents_iter = match fs::read_dir(path) {
-		Ok(f) => f,
-		Err(e) => {
-			println!("{}: {}", e.to_string(), path.to_str().unwrap());
-			std::process::exit(0);
-		}
-	};
-
-	//Make a neat string
-	let mut contents_str = "".to_owned();
-
-	for entry in contents_iter {
-		let entry_unwrapped = entry.unwrap().path();
-		let entry_name =
-			&entry_unwrapped.file_stem().unwrap().to_str().unwrap();
-		let entry_extension =
-			&entry_unwrapped.extension().unwrap().to_str().unwrap();
-
-		if *entry_extension == seek_extension {
-			contents_str.push_str(prefix);
-			contents_str.push_str(entry_name);
-			contents_str.push_str(separator);
-		}
-	}
-	contents_str
 }

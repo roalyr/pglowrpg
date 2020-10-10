@@ -6,9 +6,10 @@ const FILENAME: &str = "ui_elements";
 
 #[derive(Serialize, Deserialize)]
 pub struct Stuff {
-	pub prompt_1: String,
-	pub bullet_1: String,
-	pub separator_1: String,
+	pub prompt1: String,
+	pub bullet1: String,
+	pub separator1: String,
+	pub separator2: String,
 }
 
 pub fn get(input: &str) -> Stuff {

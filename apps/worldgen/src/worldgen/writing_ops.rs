@@ -5,7 +5,8 @@ use std::path::Path;
 pub fn write_save(
 	lp: &mut LayerPack,
 	wg_str: &strings::worldgen_strings::Stuff,
-	options_worldgen: &options::options_worldgen::Stuff,
+	ui_el: &strings::ui_elements::Stuff,
+	options: &options::Stuff,
 	preset_name: &str,
 ) {
 	let world_name =
@@ -21,22 +22,24 @@ pub fn write_save(
 	create_dir(&world_dir);
 
 	//Write the data
-	if options_worldgen.write_data_files {
+	if options.write_data_files {
 		println!("{}", wg_str.wg25);
-		write_data(lp, wg_str, options_worldgen, &world_dir);
+		write_data(lp, wg_str, options, &world_dir);
 	} else {
 		println!("{}", wg_str.wg26);
 	}
+	println!("{}", &ui_el.separator2);
 
 	//Optionally render colorful images
-	if options_worldgen.render_colorized_maps {
+	if options.render_colorized_maps {
 		println!("{}", wg_str.wg15);
-		write_images_color(lp, wg_str, options_worldgen, &world_dir);
+		write_images_color(lp, wg_str, options, &world_dir);
 	}
+	println!("{}", &ui_el.separator2);
 
 	//Optionally render raw images
-	if options_worldgen.render_raw_maps {
+	if options.render_raw_maps {
 		println!("{}", wg_str.wg16);
-		write_images_raw(lp, wg_str, options_worldgen, &world_dir);
+		write_images_raw(lp, wg_str, options, &world_dir);
 	}
 }

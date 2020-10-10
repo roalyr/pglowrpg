@@ -92,3 +92,4 @@ members = [
 io_ops = { path = "./libs/io_ops" }
 ui = { path = "./libs/ui" }
 worldgen = { path = "./apps/worldgen" }
+game = { path = "./apps/game" }

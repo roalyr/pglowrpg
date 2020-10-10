@@ -3,10 +3,49 @@ pub mod writepng;
 
 use lz4;
 use lz4::{Decoder, EncoderBuilder};
+use std::fs;
 use std::fs::File;
 use std::io;
 use std::io::Cursor;
 use std::io::Read;
+use std::path::Path;
+
+//▒▒▒▒▒▒▒▒▒▒▒▒ FILESYSTEM ▒▒▒▒▒▒▒▒▒▒▒▒▒
+pub fn dir_contents(
+	path_str: &str,
+	seek_extension: &str,
+	prefix: &str,
+	separator: &str,
+) -> String {
+	let path = Path::new(path_str);
+
+	//Get directory contents
+	let contents_iter = match fs::read_dir(path) {
+		Ok(f) => f,
+		Err(e) => {
+			println!("{}: {}", e.to_string(), path.to_str().unwrap());
+			std::process::exit(0);
+		}
+	};
+
+	//Make a neat string
+	let mut contents_str = "".to_owned();
+
+	for entry in contents_iter {
+		let entry_unwrapped = entry.unwrap().path();
+		let entry_name =
+			&entry_unwrapped.file_stem().unwrap().to_str().unwrap();
+		let entry_extension =
+			&entry_unwrapped.extension().unwrap().to_str().unwrap();
+
+		if *entry_extension == seek_extension {
+			contents_str.push_str(prefix);
+			contents_str.push_str(entry_name);
+			contents_str.push_str(separator);
+		}
+	}
+	contents_str
+}
 
 pub fn file_to_string(path_vec: &Vec<std::path::PathBuf>) -> String {
 	let mut data = String::new();

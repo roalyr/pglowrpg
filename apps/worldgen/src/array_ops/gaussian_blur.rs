@@ -5,14 +5,9 @@ use std::cmp::min;
 
 //CURRENTLY NOT USED
 
-pub fn get(array: Vec<Vec<u8>>) -> Vec<Vec<u8>> {
-	let size = array.len();
-
-	let mut src = translate::to1d(array, size);
-
-	gaussian_blur(&mut src, size, size, 50.0);
-
-	translate::to2d(src, size)
+pub fn get(src: &mut Vec<u8>) {
+	let size = src.len();
+	gaussian_blur(src, size, size, 50.0);
 }
 
 fn gaussian_blur(

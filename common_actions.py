@@ -151,7 +151,7 @@ def main_menu():
 		print('(p) - sync and "cargo clippy" it,')
 		print('(r) - do "rustfmt"')
 		print('(clear) - clear ".bk" files')
-		print('(ttree) - "tree" the target folder')
+		print('(tree) - "tree" the target folder')
 		print('')
 		print('(d) - "cargo dep-graph" the project,')
 		print('(e) - "rustc --explain"')
@@ -280,7 +280,7 @@ def main_menu():
 	
 	def result_sync():
 		#os.system('rm -r'+' '+path_output+'save || echo "Shell: nothing to remove"')
-		os.system('rm -r'+' '+path_target+'save || echo "Shell: nothing to remove"')
+		#os.system('rm -r'+' '+path_target+'save || echo "Shell: nothing to remove"')
 		os.system('mkdir -p'+' '+path_output+'save')
 		os.system('mkdir -p'+' '+path_target+'save')
 		os.system('cd'+' '+path_target+' && '+main_command)
@@ -292,7 +292,7 @@ def main_menu():
 		
 	def result_sync_tts_termux():
 		#os.system('rm -r'+' '+path_output+'save || echo "Shell: nothing to remove"')
-		os.system('rm -r'+' '+path_target+'save || echo "Shell: nothing to remove"')
+		#os.system('rm -r'+' '+path_target+'save || echo "Shell: nothing to remove"')
 		os.system('mkdir -p'+' '+path_output+'save')
 		os.system('mkdir -p'+' '+path_target+'save')
 		os.system('cd'+' '+path_target+' && '+main_command_tts_termux)
@@ -394,7 +394,7 @@ def main_menu():
 			cargo_update()
 		elif inp == "clear":
 			clear_bk()
-		elif inp == "ttree":
+		elif inp == "tree":
 			target_tree()
 		elif inp == "t":
 			os.system('clear')

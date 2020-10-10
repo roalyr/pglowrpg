@@ -5,7 +5,7 @@ use io_ops::writepng::*;
 pub fn write_images_color(
 	lp: &mut LayerPack,
 	wg_str: &strings::worldgen_strings::Stuff,
-	options_worldgen: &options::options_worldgen::Stuff,
+	options: &options::Stuff,
 	world_dir: &std::path::PathBuf,
 ) {
 	//Make a directory if none exists
@@ -20,7 +20,7 @@ pub fn write_images_color(
 	let xy = Index { map_size };
 
 	//Watermask over terraim
-	if options_worldgen.render_topography {
+	if options.render_topography {
 		println!("{}", wg_str.wg14);
 
 		let file_path = color_img_dir
@@ -51,7 +51,7 @@ pub fn write_images_color(
 	}
 
 	//Temperature
-	if options_worldgen.render_temperature {
+	if options.render_temperature {
 		println!("{}", wg_str.wg10);
 
 		let file_path = color_img_dir
@@ -75,7 +75,7 @@ pub fn write_images_color(
 	}
 
 	//Rainfall
-	if options_worldgen.render_rainfall {
+	if options.render_rainfall {
 		println!("{}", wg_str.wg12);
 
 		let file_path = color_img_dir
@@ -98,7 +98,7 @@ pub fn write_images_color(
 	}
 
 	//Georegion
-	if options_worldgen.render_georegions {
+	if options.render_georegions {
 		println!("{}", wg_str.wg22);
 
 		let file_path = color_img_dir
@@ -121,7 +121,7 @@ pub fn write_images_color(
 	}
 
 	//Rivers
-	if options_worldgen.render_rivers {
+	if options.render_rivers {
 		println!("{}", wg_str.wg18);
 
 		let file_path = color_img_dir
@@ -206,7 +206,7 @@ pub fn write_images_color(
 	}
 
 	//Biomes
-	if options_worldgen.render_biomes {
+	if options.render_biomes {
 		println!("{}", wg_str.wg20);
 
 		let file_path = color_img_dir
