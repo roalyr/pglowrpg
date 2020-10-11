@@ -117,7 +117,9 @@ pub fn start(
 		//Re-call this every loop iteration
 		let mut wi: presets::presets_worldgen::Stuff =
 			presets::presets_worldgen::get(&input_preset);
-
+			
+		preset_validate::all(&mut wi, &panic_str);
+		
 		//Re-call this every loop iteration
 		let mut lp = LayerPack {
 			//coordinate system
