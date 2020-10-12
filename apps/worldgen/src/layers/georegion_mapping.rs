@@ -1,13 +1,11 @@
-//use crate::array_ops::translate;
-use crate::worldgen;
-
+use codec::LayerPack;
 use coords::Index;
 use io_ops::toml::strings;
 
 const ID_INIT: u16 = 1;
 
 pub fn get(
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 	_wg_str: &strings::worldgen_strings::Stuff,
 ) {
 	let xy = Index {

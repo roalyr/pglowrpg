@@ -16,25 +16,7 @@ use codec::*;
 use constants_app::*;
 use coords::Index;
 use io_ops::toml::{options, presets, strings};
-use ui::prompt;
-
-use serde::{Deserialize, Serialize};
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct LayerPack {
-	pub xy: Index,
-	pub wi: presets::presets_worldgen::Stuff,
-
-	pub layer_vec_len: usize,
-	pub noisemap_vec_len: usize,
-
-	pub biomes: BitLayerBiomes,
-	pub rivers_id: BitLayerRiversID,
-	pub georeg_id: BitLayerGeoregID,
-	pub topography: BitLayerTopography,
-	pub climate: BitLayerClimate,
-	pub rivers: BitLayerRivers,
-}
+use ui::prompts;
 
 pub fn start(
 	options: &options::Stuff,
@@ -44,27 +26,34 @@ pub fn start(
 ) {
 	//Intro message
 	println!("{}", &wg_str.wg1);
-	println!("{}", &ui_el.separator2);
 
 	//Preset selection
 	//List files in default and user dirs
-	let p_str_def = io_ops::dir_contents(
+	let preset_def_tuple = io_ops::dir_file_contents(
 		PATH_PRESETS_WORLD,
 		EXTENSION_PRESET_WORLD,
 		&ui_el.bullet1,
 		&ui_el.separator1,
 	);
 
-	let p_str_usr = io_ops::dir_contents(
+	let mut preset_user_tuple = io_ops::dir_file_contents(
 		PATH_PRESETS_WORLD_USER,
 		EXTENSION_PRESET_WORLD,
 		&ui_el.bullet1,
 		&ui_el.separator1,
 	);
 
-	let p_str = [p_str_def, p_str_usr].concat();
+	let presets_formatted =
+		[preset_def_tuple.0, preset_user_tuple.0].concat();
+	let mut presets_paths = preset_def_tuple.1;
+	presets_paths.append(&mut preset_user_tuple.1);
 
-	let mut input_preset = prompt::new_line_io(&p_str, &ui_el);
+	let mut input_preset =
+		prompts::new_line_io(&presets_formatted, &ui_el.prompt2);
+
+	input_preset =
+		prompts::autocomplete(&input_preset, &presets_paths);
+
 	println!("{}", &ui_el.separator2);
 
 	if input_preset.is_empty() {
@@ -75,37 +64,40 @@ pub fn start(
 		presets::presets_worldgen::get(&input_preset);
 
 	//Show selected preset
-	prompt::selected(&wg_str.wg3, &input_preset);
+	prompts::selected(&wg_str.wg3, &input_preset);
 
 	//Check the preset values
 	preset_validate::all(&mut wi, &panic_str);
 
 	//Seed selection
-	let input_seed = prompt::new_line_io(&wg_str.wg2, &ui_el);
+	let input_seed =
+		prompts::new_line_io(&wg_str.wg2, &ui_el.prompt2);
 	println!("{}", &ui_el.separator2);
 
-	if (input_seed == "r") || (input_seed == "R") {
-		wi.seed = seed_generating::get();
+	let mut temp_seed = if (input_seed == "r") || (input_seed == "R")
+	{
 		println!("{}", wg_str.wg4);
-	}
+		seed_generating::get()
+	} else {
+		wi.seed
+	};
 
 	//Decide how many worlds to generate
-	let input_world_num = prompt::new_line_io(&wg_str.wg24, &ui_el);
+	let input_world_num =
+		prompts::new_line_io(&wg_str.wg24, &ui_el.prompt2);
 	println!("{}", &ui_el.separator2);
 
-	#[allow(unused_assignments)]
-	let mut world_num = 0;
-
-	if input_world_num.is_empty() {
-		world_num = options.worlds_to_generate;
+	let world_num = if input_world_num.is_empty() {
+		options.worlds_to_generate
 	} else {
 		//proper panic str later
-		world_num = input_world_num
+		input_world_num
 			.trim()
 			.parse::<usize>()
-			.expect("Expected an integer");
-	}
-	prompt::selected(&wg_str.wg6, &world_num.to_string());
+			.expect("Expected an integer")
+	};
+
+	prompts::selected(&wg_str.wg6, &world_num.to_string());
 	println!("{}", &ui_el.separator2);
 
 	//▒▒▒▒▒▒▒▒▒▒ GENERATION ▒▒▒▒▒▒▒▒▒▒▒
@@ -114,12 +106,16 @@ pub fn start(
 	let map_size = wi.map_size;
 
 	for iter in 0..world_num {
+		//Increment seed for multiple worlds, must be before wi
+		temp_seed += iter;
+
 		//Re-call this every loop iteration
 		let mut wi: presets::presets_worldgen::Stuff =
 			presets::presets_worldgen::get(&input_preset);
-			
+
 		preset_validate::all(&mut wi, &panic_str);
-		
+		wi.seed = temp_seed;
+
 		//Re-call this every loop iteration
 		let mut lp = LayerPack {
 			//coordinate system
@@ -169,11 +165,8 @@ pub fn start(
 			},
 		};
 
-		//Increment seed for multiple worlds
-		lp.wi.seed += iter;
-
 		//Show selected seed
-		prompt::selected(&wg_str.wg5, &(lp.wi.seed.to_string()));
+		prompts::selected(&wg_str.wg5, &(lp.wi.seed.to_string()));
 
 		println!("{}", wg_str.wg7);
 		terrain_mapping::get(&mut lp);

@@ -1,9 +1,9 @@
 use crate::array_ops;
-use crate::worldgen;
+use codec::LayerPack;
 
 //use crate::array_ops::translate;
 
-pub fn get(lp: &mut worldgen::LayerPack) {
+pub fn get(lp: &mut LayerPack) {
 	let mut array = array_ops::diamond_square::get(
 		lp.wi.noisemap_size,
 		lp.wi.topog_concentrator,

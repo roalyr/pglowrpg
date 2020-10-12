@@ -1,14 +1,14 @@
 use crate::array_ops;
 use crate::array_ops::noise_maps::NoiseMode::*;
-use crate::worldgen;
+use codec::LayerPack;
 
-pub fn get(lp: &mut worldgen::LayerPack) {
+pub fn get(lp: &mut LayerPack) {
 	temperature(lp);
 	rainfall(lp);
 }
 
 //▒▒▒▒▒▒▒▒▒▒ TEMPERATURE ▒▒▒▒▒▒▒▒▒▒▒
-fn temperature(lp: &mut worldgen::LayerPack) {
+fn temperature(lp: &mut LayerPack) {
 	let mut array = vec![0.0; lp.noisemap_vec_len];
 
 	let array_grad = array_ops::gradients::get(
@@ -72,7 +72,7 @@ fn temperature(lp: &mut worldgen::LayerPack) {
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒ RAINFALL ▒▒▒▒▒▒▒▒▒▒▒▒▒
-fn rainfall(lp: &mut worldgen::LayerPack) {
+fn rainfall(lp: &mut LayerPack) {
 	let mut array = vec![0.0; lp.noisemap_vec_len];
 
 	let array_grad = array_ops::gradients::get(

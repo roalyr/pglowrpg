@@ -1,6 +1,4 @@
 //https://docs.rs/fastblur/0.1.0/src/fastblur/blur.rs.html#1-9
-
-use crate::array_ops::translate;
 use std::cmp::min;
 
 //CURRENTLY NOT USED

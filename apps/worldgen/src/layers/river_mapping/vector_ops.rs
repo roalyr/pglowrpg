@@ -21,7 +21,7 @@ pub fn vector_within_len(
 
 pub fn vector_bound(
 	rg: &mut RgParams,
-	_lp: &mut worldgen::LayerPack,
+	_lp: &mut LayerPack,
 	allowed: usize,
 ) {
 	//bound up
@@ -55,7 +55,7 @@ pub fn vector_bound(
 
 pub fn vector_start(
 	rg: &mut RgParams,
-	_lp: &mut worldgen::LayerPack,
+	_lp: &mut LayerPack,
 	i: usize,
 	j: usize,
 ) {
@@ -65,7 +65,7 @@ pub fn vector_start(
 
 pub fn vector_end(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 ) {
 	let mut water_bodies = false;
 	for index in 0..lp.layer_vec_len {
@@ -85,7 +85,7 @@ pub fn vector_end(
 
 pub fn vector_end_stream(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 ) {
 	rg.dv.x1 = lp.wi.map_size / 2;
 	rg.dv.y1 = lp.wi.map_size / 2;

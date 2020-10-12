@@ -4,16 +4,16 @@ wg1 = """▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ WORLDGE
 Select a preset by entering its name, or\n\
 leave empty to use the preset from worldgen options.\n\
 See ./presets_default/world and ./presets_user/world\n\
-for available presets:"""
+for available presets:\n"""
 
-wg2 = "Using default seed from preset, enter «R» to randomize."
+wg2 = "Using default seed from preset, enter «R» to randomize.\n"
 wg3 = "Selected preset: "
 
-wg4 = "Randomizing the world seed for this generation"	
+wg4 = "Randomizing the world seed for this generation\n"	
 wg5 = "Using seed: "
 
 wg24 = """How many worlds to generate? Enter the value, or\n\
-leave empty to use the value from worldgen options."""
+leave empty to use the value from worldgen options.\n"""
 
 wg6 = "The amount of worlds to generate is: "
 wg23 = "Generating a world with seed: "

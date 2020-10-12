@@ -1,6 +1,25 @@
 #![allow(non_snake_case)]
 
+use coords::Index;
+use io_ops::toml::presets;
 use serde::{Deserialize, Serialize};
+
+//▒▒▒▒▒▒▒▒▒▒▒▒ LAYER PACK ▒▒▒▒▒▒▒▒▒▒▒▒▒
+#[derive(Serialize, Deserialize, Debug)]
+pub struct LayerPack {
+	pub xy: Index,
+	pub wi: presets::presets_worldgen::Stuff,
+
+	pub layer_vec_len: usize,
+	pub noisemap_vec_len: usize,
+
+	pub biomes: BitLayerBiomes,
+	pub rivers_id: BitLayerRiversID,
+	pub georeg_id: BitLayerGeoregID,
+	pub topography: BitLayerTopography,
+	pub climate: BitLayerClimate,
+	pub rivers: BitLayerRivers,
+}
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ Layers ▒▒▒▒▒▒▒▒▒▒▒▒▒
 #[derive(Serialize, Deserialize, Debug)]

@@ -6,7 +6,7 @@ use crate::array_ops::noise_maps::NoiseMode::*;
 //▒▒▒▒▒▒▒▒▒▒▒▒ INIT PATHS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn set_paths(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 	_wg_str: &strings::worldgen_strings::Stuff,
 ) {
 	//Maps for pathfinding must be copied into clean arrays from
@@ -27,7 +27,7 @@ fn make_paths(
 	i: usize,
 	j: usize,
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 	terrain_map: &Vec<u8>,
 	random_map: &Vec<u8>,
 ) {
@@ -124,7 +124,7 @@ fn make_paths(
 //NODES
 fn pathfinding_nodes(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 	seg_len: usize,
 	terrain_map: &Vec<u8>,
 	diag_flag: bool,
@@ -162,7 +162,7 @@ fn pathfinding_nodes(
 //▒▒▒▒▒▒▒▒▒▒▒▒ MAPS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn get_random_map(
 	_rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 ) -> Vec<u8> {
 	//Random noise map for river path meandering
 	//river segments would be using this
@@ -195,7 +195,7 @@ pub fn get_random_map(
 
 pub fn get_terrain_map(
 	_rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 ) -> Vec<u8> {
 	//Write terrain map into a temporary array for future pathfinding
 	//river nodes would be done on this

@@ -1,7 +1,3 @@
-use std::io::prelude::*;
-
-//IS USED
-
 pub fn get_abs(
 	val: f32,
 	val_cap: f32,

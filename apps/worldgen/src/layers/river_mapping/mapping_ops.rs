@@ -8,7 +8,7 @@ use std::cmp::Ordering;
 //▒▒▒▒▒▒▒▒▒▒▒ MAP PATHS ▒▒▒▒▒▒▒▒▒▒▒
 pub fn map_paths(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 ) {
 	for river_entry in rg.rivers_paths.list.clone().iter().rev() {
 		map_rivers_reverse(rg, lp, river_entry);
@@ -18,7 +18,7 @@ pub fn map_paths(
 //▒▒▒▒▒▒▒▒▒▒ RIVER MAPPING ▒▒▒▒▒▒▒▒▒▒▒
 fn map_rivers_reverse(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 	river_entry: &RiverEntry,
 ) {
 	//Aliases
@@ -347,7 +347,7 @@ fn map_rivers_reverse(
 //UNINTERRUPTED
 fn sort_uninterrupted(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 	index_current: usize,
 	index_river_source: usize,
 ) {
@@ -368,7 +368,7 @@ fn sort_uninterrupted(
 //CROSSING
 fn sort_crossing(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 	index_current: usize,
 	index_river_source: usize,
 	index_downstr: usize,
@@ -395,7 +395,7 @@ fn sort_crossing(
 //WIDTH ROUTINE
 fn width_routine(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 	_index_current: usize,
 	index_downstr: usize,
 ) {
@@ -439,7 +439,7 @@ fn width_routine(
 //EROSION ROUTINES
 fn erosion_adjust(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 	index_current: usize,
 	index_downstr: usize,
 ) {
@@ -466,7 +466,7 @@ fn erosion_adjust(
 
 fn erosion_initiate(
 	rg: &mut RgParams,
-	_lp: &mut worldgen::LayerPack,
+	_lp: &mut LayerPack,
 	river_id: u16,
 ) {
 	rg.rivers_paths.erosion_queue.push(ErosionEntry {

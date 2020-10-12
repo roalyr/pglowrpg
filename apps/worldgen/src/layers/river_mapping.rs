@@ -18,9 +18,9 @@ use width_ops::*;
 
 use crate::array_ops::noise_maps;
 use crate::array_ops::translate;
-use crate::worldgen;
 
 //use constants::general::*;
+use codec::LayerPack;
 use constants_world::*;
 use coords::Index;
 use io_ops::toml::strings;
@@ -82,7 +82,7 @@ pub struct RgParams {
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ MAIN ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn get(
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 	wg_str: &strings::worldgen_strings::Stuff,
 ) {
 	//initiate the parameter structure
@@ -129,7 +129,7 @@ pub fn get(
 //▒▒▒▒▒▒▒▒ RIVER QUANTITY ESTIMATION ▒▒▒▒▒▒▒▒
 fn estimate_sources_number(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 	_wg_str: &strings::worldgen_strings::Stuff,
 ) {
 	for i in 0..lp.wi.map_size {

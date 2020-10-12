@@ -13,16 +13,10 @@ pub fn write_data(
 	create_dir(&data_dir);
 
 	let file_path = data_dir
-		.join("world_data")
+		.join(NAME_DATA_WORLD)
 		.with_extension(EXTENSION_SAVE_DATA);
 
 	println!("{}", wg_str.wg27);
 	let encoded: Vec<u8> = bincode::serialize(&lp).unwrap();
 	compress_to_storage(encoded, &file_path);
-
-	//Just a test and for future use
-	//use io_ops::decompress_to_memory;
-	//let data_read = decompress_to_memory(&file_path);
-	//let data_decoded: LayerPack = bincode::deserialize(&data_read[..]).unwrap();
-	//println!("{:?}", data_decoded);
 }

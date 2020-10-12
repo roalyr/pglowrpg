@@ -23,3 +23,6 @@ pub const EXTENSION_LOCALE: &str = "toml";
 
 pub const EXTENSION_SAVE_IMAGE: &str = "png";
 pub const EXTENSION_SAVE_DATA: &str = "lz4";
+
+//▒▒▒▒▒▒▒▒▒▒▒▒ NAMES ▒▒▒▒▒▒▒▒▒▒▒▒▒
+pub const NAME_DATA_WORLD: &str = "world_data";

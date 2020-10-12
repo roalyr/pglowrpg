@@ -1,27 +1,38 @@
-use io_ops::toml::strings;
-
-use std::fs;
 use std::io;
 use std::io::Write;
-use std::path::Path;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ INPUT ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn new_line_io(
 	prompt_str: &str,
-	ui_el: &strings::ui_elements::Stuff,
+	prompt_sym: &str,
 ) -> String {
 	let mut input = String::new();
 
 	//Print a prompt message
-	println!("{}", prompt_str);
+	print!("{}", prompt_str);
 
 	//Print "ready" symbol
-	print!("{}", ui_el.prompt1);
+	print!("{}", prompt_sym);
 	let _ = io::stdout().flush();
 
 	//Read the input
 	io::stdin().read_line(&mut input).unwrap();
 	input.trim().to_string()
+}
+
+pub fn autocomplete(
+	input: &String,
+	options: &Vec<String>,
+) -> String {
+	//This will allow to enter parts of the name optionally
+	//Basically an autocomplete
+	let mut output = String::new();
+	for entry in options {
+		if entry.contains(&input.as_str()) {
+			output = entry.to_string();
+		}
+	}
+	output
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ CONFIRMATION ▒▒▒▒▒▒▒▒▒▒▒▒▒

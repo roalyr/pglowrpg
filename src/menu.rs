@@ -1,5 +1,5 @@
 use io_ops::toml::{options, strings};
-use ui::prompt;
+use ui::prompts;
 
 pub fn start() {
 	//Load options, must be here
@@ -29,7 +29,7 @@ pub fn start() {
 
 	//Menu loop
 	loop {
-		let mut input = prompt::new_line_io("", &ui_el);
+		let input = prompts::new_line_io("", &ui_el.prompt1);
 
 		if input.is_empty() {
 			continue;

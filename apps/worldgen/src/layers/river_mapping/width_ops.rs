@@ -4,7 +4,7 @@ use crate::layers::river_mapping::*;
 
 pub fn map_width(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 ) {
 	//Must be cloned
 	let width_queue = rg.rivers_paths.width_queue.clone();
@@ -91,7 +91,7 @@ pub fn map_width(
 
 fn fix_width(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 	path_array: Vec<path::Pos>,
 ) -> Vec<path::Pos> {
 	let mut path_array_downstr = Vec::new();

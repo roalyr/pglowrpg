@@ -3,7 +3,7 @@ use crate::layers::river_mapping::*;
 
 pub fn map_erosion(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 ) {
 	//Must be cloned
 	let erosion_queue = rg.rivers_paths.erosion_queue.clone();
@@ -64,7 +64,7 @@ pub fn map_erosion(
 
 fn erode_path(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 	path_array: Vec<path::Pos>,
 	terrain_diff: u16,
 ) {
@@ -176,7 +176,7 @@ fn erode_path(
 
 fn erosion(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 	erosion_width_iter: usize,
 	erosion_i: usize,
 	erosion_j: usize,

@@ -4,7 +4,7 @@ use crate::layers::river_mapping::*;
 //▒▒▒▒▒▒▒▒▒▒ WITH OR WITHOUT ▒▒▒▒▒▒▒▒▒▒▒
 pub fn with_water(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 ) {
 	let iter = rg.dv.x0 + rg.dv.y0;
 	let random =
@@ -19,7 +19,7 @@ pub fn with_water(
 
 pub fn without_water(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 ) {
 	//if there is a pole - go for biased placement
 	without_water_no_pole(rg, lp);
@@ -28,7 +28,7 @@ pub fn without_water(
 //▒▒▒▒▒▒▒▒▒▒▒▒ DETAILS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn without_water_no_pole(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 ) {
 	project_randomly(rg, lp);
 }
@@ -36,7 +36,7 @@ pub fn without_water_no_pole(
 //▒▒▒▒▒▒▒▒▒▒▒▒ ROUTINES ▒▒▒▒▒▒▒▒▒▒▒▒▒
 fn seek_waterbodies(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 ) {
 	//Aliases
 	let size = lp.wi.map_size;
@@ -96,7 +96,7 @@ fn seek_waterbodies(
 
 fn project_randomly(
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 ) {
 	//Aliases
 	let vec_angle = lp.wi.river_vect_angle;

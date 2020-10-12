@@ -5,7 +5,7 @@ pub fn prob(
 	i: usize,
 	j: usize,
 	rg: &mut RgParams,
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 ) -> f32 {
 	//Aliases
 	let index = rg.xy.ind(i, j);

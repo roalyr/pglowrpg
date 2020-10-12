@@ -261,7 +261,7 @@ def main_menu():
 		dir_remove('presets_default', path_target)
 		dir_remove('presets_user', path_target)
 		dir_remove('options', path_target)
-		dir_remove('save', path_target)
+		#dir_remove('save', path_target)
 		print(divider)
 		print('target directory cleared, remaining files:')
 		os.system('ls'+' '+path_target)

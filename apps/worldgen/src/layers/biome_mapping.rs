@@ -1,9 +1,9 @@
 use crate::array_ops::translate;
-use crate::worldgen;
+use codec::LayerPack;
 use constants_world::*;
 
 #[allow(clippy::cognitive_complexity)]
-pub fn get(lp: &mut worldgen::LayerPack) {
+pub fn get(lp: &mut LayerPack) {
 	for index in 0..lp.layer_vec_len {
 		let biome_type = match_biomes(lp, index);
 		lp.biomes.write(biome_type, index);
@@ -11,7 +11,7 @@ pub fn get(lp: &mut worldgen::LayerPack) {
 }
 
 fn match_biomes(
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 	index: usize,
 ) -> u8 {
 	let temp = translate::get_abs(

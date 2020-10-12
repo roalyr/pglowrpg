@@ -7,6 +7,8 @@ edition = "2018"
 
 [dependencies]
 constants_world = { path = "../../libs/constants_world" }
+coords = { path = "../../libs/coords" }
+io_ops = { path = "../../libs/io_ops" }
 
 serde = { version = "1.0", features = ["derive"]  }
 #toml = "0.5"

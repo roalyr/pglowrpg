@@ -12,6 +12,8 @@ pub fn write_save(
 	let world_name =
 		[preset_name, "_", &lp.wi.seed.to_string()].concat();
 
+	//Add custom names, check for existing, etc.
+
 	//Make a save directory if none exists
 	let save_dir = Path::new(PATH_SAVE).to_path_buf();
 

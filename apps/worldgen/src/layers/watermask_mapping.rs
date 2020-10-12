@@ -1,12 +1,11 @@
 use crate::array_ops::size_2_pow;
 use crate::array_ops::translate;
-use crate::worldgen;
 
+use codec::LayerPack;
 use constants_world::*;
-
 use coords::Index;
 
-pub fn get(lp: &mut worldgen::LayerPack) {
+pub fn get(lp: &mut LayerPack) {
 	let xy = Index {
 		map_size: lp.wi.map_size,
 	};
@@ -57,7 +56,7 @@ pub fn get(lp: &mut worldgen::LayerPack) {
 }
 
 fn write_map(
-	lp: &mut worldgen::LayerPack,
+	lp: &mut LayerPack,
 	ff: &mut floodfill::FloodFill<u16>,
 ) {
 	let xy = Index {
