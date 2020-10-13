@@ -24,28 +24,31 @@ pub fn start(
 		&ui_el.separator1,
 	);
 
-	let save_dir_formatted = save_dir_tuple.0;
+	//Get the contents of save dir
 	let save_dir_paths = save_dir_tuple.1;
+	let save_dir_formatted =
+		[save_dir_tuple.0, "\n".to_string()].concat();
 
 	println!("{}", &gm_str.gm3);
 
+	//Read input to pick a specific save
 	let mut input_save = String::new();
-
 	input_save =
 		prompts::new_line_io(&save_dir_formatted, &ui_el.prompt2);
 
 	input_save = prompts::autocomplete(&input_save, &save_dir_paths);
- 	
-	if input_save.is_empty(){
+
+	if input_save.is_empty() {
 		//Warning about no such folder
 		println!("{}", &gm_str.gm5);
-		return
+		return;
 	}
 
 	println!("{}", &ui_el.separator2);
 
 	//Show selected world
 	prompts::selected(&gm_str.gm4, &input_save);
+	println!("{}", &ui_el.separator2);
 
 	let save_data = Path::new(PATH_SAVE)
 		.to_path_buf()
@@ -58,18 +61,20 @@ pub fn start(
 	let lp: LayerPack = bincode::deserialize(&data_read[..]).unwrap();
 
 	//For predictive input, can be moved somewhere else later
+	//All commands must be registered here in ordet to be able to
+	//match to them
 	let commands = [
+		//Movement directions
 		"north".to_string(),
 		"east".to_string(),
 		"south".to_string(),
 		"west".to_string(),
-		"test".to_string(),
-		"foo".to_string(),
-		"bar".to_string(),
-		"foobar".to_string(),
+		//teleport
+		"x".to_string(),
+		"y".to_string(),
+		//Common actions
 		"?".to_string(),
 		"q".to_string(),
-		"".to_string(),
 	]
 	.to_vec();
 
@@ -91,6 +96,7 @@ pub fn start(
 			&(y.to_string()),
 			" index:",
 			&(index.to_string()),
+			" ",
 		]
 		.concat();
 
@@ -100,13 +106,60 @@ pub fn start(
 		prompts::selected(&gm_str.gm6, &input);
 		println!("{}", &ui_el.separator2);
 
+		//Movement directions
+		match input.as_str() {
+			"west" => {
+				x = x.saturating_sub(1);
+			}
+			"north" => {
+				y = y.saturating_add(1);
+				if y > map_size {
+					y = map_size;
+				}
+			}
+			"east" => {
+				x = x.saturating_add(1);
+				if x > map_size {
+					x = map_size;
+				}
+			}
+			"south" => {
+				y = y.saturating_sub(1);
+			}
+			&_ => {}
+		}
+
+		//Teleport
+		match input.as_str() {
+			"x" => {
+				x = prompts::new_line_io("", &ui_el.prompt2)
+					.trim()
+					.parse::<usize>()
+					.expect("Expected an integer");
+				if x > map_size {
+					x = map_size;
+				}
+			}
+			"y" => {
+				y = prompts::new_line_io("", &ui_el.prompt2)
+					.trim()
+					.parse::<usize>()
+					.expect("Expected an integer");
+				if y > map_size {
+					y = map_size;
+				}
+			}
+			&_ => {}
+		}
+
 		//Common commands?
 		match input.as_str() {
 			"q" => return,
 			"?" => {
 				println!("{}", &gm_str.gm2);
+				println!("Registered commands are:\n{:?}", &commands);
 			}
-			&_ => continue,
+			&_ => {}
 		}
 	}
 }

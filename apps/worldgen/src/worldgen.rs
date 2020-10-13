@@ -43,21 +43,23 @@ pub fn start(
 		&ui_el.separator1,
 	);
 
-	let presets_formatted =
-		[preset_def_tuple.0, preset_user_tuple.0].concat();
+	//Get the contents of the presets folder
 	let mut presets_paths = preset_def_tuple.1;
 	presets_paths.append(&mut preset_user_tuple.1);
+	let presets_formatted =
+		[preset_def_tuple.0, preset_user_tuple.0, "\n".to_string()]
+			.concat();
 
 	let mut input_preset =
 		prompts::new_line_io(&presets_formatted, &ui_el.prompt2);
 
 	input_preset =
 		prompts::autocomplete(&input_preset, &presets_paths);
-		
-	if input_preset.is_empty(){
+
+	if input_preset.is_empty() {
 		//Warning about no such preset
 		println!("{}", &wg_str.wg28);
-		return
+		return;
 	}
 
 	println!("{}", &ui_el.separator2);

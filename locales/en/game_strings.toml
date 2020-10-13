@@ -1,9 +1,13 @@
 #Order of strings is not important, because they can get rearranged
 
-gm1 = "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ GAME ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒"
+gm1 = "\n▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ GAME ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒\n"
 gm2 = """(q) - quit\n\
-(?) - help"""
-gm3 = "Select a world to load:\n"
+			(?) - help\n"""
+
+gm3 = """Select a world to load, leave empty to abort and return\n\
+			to main menu. You can enter a few characters from any\n\
+			word in the list to select the respective option:\n"""
+
 gm4 = "Selected world save file: "
 gm5 = "No save matches the input, or no worlds were generated."
 gm6 = "Input: "
