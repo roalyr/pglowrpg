@@ -147,13 +147,14 @@ def main_menu():
 		print('(tts) - sync and "cargo run" the project, output via terminal and text-to-speech (Termux only)')
 		print('')
 		print('(a) - clear target folder and sync files anew')
-		print('(c) - sync and "cargo check" it,')
-		print('(p) - sync and "cargo clippy" it,')
+		print('(c) - sync and "cargo check" it')
+		print('(p) - sync and "cargo clippy" it')
 		print('(r) - do "rustfmt"')
 		print('(clear) - clear ".bk" files')
 		print('(tree) - "tree" the target folder')
+		print('(cs) - clear target save folder')
 		print('')
-		print('(d) - "cargo dep-graph" the project,')
+		print('(d) - "cargo dep-graph" the project')
 		print('(e) - "rustc --explain"')
 		print('(u) - do "cargo update"')
 		print(banner_rust)
@@ -267,6 +268,13 @@ def main_menu():
 		os.system('ls'+' '+path_target)
 		print(divider)
 		
+	def clear_save():
+		inp = input("Really? » ").strip()
+		if inp == "yes":
+			dir_remove('save', path_target)
+			print(divider)
+			print('target directory saves cleared')
+			print(divider)
 		
 	def cargo_deps():
 		os.system('rm'+' '+path_target+'dep_graph.png || echo "Shell: nothing to remove"')
@@ -396,6 +404,8 @@ def main_menu():
 			clear_bk()
 		elif inp == "tree":
 			target_tree()
+		elif inp == "cs":
+			clear_save()
 		elif inp == "t":
 			os.system('clear')
 			git_menu()

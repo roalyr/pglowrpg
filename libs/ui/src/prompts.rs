@@ -24,15 +24,43 @@ pub fn autocomplete(
 	input: &String,
 	options: &Vec<String>,
 ) -> String {
-	//This will allow to enter parts of the name optionally
-	//Basically an autocomplete
-	let mut output = String::new();
+	let mut selected_queue = Vec::new();
+	let mut priority_queue = Vec::new();
+
+	if input.is_empty() {
+		return String::new();
+	}
+
+	//Gather all matches
 	for entry in options {
 		if entry.contains(&input.as_str()) {
-			output = entry.to_string();
+			selected_queue.push(entry.to_string());
 		}
 	}
-	output
+
+	//Priority is decided by character appearance in word
+	//The earlier - the higher the priority
+	for entry in selected_queue.iter().by_ref() {
+		let offset = entry.find(input).unwrap_or(entry.len());
+		let priority = entry.clone().drain(..offset).count();
+		priority_queue.push(priority);
+		println!("{} {:?}", entry, priority);
+	}
+
+	//Pick the highest priority one
+	let min = priority_queue.iter().min().unwrap_or(&0);
+	let index =
+		priority_queue.iter().position(|x| x == min).unwrap_or(0);
+
+	if selected_queue.is_empty() {
+		return String::new();
+	} else {
+		selected_queue[index].clone()
+	}
+
+	//if entry.contains(&input.as_str()) {
+	//output = entry.to_string();
+	//}
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ CONFIRMATION ▒▒▒▒▒▒▒▒▒▒▒▒▒

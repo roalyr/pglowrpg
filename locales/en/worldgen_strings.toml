@@ -1,10 +1,12 @@
 #Order of strings is not important, because they can get rearranged
 
-wg1 = """▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ WORLDGEN ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒\n\
-Select a preset by entering its name, or\n\
-leave empty to use the preset from worldgen options.\n\
+wg1 = """▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ WORLDGEN ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒\n\
+Select a preset by entering its name, or leave empty to\n\
+abort worldgen and return to main memu.\n\
 See ./presets_default/world and ./presets_user/world\n\
 for available presets:\n"""
+
+wg28 = "No preset matches input, aborting."
 
 wg2 = "Using default seed from preset, enter «R» to randomize.\n"
 wg3 = "Selected preset: "
@@ -41,7 +43,6 @@ wg22 = "Saving georegion map..."
 
 wg27 = "Saving world layers data..."
 
-wg28 = ""
 wg29 = ""
 wg30 = ""
 wg31 = ""

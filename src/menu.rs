@@ -26,6 +26,7 @@ pub fn start() {
 
 	//Intro message
 	println!("{}", mn_str.mn1);
+	println!("{}", mn_str.mn2);
 
 	//Menu loop
 	loop {
@@ -41,14 +42,14 @@ pub fn start() {
 				&options, &wg_str, &panic_str, &ui_el,
 			);
 			//Intro message repeated
-			println!("{}", mn_str.mn1);
+			println!("{}", mn_str.mn2);
 		}
 
 		if (input == "g") || (input == "G") {
 			println!("{}", mn_str.mn3);
 			game::game::start(&options, &gm_str, &panic_str, &ui_el);
 			//Intro message repeated
-			println!("{}", mn_str.mn1);
+			println!("{}", mn_str.mn2);
 		}
 
 		if (input == "q") || (input == "Q") {

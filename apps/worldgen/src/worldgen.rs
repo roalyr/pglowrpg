@@ -53,6 +53,12 @@ pub fn start(
 
 	input_preset =
 		prompts::autocomplete(&input_preset, &presets_paths);
+		
+	if input_preset.is_empty(){
+		//Warning about no such preset
+		println!("{}", &wg_str.wg28);
+		return
+	}
 
 	println!("{}", &ui_el.separator2);
 

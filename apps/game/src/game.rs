@@ -1,5 +1,6 @@
 use codec::*;
 use constants_app::*;
+use coords::Index;
 use io_ops::decompress_to_memory;
 use io_ops::toml::{options, strings};
 use std::path::Path;
@@ -27,15 +28,18 @@ pub fn start(
 	let save_dir_paths = save_dir_tuple.1;
 
 	println!("{}", &gm_str.gm3);
-	let mut input_save =
+
+	let mut input_save = String::new();
+
+	input_save =
 		prompts::new_line_io(&save_dir_formatted, &ui_el.prompt2);
 
 	input_save = prompts::autocomplete(&input_save, &save_dir_paths);
-
-	if input_save.is_empty() {
+ 	
+	if input_save.is_empty(){
 		//Warning about no such folder
 		println!("{}", &gm_str.gm5);
-		return;
+		return
 	}
 
 	println!("{}", &ui_el.separator2);
@@ -51,24 +55,58 @@ pub fn start(
 		.with_extension(EXTENSION_SAVE_DATA);
 
 	let data_read = decompress_to_memory(&save_data);
-	let _data_decoded: LayerPack =
-		bincode::deserialize(&data_read[..]).unwrap();
+	let lp: LayerPack = bincode::deserialize(&data_read[..]).unwrap();
 
-	//main loop
+	//For predictive input, can be moved somewhere else later
+	let commands = [
+		"north".to_string(),
+		"east".to_string(),
+		"south".to_string(),
+		"west".to_string(),
+		"test".to_string(),
+		"foo".to_string(),
+		"bar".to_string(),
+		"foobar".to_string(),
+		"?".to_string(),
+		"q".to_string(),
+		"".to_string(),
+	]
+	.to_vec();
+
+	//Main loop init
+	let mut input = String::new();
+	let map_size = lp.wi.map_size;
+	let xy = Index { map_size };
+	let mut x = 0;
+	let mut y = 0;
+
+	//Main loop
 	loop {
-		let input = prompts::new_line_io("", &ui_el.prompt1);
+		//Coordinates 1D,  2D, height
+		let index = xy.ind(x, y);
+		let coord_str = [
+			"x:",
+			&(x.to_string()),
+			" y:",
+			&(y.to_string()),
+			" index:",
+			&(index.to_string()),
+		]
+		.concat();
 
-		if input.is_empty() {
-			continue;
-		}
+		//Input handling
+		input = prompts::new_line_io(&coord_str, &ui_el.prompt2);
+		input = prompts::autocomplete(&input, &commands);
+		prompts::selected(&gm_str.gm6, &input);
+		println!("{}", &ui_el.separator2);
 
-		if (input == "q") || (input == "Q") {
-			return;
-		}
-
-		if input == "?" {
-			//Intro message
-			println!("{}", &gm_str.gm2);
+		//Common commands?
+		match input.as_str() {
+			"q" => return,
+			"?" => {
+				println!("{}", &gm_str.gm2);
+			}
+			&_ => continue,
 		}
 	}
 }
