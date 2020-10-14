@@ -1,5 +1,4 @@
-use crate::array_ops::size_2_pow;
-use crate::array_ops::translate;
+use units::translate;
 
 use codec::LayerPack;
 use constants_world::*;
@@ -67,7 +66,7 @@ fn write_map(
 		for y in ff.y_min..=ff.y_max {
 			if ff.region_map[xy.ind(x, y)] {
 				//The stored value is the x in 2^x = size
-				let val = size_2_pow::map(ff.region_size);
+				let val = translate::get_pow_2_size(ff.region_size);
 
 				lp.topography.write(
 					val as u16,

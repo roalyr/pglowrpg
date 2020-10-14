@@ -44,7 +44,7 @@ pub fn autocomplete(
 		let offset = entry.find(input).unwrap_or(entry.len());
 		let priority = entry.clone().drain(..offset).count();
 		priority_queue.push(priority);
-		println!("{} {:?}", entry, priority);
+		//println!("{} {:?}", entry, priority);
 	}
 
 	//Pick the highest priority one

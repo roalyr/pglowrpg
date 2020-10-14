@@ -17,7 +17,7 @@ use waterbody_ops::*;
 use width_ops::*;
 
 use crate::array_ops::noise_maps;
-use crate::array_ops::translate;
+use units::translate;
 
 //use constants::general::*;
 use codec::LayerPack;

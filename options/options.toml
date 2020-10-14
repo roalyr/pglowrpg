@@ -19,7 +19,7 @@
 # the name of the files in the /presets/world
 # folder, without ".toml" file extension.
 
-	default_preset = "island_small"
+	default_preset = "island_small" #obsolete
 	
 # Render options control the png image output
 # of the generators.
