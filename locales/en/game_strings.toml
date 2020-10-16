@@ -34,9 +34,9 @@ gm24 = "river downstream: "
 
 gm7 = "Input the coordinate: "
 
+gm25 = "Input the value for render size (default is 13): "
 
 
-gm25 = ""
 gm26 = ""
 gm27 = ""
 gm28 = ""

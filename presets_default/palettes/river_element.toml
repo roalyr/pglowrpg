@@ -1,9 +1,9 @@
 color_0 = "#FF000000" #background
 
-color_1 = "#FF31C400"	#River source
+color_1 = "#FF04FF00"	#River source
 color_2 = "#FFFFFFFF"	#River body
-color_3 = "#FFDEB500"	#River end (not used currently)
-color_4 = "#FF002DD1"	#River waterfall
-color_5 = "#FFB80003"	#River waterfalls multiple
+color_3 = "#FFFF0004"	#River end (not used currently)
+color_4 = "#FF00FFF2"	#River waterfall
+color_5 = "#FF0059FF"	#River waterfalls multiple
 
 color_100 = "#882FFFE7" #other
