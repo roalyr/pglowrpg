@@ -1,5 +1,4 @@
-use crate::layers::river_mapping::*;
-//use crate::worldgen;
+use crate::layer_ops::river_mapping::*;
 
 pub fn map_erosion(
 	rg: &mut RgParams,

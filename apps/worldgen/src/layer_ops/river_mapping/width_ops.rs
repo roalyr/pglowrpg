@@ -1,6 +1,4 @@
-use crate::layers::river_mapping::*;
-//use crate::worldgen;
-//use constants::world_constants::*;
+use crate::layer_ops::river_mapping::*;
 
 pub fn map_width(
 	rg: &mut RgParams,

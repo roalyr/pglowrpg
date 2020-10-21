@@ -38,16 +38,14 @@ pub fn start() {
 
 		if (input == "w") || (input == "W") {
 			println!("{}", mn_str.mn2);
-			worldgen::worldgen::start(
-				&options, &wg_str, &panic_str, &ui_el,
-			);
+			worldgen::start(&options, &wg_str, &panic_str, &ui_el);
 			//Intro message repeated
 			println!("{}", mn_str.mn2);
 		}
 
 		if (input == "g") || (input == "G") {
 			println!("{}", mn_str.mn3);
-			game::game::start(&options, &gm_str, &panic_str, &ui_el);
+			game::start(&options, &gm_str, &panic_str, &ui_el);
 			//Intro message repeated
 			println!("{}", mn_str.mn2);
 		}

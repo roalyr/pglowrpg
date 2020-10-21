@@ -1,4 +1,4 @@
-use crate::worldgen::*;
+use crate::*;
 use io_ops::create_dir;
 use io_ops::writepng::*;
 

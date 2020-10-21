@@ -1,6 +1,5 @@
 pub mod erosion_ops;
 pub mod mapping_ops;
-//pub mod mask_ops;
 pub mod path_ops;
 pub mod probability_ops;
 pub mod vector_ops;
@@ -9,7 +8,6 @@ pub mod width_ops;
 
 use erosion_ops::*;
 use mapping_ops::*;
-//use mask_ops::*;
 use path_ops::*;
 use probability_ops::*;
 use vector_ops::*;
@@ -17,17 +15,14 @@ use waterbody_ops::*;
 use width_ops::*;
 
 use crate::array_ops::noise_maps;
-use units::translate;
-
-//use constants::general::*;
 use codec::LayerPack;
 use constants_world::*;
 use coords::Index;
 use io_ops::toml::strings;
 use ui::progress;
+use units::translate;
 
 use line_drawing::BresenhamCircle;
-//use std::convert::TryInto;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ STRUCTURES ▒▒▒▒▒▒▒▒▒▒▒▒▒
 //river entry stores all the relevant river data

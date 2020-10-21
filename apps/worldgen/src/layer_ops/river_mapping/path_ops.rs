@@ -1,7 +1,6 @@
-use crate::layers::river_mapping::*;
-//use crate::worldgen;
+use crate::layer_ops::river_mapping::*;
+
 use crate::array_ops::noise_maps::NoiseMode::*;
-//use std::f32::consts::PI;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ INIT PATHS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn set_paths(

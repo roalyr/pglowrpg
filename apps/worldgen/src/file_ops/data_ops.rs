@@ -1,4 +1,4 @@
-use crate::worldgen::*;
+use crate::*;
 use bincode;
 use io_ops::{compress_to_storage, create_dir};
 
