@@ -1,3 +1,15 @@
+pub mod action_ops;
+pub mod data_ops;
+pub mod formatting_ops;
+pub mod input_ops;
+pub mod printing_ops;
+
+use action_ops::*;
+use data_ops::*;
+use formatting_ops::*;
+use input_ops::*;
+use printing_ops::*;
+
 use codec::*;
 use colored::*;
 use constants_app::*;
@@ -12,80 +24,47 @@ use units::translate;
 use io_ops::toml::palettes::biomes;
 use io_ops::writepng::from_hex;
 
+//Common shared data for all the functions
+pub struct GameData {
+	//World
+	lp: LayerPack,
+	//Structs
+	options: options::Stuff,
+	gm_str: strings::game_strings::Stuff,
+	panic_str: strings::panic_strings::Stuff,
+	ui_el: strings::ui_elements::Stuff,
+	//Commands
+	commands: Vec<String>,
+}
+
 pub fn start(
-	_options: &options::Stuff,
-	gm_str: &strings::game_strings::Stuff,
-	_panic_str: &strings::panic_strings::Stuff,
-	ui_el: &strings::ui_elements::Stuff,
+	options: options::Stuff,
+	gm_str: strings::game_strings::Stuff,
+	panic_str: strings::panic_strings::Stuff,
+	ui_el: strings::ui_elements::Stuff,
 ) {
+	//Initiate the struct that will have all the necessary data in
+	//one place, and will be easy to share among functions, mods
+	let mut gd = GameData {
+		//Load world first
+		lp: get_layerpack(&gm_str, &ui_el),
+		//Move previously cloned structs here
+		options,
+		gm_str,
+		panic_str,
+		ui_el,
+		//Commands
+		commands: get_commands(),
+	};
+
+	//Welcoming message
 	//Banner
-	println!("{}", &gm_str.gm1);
+	println!("{}", &gd.gm_str.gm1);
 	//Intro message
-	println!("{}", &gm_str.gm2);
-
-	//Select a world to load
-	let save_dir_tuple = io_ops::dir_dir_contents(
-		PATH_SAVE,
-		&ui_el.bullet1,
-		&ui_el.separator1,
-	);
-
-	//Get the contents of save dir
-	let save_dir_paths = save_dir_tuple.1;
-	let save_dir_formatted =
-		[save_dir_tuple.0, "\n".to_string()].concat();
-
-	println!("{}", &gm_str.gm3);
-
-	//Read input to pick a specific save
-	let mut input_save =
-		prompts::new_line_io(&save_dir_formatted, &ui_el.prompt2);
-
-	input_save = prompts::autocomplete(&input_save, &save_dir_paths);
-
-	if input_save.is_empty() {
-		//Warning about no such folder
-		println!("{}", &gm_str.gm5);
-		return;
-	}
-
-	println!("{}", &ui_el.separator2);
-
-	//Show selected world
-	prompts::selected(&gm_str.gm4, &input_save);
-	println!("{}", &ui_el.separator2);
-
-	let save_data = Path::new(PATH_SAVE)
-		.to_path_buf()
-		.join(input_save)
-		.join(PATH_SAVE_DATA)
-		.join(NAME_DATA_WORLD)
-		.with_extension(EXTENSION_SAVE_DATA);
-
-	let data_read = decompress_to_memory(&save_data);
-	let lp: LayerPack = bincode::deserialize(&data_read[..]).unwrap();
-
-	//For predictive input, can be moved somewhere else later
-	//All commands must be registered here in ordet to be able to
-	//match to them
-	let commands = [
-		//Movement directions
-		"north".to_string(),
-		"east".to_string(),
-		"south".to_string(),
-		"west".to_string(),
-		//teleport
-		"x".to_string(),
-		"y".to_string(),
-		//Common actions
-		"?".to_string(),
-		"q".to_string(),
-		"render surrounding".to_string(),
-	]
-	.to_vec();
+	println!("{}", &gd.gm_str.gm2);
 
 	//Main loop init
-	let map_size = lp.wi.map_size;
+	let map_size = gd.lp.wi.map_size;
 	let xy = Index { map_size };
 	let mut x = 0;
 	let mut y = 0;
@@ -101,44 +80,50 @@ pub fn start(
 		let index = xy.ind(x, y);
 
 		//Read data
+		//Into data ops
 		let temp = translate::get_abs(
-			lp.climate.read(lp.climate.TEMPERATURE, index) as f32,
+			gd.lp.climate.read(gd.lp.climate.TEMPERATURE, index)
+				as f32,
 			255.0,
-			lp.wi.abs_temp_min as f32,
-			lp.wi.abs_temp_max as f32,
+			gd.lp.wi.abs_temp_min as f32,
+			gd.lp.wi.abs_temp_max as f32,
 		) as isize;
 
 		let rain = translate::get_abs(
-			lp.climate.read(lp.climate.RAINFALL, index) as f32,
+			gd.lp.climate.read(gd.lp.climate.RAINFALL, index) as f32,
 			255.0,
-			lp.wi.abs_rain_min as f32,
-			lp.wi.abs_rain_max as f32,
+			gd.lp.wi.abs_rain_min as f32,
+			gd.lp.wi.abs_rain_max as f32,
 		) as usize;
 
 		let elev = translate::get_abs(
-			lp.topography.read(lp.topography.TERRAIN, index) as f32,
+			gd.lp.topography.read(gd.lp.topography.TERRAIN, index)
+				as f32,
 			255.0,
-			lp.wi.abs_elev_min as f32,
-			lp.wi.abs_elev_max as f32,
+			gd.lp.wi.abs_elev_min as f32,
+			gd.lp.wi.abs_elev_max as f32,
 		) as usize;
 
 		let water =
-			lp.topography.read(lp.topography.WATERMASK, index);
+			gd.lp.topography.read(gd.lp.topography.WATERMASK, index);
 
-		let biome = lp.biomes.read(index);
-		let georeg_id = lp.georeg_id.read(index);
+		let biome = gd.lp.biomes.read(index);
+		let georeg_id = gd.lp.georeg_id.read(index);
 
-		let river_id = lp.rivers_id.read(index);
-		let river_width = lp.rivers.read(lp.rivers.WIDTH, index);
-		let river_element = lp.rivers.read(lp.rivers.ELEMENT, index);
+		let river_id = gd.lp.rivers_id.read(index);
+		let river_width =
+			gd.lp.rivers.read(gd.lp.rivers.WIDTH, index);
+		let river_element =
+			gd.lp.rivers.read(gd.lp.rivers.ELEMENT, index);
 		let river_upstream =
-			lp.rivers.read(lp.rivers.UPSTREAM, index);
+			gd.lp.rivers.read(gd.lp.rivers.UPSTREAM, index);
 		let river_downstream =
-			lp.rivers.read(lp.rivers.DOWNSTREAM, index);
+			gd.lp.rivers.read(gd.lp.rivers.DOWNSTREAM, index);
 
 		//Format strings
+		//Into formatting ops
 		let coord_str = [
-			&gm_str.gm6,
+			&gd.gm_str.gm6,
 			"x:",
 			&(x.to_string()),
 			" y:",
@@ -150,27 +135,27 @@ pub fn start(
 		.concat();
 
 		let temp_str =
-			[&gm_str.gm8, &(temp.to_string()), " ℃"].concat();
+			[&gd.gm_str.gm8, &(temp.to_string()), " ℃"].concat();
 
 		let biome_str =
-			[&gm_str.gm16, &(biome.to_string()), ""].concat();
+			[&gd.gm_str.gm16, &(biome.to_string()), ""].concat();
 
 		let georeg_id_str =
-			[&gm_str.gm17, &(georeg_id.to_string()), ""].concat();
+			[&gd.gm_str.gm17, &(georeg_id.to_string()), ""].concat();
 
 		let rain_str =
-			[&gm_str.gm9, &(rain.to_string()), " mm"].concat();
+			[&gd.gm_str.gm9, &(rain.to_string()), " mm"].concat();
 
 		let elev_str = [
-			&gm_str.gm10,
+			&gd.gm_str.gm10,
 			{
 				//Must be less or equal
-				if elev <= lp.wi.waterlevel {
-					s = [&(elev.to_string()), " m ", &gm_str.gm14]
+				if elev <= gd.lp.wi.waterlevel {
+					s = [&(elev.to_string()), " m ", &gd.gm_str.gm14]
 						.concat();
 					&s
 				} else {
-					s = [&(elev.to_string()), " m ", &gm_str.gm15]
+					s = [&(elev.to_string()), " m ", &gd.gm_str.gm15]
 						.concat();
 					&s
 				}
@@ -180,13 +165,17 @@ pub fn start(
 		.concat();
 
 		let water_str = [
-			&gm_str.gm11,
+			&gd.gm_str.gm11,
 			{
 				match water {
-					0 => &gm_str.gm12,
+					0 => &gd.gm_str.gm12,
 					_ => {
-						s = [&gm_str.gm13, &(water.to_string()), ""]
-							.concat();
+						s = [
+							&gd.gm_str.gm13,
+							&(water.to_string()),
+							"",
+						]
+						.concat();
 						&s
 					}
 				}
@@ -196,30 +185,30 @@ pub fn start(
 		.concat();
 
 		let river_str = [
-			&gm_str.gm18,
+			&gd.gm_str.gm18,
 			{
 				match river_id {
-					0 => &gm_str.gm19,
+					0 => &gd.gm_str.gm19,
 					_ => {
 						s = [
 							//id
-							&gm_str.gm20,
+							&gd.gm_str.gm20,
 							&(river_id.to_string()),
 							"\n",
 							//width
-							&gm_str.gm21,
+							&gd.gm_str.gm21,
 							&(river_width.to_string()),
 							"\n",
 							//element
-							&gm_str.gm22,
+							&gd.gm_str.gm22,
 							&(river_element.to_string()),
 							"\n",
 							//upstream
-							&gm_str.gm23,
+							&gd.gm_str.gm23,
 							&(river_upstream.to_string()),
 							"\n",
 							//downstream
-							&gm_str.gm24,
+							&gd.gm_str.gm24,
 							&(river_downstream.to_string()),
 							"",
 						]
@@ -232,6 +221,7 @@ pub fn start(
 		]
 		.concat();
 
+		//Into printing ops
 		//Output handling
 		println!("{}", coord_str);
 		println!("{}", elev_str);
@@ -243,13 +233,14 @@ pub fn start(
 		println!("{}", river_str);
 
 		//temporary here
-		render_land(&lp, x, y, 13);
+		render_land(&gd, x, y, 13);
 
 		//Input handling
-		let mut input = prompts::new_line_io("", &ui_el.prompt2);
-		input = prompts::autocomplete(&input, &commands);
-		println!("{}", &ui_el.separator2);
+		let mut input = prompts::new_line_io("", &gd.ui_el.prompt2);
+		input = prompts::autocomplete(&input, &gd.commands);
+		println!("{}", &gd.ui_el.separator2);
 
+		//Into action ops
 		//Movement directions
 		match input.as_str() {
 			"west" => {
@@ -276,19 +267,25 @@ pub fn start(
 		//Teleport
 		match input.as_str() {
 			"x" => {
-				x = prompts::new_line_io(&gm_str.gm7, &ui_el.prompt2)
-					.trim()
-					.parse::<usize>()
-					.unwrap_or(x);
+				x = prompts::new_line_io(
+					&gd.gm_str.gm7,
+					&gd.ui_el.prompt2,
+				)
+				.trim()
+				.parse::<usize>()
+				.unwrap_or(x);
 				if x >= map_size {
 					x = map_size - 1;
 				}
 			}
 			"y" => {
-				y = prompts::new_line_io(&gm_str.gm7, &ui_el.prompt2)
-					.trim()
-					.parse::<usize>()
-					.unwrap_or(y);
+				y = prompts::new_line_io(
+					&gd.gm_str.gm7,
+					&gd.ui_el.prompt2,
+				)
+				.trim()
+				.parse::<usize>()
+				.unwrap_or(y);
 				if y >= map_size {
 					y = map_size - 1;
 				}
@@ -301,21 +298,24 @@ pub fn start(
 			"q" => return,
 			"render surrounding" => {
 				let render_size = prompts::new_line_io(
-					&gm_str.gm25,
-					&ui_el.prompt2,
+					&gd.gm_str.gm25,
+					&gd.ui_el.prompt2,
 				)
 				.trim()
 				.parse::<usize>()
 				.unwrap_or(10);
-				println!("{}", &ui_el.separator2);
-				render_land(&lp, x, y, render_size);
-				println!("{}", &ui_el.separator2);
+				println!("{}", &gd.ui_el.separator2);
+				render_land(&gd, x, y, render_size);
+				println!("{}", &gd.ui_el.separator2);
 			}
 			"?" => {
-				println!("{}", &gm_str.gm2);
+				println!("{}", &gd.gm_str.gm2);
 				//Make this better
-				println!("Registered commands are:\n{:?}", &commands);
-				println!("{}", &ui_el.separator2);
+				println!(
+					"Registered commands are:\n{:?}",
+					&gd.commands
+				);
+				println!("{}", &gd.ui_el.separator2);
 			}
 			&_ => {}
 		}
@@ -325,13 +325,13 @@ pub fn start(
 //▒▒▒▒▒▒▒▒▒▒▒▒ MESSY CODE AHEAD ▒▒▒▒▒▒▒▒▒▒▒▒▒
 //Move to other module or lib
 pub fn render_land(
-	lp: &LayerPack,
+	gd: &GameData,
 	center_x: usize,
 	center_y: usize,
 	render_size: usize,
 ) {
 	let mut render_line = Vec::new();
-	let map_size = lp.wi.map_size;
+	let map_size = gd.lp.wi.map_size;
 	let xy = Index { map_size };
 	let bi: biomes::Stuff = biomes::get();
 
@@ -348,13 +348,15 @@ pub fn render_land(
 				&& ((y as usize) < map_size)
 			{
 				let index = xy.ind(x as usize, y as usize);
-				let elev =
-					lp.topography.read(lp.topography.TERRAIN, index);
+				let elev = gd
+					.lp
+					.topography
+					.read(gd.lp.topography.TERRAIN, index);
 				//let elev_rel = (elev as f32) / 255.0;
 
 				let river_width =
-					lp.rivers.read(lp.rivers.WIDTH, index);
-				let biome = lp.biomes.read(index);
+					gd.lp.rivers.read(gd.lp.rivers.WIDTH, index);
+				let biome = gd.lp.biomes.read(index);
 
 				//Forgive me what comes below. I will fix it later.
 				let mut element =
@@ -589,7 +591,8 @@ pub fn render_land(
 
 				//Swap characters every other row for better visuals
 				//Or do it randomly
-				let random = prng::get(0.0, 1.0, lp.wi.seed, index);
+				let random =
+					prng::get(0.0, 1.0, gd.lp.wi.seed, index);
 
 				if random < 0.5 {
 					//if x % 2 == 0 {
