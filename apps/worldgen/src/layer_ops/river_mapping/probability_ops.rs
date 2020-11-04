@@ -3,11 +3,11 @@ use crate::layer_ops::river_mapping::*;
 pub fn prob(
 	i: usize,
 	j: usize,
-	rg: &mut RgParams,
+	_rg: &mut RgParams,
 	lp: &mut LayerPack,
 ) -> f32 {
 	//Aliases
-	let index = rg.xy.ind(i, j);
+	let index = lp.xy.ind(i, j);
 
 	let terrain = lp.topography.read(lp.topography.TERRAIN, index);
 	let rainfall = lp.climate.read(lp.climate.RAINFALL, index);

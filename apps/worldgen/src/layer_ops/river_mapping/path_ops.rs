@@ -31,7 +31,7 @@ fn make_paths(
 	random_map: &Vec<u8>,
 ) {
 	//Aliases
-	let index = rg.xy.ind(i, j);
+	let index = lp.xy.ind(i, j);
 	let wmask = lp.topography.read(lp.topography.WATERMASK, index);
 
 	//To spawn or not to spawn?
@@ -202,10 +202,9 @@ pub fn get_terrain_map(
 
 	let mut terrain_map = vec![0; lp.layer_vec_len];
 
-	let xy = Index { map_size };
 	for i in 0..map_size {
 		for j in 0..map_size {
-			let index = xy.ind(i, j);
+			let index = lp.xy.ind(i, j);
 			terrain_map[index] =
 				lp.topography.read(lp.topography.TERRAIN, index)
 					as u8;

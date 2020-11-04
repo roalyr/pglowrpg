@@ -157,9 +157,9 @@ pub fn start(
 
 				ELEMENT: 0b_0000_0000_0000_0111,
 				WIDTH: 0b_0000_0000_0111_1000,
-				UPSTREAM: 0b_0000_0011_1000_0000,
-				DOWNSTREAM: 0b_0001_1100_0000_0000,
-				_placeholder: 0b_1110_0000_0000_0000,
+				UPSTREAM: 0b_0000_0111_1000_0000,
+				DOWNSTREAM: 0b_0111_1000_0000_0000,
+				_placeholder: 0b_1000_0000_0000_0000,
 			},
 
 			rivers_id: BitLayerRiversID {

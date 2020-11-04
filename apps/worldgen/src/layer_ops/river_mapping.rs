@@ -17,7 +17,6 @@ use width_ops::*;
 use crate::array_ops::noise_maps;
 use codec::LayerPack;
 use constants_world::*;
-use coords::Index;
 use io_ops::toml::strings;
 use ui::progress;
 use units::translate;
@@ -58,9 +57,6 @@ pub struct RiversPaths {
 
 //global rivergen param structure for data transfer
 pub struct RgParams {
-	//coordinate system function
-	xy: Index,
-
 	//temporary value storage
 	river_id: u16,    //check for overflow?
 	river_width: u16, //saturated
@@ -82,11 +78,6 @@ pub fn get(
 ) {
 	//initiate the parameter structure
 	let mut rg = RgParams {
-		//coordinate system function
-		xy: Index {
-			map_size: lp.wi.map_size,
-		},
-
 		//temporary value storage
 		river_id: INIT_ID_U16,
 		river_width: RIVER_MIN_WIDTH,
@@ -129,7 +120,7 @@ fn estimate_sources_number(
 ) {
 	for i in 0..lp.wi.map_size {
 		for j in 0..lp.wi.map_size {
-			let index = rg.xy.ind(i, j);
+			let index = lp.xy.ind(i, j);
 
 			let random = prng::get(0.0, 1.0, lp.wi.seed, index);
 

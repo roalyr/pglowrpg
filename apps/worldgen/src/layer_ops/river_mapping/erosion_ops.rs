@@ -72,7 +72,7 @@ fn erode_path(
 
 	let i_source = path_array[0].0;
 	let j_source = path_array[0].1;
-	let index_source = rg.xy.ind(i_source, j_source);
+	let index_source = lp.xy.ind(i_source, j_source);
 
 	//Level at source of river
 	let terrain_source =
@@ -107,8 +107,8 @@ fn erode_path(
 		let j1 = n[1].1;
 
 		//Aliases
-		let index_downstr = rg.xy.ind(i1, j1);
-		let index_current = rg.xy.ind(i0, j0);
+		let index_downstr = lp.xy.ind(i1, j1);
+		let index_current = lp.xy.ind(i0, j0);
 		let terrain_current =
 			lp.topography.read(lp.topography.TERRAIN, index_current);
 		let terrain_downstr =
@@ -174,7 +174,7 @@ fn erode_path(
 }
 
 fn erosion(
-	rg: &mut RgParams,
+	_rg: &mut RgParams,
 	lp: &mut LayerPack,
 	erosion_width_iter: usize,
 	erosion_i: usize,
@@ -186,7 +186,7 @@ fn erosion(
 
 	//Check if within the map
 	if (erosion_i < map_size) && (erosion_j < map_size) {
-		let index = rg.xy.ind(erosion_i, erosion_j);
+		let index = lp.xy.ind(erosion_i, erosion_j);
 
 		if lp.topography.read(lp.topography.TERRAIN, index)
 			> terrain_current

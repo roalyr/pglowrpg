@@ -28,8 +28,8 @@ fn map_rivers_reverse(
 	rg.river_end = river_entry.end;
 
 	let index_river_source =
-		rg.xy.ind(rg.river_source.0, rg.river_source.1);
-	let index_end = rg.xy.ind(rg.river_end.0, rg.river_end.1);
+		lp.xy.ind(rg.river_source.0, rg.river_source.1);
+	let index_end = lp.xy.ind(rg.river_end.0, rg.river_end.1);
 
 	let mut river_length = 0;
 
@@ -44,8 +44,8 @@ fn map_rivers_reverse(
 		let i1 = n[1].0;
 		let j1 = n[1].1;
 
-		let index_current = rg.xy.ind(i0, j0);
-		let index_downstr = rg.xy.ind(i1, j1);
+		let index_current = lp.xy.ind(i0, j0);
+		let index_downstr = lp.xy.ind(i1, j1);
 
 		let temp_current =
 			lp.climate.read(lp.climate.TEMPERATURE, index_current);
@@ -131,8 +131,8 @@ fn map_rivers_reverse(
 			let i1 = n[1].0;
 			let j1 = n[1].1;
 
-			let index_current = rg.xy.ind(i0, j0);
-			let index_downstr = rg.xy.ind(i1, j1);
+			let index_current = lp.xy.ind(i0, j0);
+			let index_downstr = lp.xy.ind(i1, j1);
 
 			let temp_current = lp
 				.climate
@@ -482,15 +482,16 @@ fn neighbor_flag(
 	let dj: isize = j1 as isize - j0 as isize;
 
 	let neighbor = match (di, dj) {
-		(0, 0) => panic!("neighbor downstream matches current"),
-		(1, 0) => 0,   //N
-		(1, 1) => 1,   //NE
-		(0, 1) => 2,   //E
-		(-1, 1) => 3,  //SE
-		(-1, 0) => 4,  //S
-		(-1, -1) => 5, //SW
-		(0, -1) => 6,  //W
-		(1, -1) => 7,  //NW
+		//Zero value is for none, at source and end
+		(0, 0) => panic!("river neighbor downstream matches current"),
+		(1, 0) => 1,   //N
+		(1, 1) => 2,   //NE
+		(0, 1) => 3,   //E
+		(-1, 1) => 4,  //SE
+		(-1, 0) => 5,  //S
+		(-1, -1) => 6, //SW
+		(0, -1) => 7,  //W
+		(1, -1) => 8,  //NW
 
 		(_, _) => panic!("unexpected neighbor {:?}", (di, dj)),
 	};

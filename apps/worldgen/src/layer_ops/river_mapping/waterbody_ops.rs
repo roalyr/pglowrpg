@@ -53,7 +53,7 @@ fn seek_waterbodies(
 			let j = j as usize;
 
 			if (i < size) && (j < size) {
-				let index = rg.xy.ind(i, j);
+				let index = lp.xy.ind(i, j);
 				let wmask = lp
 					.topography
 					.read(lp.topography.WATERMASK, index);
