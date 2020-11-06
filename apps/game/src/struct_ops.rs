@@ -7,7 +7,8 @@ pub struct GameData {
 	//Structs
 	pub options: options::Stuff,
 	//Commands
-	pub commands: Vec<String>,
+	pub commands: strings::commands::Stuff,
+	pub commands_vec: Vec<String>,
 	//Coordinates
 	//+x is north, +y is east due to how worldgen was made
 	pub x: usize,
@@ -52,6 +53,7 @@ pub struct GameStrings {
 pub fn init_gd(
 	gs: &GameStrings,
 	options: options::Stuff,
+	commands: strings::commands::Stuff,
 ) -> Option<GameData> {
 	let lp = match get_layerpack(&gs) {
 		Some(lp) => lp,
@@ -64,7 +66,8 @@ pub fn init_gd(
 		//Move previously cloned structs here
 		options,
 		//Commands
-		commands: get_commands(),
+		commands,
+		commands_vec: Vec::new(),
 		//Coordinates
 		//+x is north, +y is east due to how worldgen was made
 		x: 0,

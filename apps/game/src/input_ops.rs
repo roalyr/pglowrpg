@@ -1,88 +1,54 @@
 use crate::*;
 
-//▒▒▒▒▒▒▒▒▒ COMMAND REGISTRY ▒▒▒▒▒▒▒▒▒▒
-#[derive(Clone)]
-pub enum Reply {
-	//General
-	NoReply,
-	Quit,
-	//Movement
-	MoveNorth,
-	MoveEast,
-	MoveSouth,
-	MoveWest,
-	//Teleport
-	TeleportX,
-	TeleportY,
-	//Game actions / menus
-	MapRenderLand,
-	PrintHelp,
-}
-
-//Expected user inputs
-//Move to .toml into locales
-pub fn get_commands() -> Vec<String> {
-	[
-		//Movement directions
-		"north".to_string(),
-		"east".to_string(),
-		"south".to_string(),
-		"west".to_string(),
-		//teleport
-		"x".to_string(),
-		"y".to_string(),
-		//Common actions
-		"?".to_string(),
-		"q".to_string(),
-		"render surrounding".to_string(),
-	]
-	.to_vec()
-}
-
 //▒▒▒▒▒▒▒▒▒▒ INPUT HANDLING ▒▒▒▒▒▒▒▒▒▒▒
 pub fn parse_input(
 	gd: &mut GameData,
 	gs: &GameStrings,
 ) -> Vec<Reply> {
-	//Init the input reply sequence
+	//Init the input reply sequence which will be returned to the game
 	let mut reply = Vec::new();
+
+	println!("{:?}", gd.commands_vec);
 
 	//User input handling
 	let mut input = prompts::new_line_io("", &gs.ui_el.prompt2);
-	input = prompts::autocomplete(&input, &gd.commands);
+	input = prompts::autocomplete(&input, &gd.commands_vec);
 	println!("{}", &gs.ui_el.separator2);
 
-	//Movement directions
+	//▒▒▒▒▒▒ ADD NEW COMMANDS, STEP 4/5 ▒▒▒▒▒▒▒▒
 	match input.as_str() {
-		//▒▒▒▒▒▒▒▒▒▒▒▒ MOVE ▒▒▒▒▒▒▒▒▒▒▒▒▒
-		"west" => {
+		//Move
+		i if i == gd.commands.move_west => {
 			reply.push(Reply::MoveWest);
 		}
-		"north" => {
+		i if i == gd.commands.move_north => {
 			reply.push(Reply::MoveNorth);
 		}
-		"east" => {
+		i if i == gd.commands.move_east => {
 			reply.push(Reply::MoveEast);
 		}
-		"south" => {
+		i if i == gd.commands.move_south => {
 			reply.push(Reply::MoveSouth);
 		}
-		//▒▒▒▒▒▒▒▒▒▒▒▒ TELEPORT ▒▒▒▒▒▒▒▒▒▒▒▒▒
-		"x" => {
+		//Teleport
+		i if i == gd.commands.teleport_x => {
 			reply.push(Reply::TeleportX);
 		}
-		"y" => {
+		i if i == gd.commands.teleport_y => {
 			reply.push(Reply::TeleportY);
 		}
-		//▒▒▒▒▒▒▒▒▒▒▒▒ GENERIC ▒▒▒▒▒▒▒▒▒▒▒▒▒
-		"q" => {
+		//General
+		i if i == gd.commands.quit => {
 			reply.push(Reply::Quit);
 		}
-		"render surrounding" => {
+		i if i == gd.commands.map_render_land => {
 			reply.push(Reply::MapRenderLand);
 		}
-		"?" => {
+		i if i == gd.commands.print_help => {
 			reply.push(Reply::PrintHelp);
+		}
+		i if i == gd.commands.test => {
+			reply.push(Reply::Test);
 		}
 
 		&_ => {

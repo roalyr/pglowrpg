@@ -1,0 +1,17 @@
+# To implement new commands, don't forget to add them in 5 places:
+# pub fn parse_input - game/input_ops
+# pub struct Stuff - io_ops/toml/strings/commands
+# pub fn commands_autocomplete - game/commands_ops (2 places)
+# pub fn process_input - game/action_ops
+
+#Strings MAY contain multiple commands (but better not?)
+move_west = "west"
+move_north = "north"
+move_east = "east"
+move_south = "south"
+teleport_x = "x"
+teleport_y = "y"
+print_help = "help info ?"
+map_render_land = "render map land"
+quit = "quit"
+test = "test"

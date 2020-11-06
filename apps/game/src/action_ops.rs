@@ -1,5 +1,6 @@
 use crate::*;
 
+//▒▒▒▒▒▒ ADD NEW COMMANDS, STEP 5/5 ▒▒▒▒▒▒▒▒
 pub fn process_input(
 	gd: &mut GameData,
 	gs: &GameStrings,
@@ -10,13 +11,10 @@ pub fn process_input(
 
 	//For now just a single reply, thus "pop()"
 	match parse_input(gd, gs).pop().unwrap() {
-		//▒▒▒▒▒▒▒▒▒▒▒▒ GENERAL ▒▒▒▒▒▒▒▒▒▒▒▒▒
-		Reply::Quit => {
-			continue_loop = false;
-		}
+		//Default
 		Reply::NoReply => {}
 
-		//▒▒▒▒▒▒▒▒▒▒▒▒ MOVEMENT ▒▒▒▒▒▒▒▒▒▒▒▒▒
+		//Movement
 		Reply::MoveNorth => {
 			gd.x = gd.x.saturating_add(1);
 			if gd.x >= gd.lp.wi.map_size {
@@ -35,6 +33,7 @@ pub fn process_input(
 		Reply::MoveWest => {
 			gd.y = gd.y.saturating_sub(1);
 		}
+		//Teleport
 		Reply::TeleportX => {
 			gd.x = prompts::new_line_io(
 				&gs.gm_str.gm7,
@@ -59,6 +58,7 @@ pub fn process_input(
 				gd.y = gd.lp.wi.map_size - 1;
 			}
 		}
+		//General
 		Reply::MapRenderLand => {
 			gd.map_render_size = prompts::new_line_io(
 				&gs.gm_str.gm25,
@@ -76,11 +76,18 @@ pub fn process_input(
 		Reply::PrintHelp => {
 			println!("{}", &gs.gm_str.gm2);
 			//Make this better
-			println!("Registered commands are:\n{:?}", &gd.commands);
+			println!(
+				"Registered commands are:\n{:?}",
+				&gd.commands_vec
+			);
 			println!("{}", &gs.ui_el.separator2);
 			//to hold the loop or browse topics (planned feature)
 			prompts::new_line_io("", &gs.ui_el.prompt2);
 		}
+		Reply::Quit => {
+			continue_loop = false;
+		}
+		Reply::Test => {}
 	}
 
 	continue_loop

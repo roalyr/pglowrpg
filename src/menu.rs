@@ -41,6 +41,7 @@ pub fn start() {
 			game::start(
 				//Let thus app take its own copy of those, for convenience
 				options::get(),
+				strings::commands::get(&input_locale),
 				strings::game_strings::get(&input_locale),
 				strings::panic_strings::get(&input_locale),
 				strings::ui_elements::get(&input_locale),

@@ -1,4 +1,5 @@
 pub mod action_ops;
+pub mod command_ops;
 pub mod data_ops;
 pub mod formatting_ops;
 pub mod input_ops;
@@ -6,6 +7,7 @@ pub mod printing_ops;
 pub mod struct_ops;
 
 use action_ops::*;
+use command_ops::*;
 use data_ops::*;
 use formatting_ops::*;
 use input_ops::*;
@@ -22,17 +24,20 @@ use units::translate;
 
 pub fn start(
 	options: options::Stuff,
+	commands: strings::commands::Stuff,
 	gm_str: strings::game_strings::Stuff,
 	panic_str: strings::panic_strings::Stuff,
 	ui_el: strings::ui_elements::Stuff,
 ) {
 	//Init game structs
 	let mut gs = init_gs(gm_str, panic_str, ui_el);
-	let mut gd = match init_gd(&gs, options) {
+	let mut gd = match init_gd(&gs, options, commands) {
 		//Selecting preset may return None
 		Some(gd) => gd,
 		_ => return,
 	};
+	//Prepare the autocomplete data for the commands
+	commands_autocomplete(&mut gd);
 
 	//Welcoming message
 	//Banner
