@@ -4,8 +4,8 @@ use std::path::Path;
 
 const FILENAME: &str = "commands";
 
-//▒▒▒▒▒▒ ADD NEW COMMANDS, STEP 3/5 ▒▒▒▒▒▒▒▒
-#[derive(Serialize, Deserialize)]
+//▒▒▒▒▒▒ ADD NEW COMMANDS, STEP 1/4 ▒▒▒▒▒▒▒▒
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Stuff {
 	pub move_west: String,
 	pub move_north: String,

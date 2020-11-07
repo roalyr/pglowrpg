@@ -1,5 +1,4 @@
 pub mod action_ops;
-pub mod command_ops;
 pub mod data_ops;
 pub mod formatting_ops;
 pub mod input_ops;
@@ -7,17 +6,19 @@ pub mod printing_ops;
 pub mod struct_ops;
 
 use action_ops::*;
-use command_ops::*;
 use data_ops::*;
 use formatting_ops::*;
 use input_ops::*;
 use printing_ops::*;
 use struct_ops::*;
 
-use codec::*;
+use codec::LayerPack;
+use colored::*;
 use constants_app::*;
 use io_ops::decompress_to_memory;
+use io_ops::toml::palettes::biomes;
 use io_ops::toml::{options, strings};
+use io_ops::writepng::from_hex;
 use std::path::Path;
 use ui::prompts;
 use units::translate;
@@ -36,8 +37,6 @@ pub fn start(
 		Some(gd) => gd,
 		_ => return,
 	};
-	//Prepare the autocomplete data for the commands
-	commands_autocomplete(&mut gd);
 
 	//Welcoming message
 	//Banner

@@ -1,9 +1,5 @@
 use crate::*;
 
-use colored::*;
-use io_ops::toml::palettes::biomes;
-use io_ops::writepng::from_hex;
-
 pub fn print_strings_basic(gs: &GameStrings) {
 	println!("{}", gs.coord_str);
 	println!("{}", gs.elev_str);

@@ -8,6 +8,7 @@ edition = "2018"
 [dependencies]
 colored = "2.0"
 #serde = { version = "1.0", features = ["derive"]  }
+toml = "0.5"
 #noise = { version = "0.6", default-features = false }
 #num = { version = "0.2", default-features = false }
 #resize = "0.3"
