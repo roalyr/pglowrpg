@@ -1,4 +1,4 @@
-# pGLOWrpg - Procedurally generated living open worlds RPG
+# pGLOWrpg - Procedurally generated living open world RPG
 ![Banner][splash]
 
 ## Features
