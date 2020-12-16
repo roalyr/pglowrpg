@@ -60,10 +60,7 @@ fn grad_b(size: usize) -> Vec<f32> {
 }
 
 //WRAPPER
-pub fn get(
-	size: usize,
-	grad_type: TempGrad,
-) -> Vec<f32> {
+pub fn get(size: usize, grad_type: TempGrad) -> Vec<f32> {
 	match grad_type {
 		TempGrad::North => grad_b(size),
 		TempGrad::South => grad_a(size),

@@ -39,12 +39,8 @@ pub enum GradMode {
 }
 
 pub fn combined_png(
-	array_bg: &Vec<u8>,
-	array_fg: &Vec<u8>,
-	path: &std::path::PathBuf,
-	grad_bg_mode: GradMode,
-	grad_fg_mode: GradMode,
-	mode: Mode,
+	array_bg: &Vec<u8>, array_fg: &Vec<u8>, path: &std::path::PathBuf,
+	grad_bg_mode: GradMode, grad_fg_mode: GradMode, mode: Mode,
 	png_size: usize,
 ) {
 	let size = array_bg.len();
@@ -88,9 +84,7 @@ pub fn combined_png(
 }
 
 pub fn simple_png(
-	array: &Vec<u8>,
-	path: &std::path::PathBuf,
-	grad_mode: GradMode,
+	array: &Vec<u8>, path: &std::path::PathBuf, grad_mode: GradMode,
 	png_size: usize,
 ) {
 	let file = crate::create_file_overwrite(&path);
@@ -108,10 +102,7 @@ pub fn simple_png(
 	writer.write_image_data(&idat).unwrap();
 }
 
-fn match_grad(
-	array: &Vec<u8>,
-	grad_mode: GradMode,
-) -> Vec<u8> {
+fn match_grad(array: &Vec<u8>, grad_mode: GradMode) -> Vec<u8> {
 	match grad_mode {
 		//Value from palette (.toml colorcodes)
 		GradMode::PaletteTerrain => {

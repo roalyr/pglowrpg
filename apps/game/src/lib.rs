@@ -24,8 +24,7 @@ use ui::prompts;
 use units::translate;
 
 pub fn start(
-	options: options::Stuff,
-	commands: strings::commands::Stuff,
+	options: options::Stuff, commands: strings::commands::Stuff,
 	gm_str: strings::game_strings::Stuff,
 	panic_str: strings::panic_strings::Stuff,
 	ui_el: strings::ui_elements::Stuff,

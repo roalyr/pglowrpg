@@ -1,9 +1,6 @@
 use crate::*;
 
-pub fn get_strings_basic(
-	gd: &GameData,
-	gs: &mut GameStrings,
-) {
+pub fn get_strings_basic(gd: &GameData, gs: &mut GameStrings) {
 	//Format strings
 	//Into formatting ops
 	gs.coord_str = [
@@ -35,14 +32,12 @@ pub fn get_strings_basic(
 		{
 			//Must be less or equal
 			if gd.elev <= gd.lp.wi.waterlevel {
-				gs.s =
-					[&(gd.elev.to_string()), " m ", &gs.gm_str.gm14]
-						.concat();
+				gs.s = [&(gd.elev.to_string()), " m ", &gs.gm_str.gm14]
+					.concat();
 				&gs.s
 			} else {
-				gs.s =
-					[&(gd.elev.to_string()), " m ", &gs.gm_str.gm15]
-						.concat();
+				gs.s = [&(gd.elev.to_string()), " m ", &gs.gm_str.gm15]
+					.concat();
 				&gs.s
 			}
 		},
@@ -56,12 +51,9 @@ pub fn get_strings_basic(
 			match gd.water {
 				0 => &gs.gm_str.gm12,
 				_ => {
-					gs.s = [
-						&gs.gm_str.gm13,
-						&(gd.water.to_string()),
-						"",
-					]
-					.concat();
+					gs.s =
+						[&gs.gm_str.gm13, &(gd.water.to_string()), ""]
+							.concat();
 					&gs.s
 				}
 			}

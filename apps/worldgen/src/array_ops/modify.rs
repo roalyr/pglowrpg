@@ -4,15 +4,10 @@ use crate::array_ops::noise_maps::NoiseMode::*;
 pub const PI: f32 = std::f64::consts::PI as f32;
 
 pub fn erode(
-	array: &mut Vec<f32>,
-	size: usize,
-	elevation_noise_size: f32,
-	elevation_noise_weight: f32,
-	erosion_factor: f32,
-	seed: usize,
+	array: &mut Vec<f32>, size: usize, elevation_noise_size: f32,
+	elevation_noise_weight: f32, erosion_factor: f32, seed: usize,
 ) {
-	let nm1 =
-		noise_maps::get(size, elevation_noise_size, seed, Multi);
+	let nm1 = noise_maps::get(size, elevation_noise_size, seed, Multi);
 
 	let nm2 = noise_maps::get(
 		size,
@@ -40,8 +35,7 @@ pub fn erode(
 
 //COASTLINE
 pub fn restore_coastline(
-	array: &mut Vec<f32>,
-	array_coastline: Vec<f32>,
+	array: &mut Vec<f32>, array_coastline: Vec<f32>,
 ) {
 	let size = array.len();
 	for (index, cell_v) in array.iter_mut().enumerate().take(size) {
@@ -52,11 +46,7 @@ pub fn restore_coastline(
 }
 
 //FILTER
-pub fn filter(
-	array: &mut Vec<f32>,
-	low_v: f32,
-	high_v: f32,
-) {
+pub fn filter(array: &mut Vec<f32>, low_v: f32, high_v: f32) {
 	let size = array.len();
 	for cell_v in array.iter_mut().take(size) {
 		if *cell_v < low_v {
@@ -68,10 +58,7 @@ pub fn filter(
 }
 
 //LEVEL
-pub fn level(
-	array: &mut Vec<f32>,
-	low_v: usize,
-) {
+pub fn level(array: &mut Vec<f32>, low_v: usize) {
 	let size = array.len();
 	for cell_v in array.iter_mut().take(size) {
 		*cell_v -= low_v as f32;

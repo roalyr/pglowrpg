@@ -3,10 +3,8 @@ use bincode;
 use io_ops::{compress_to_storage, create_dir};
 
 pub fn write_data(
-	lp: &mut LayerPack,
-	wg_str: &strings::worldgen_strings::Stuff,
-	_options: &options::Stuff,
-	world_dir: &std::path::PathBuf,
+	lp: &mut LayerPack, wg_str: &strings::worldgen_strings::Stuff,
+	_options: &options::Stuff, world_dir: &std::path::PathBuf,
 ) {
 	//Make a directory if none exists
 	let data_dir = world_dir.join(PATH_SAVE_DATA);

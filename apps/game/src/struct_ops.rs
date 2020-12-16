@@ -51,8 +51,7 @@ pub struct GameStrings {
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ INITS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn init_gd(
-	gs: &GameStrings,
-	options: options::Stuff,
+	gs: &GameStrings, options: options::Stuff,
 	commands: strings::commands::Stuff,
 ) -> Option<GameData> {
 	let lp = match get_layerpack(&gs) {

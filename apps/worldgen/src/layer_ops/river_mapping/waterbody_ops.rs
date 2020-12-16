@@ -1,10 +1,7 @@
 use crate::layer_ops::river_mapping::*;
 
 //▒▒▒▒▒▒▒▒▒▒ WITH OR WITHOUT ▒▒▒▒▒▒▒▒▒▒▒
-pub fn with_water(
-	rg: &mut RgParams,
-	lp: &mut LayerPack,
-) {
+pub fn with_water(rg: &mut RgParams, lp: &mut LayerPack) {
 	let iter = rg.dv.x0 + rg.dv.y0;
 	let random =
 		prng::get(0.0, 1.0, lp.wi.seed, rg.dv.x0 * rg.dv.y0 * iter);
@@ -16,27 +13,18 @@ pub fn with_water(
 	}
 }
 
-pub fn without_water(
-	rg: &mut RgParams,
-	lp: &mut LayerPack,
-) {
+pub fn without_water(rg: &mut RgParams, lp: &mut LayerPack) {
 	//if there is a pole - go for biased placement
 	without_water_no_pole(rg, lp);
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ DETAILS ▒▒▒▒▒▒▒▒▒▒▒▒▒
-pub fn without_water_no_pole(
-	rg: &mut RgParams,
-	lp: &mut LayerPack,
-) {
+pub fn without_water_no_pole(rg: &mut RgParams, lp: &mut LayerPack) {
 	project_randomly(rg, lp);
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ ROUTINES ▒▒▒▒▒▒▒▒▒▒▒▒▒
-fn seek_waterbodies(
-	rg: &mut RgParams,
-	lp: &mut LayerPack,
-) {
+fn seek_waterbodies(rg: &mut RgParams, lp: &mut LayerPack) {
 	//Aliases
 	let size = lp.wi.map_size;
 
@@ -54,9 +42,8 @@ fn seek_waterbodies(
 
 			if (i < size) && (j < size) {
 				let index = lp.xy.ind(i, j);
-				let wmask = lp
-					.topography
-					.read(lp.topography.WATERMASK, index);
+				let wmask =
+					lp.topography.read(lp.topography.WATERMASK, index);
 				let temp =
 					lp.climate.read(lp.climate.TEMPERATURE, index);
 
@@ -93,10 +80,7 @@ fn seek_waterbodies(
 	}
 }
 
-fn project_randomly(
-	rg: &mut RgParams,
-	lp: &mut LayerPack,
-) {
+fn project_randomly(rg: &mut RgParams, lp: &mut LayerPack) {
 	//Aliases
 	let vec_angle = lp.wi.river_vect_angle;
 	let vec_deviation = lp.wi.river_vect_angle_max_deviation;

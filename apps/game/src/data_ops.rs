@@ -52,8 +52,7 @@ pub fn get_world_current(gd: &mut GameData) {
 	//Read data
 	//Into data ops
 	gd.temp = translate::get_abs(
-		gd.lp.climate.read(gd.lp.climate.TEMPERATURE, gd.index)
-			as f32,
+		gd.lp.climate.read(gd.lp.climate.TEMPERATURE, gd.index) as f32,
 		255.0,
 		gd.lp.wi.abs_temp_min as f32,
 		gd.lp.wi.abs_temp_max as f32,
@@ -67,8 +66,7 @@ pub fn get_world_current(gd: &mut GameData) {
 	) as usize;
 
 	gd.elev = translate::get_abs(
-		gd.lp.topography.read(gd.lp.topography.TERRAIN, gd.index)
-			as f32,
+		gd.lp.topography.read(gd.lp.topography.TERRAIN, gd.index) as f32,
 		255.0,
 		gd.lp.wi.abs_elev_min as f32,
 		gd.lp.wi.abs_elev_max as f32,
@@ -82,8 +80,7 @@ pub fn get_world_current(gd: &mut GameData) {
 
 	gd.river_id = gd.lp.rivers_id.read(gd.index);
 	gd.river_width = gd.lp.rivers.read(gd.lp.rivers.WIDTH, gd.index);
-	gd.river_element =
-		gd.lp.rivers.read(gd.lp.rivers.ELEMENT, gd.index);
+	gd.river_element = gd.lp.rivers.read(gd.lp.rivers.ELEMENT, gd.index);
 	gd.river_upstream =
 		gd.lp.rivers.read(gd.lp.rivers.UPSTREAM, gd.index);
 	gd.river_downstream =

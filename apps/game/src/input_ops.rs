@@ -2,8 +2,7 @@ use crate::*;
 
 //▒▒▒▒▒▒▒▒▒▒ INPUT HANDLING ▒▒▒▒▒▒▒▒▒▒▒
 pub fn parse_input(
-	gd: &mut GameData,
-	gs: &GameStrings,
+	gd: &mut GameData, gs: &GameStrings,
 ) -> Vec<(Command, Direction, Action)> {
 	//Init the input reply sequence which will be returned to the game
 	let mut seq = Vec::new();
@@ -25,32 +24,16 @@ pub fn parse_input(
 	match input.as_str() {
 		//Move
 		i if i == gd.commands.move_west => {
-			seq.push((
-				Command::NoInput,
-				Direction::West,
-				Action::Move,
-			));
+			seq.push((Command::NoInput, Direction::West, Action::Move));
 		}
 		i if i == gd.commands.move_north => {
-			seq.push((
-				Command::NoInput,
-				Direction::North,
-				Action::Move,
-			));
+			seq.push((Command::NoInput, Direction::North, Action::Move));
 		}
 		i if i == gd.commands.move_east => {
-			seq.push((
-				Command::NoInput,
-				Direction::East,
-				Action::Move,
-			));
+			seq.push((Command::NoInput, Direction::East, Action::Move));
 		}
 		i if i == gd.commands.move_south => {
-			seq.push((
-				Command::NoInput,
-				Direction::South,
-				Action::Move,
-			));
+			seq.push((Command::NoInput, Direction::South, Action::Move));
 		}
 		//Teleport
 		i if i == gd.commands.teleport_x => {
@@ -111,10 +94,7 @@ pub fn parse_input(
 pub fn input_coord(
 	gs: &GameStrings,
 ) -> Result<usize, std::num::ParseIntError> {
-	prompts::new_line_io(
-				&gs.gm_str.gm7,
-				&gs.ui_el.prompt2,
-			)
-			.trim()
-			.parse::<usize>()
+	prompts::new_line_io(&gs.gm_str.gm7, &gs.ui_el.prompt2)
+		.trim()
+		.parse::<usize>()
 }

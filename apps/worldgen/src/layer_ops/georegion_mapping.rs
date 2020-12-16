@@ -5,8 +5,7 @@ use io_ops::toml::strings;
 const ID_INIT: u16 = 1;
 
 pub fn get(
-	lp: &mut LayerPack,
-	_wg_str: &strings::worldgen_strings::Stuff,
+	lp: &mut LayerPack, _wg_str: &strings::worldgen_strings::Stuff,
 ) {
 	let xy = Index {
 		map_size: lp.wi.map_size,
@@ -53,8 +52,8 @@ pub fn get(
 				for x in ff_bi.x_min..=ff_bi.x_max {
 					for y in ff_bi.y_min..=ff_bi.y_max {
 						if ff_bi.region_map[xy.ind(x, y)] {
-							greg_map
-								[xy.ind(x as usize, y as usize)] = region_id as u16;
+							greg_map[xy.ind(x as usize, y as usize)] =
+								region_id as u16;
 						}
 					}
 				}
@@ -79,8 +78,8 @@ pub fn get(
 				for x in ff_wm.x_min..=ff_wm.x_max {
 					for y in ff_wm.y_min..=ff_wm.y_max {
 						if ff_wm.region_map[xy.ind(x, y)] {
-							greg_map
-								[xy.ind(x as usize, y as usize)] = region_id as u16;
+							greg_map[xy.ind(x as usize, y as usize)] =
+								region_id as u16;
 						}
 					}
 				}

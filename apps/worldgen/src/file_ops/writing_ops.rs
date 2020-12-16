@@ -3,10 +3,8 @@ use io_ops::create_dir;
 use std::path::Path;
 
 pub fn write_save(
-	lp: &mut LayerPack,
-	wg_str: &strings::worldgen_strings::Stuff,
-	ui_el: &strings::ui_elements::Stuff,
-	options: &options::Stuff,
+	lp: &mut LayerPack, wg_str: &strings::worldgen_strings::Stuff,
+	ui_el: &strings::ui_elements::Stuff, options: &options::Stuff,
 	preset_name: &str,
 ) {
 	let world_name =
@@ -17,8 +15,7 @@ pub fn write_save(
 	//Make a save directory if none exists
 	let save_dir = Path::new(PATH_SAVE).to_path_buf();
 
-	let world_dir =
-		Path::new(PATH_SAVE).to_path_buf().join(world_name);
+	let world_dir = Path::new(PATH_SAVE).to_path_buf().join(world_name);
 
 	create_dir(&save_dir);
 	create_dir(&world_dir);

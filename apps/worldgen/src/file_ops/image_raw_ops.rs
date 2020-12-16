@@ -3,10 +3,8 @@ use io_ops::create_dir;
 use io_ops::writepng::*;
 
 pub fn write_images_raw(
-	lp: &mut LayerPack,
-	wg_str: &strings::worldgen_strings::Stuff,
-	options: &options::Stuff,
-	world_dir: &std::path::PathBuf,
+	lp: &mut LayerPack, wg_str: &strings::worldgen_strings::Stuff,
+	options: &options::Stuff, world_dir: &std::path::PathBuf,
 ) {
 	//Make a directory if none exists
 	let raw_img_dir = world_dir.join(PATH_SAVE_IMAGES_RAW);
@@ -34,12 +32,7 @@ pub fn write_images_raw(
 				array_bg[index] = bg as u8;
 			}
 		}
-		simple_png(
-			&array_bg,
-			&file_path,
-			GradMode::Raw,
-			lp.wi.map_size,
-		);
+		simple_png(&array_bg, &file_path, GradMode::Raw, lp.wi.map_size);
 
 		let file_path = raw_img_dir
 			.join("watermask")
@@ -48,18 +41,12 @@ pub fn write_images_raw(
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = xy.ind(i, j);
-				let bg = lp
-					.topography
-					.read(lp.topography.WATERMASK, index);
+				let bg =
+					lp.topography.read(lp.topography.WATERMASK, index);
 				array_bg[index] = bg as u8;
 			}
 		}
-		simple_png(
-			&array_bg,
-			&file_path,
-			GradMode::Raw,
-			lp.wi.map_size,
-		);
+		simple_png(&array_bg, &file_path, GradMode::Raw, lp.wi.map_size);
 	}
 
 	//Temperature
@@ -73,17 +60,11 @@ pub fn write_images_raw(
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = xy.ind(i, j);
-				let bg =
-					lp.climate.read(lp.climate.TEMPERATURE, index);
+				let bg = lp.climate.read(lp.climate.TEMPERATURE, index);
 				array_bg[index] = bg as u8;
 			}
 		}
-		simple_png(
-			&array_bg,
-			&file_path,
-			GradMode::Raw,
-			lp.wi.map_size,
-		);
+		simple_png(&array_bg, &file_path, GradMode::Raw, lp.wi.map_size);
 	}
 
 	//Rainfall
@@ -101,12 +82,7 @@ pub fn write_images_raw(
 				array_bg[index] = bg as u8;
 			}
 		}
-		simple_png(
-			&array_bg,
-			&file_path,
-			GradMode::Raw,
-			lp.wi.map_size,
-		);
+		simple_png(&array_bg, &file_path, GradMode::Raw, lp.wi.map_size);
 	}
 
 	//Rivers
@@ -124,12 +100,7 @@ pub fn write_images_raw(
 				array_bg[index] = bg as u8;
 			}
 		}
-		simple_png(
-			&array_bg,
-			&file_path,
-			GradMode::Raw,
-			lp.wi.map_size,
-		);
+		simple_png(&array_bg, &file_path, GradMode::Raw, lp.wi.map_size);
 
 		//Rivers widths
 
@@ -144,12 +115,7 @@ pub fn write_images_raw(
 				array_bg[index] = bg as u8;
 			}
 		}
-		simple_png(
-			&array_bg,
-			&file_path,
-			GradMode::Raw,
-			lp.wi.map_size,
-		);
+		simple_png(&array_bg, &file_path, GradMode::Raw, lp.wi.map_size);
 	}
 
 	//Biomes
@@ -167,11 +133,6 @@ pub fn write_images_raw(
 				array_bg[index] = bg as u8;
 			}
 		}
-		simple_png(
-			&array_bg,
-			&file_path,
-			GradMode::Raw,
-			lp.wi.map_size,
-		);
+		simple_png(&array_bg, &file_path, GradMode::Raw, lp.wi.map_size);
 	}
 }

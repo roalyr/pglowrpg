@@ -17,8 +17,7 @@ use io_ops::toml::{options, presets, strings};
 use ui::prompts;
 
 pub fn start(
-	options: &options::Stuff,
-	wg_str: &strings::worldgen_strings::Stuff,
+	options: &options::Stuff, wg_str: &strings::worldgen_strings::Stuff,
 	panic_str: &strings::panic_strings::Stuff,
 	ui_el: &strings::ui_elements::Stuff,
 ) {
@@ -51,8 +50,7 @@ pub fn start(
 	let mut input_preset =
 		prompts::new_line_io(&presets_formatted, &ui_el.prompt2);
 
-	input_preset =
-		prompts::autocomplete(&input_preset, &presets_paths);
+	input_preset = prompts::autocomplete(&input_preset, &presets_paths);
 
 	if input_preset.is_empty() {
 		//Warning about no such preset
@@ -76,12 +74,10 @@ pub fn start(
 	preset_validate::all(&mut wi, &panic_str);
 
 	//Seed selection
-	let input_seed =
-		prompts::new_line_io(&wg_str.wg2, &ui_el.prompt2);
+	let input_seed = prompts::new_line_io(&wg_str.wg2, &ui_el.prompt2);
 	println!("{}", &ui_el.separator2);
 
-	let mut temp_seed = if (input_seed == "r") || (input_seed == "R")
-	{
+	let mut temp_seed = if (input_seed == "r") || (input_seed == "R") {
 		println!("{}", wg_str.wg4);
 		seed_generating::get()
 	} else {

@@ -19,10 +19,7 @@ pub struct Pos(pub usize, pub usize);
 
 impl Pos {
 	#[inline]
-	fn distance(
-		&self,
-		other: &Pos,
-	) -> usize {
+	fn distance(&self, other: &Pos) -> usize {
 		((self.0 as i32 - other.0 as i32).abs()
 			+ (self.1 as i32 - other.1 as i32).abs()) as usize
 	} //fn
@@ -30,13 +27,8 @@ impl Pos {
 	#[allow(clippy::ptr_arg)]
 	#[inline]
 	fn neighbors<T>(
-		&self,
-		map: &Vec<T>,
-		map_size: usize,
-		xy: Index,
-		step: usize,
-		goal: Pos,
-		diag_flag: bool,
+		&self, map: &Vec<T>, map_size: usize, xy: Index, step: usize,
+		goal: Pos, diag_flag: bool,
 	) -> Vec<(Pos, usize)>
 	where
 		T: Into<usize> + Copy + Clone,
@@ -138,20 +130,13 @@ impl Pos {
 } //impl
 
 #[inline]
-fn within_bounds(
-	i: usize,
-	j: usize,
-	size: usize,
-) -> bool {
+fn within_bounds(i: usize, j: usize, size: usize) -> bool {
 	(i < size) && (j < size)
 }
 
 #[allow(clippy::ptr_arg)]
 pub fn make<T>(
-	v: &DirVector,
-	map: &Vec<T>,
-	map_size: usize,
-	diag_flag: bool,
+	v: &DirVector, map: &Vec<T>, map_size: usize, diag_flag: bool,
 	step: usize,
 ) -> (std::vec::Vec<Pos>, usize)
 where

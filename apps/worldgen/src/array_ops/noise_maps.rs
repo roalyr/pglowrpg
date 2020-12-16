@@ -9,10 +9,7 @@ pub enum NoiseMode {
 }
 
 pub fn point_multi(
-	noise_factor: f32,
-	seed: usize,
-	i: usize,
-	j: usize,
+	noise_factor: f32, seed: usize, i: usize, j: usize,
 ) -> f32 {
 	let noise = BasicMulti::new();
 	let rotate = RotatePoint::new(&noise)
@@ -29,11 +26,7 @@ pub fn point_multi(
 	]) as f32
 }
 
-fn multi(
-	size: usize,
-	noise_factor: f32,
-	seed: usize,
-) -> Vec<f32> {
+fn multi(size: usize, noise_factor: f32, seed: usize) -> Vec<f32> {
 	let xy = Index { map_size: size };
 	let noise = BasicMulti::new();
 	let rotate = RotatePoint::new(&noise)
@@ -57,11 +50,7 @@ fn multi(
 	array
 }
 
-fn perlin(
-	size: usize,
-	noise_factor: f32,
-	seed: usize,
-) -> Vec<f32> {
+fn perlin(size: usize, noise_factor: f32, seed: usize) -> Vec<f32> {
 	let xy = Index { map_size: size };
 	let noise = Perlin::new();
 	let rotate = RotatePoint::new(&noise)
@@ -87,10 +76,7 @@ fn perlin(
 
 //WRAPPER
 pub fn get(
-	size: usize,
-	noise_factor: f32,
-	seed: usize,
-	noise_type: NoiseMode,
+	size: usize, noise_factor: f32, seed: usize, noise_type: NoiseMode,
 ) -> Vec<f32> {
 	match noise_type {
 		NoiseMode::Multi => multi(size, noise_factor, seed),

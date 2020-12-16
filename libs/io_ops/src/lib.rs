@@ -12,10 +12,7 @@ use std::path::Path;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ FILESYSTEM ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn dir_file_contents(
-	path_str: &str,
-	seek_extension: &str,
-	prefix: &str,
-	separator: &str,
+	path_str: &str, seek_extension: &str, prefix: &str, separator: &str,
 ) -> (String, Vec<String>) {
 	let path = Path::new(path_str);
 
@@ -54,9 +51,7 @@ pub fn dir_file_contents(
 }
 
 pub fn dir_dir_contents(
-	path_str: &str,
-	prefix: &str,
-	separator: &str,
+	path_str: &str, prefix: &str, separator: &str,
 ) -> (String, Vec<String>) {
 	let path = Path::new(path_str);
 
@@ -166,10 +161,7 @@ pub fn create_file_overwrite(path: &std::path::PathBuf) -> File {
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ COMPRESSION ▒▒▒▒▒▒▒▒▒▒▒▒▒
-pub fn compress_to_storage(
-	data: Vec<u8>,
-	path: &std::path::PathBuf,
-) {
+pub fn compress_to_storage(data: Vec<u8>, path: &std::path::PathBuf) {
 	let output_file = match File::create(path) {
 		Ok(f) => f,
 		Err(e) => {

@@ -28,10 +28,7 @@ pub enum Action {
 }
 
 //▒▒▒▒▒▒ ADD NEW COMMANDS, STEP 4/4 ▒▒▒▒▒▒▒▒
-pub fn process_input(
-	gd: &mut GameData,
-	gs: &GameStrings,
-) -> bool {
+pub fn process_input(gd: &mut GameData, gs: &GameStrings) -> bool {
 	//This will determine if we should stop the main loop
 	//which is the caller to this function
 	let mut continue_loop = true;
@@ -42,13 +39,11 @@ pub fn process_input(
 		//Default
 		Command::NoInput => {}
 		Command::MapRenderLand => {
-			gd.map_render_size = prompts::new_line_io(
-				&gs.gm_str.gm25,
-				&gs.ui_el.prompt2,
-			)
-			.trim()
-			.parse::<usize>()
-			.unwrap_or(gd.map_render_size);
+			gd.map_render_size =
+				prompts::new_line_io(&gs.gm_str.gm25, &gs.ui_el.prompt2)
+					.trim()
+					.parse::<usize>()
+					.unwrap_or(gd.map_render_size);
 			println!("{}", &gs.ui_el.separator2);
 			let cx = gd.x;
 			let cy = gd.y;
@@ -58,10 +53,7 @@ pub fn process_input(
 		Command::PrintHelp => {
 			println!("{}", &gs.gm_str.gm2);
 			//Make this better
-			println!(
-				"Registered commands are:\n{:?}",
-				&gd.commands_vec
-			);
+			println!("Registered commands are:\n{:?}", &gd.commands_vec);
 			println!("{}", &gs.ui_el.separator2);
 			//to hold the loop or browse topics (planned feature)
 			prompts::new_line_io("", &gs.ui_el.prompt2);
@@ -71,7 +63,7 @@ pub fn process_input(
 		}
 		Command::Test => {}
 	} //match
-	
+
 	match t.1 {
 		Direction::NoInput => {}
 		Direction::North => {
@@ -97,15 +89,15 @@ pub fn process_input(
 			if gd.x >= gd.lp.wi.map_size {
 				gd.x = gd.lp.wi.map_size - 1;
 			};
-		},
+		}
 		Direction::CoordY => {
 			gd.y = input_coord(gs).unwrap_or(gd.y);
 			if gd.y >= gd.lp.wi.map_size {
 				gd.y = gd.lp.wi.map_size - 1;
 			};
-		},
+		}
 	} //match
-	
+
 	match t.2 {
 		Action::NoInput => {}
 		Action::Move => {}

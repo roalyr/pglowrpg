@@ -7,11 +7,7 @@ pub struct Index {
 
 impl Index {
 	#[inline]
-	pub fn ind(
-		self,
-		i: usize,
-		j: usize,
-	) -> usize {
+	pub fn ind(self, i: usize, j: usize) -> usize {
 		//north up
 		let x = (self.map_size - 1).saturating_sub(i);
 		//let x = i;
@@ -22,10 +18,7 @@ impl Index {
 			None => {
 				let saturated = (x * self.map_size).saturating_add(y);
 				println!("overflow at index {}", saturated);
-				println!(
-					"└ x:{}, y:{}, size: {}",
-					x, y, self.map_size
-				);
+				println!("└ x:{}, y:{}, size: {}", x, y, self.map_size);
 				panic!();
 			}
 		}

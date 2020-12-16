@@ -1,10 +1,7 @@
 use crate::layer_ops::river_mapping::*;
 
 pub fn prob(
-	i: usize,
-	j: usize,
-	_rg: &mut RgParams,
-	lp: &mut LayerPack,
+	i: usize, j: usize, _rg: &mut RgParams, lp: &mut LayerPack,
 ) -> f32 {
 	//Aliases
 	let index = lp.xy.ind(i, j);

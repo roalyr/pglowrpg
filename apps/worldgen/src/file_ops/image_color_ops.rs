@@ -3,10 +3,8 @@ use io_ops::create_dir;
 use io_ops::writepng::*;
 
 pub fn write_images_color(
-	lp: &mut LayerPack,
-	wg_str: &strings::worldgen_strings::Stuff,
-	options: &options::Stuff,
-	world_dir: &std::path::PathBuf,
+	lp: &mut LayerPack, wg_str: &strings::worldgen_strings::Stuff,
+	options: &options::Stuff, world_dir: &std::path::PathBuf,
 ) {
 	//Make a directory if none exists
 	let color_img_dir = world_dir.join(PATH_SAVE_IMAGES_COLOR);
@@ -32,9 +30,8 @@ pub fn write_images_color(
 				let index = xy.ind(i, j);
 				let bg =
 					lp.topography.read(lp.topography.TERRAIN, index);
-				let fg = lp
-					.topography
-					.read(lp.topography.WATERMASK, index);
+				let fg =
+					lp.topography.read(lp.topography.WATERMASK, index);
 				array_bg[index] = bg as u8;
 				array_fg[index] = fg as u8;
 			}
@@ -61,8 +58,7 @@ pub fn write_images_color(
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = xy.ind(i, j);
-				let bg =
-					lp.climate.read(lp.climate.TEMPERATURE, index);
+				let bg = lp.climate.read(lp.climate.TEMPERATURE, index);
 				array_bg[index] = bg as u8;
 			}
 		}
@@ -132,9 +128,8 @@ pub fn write_images_color(
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = xy.ind(i, j);
-				let bg = lp
-					.topography
-					.read(lp.topography.WATERMASK, index);
+				let bg =
+					lp.topography.read(lp.topography.WATERMASK, index);
 				let fg = lp.rivers.read(lp.rivers.ELEMENT, index);
 				array_bg[index] = bg as u8;
 				array_fg[index] = fg as u8;
@@ -159,9 +154,8 @@ pub fn write_images_color(
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = xy.ind(i, j);
-				let bg = lp
-					.topography
-					.read(lp.topography.WATERMASK, index);
+				let bg =
+					lp.topography.read(lp.topography.WATERMASK, index);
 				let fg = lp.rivers_id.read(index);
 				array_bg[index] = bg as u8;
 				array_fg[index] = fg as u8;
@@ -186,9 +180,8 @@ pub fn write_images_color(
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = xy.ind(i, j);
-				let bg = lp
-					.topography
-					.read(lp.topography.WATERMASK, index);
+				let bg =
+					lp.topography.read(lp.topography.WATERMASK, index);
 				let fg = lp.rivers.read(lp.rivers.WIDTH, index);
 				array_bg[index] = bg as u8;
 				array_fg[index] = fg as u8;

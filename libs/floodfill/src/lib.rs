@@ -15,11 +15,8 @@ pub struct FloodFill<'a, T> {
 }
 
 impl<T> FloodFill<'_, T> {
-	pub fn map(
-		&mut self,
-		i: usize,
-		j: usize,
-	) where
+	pub fn map(&mut self, i: usize, j: usize)
+	where
 		T: PartialEq + Copy + Clone,
 	{
 		let xy = Index {
@@ -74,8 +71,7 @@ impl<T> FloodFill<'_, T> {
 				neighbors.push((i, j - 1))
 			};
 			for (ni, nj) in neighbors.iter() {
-				if self.exclusion_map
-					[xy.ind(*ni as usize, *nj as usize)]
+				if self.exclusion_map[xy.ind(*ni as usize, *nj as usize)]
 				{
 					continue;
 				};
@@ -109,10 +105,7 @@ impl<T> FloodFill<'_, T> {
 	}
 
 	#[allow(clippy::ptr_arg)]
-	pub fn new(
-		template_data: &Vec<T>,
-		map_size: usize,
-	) -> FloodFill<T> {
+	pub fn new(template_data: &Vec<T>, map_size: usize) -> FloodFill<T> {
 		let exclusion_map = vec![false; template_data.len()];
 
 		let region_map = vec![false; template_data.len()];

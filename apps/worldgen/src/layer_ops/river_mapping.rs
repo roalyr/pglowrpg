@@ -73,8 +73,7 @@ pub struct RgParams {
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ MAIN ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn get(
-	lp: &mut LayerPack,
-	wg_str: &strings::worldgen_strings::Stuff,
+	lp: &mut LayerPack, wg_str: &strings::worldgen_strings::Stuff,
 ) {
 	//initiate the parameter structure
 	let mut rg = RgParams {
@@ -114,8 +113,7 @@ pub fn get(
 
 //▒▒▒▒▒▒▒▒ RIVER QUANTITY ESTIMATION ▒▒▒▒▒▒▒▒
 fn estimate_sources_number(
-	rg: &mut RgParams,
-	lp: &mut LayerPack,
+	rg: &mut RgParams, lp: &mut LayerPack,
 	_wg_str: &strings::worldgen_strings::Stuff,
 ) {
 	for i in 0..lp.wi.map_size {
@@ -127,9 +125,7 @@ fn estimate_sources_number(
 			let total_prob = prob(i, j, rg, lp);
 
 			if (random <= total_prob)
-				&& (lp
-					.topography
-					.read(lp.topography.WATERMASK, index)
+				&& (lp.topography.read(lp.topography.WATERMASK, index)
 					== NO_WATER)
 			{
 				rg.river_est_number += 1;

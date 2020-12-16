@@ -35,8 +35,7 @@ fn noisemap_size(
 	wi: &presets::presets_worldgen::Stuff,
 	panic_str: &strings::panic_strings::Stuff,
 ) {
-	let size =
-		NOISEMAP_SIZES.iter().find(|&&s| s == wi.noisemap_size);
+	let size = NOISEMAP_SIZES.iter().find(|&&s| s == wi.noisemap_size);
 
 	if size == None {
 		let msg = &panic_str.noisemap_size_1;
@@ -322,19 +321,13 @@ fn params(
 	wi.river_noise_size2 = 1.0 / wi.river_noise_size2.powf(1.2);
 
 	wi.river_erosion_smooth /= 5.0;
-	wi.river_vect_angle_noise = diminishing_scale(
-		wi.noisemap_size,
-		wi.river_vect_angle_noise,
-	) / 2.0;
+	wi.river_vect_angle_noise =
+		diminishing_scale(wi.noisemap_size, wi.river_vect_angle_noise)
+			/ 2.0;
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ CAPPING FNS ▒▒▒▒▒▒▒▒▒▒▒▒▒
-fn cap1<T>(
-	name: &str,
-	val: T,
-	cap_min: T,
-	cap_max: T,
-) -> T
+fn cap1<T>(name: &str, val: T, cap_min: T, cap_max: T) -> T
 where
 	T: PartialOrd + std::fmt::Display,
 {
@@ -353,13 +346,7 @@ where
 	v
 }
 
-fn cap2<T>(
-	name: &str,
-	min: T,
-	max: T,
-	cap_min: T,
-	cap_max: T,
-) -> Cap2<T>
+fn cap2<T>(name: &str, min: T, max: T, cap_min: T, cap_max: T) -> Cap2<T>
 where
 	T: PartialOrd + std::fmt::Display + Copy,
 {
@@ -372,17 +359,11 @@ where
 	let mut c = Cap2 { min, max };
 
 	if c.min < cap_min {
-		println!(
-			"{} {} {} {} => {}",
-			warn, name, msg1, c.min, cap_min
-		);
+		println!("{} {} {} {} => {}", warn, name, msg1, c.min, cap_min);
 		c.min = cap_min;
 	}
 	if c.min > cap_max {
-		println!(
-			"{} {} {} {} => {}",
-			warn, name, msg1, c.min, cap_max
-		);
+		println!("{} {} {} {} => {}", warn, name, msg1, c.min, cap_max);
 		c.min = cap_max;
 	}
 	if c.max < c.min {
@@ -390,17 +371,11 @@ where
 		c.max = c.min;
 	}
 	if c.max < cap_min {
-		println!(
-			"{} {} {} {} => {}",
-			warn, name, msg2, c.max, cap_min
-		);
+		println!("{} {} {} {} => {}", warn, name, msg2, c.max, cap_min);
 		c.max = cap_min;
 	}
 	if c.max > cap_max {
-		println!(
-			"{} {} {} {} => {}",
-			warn, name, msg2, c.max, cap_max
-		);
+		println!("{} {} {} {} => {}", warn, name, msg2, c.max, cap_max);
 		c.max = cap_max;
 	}
 	c
@@ -408,9 +383,6 @@ where
 
 //▒▒▒▒▒▒▒▒▒▒▒ SCALES ▒▒▒▒▒▒▒▒▒▒▒▒▒
 //0-100 scale
-fn diminishing_scale(
-	scale_max: usize,
-	input: f32,
-) -> f32 {
+fn diminishing_scale(scale_max: usize, input: f32) -> f32 {
 	100.0 / (input * scale_max as f32)
 }

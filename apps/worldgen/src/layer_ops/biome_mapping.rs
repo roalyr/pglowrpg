@@ -10,10 +10,7 @@ pub fn get(lp: &mut LayerPack) {
 	}
 }
 
-fn match_biomes(
-	lp: &mut LayerPack,
-	index: usize,
-) -> u8 {
+fn match_biomes(lp: &mut LayerPack, index: usize) -> u8 {
 	let temp = translate::get_abs(
 		lp.climate.read(lp.climate.TEMPERATURE, index) as f32,
 		255.0,
@@ -48,8 +45,7 @@ fn match_biomes(
 		) as u8
 	};
 
-	let watermask =
-		lp.topography.read(lp.topography.WATERMASK, index);
+	let watermask = lp.topography.read(lp.topography.WATERMASK, index);
 
 	#[allow(overlapping_patterns, clippy::match_overlapping_arm)]
 	match temp {

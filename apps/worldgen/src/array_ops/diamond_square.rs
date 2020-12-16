@@ -17,11 +17,8 @@ struct Params {
 }
 
 pub fn get(
-	size: usize,
-	land_concentrator: f32,
-	land_scope: f32,
-	land_continuity: f32,
-	seed: usize,
+	size: usize, land_concentrator: f32, land_scope: f32,
+	land_continuity: f32, seed: usize,
 ) -> Vec<f32> {
 	let xy = Index { map_size: size };
 
@@ -64,12 +61,10 @@ pub fn get(
 				let shift = prng::get(
 					-half_size_f
 						+ land_continuity
-							* half_size_f * (ONE_F32
-							- land_concentrator),
+							* half_size_f * (ONE_F32 - land_concentrator),
 					half_size_f
 						+ land_continuity
-							* half_size_f * (ONE_F32
-							- land_concentrator),
+							* half_size_f * (ONE_F32 - land_concentrator),
 					p.seed,
 					p.iter,
 				);
@@ -109,21 +104,15 @@ pub fn get(
 	normalize_crop(p.array, p.size)
 }
 
-fn diamond_substep(
-	p: &mut Params,
-	center_x: usize,
-	center_y: usize,
-) {
+fn diamond_substep(p: &mut Params, center_x: usize, center_y: usize) {
 	let xy = Index { map_size: p.size };
 
 	p.iter += 1;
 	let half_size = p.step_len / 2;
 	let half_size_f = half_size as f32;
-	let sum2 = p.array[xy.ind(
-		(center_x.saturating_sub(half_size)) % p.size,
-		center_y,
-	)] + p.array
-		[xy.ind((center_x + half_size) % p.size, center_y)]
+	let sum2 = p.array[xy
+		.ind((center_x.saturating_sub(half_size)) % p.size, center_y)]
+		+ p.array[xy.ind((center_x + half_size) % p.size, center_y)]
 		+ p.array[xy.ind(
 			center_x,
 			(center_y.saturating_sub(half_size)) % p.size,
@@ -142,9 +131,7 @@ fn diamond_substep(
 	);
 
 	let avg2 = (p.land_concentrator * sum2 / 4.0 * half_size_f
-		+ (ONE_F32 - p.land_concentrator)
-			* p.land_scope
-			* sum2 * shift
+		+ (ONE_F32 - p.land_concentrator) * p.land_scope * sum2 * shift
 		+ p.land_concentrator * p.land_scope * shift
 		+ (ONE_F32 - p.land_concentrator) * sum2 / 4.0)
 		/ (p.land_concentrator * half_size_f
@@ -153,10 +140,7 @@ fn diamond_substep(
 	p.array[xy.ind(center_x, center_y)] = avg2;
 }
 
-fn normalize_crop(
-	mut array: Vec<f32>,
-	size: usize,
-) -> Vec<f32> {
+fn normalize_crop(mut array: Vec<f32>, size: usize) -> Vec<f32> {
 	let xy = Index { map_size: size };
 	let xy_big = Index {
 		map_size: size + DS_CROP,

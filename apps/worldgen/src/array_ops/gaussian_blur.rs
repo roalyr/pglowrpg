@@ -9,10 +9,7 @@ pub fn get(src: &mut Vec<u8>) {
 }
 
 fn gaussian_blur(
-	data: &mut Vec<u8>,
-	width: usize,
-	height: usize,
-	blur_radius: f32,
+	data: &mut Vec<u8>, width: usize, height: usize, blur_radius: f32,
 ) {
 	let boxes = create_box_gauss(blur_radius, 3);
 
@@ -25,10 +22,7 @@ fn gaussian_blur(
 	}
 }
 
-fn create_box_gauss(
-	sigma: f32,
-	n: usize,
-) -> Vec<i32> {
+fn create_box_gauss(sigma: f32, n: usize) -> Vec<i32> {
 	if sigma > 0.0 {
 		let n_float = n as f32;
 
@@ -65,12 +59,8 @@ fn create_box_gauss(
 }
 
 fn box_blur(
-	backbuf: &mut Vec<u8>,
-	frontbuf: &mut Vec<u8>,
-	width: usize,
-	height: usize,
-	blur_radius_horz: usize,
-	blur_radius_vert: usize,
+	backbuf: &mut Vec<u8>, frontbuf: &mut Vec<u8>, width: usize,
+	height: usize, blur_radius_horz: usize, blur_radius_vert: usize,
 ) {
 	box_blur_horz(backbuf, frontbuf, width, height, blur_radius_horz);
 
@@ -78,10 +68,7 @@ fn box_blur(
 }
 
 fn box_blur_vert(
-	backbuf: &[u8],
-	frontbuf: &mut [u8],
-	width: usize,
-	height: usize,
+	backbuf: &[u8], frontbuf: &mut [u8], width: usize, height: usize,
 	blur_radius: usize,
 ) {
 	if blur_radius == 0 {
@@ -125,8 +112,7 @@ fn box_blur_vert(
 			val_r += isize::from(bb);
 		}
 		if blur_radius > height {
-			val_r +=
-				(blur_radius - height) as isize * isize::from(lv);
+			val_r += (blur_radius - height) as isize * isize::from(lv);
 		}
 
 		for _ in 0..min(height, blur_radius + 1) {
@@ -168,10 +154,7 @@ fn box_blur_vert(
 }
 
 fn box_blur_horz(
-	backbuf: &[u8],
-	frontbuf: &mut [u8],
-	width: usize,
-	height: usize,
+	backbuf: &[u8], frontbuf: &mut [u8], width: usize, height: usize,
 	blur_radius: usize,
 ) {
 	if blur_radius == 0 {
@@ -216,8 +199,7 @@ fn box_blur_horz(
 		}
 
 		if blur_radius > width {
-			val_r +=
-				(blur_radius - height) as isize * isize::from(lv);
+			val_r += (blur_radius - height) as isize * isize::from(lv);
 		}
 
 		for _ in 0..min(width, blur_radius + 1) {

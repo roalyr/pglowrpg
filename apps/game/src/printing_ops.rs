@@ -13,9 +13,7 @@ pub fn print_strings_basic(gs: &GameStrings) {
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ MESSY CODE AHEAD ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn map_render_land(
-	gd: &mut GameData,
-	center_x: usize,
-	center_y: usize,
+	gd: &mut GameData, center_x: usize, center_y: usize,
 ) {
 	let mut render_line = Vec::new();
 	let bi: biomes::Stuff = biomes::get();
@@ -45,231 +43,154 @@ pub fn map_render_land(
 				let biome = gd.lp.biomes.read(gd.index);
 
 				//Forgive me what comes below. I will fix it later.
-				let mut element =
-					match river_width {
-						//⁓≃≅≈≊≋
-						1 => ".⁓".truecolor(70, 100, 145).bold(),
-						2 => "⁓⁓".truecolor(70, 100, 145).bold(),
-						3 => "⁓⩪".truecolor(70, 100, 145).bold(),
-						4 => "⩪⩪".truecolor(70, 130, 190).bold(),
-						5 => "⩪≃".truecolor(70, 130, 190).bold(),
-						6 => "≃≃".truecolor(70, 130, 190).bold(),
-						7 => "≃≊".truecolor(70, 150, 230).bold(),
-						8 => "≊≊".truecolor(70, 150, 230).bold(),
-						9 => "≊≋".truecolor(70, 150, 230).bold(),
-						10 => "≋≋".truecolor(70, 195, 230).bold(),
-						11 => "≋⩭".truecolor(70, 195, 230).bold(),
-						12 => "⩰⩰".truecolor(70, 195, 230).bold(),
+				let mut element = match river_width {
+					//⁓≃≅≈≊≋
+					1 => ".⁓".truecolor(70, 100, 145).bold(),
+					2 => "⁓⁓".truecolor(70, 100, 145).bold(),
+					3 => "⁓⩪".truecolor(70, 100, 145).bold(),
+					4 => "⩪⩪".truecolor(70, 130, 190).bold(),
+					5 => "⩪≃".truecolor(70, 130, 190).bold(),
+					6 => "≃≃".truecolor(70, 130, 190).bold(),
+					7 => "≃≊".truecolor(70, 150, 230).bold(),
+					8 => "≊≊".truecolor(70, 150, 230).bold(),
+					9 => "≊≋".truecolor(70, 150, 230).bold(),
+					10 => "≋≋".truecolor(70, 195, 230).bold(),
+					11 => "≋⩭".truecolor(70, 195, 230).bold(),
+					12 => "⩰⩰".truecolor(70, 195, 230).bold(),
 
-						_ => {
-							//put biome tiles where there is no river tile
-							let argb: Vec<u8> = match biome {
-								0 => from_hex(&bi.color_0),
-								1 => from_hex(&bi.color_1),
-								2 => from_hex(&bi.color_2),
-								3 => from_hex(&bi.color_3),
-								4 => from_hex(&bi.color_4),
-								5 => from_hex(&bi.color_5),
-								6 => from_hex(&bi.color_6),
-								7 => from_hex(&bi.color_7),
-								8 => from_hex(&bi.color_8),
-								9 => from_hex(&bi.color_9),
-								10 => from_hex(&bi.color_10),
-								11 => from_hex(&bi.color_11),
-								12 => from_hex(&bi.color_12),
-								13 => from_hex(&bi.color_13),
-								14 => from_hex(&bi.color_14),
-								15 => from_hex(&bi.color_15),
-								16 => from_hex(&bi.color_16),
-								17 => from_hex(&bi.color_17),
-								18 => from_hex(&bi.color_18),
-								19 => from_hex(&bi.color_19),
-								20 => from_hex(&bi.color_20),
-								21 => from_hex(&bi.color_21),
-								22 => from_hex(&bi.color_22),
-								23 => from_hex(&bi.color_23),
-								24 => from_hex(&bi.color_24),
-								25 => from_hex(&bi.color_25),
-								26 => from_hex(&bi.color_26),
-								27 => from_hex(&bi.color_27),
-								28 => from_hex(&bi.color_28),
-								29 => from_hex(&bi.color_29),
-								30 => from_hex(&bi.color_30),
-								31 => from_hex(&bi.color_31),
-								32 => from_hex(&bi.color_32),
-								33 => from_hex(&bi.color_33),
-								34 => from_hex(&bi.color_34),
-								35 => from_hex(&bi.color_35),
-								36 => from_hex(&bi.color_36),
-								37 => from_hex(&bi.color_37),
+					_ => {
+						//put biome tiles where there is no river tile
+						let argb: Vec<u8> = match biome {
+							0 => from_hex(&bi.color_0),
+							1 => from_hex(&bi.color_1),
+							2 => from_hex(&bi.color_2),
+							3 => from_hex(&bi.color_3),
+							4 => from_hex(&bi.color_4),
+							5 => from_hex(&bi.color_5),
+							6 => from_hex(&bi.color_6),
+							7 => from_hex(&bi.color_7),
+							8 => from_hex(&bi.color_8),
+							9 => from_hex(&bi.color_9),
+							10 => from_hex(&bi.color_10),
+							11 => from_hex(&bi.color_11),
+							12 => from_hex(&bi.color_12),
+							13 => from_hex(&bi.color_13),
+							14 => from_hex(&bi.color_14),
+							15 => from_hex(&bi.color_15),
+							16 => from_hex(&bi.color_16),
+							17 => from_hex(&bi.color_17),
+							18 => from_hex(&bi.color_18),
+							19 => from_hex(&bi.color_19),
+							20 => from_hex(&bi.color_20),
+							21 => from_hex(&bi.color_21),
+							22 => from_hex(&bi.color_22),
+							23 => from_hex(&bi.color_23),
+							24 => from_hex(&bi.color_24),
+							25 => from_hex(&bi.color_25),
+							26 => from_hex(&bi.color_26),
+							27 => from_hex(&bi.color_27),
+							28 => from_hex(&bi.color_28),
+							29 => from_hex(&bi.color_29),
+							30 => from_hex(&bi.color_30),
+							31 => from_hex(&bi.color_31),
+							32 => from_hex(&bi.color_32),
+							33 => from_hex(&bi.color_33),
+							34 => from_hex(&bi.color_34),
+							35 => from_hex(&bi.color_35),
+							36 => from_hex(&bi.color_36),
+							37 => from_hex(&bi.color_37),
 
-								_ => from_hex(&bi.color_100),
-							};
+							_ => from_hex(&bi.color_100),
+						};
 
-							match biome {
-								0 => "▒▒" //water
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								1 => "▒▒" //water
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								2 => "▒▒" //water
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								3 => "▒▒" //water
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								4 => "▒▒" //water
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								5 => "⁛⁚" //desert
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								6 => "⁛⁚" //desert
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								7 => "⁛⁚" //desert
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								8 => "⁛⁚" //desert
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								9 => "██" //glacier
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								10 => "⁖⁖" //barren tundra
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								11 => "██" //mountain top
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								12 => "██" //mountain top
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								13 => "██" //mountain top
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								14 => "██" //mountain top
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								15 => "██" //mountain top
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								16 => "⚵⚶" //grassland
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								17 => "⚵⚶" //grassland
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								18 => "⚵⚶" //grassland
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								19 => "⚵⚶" //grassland
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								//⥾⨡⸶⸷⸙⸙☘⍋⍙⌇⌄⌄…‴⏃
-								20 => "⥾⏃" //woodland
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								21 => "⥾⏃" //woodland
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								22 => "⥾⏃" //woodland
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								23 => "⍋⏃" //forest
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								24 => "⍋⏃" //forest
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								25 => "⍋⏃" //forest
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								26 => "⥾~" //swamp
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								27 => "⥾~" //swamp
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								28 => "⥾~" //swamp
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								29 => "☘⍋" //rainforest
-									.bold()
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								30 => "☘⍋" //rainforest
-									.bold()
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								31 => "☘⍋" //rainforest
-									.bold()
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								32 => "⥾⚶" //shrubland
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								33 => "⥾⚶" //shrubland
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								34 => "⥾⚶" //shrubland
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								35 => "…⚵" //alpine grassland
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								36 => "…⚵" //alpine grassland
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
-								37 => "…⚵" //alpine grassland
-									.truecolor(
-										argb[1], argb[2], argb[3],
-									),
+						match biome {
+							0 => "▒▒" //water
+								.truecolor(argb[1], argb[2], argb[3]),
+							1 => "▒▒" //water
+								.truecolor(argb[1], argb[2], argb[3]),
+							2 => "▒▒" //water
+								.truecolor(argb[1], argb[2], argb[3]),
+							3 => "▒▒" //water
+								.truecolor(argb[1], argb[2], argb[3]),
+							4 => "▒▒" //water
+								.truecolor(argb[1], argb[2], argb[3]),
+							5 => "⁛⁚" //desert
+								.truecolor(argb[1], argb[2], argb[3]),
+							6 => "⁛⁚" //desert
+								.truecolor(argb[1], argb[2], argb[3]),
+							7 => "⁛⁚" //desert
+								.truecolor(argb[1], argb[2], argb[3]),
+							8 => "⁛⁚" //desert
+								.truecolor(argb[1], argb[2], argb[3]),
+							9 => "██" //glacier
+								.truecolor(argb[1], argb[2], argb[3]),
+							10 => "⁖⁖" //barren tundra
+								.truecolor(argb[1], argb[2], argb[3]),
+							11 => "██" //mountain top
+								.truecolor(argb[1], argb[2], argb[3]),
+							12 => "██" //mountain top
+								.truecolor(argb[1], argb[2], argb[3]),
+							13 => "██" //mountain top
+								.truecolor(argb[1], argb[2], argb[3]),
+							14 => "██" //mountain top
+								.truecolor(argb[1], argb[2], argb[3]),
+							15 => "██" //mountain top
+								.truecolor(argb[1], argb[2], argb[3]),
+							16 => "⚵⚶" //grassland
+								.truecolor(argb[1], argb[2], argb[3]),
+							17 => "⚵⚶" //grassland
+								.truecolor(argb[1], argb[2], argb[3]),
+							18 => "⚵⚶" //grassland
+								.truecolor(argb[1], argb[2], argb[3]),
+							19 => "⚵⚶" //grassland
+								.truecolor(argb[1], argb[2], argb[3]),
+							//⥾⨡⸶⸷⸙⸙☘⍋⍙⌇⌄⌄…‴⏃
+							20 => "⥾⏃" //woodland
+								.truecolor(argb[1], argb[2], argb[3]),
+							21 => "⥾⏃" //woodland
+								.truecolor(argb[1], argb[2], argb[3]),
+							22 => "⥾⏃" //woodland
+								.truecolor(argb[1], argb[2], argb[3]),
+							23 => "⍋⏃" //forest
+								.truecolor(argb[1], argb[2], argb[3]),
+							24 => "⍋⏃" //forest
+								.truecolor(argb[1], argb[2], argb[3]),
+							25 => "⍋⏃" //forest
+								.truecolor(argb[1], argb[2], argb[3]),
+							26 => "⥾~" //swamp
+								.truecolor(argb[1], argb[2], argb[3]),
+							27 => "⥾~" //swamp
+								.truecolor(argb[1], argb[2], argb[3]),
+							28 => "⥾~" //swamp
+								.truecolor(argb[1], argb[2], argb[3]),
+							29 => "☘⍋" //rainforest
+								.bold()
+								.truecolor(argb[1], argb[2], argb[3]),
+							30 => "☘⍋" //rainforest
+								.bold()
+								.truecolor(argb[1], argb[2], argb[3]),
+							31 => "☘⍋" //rainforest
+								.bold()
+								.truecolor(argb[1], argb[2], argb[3]),
+							32 => "⥾⚶" //shrubland
+								.truecolor(argb[1], argb[2], argb[3]),
+							33 => "⥾⚶" //shrubland
+								.truecolor(argb[1], argb[2], argb[3]),
+							34 => "⥾⚶" //shrubland
+								.truecolor(argb[1], argb[2], argb[3]),
+							35 => "…⚵" //alpine grassland
+								.truecolor(argb[1], argb[2], argb[3]),
+							36 => "…⚵" //alpine grassland
+								.truecolor(argb[1], argb[2], argb[3]),
+							37 => "…⚵" //alpine grassland
+								.truecolor(argb[1], argb[2], argb[3]),
 
-								_ => "▓▓".truecolor(
-									argb[1], argb[2], argb[3],
-								),
+							_ => {
+								"▓▓".truecolor(argb[1], argb[2], argb[3])
 							}
-						} //match biomes block
-					}; //match rivers
+						}
+					} //match biomes block
+				}; //match rivers
 
 				//Add elevation color
 				element = element
@@ -301,11 +222,7 @@ pub fn map_render_land(
 						.chars()
 						.rev()
 						.collect::<String>()
-						.truecolor(
-							colors_fg.0,
-							colors_fg.1,
-							colors_fg.2,
-						)
+						.truecolor(colors_fg.0, colors_fg.1, colors_fg.2)
 						.on_truecolor(
 							colors_bg.0,
 							colors_bg.1,

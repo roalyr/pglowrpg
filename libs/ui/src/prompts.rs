@@ -2,10 +2,7 @@ use std::io;
 use std::io::Write;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ INPUT ▒▒▒▒▒▒▒▒▒▒▒▒▒
-pub fn new_line_io(
-	prompt_str: &str,
-	prompt_sym: &str,
-) -> String {
+pub fn new_line_io(prompt_str: &str, prompt_sym: &str) -> String {
 	let mut input = String::new();
 
 	//Print a prompt message
@@ -20,10 +17,7 @@ pub fn new_line_io(
 	input.trim().to_string()
 }
 
-pub fn autocomplete(
-	input: &String,
-	options: &Vec<String>,
-) -> String {
+pub fn autocomplete(input: &String, options: &Vec<String>) -> String {
 	let mut selected_queue = Vec::new();
 	let mut priority_queue = Vec::new();
 
@@ -64,9 +58,6 @@ pub fn autocomplete(
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ CONFIRMATION ▒▒▒▒▒▒▒▒▒▒▒▒▒
-pub fn selected(
-	prompt: &str,
-	input: &str,
-) {
+pub fn selected(prompt: &str, input: &str) {
 	println!("{}", [&prompt, "\"", &input, "\""].concat());
 }

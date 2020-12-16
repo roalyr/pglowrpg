@@ -1,9 +1,6 @@
 use crate::layer_ops::river_mapping::*;
 
-pub fn map_width(
-	rg: &mut RgParams,
-	lp: &mut LayerPack,
-) {
+pub fn map_width(rg: &mut RgParams, lp: &mut LayerPack) {
 	//Must be cloned
 	let width_queue = rg.rivers_paths.width_queue.clone();
 	let mut exclusion_queue = Vec::new();
@@ -54,8 +51,7 @@ pub fn map_width(
 			let j = pos.1;
 			let index = lp.xy.ind(i, j);
 
-			let river_element =
-				lp.rivers.read(lp.rivers.ELEMENT, index);
+			let river_element = lp.rivers.read(lp.rivers.ELEMENT, index);
 			let river_id = lp.rivers_id.read(index);
 
 			//Map width
@@ -88,9 +84,7 @@ pub fn map_width(
 }
 
 fn fix_width(
-	rg: &mut RgParams,
-	lp: &mut LayerPack,
-	path_array: Vec<path::Pos>,
+	rg: &mut RgParams, lp: &mut LayerPack, path_array: Vec<path::Pos>,
 ) -> Vec<path::Pos> {
 	let mut path_array_downstr = Vec::new();
 
@@ -142,9 +136,7 @@ fn fix_width(
 				.find(|RiverEntry { river_id: x, .. }| {
 					*x == cell_river_id_downstr
 				})
-				.expect(
-					"river entry downstream not found in width fix",
-				)
+				.expect("river entry downstream not found in width fix")
 				.clone();
 
 			path_array_downstr = river_entry_downstr.path_array;

@@ -11,10 +11,8 @@ pub fn get(lp: &mut LayerPack) {
 fn temperature(lp: &mut LayerPack) {
 	let mut array = vec![0.0; lp.noisemap_vec_len];
 
-	let array_grad = array_ops::gradients::get(
-		lp.wi.noisemap_size,
-		lp.wi.temp_mode,
-	);
+	let array_grad =
+		array_ops::gradients::get(lp.wi.noisemap_size, lp.wi.temp_mode);
 
 	let array_noise1 = array_ops::noise_maps::get(
 		lp.wi.noisemap_size,
@@ -43,8 +41,7 @@ fn temperature(lp: &mut LayerPack) {
 		let grad_rel = array_grad[index] / 255.0;
 		*cell_v = array_grad[index]
 			* (1.0 - lp.wi.temp_noise_weight)
-			* (grad_rel
-				+ array_noise_polar[index] * (1.0 - grad_rel))
+			* (grad_rel + array_noise_polar[index] * (1.0 - grad_rel))
 			+ (array_noise1[index] + array_noise2[index])
 				* 127.0 * lp.wi.temp_noise_weight
 				* grad_rel;
@@ -75,10 +72,8 @@ fn temperature(lp: &mut LayerPack) {
 fn rainfall(lp: &mut LayerPack) {
 	let mut array = vec![0.0; lp.noisemap_vec_len];
 
-	let array_grad = array_ops::gradients::get(
-		lp.wi.noisemap_size,
-		lp.wi.temp_mode,
-	);
+	let array_grad =
+		array_ops::gradients::get(lp.wi.noisemap_size, lp.wi.temp_mode);
 
 	let array_ds1 = array_ops::diamond_square::get(
 		lp.wi.noisemap_size,

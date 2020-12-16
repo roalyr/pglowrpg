@@ -1,9 +1,6 @@
 use crate::layer_ops::river_mapping::*;
 
-pub fn map_erosion(
-	rg: &mut RgParams,
-	lp: &mut LayerPack,
-) {
+pub fn map_erosion(rg: &mut RgParams, lp: &mut LayerPack) {
 	//Must be cloned
 	let erosion_queue = rg.rivers_paths.erosion_queue.clone();
 	let mut to_do_queue = Vec::new();
@@ -62,9 +59,7 @@ pub fn map_erosion(
 }
 
 fn erode_path(
-	rg: &mut RgParams,
-	lp: &mut LayerPack,
-	path_array: Vec<path::Pos>,
+	rg: &mut RgParams, lp: &mut LayerPack, path_array: Vec<path::Pos>,
 	terrain_diff: u16,
 ) {
 	//Aliases
@@ -91,8 +86,7 @@ fn erode_path(
 		) as u16
 	};
 
-	let mut terrain_stream =
-		terrain_source.saturating_sub(terrain_diff);
+	let mut terrain_stream = terrain_source.saturating_sub(terrain_diff);
 
 	//Bound if needed
 	if terrain_stream < erosion_floor {
@@ -148,8 +142,7 @@ fn erode_path(
 		for erosion_width in 1..erosion_width_max {
 			let double_width = erosion_width * 2;
 			for i in 0..double_width {
-				let shif_i: isize =
-					i as isize - erosion_width as isize;
+				let shif_i: isize = i as isize - erosion_width as isize;
 
 				let erosion_i = (i0 as isize + shif_i) as usize;
 
@@ -174,12 +167,8 @@ fn erode_path(
 }
 
 fn erosion(
-	_rg: &mut RgParams,
-	lp: &mut LayerPack,
-	erosion_width_iter: usize,
-	erosion_i: usize,
-	erosion_j: usize,
-	terrain_current: u16,
+	_rg: &mut RgParams, lp: &mut LayerPack, erosion_width_iter: usize,
+	erosion_i: usize, erosion_j: usize, terrain_current: u16,
 ) {
 	//Aliases
 	let map_size = lp.wi.map_size;
@@ -193,8 +182,7 @@ fn erosion(
 		{
 			let terrain_current = terrain_current as f32;
 			let terrain_to_erode =
-				lp.topography.read(lp.topography.TERRAIN, index)
-					as f32;
+				lp.topography.read(lp.topography.TERRAIN, index) as f32;
 
 			let terrain_relative: f32 = terrain_to_erode / 255.0;
 
