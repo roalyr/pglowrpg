@@ -38,10 +38,10 @@ pub const TOPOG_NOISE_WEIGHT_MAX: f32 = 100.0;
 
 #[derive(Copy, Clone, Serialize, Deserialize, Debug)]
 pub enum TempGrad {
-	South,
-	Neither,
-	North,
-	Both,
+  South,
+  Neither,
+  North,
+  Both,
 }
 
 pub const TEMP_NOISE_SIZE_MIN: f32 = 1.0;
@@ -86,14 +86,11 @@ pub const RIVER_VECT_ANGLE_MAX: f32 = 2.0 * std::f32::consts::PI;
 pub const RIVER_VECT_ANGLE_NOISE_MIN: f32 = 0.0;
 pub const RIVER_VECT_ANGLE_NOISE_MAX: f32 = 100.0;
 pub const RIVER_VECT_ANGLE_MAX_DEVIATION_MIN: f32 = 0.0;
-pub const RIVER_VECT_ANGLE_MAX_DEVIATION_MAX: f32 =
-	2.0 * std::f32::consts::PI;
+pub const RIVER_VECT_ANGLE_MAX_DEVIATION_MAX: f32 = 2.0 * std::f32::consts::PI;
 
-pub const MAP_SIZES: [usize; 7] =
-	[256, 512, 1024, 2048, 4096, 8192, 16384];
+pub const MAP_SIZES: [usize; 7] = [256, 512, 1024, 2048, 4096, 8192, 16384];
 
-pub const NOISEMAP_SIZES: [usize; 6] =
-	[256, 512, 1024, 2048, 4096, 8192];
+pub const NOISEMAP_SIZES: [usize; 6] = [256, 512, 1024, 2048, 4096, 8192];
 
 //▒▒▒▒▒▒▒▒▒▒ TEMPERATURE ▒▒▒▒▒▒▒▒▒▒▒▒
 pub const TEMP_MIN: isize = ABS_TEMP_MIN;

@@ -7,62 +7,62 @@ use serde::{Deserialize, Serialize};
 //▒▒▒▒▒▒▒▒▒▒▒▒ LAYER PACK ▒▒▒▒▒▒▒▒▒▒▒▒▒
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LayerPack {
-	pub xy: Index,
-	pub wi: presets::presets_worldgen::Stuff,
+  pub xy: Index,
+  pub wi: presets::presets_worldgen::Stuff,
 
-	pub layer_vec_len: usize,
-	pub noisemap_vec_len: usize,
+  pub layer_vec_len: usize,
+  pub noisemap_vec_len: usize,
 
-	pub biomes: BitLayerBiomes,
-	pub rivers_id: BitLayerRiversID,
-	pub georeg_id: BitLayerGeoregID,
-	pub topography: BitLayerTopography,
-	pub climate: BitLayerClimate,
-	pub rivers: BitLayerRivers,
+  pub biomes: BitLayerBiomes,
+  pub rivers_id: BitLayerRiversID,
+  pub georeg_id: BitLayerGeoregID,
+  pub topography: BitLayerTopography,
+  pub climate: BitLayerClimate,
+  pub rivers: BitLayerRivers,
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ Layers ▒▒▒▒▒▒▒▒▒▒▒▒▒
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BitLayerTopography {
-	pub data: Vec<u16>,
-	//Masks
-	pub TERRAIN: u16,
-	pub WATERMASK: u16,
-	pub _placeholder: u16,
+  pub data: Vec<u16>,
+  //Masks
+  pub TERRAIN: u16,
+  pub WATERMASK: u16,
+  pub _placeholder: u16,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BitLayerClimate {
-	pub data: Vec<u16>,
-	//Masks
-	pub TEMPERATURE: u16,
-	pub RAINFALL: u16,
+  pub data: Vec<u16>,
+  //Masks
+  pub TEMPERATURE: u16,
+  pub RAINFALL: u16,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BitLayerRivers {
-	pub data: Vec<u16>,
-	//Masks
-	pub ELEMENT: u16,
-	pub WIDTH: u16,
-	pub UPSTREAM: u16,
-	pub DOWNSTREAM: u16,
-	pub _placeholder: u16,
+  pub data: Vec<u16>,
+  //Masks
+  pub ELEMENT: u16,
+  pub WIDTH: u16,
+  pub UPSTREAM: u16,
+  pub DOWNSTREAM: u16,
+  pub _placeholder: u16,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BitLayerBiomes {
-	pub data: Vec<u8>,
+  pub data: Vec<u8>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BitLayerRiversID {
-	pub data: Vec<u16>,
+  pub data: Vec<u16>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BitLayerGeoregID {
-	pub data: Vec<u16>,
+  pub data: Vec<u16>,
 }
 
 macro_rules! impl_with_masks {
