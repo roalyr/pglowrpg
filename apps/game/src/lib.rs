@@ -24,44 +24,44 @@ use ui::prompts;
 use units::translate;
 
 pub fn start(
-  options: options::Stuff,
-  commands: strings::commands::Stuff,
-  gm_str: strings::game_strings::Stuff,
-  panic_str: strings::panic_strings::Stuff,
-  ui_el: strings::ui_elements::Stuff,
+	options: options::Stuff,
+	commands: strings::commands::Stuff,
+	gm_str: strings::game_strings::Stuff,
+	panic_str: strings::panic_strings::Stuff,
+	ui_el: strings::ui_elements::Stuff,
 ) {
-  //Init game structs
-  let mut gs = init_gs(gm_str, panic_str, ui_el);
-  let mut gd = match init_gd(&gs, options, commands) {
-    //Selecting preset may return None
-    Some(gd) => gd,
-    _ => return,
-  };
+	//Init game structs
+	let mut gs = init_gs(gm_str, panic_str, ui_el);
+	let mut gd = match init_gd(&gs, options, commands) {
+		//Selecting preset may return None
+		Some(gd) => gd,
+		_ => return,
+	};
 
-  //Welcoming message
-  //Banner
-  println!("{}", &gs.gm_str.gm1);
-  //Intro message
-  println!("{}", &gs.gm_str.gm2);
+	//Welcoming message
+	//Banner
+	println!("{}", &gs.gm_str.gm1);
+	//Intro message
+	println!("{}", &gs.gm_str.gm2);
 
-  //Main loop
-  loop {
-    //Game mechanics
-    get_world_current(&mut gd);
+	//Main loop
+	loop {
+		//Game mechanics
+		get_world_current(&mut gd);
 
-    //UI printing and rendering
-    get_strings_basic(&gd, &mut gs);
-    print_strings_basic(&gs);
+		//UI printing and rendering
+		get_strings_basic(&gd, &mut gs);
+		print_strings_basic(&gs);
 
-    //temporary here, for debug
-    let cx = gd.x;
-    let cy = gd.y;
-    map_render_land(&mut gd, cx, cy);
+		//temporary here, for debug
+		let cx = gd.x;
+		let cy = gd.y;
+		map_render_land(&mut gd, cx, cy);
 
-    //Input and actions
-    match process_input(&mut gd, &gs) {
-      true => continue,
-      false => return,
-    }
-  }
+		//Input and actions
+		match process_input(&mut gd, &gs) {
+			true => continue,
+			false => return,
+		}
+	}
 }

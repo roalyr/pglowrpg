@@ -38,10 +38,10 @@ pub const TOPOG_NOISE_WEIGHT_MAX: f32 = 100.0;
 
 #[derive(Copy, Clone, Serialize, Deserialize, Debug)]
 pub enum TempGrad {
-  South,
-  Neither,
-  North,
-  Both,
+	South,
+	Neither,
+	North,
+	Both,
 }
 
 pub const TEMP_NOISE_SIZE_MIN: f32 = 1.0;
@@ -132,3 +132,53 @@ pub const RIVER_BODY: u16 = 2;
 pub const RIVER_END: u16 = 3;
 pub const RIVER_WATERFALL: u16 = 4;
 pub const RIVER_WATERFALLS_MUL: u16 = 5;
+
+//▒▒▒▒▒▒▒▒▒▒▒▒ BIOMES ▒▒▒▒▒▒▒▒▒▒▒▒▒
+pub const BIOME_WATER_ICECAP: u8 = 0;
+pub const BIOME_ICY_WATERS: u8 = 1;
+pub const BIOME_COLD_WATERS: u8 = 2;
+pub const BIOME_TEMPERATE_WATERS: u8 = 3;
+pub const BIOME_TROPICAL_WATERS: u8 = 4;
+
+pub const BIOME_POLAR_ICE_DESERT: u8 = 5;
+pub const BIOME_COLD_DESERT: u8 = 6;
+pub const BIOME_TEMPERATE_DESERT: u8 = 7;
+pub const BIOME_TROPICAL_DESERT: u8 = 8;
+
+pub const BIOME_POLAR_SNOWY_GLACIER: u8 = 9;
+pub const BIOME_BARREN_TUNDRA: u8 = 10;
+
+pub const BIOME_POLAR_MOUNTAIN_TOP: u8 = 11;
+pub const BIOME_TUNDRA_MOUNTAIN_TOP: u8 = 12;
+pub const BIOME_BOREAL_MOUNTAIN_TOP: u8 = 13;
+pub const BIOME_TEMPERATE_MOUNTAIN_TOP: u8 = 14;
+pub const BIOME_TROPICAL_MOUNTAIN_TOP: u8 = 15;
+
+pub const BIOME_TUNDRA_GRASSLAND: u8 = 16;
+pub const BIOME_BOREAL_GRASSLAND: u8 = 17;
+pub const BIOME_TEMPERATE_GRASSLAND: u8 = 18;
+pub const BIOME_TROPICAL_GRASSLAND: u8 = 19;
+
+pub const BIOME_BOREAL_WOODLAND: u8 = 20;
+pub const BIOME_TEMPERATE_WOODLAND: u8 = 21;
+pub const BIOME_TROPICAL_WOODLAND: u8 = 22;
+
+pub const BIOME_BOREAL_FOREST: u8 = 23;
+pub const BIOME_TEMPERATE_FOREST: u8 = 24;
+pub const BIOME_TROPICAL_FOREST: u8 = 25;
+
+pub const BIOME_BOREAL_SWAMP: u8 = 26;
+pub const BIOME_TEMPERATE_SWAMP: u8 = 27;
+pub const BIOME_TROPICAL_SWAMP: u8 = 28;
+
+pub const BIOME_BOREAL_RAINFOREST: u8 = 29;
+pub const BIOME_TEMPERATE_RAINFOREST: u8 = 30;
+pub const BIOME_TROPICAL_RAINFOREST: u8 = 31;
+
+pub const BIOME_BOREAL_SHRUBLAND: u8 = 32;
+pub const BIOME_TEMPERATE_SHRUBLAND: u8 = 33;
+pub const BIOME_TROPICAL_SHRUBLAND: u8 = 34;
+
+pub const BIOME_BOREAL_ALPINE_GRASSLAND: u8 = 35;
+pub const BIOME_TEMPERATE_ALPINE_GRASSLAND: u8 = 36;
+pub const BIOME_TROPICAL_ALPINE_GRASSLAND: u8 = 37;

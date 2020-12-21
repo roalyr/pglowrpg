@@ -1,11 +1,11 @@
 use oorandom::Rand32;
 
 pub fn get(
-  min: f32,
-  max: f32,
-  seed: usize,
-  iter: usize,
+	min: f32,
+	max: f32,
+	seed: usize,
+	iter: usize,
 ) -> f32 {
-  let mut random = Rand32::new_inc(seed as u64, iter as u64);
-  random.rand_float() * (max - min) + min
+	let mut random = Rand32::new_inc(seed as u64, iter as u64);
+	random.rand_float() * (max - min) + min
 }

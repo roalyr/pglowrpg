@@ -2,7 +2,7 @@
 edition = "2018"
 max_width = 80
 fn_args_layout = "Vertical"
-hard_tabs = false
+hard_tabs = true
 tab_spaces = 2
 merge_derives = true
 remove_nested_parens = true

@@ -1,5 +1,5 @@
 pub mod menu;
 
 fn main() {
-  menu::start();
+	menu::start();
 }
