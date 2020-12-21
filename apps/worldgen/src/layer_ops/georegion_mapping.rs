@@ -66,39 +66,6 @@ pub fn get(
 			}
 		}
 	}
-	//It makes sense to have two types of regions:
-	//1. "hexagon" landmass biome regions which are too detailed
-	//	(forest, desert, glacier so and so);
-	//2. "as is" geographical region for exact shoreline
-	//	(island, continent, lake, sea, etc);
-	//Water biome and geographical regions should be the same
-	//Algorithm:
-	//1. Floodfill the water regions only first.
-	//1.1. Write down a table for both bio and geo regions with the
-	//	same information to match them for given water body.
-	//2. Duplicate the map, region id number and exclusion maps.
-	//3. First copy: do floodfill for the landmass for geo regions,
-	//	and resume writing that table with landmass data
-	//4. Second copy: do floodfill for the biomes for bio regions
-	//	write data to table
-	//5. Make bio region map into hexagons to smooth small details
-	//6. Define narration rules for land/water bio/geo region comb.
-
-	//make into hexagons
-	//let greg_map_hex =
-	//interpolate::hexagonify(greg_map.clone(), lp.wi.map_size);
-
-	//make water region overlay
-	//for i in 0..lp.wi.map_size {
-	//for j in 0..lp.wi.map_size {
-	//let index = xy.ind(i, j);
-	//everywhere where there is land, put hexagons
-	//if wmask_map[index] == 0 {
-	//greg_map[index] = greg_map_hex[index];
-	//}
-	//}
-	//}
-	//println!("{}{}", wg_str.gr1, region_id);
 	for index in 0..lp.layer_vec_len {
 		lp.georeg_id.write(greg_map[index] as u16, index)
 	}

@@ -102,30 +102,9 @@ pub fn get(
 		},
 	};
 	//perform rivergen
-	estimate_sources_number(&mut rg, lp, wg_str);
+	rg.estimate_sources_number(lp, wg_str);
 	set_paths(&mut rg, lp, wg_str);
 	map_paths(&mut rg, lp);
 	map_width(&mut rg, lp);
 	map_erosion(&mut rg, lp);
-}
-
-//▒▒▒▒▒▒▒▒ RIVER QUANTITY ESTIMATION ▒▒▒▒▒▒▒▒
-fn estimate_sources_number(
-	rg: &mut RgParams,
-	lp: &mut LayerPack,
-	_wg_str: &strings::worldgen_strings::Stuff,
-) {
-	for i in 0..lp.wi.map_size {
-		for j in 0..lp.wi.map_size {
-			let index = lp.xy.ind(i, j);
-			let random = prng::get(0.0, 1.0, lp.wi.seed, index);
-			let total_prob = prob(i, j, rg, lp);
-			if (random <= total_prob)
-				&& (lp.topography.read(lp.topography.WATERMASK, index) == NO_WATER)
-			{
-				rg.river_est_number += 1;
-			}
-		}
-	}
-	//println!("{}{}", wg_str.rg1, rg.river_est_number);
 }

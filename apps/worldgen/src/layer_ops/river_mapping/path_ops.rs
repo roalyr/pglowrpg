@@ -36,7 +36,7 @@ fn make_paths(
 
 	//To spawn or not to spawn?
 	let random = prng::get(0.0, 1.0, lp.wi.seed, index);
-	let total_prob = prob(i, j, rg, lp);
+	let total_prob = prob(i, j, lp);
 
 	if (random <= total_prob) && (wmask == NO_WATER) {
 		//UI
