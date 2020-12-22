@@ -1,5 +1,4 @@
 use constants_world::*;
-
 use io_ops::toml::{presets, strings};
 
 struct Cap2<T> {
@@ -22,7 +21,6 @@ fn map_size(
 	panic_str: &strings::panic_strings::Stuff,
 ) {
 	let size = MAP_SIZES.iter().find(|&&s| s == wi.map_size);
-
 	if size == None {
 		let msg = &panic_str.map_size_1;
 		let msg2 = &panic_str.map_size_2;
@@ -36,14 +34,12 @@ fn noisemap_size(
 	panic_str: &strings::panic_strings::Stuff,
 ) {
 	let size = NOISEMAP_SIZES.iter().find(|&&s| s == wi.noisemap_size);
-
 	if size == None {
 		let msg = &panic_str.noisemap_size_1;
 		let msg2 = &panic_str.noisemap_size_2;
 		println!("{}{:?}{}{}", msg, NOISEMAP_SIZES, msg2, wi.noisemap_size,);
 		std::process::exit(0);
 	}
-
 	if wi.noisemap_size > wi.map_size {
 		println!("Noisemap should be less of equal to map size");
 		std::process::exit(0);
@@ -334,7 +330,6 @@ where
 	let warn = "    Warning:";
 	let msg1 = "absolute value is capped, adjusting";
 	let mut v = val;
-
 	if v < cap_min {
 		println!("{} {} {} {} => {}", warn, name, msg1, v, cap_min);
 		v = cap_min;
@@ -360,9 +355,7 @@ where
 	let msg1 = "absolute minimal value is capped, adjusting";
 	let msg2 = "absolute maximum value is capped, adjusting";
 	let msg3 = "minimal value is greater than maximum, adjusting maximum";
-
 	let mut c = Cap2 { min, max };
-
 	if c.min < cap_min {
 		println!("{} {} {} {} => {}", warn, name, msg1, c.min, cap_min);
 		c.min = cap_min;

@@ -6,14 +6,6 @@ pub mod vector_ops;
 pub mod waterbody_ops;
 pub mod width_ops;
 
-use erosion_ops::*;
-use mapping_ops::*;
-use path_ops::*;
-use probability_ops::*;
-use vector_ops::*;
-use waterbody_ops::*;
-use width_ops::*;
-
 use crate::array_ops::noise_maps;
 use codec::LayerPack;
 use constants_world::*;
@@ -103,8 +95,8 @@ pub fn get(
 	};
 	//perform rivergen
 	rg.estimate_sources_number(lp, wg_str);
-	set_paths(&mut rg, lp, wg_str);
-	map_paths(&mut rg, lp);
-	map_width(&mut rg, lp);
-	map_erosion(&mut rg, lp);
+	rg.set_paths(lp, wg_str);
+	rg.map_paths(lp);
+	rg.map_width(lp);
+	rg.map_erosion(lp);
 }
