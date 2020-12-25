@@ -1,13 +1,12 @@
 use crate::array_ops::noise_maps::NoiseMode::*;
-use crate::layer_ops::river_mapping::*;
+use crate::layer_ops::river_mapping::{RgParams, RiverEntry};
+use codec::LayerPack;
+use constants_world::*;
+use ui::progress;
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ METHODS ▒▒▒▒▒▒▒▒▒▒▒▒▒
+#[rustfmt::skip]
 impl RgParams {
-	pub fn set_paths(
-		&mut self,
-		lp: &mut LayerPack,
-		_wg_str: &strings::worldgen_strings::Stuff,
-	) {
+	pub fn set_paths(&mut self, lp: &mut LayerPack,) {
 		//Maps for pathfinding must be copied into clean arrays from
 		//existing composite data structures
 		let terrain_map = get_terrain_map(lp);
@@ -50,9 +49,7 @@ impl RgParams {
 			self.river_source = (self.dv.x0, self.dv.y0);
 			self.river_end = (self.dv.x1, self.dv.y1);
 			//Return if river is too short
-			if self.vector_within_len(lp.wi.river_min_length) {
-				return;
-			}
+			if self.vector_within_len(lp.wi.river_min_length) {return;}
 			//Make pathfinding for nodes, get a queue,
 			//do "windows"  between nodes, iterate and fill them
 			let seg_len = lp.wi.river_segment_length;
@@ -69,15 +66,12 @@ impl RgParams {
 				self.dv.x1 = node_pair[1].0;
 				self.dv.y1 = node_pair[1].1;
 				//Fill paths between nodes
-				let path_array_seg =
-					self.pathfinding_nodes(lp, 1, &random_map, diag_flag);
+				let path_array_seg = self.pathfinding_nodes(lp, 1, &random_map, diag_flag);
 				segment_queue.push(path_array_seg);
 			}
 			//Take segment queue and map the content into a single path
 			for entry in segment_queue.iter_mut() {
-				for pos in entry.iter() {
-					joined_path.push(*pos);
-				}
+				for pos in entry.iter() {joined_path.push(*pos);}
 			}
 			//Remove duplicated cells
 			joined_path.dedup();
@@ -106,20 +100,16 @@ impl RgParams {
 	) -> Vec<path::Pos> {
 		self.dv.path_heuristic = RIVER_HEUR_INIT;
 		//iter 1
-		let result_init =
-			path::make(&self.dv, &terrain_map, lp.wi.map_size, diag_flag, seg_len);
+		let result_init = path::make(&self.dv, &terrain_map, lp.wi.map_size, diag_flag, seg_len);
 		let path_distance = self.distance();
-		let estimated_heuristic = ((result_init.1 / (path_distance + 1)) as f32
-			* lp.wi.river_heuristic_factor) as usize;
+		let estimated_heuristic = ((result_init.1 / (path_distance + 1)) as f32 * lp.wi.river_heuristic_factor) as usize;
 		self.dv.path_heuristic = estimated_heuristic;
 		//iter 2
-		let result =
-			path::make(&self.dv, &terrain_map, lp.wi.map_size, diag_flag, seg_len);
+		let result = path::make(&self.dv, &terrain_map, lp.wi.map_size, diag_flag, seg_len);
 		result.0
 	}
 } //impl
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ FUNCTIONS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 fn get_random_map(lp: &mut LayerPack) -> Vec<u8> {
 	//Random noise map for river path meandering
 	//river segments would be using this

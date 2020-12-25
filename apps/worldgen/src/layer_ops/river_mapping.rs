@@ -6,24 +6,18 @@ pub mod vector_ops;
 pub mod waterbody_ops;
 pub mod width_ops;
 
-use crate::array_ops::noise_maps;
 use codec::LayerPack;
 use constants_world::*;
-use io_ops::toml::strings;
-use ui::progress;
-use units::translate;
-
-use line_drawing::BresenhamCircle;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ STRUCTURES ▒▒▒▒▒▒▒▒▒▒▒▒▒
 //river entry stores all the relevant river data
 #[derive(Clone)]
 pub struct RiverEntry {
-	river_id: u16,              //global river id value
-	path_array: Vec<path::Pos>, //cells coords
-	width: u16,                 //river width value
-	source: (usize, usize),     //value for river source
-	end: (usize, usize),        //value for river end
+	river_id: u16,
+	path_array: Vec<path::Pos>,
+	width: u16,
+	source: (usize, usize),
+	end: (usize, usize),
 }
 
 //for river width generation only
@@ -63,10 +57,7 @@ pub struct RgParams {
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ MAIN ▒▒▒▒▒▒▒▒▒▒▒▒▒
-pub fn get(
-	lp: &mut LayerPack,
-	wg_str: &strings::worldgen_strings::Stuff,
-) {
+pub fn get(lp: &mut LayerPack) {
 	//initiate the parameter structure
 	let mut rg = RgParams {
 		//temporary value storage
@@ -94,8 +85,8 @@ pub fn get(
 		},
 	};
 	//perform rivergen
-	rg.estimate_sources_number(lp, wg_str);
-	rg.set_paths(lp, wg_str);
+	rg.estimate_sources_number(lp);
+	rg.set_paths(lp);
 	rg.map_paths(lp);
 	rg.map_width(lp);
 	rg.map_erosion(lp);

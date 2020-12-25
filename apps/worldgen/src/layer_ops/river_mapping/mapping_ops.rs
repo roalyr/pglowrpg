@@ -1,12 +1,14 @@
-use crate::layer_ops::river_mapping::*;
+use crate::layer_ops::river_mapping::{
+	ErosionEntry, RgParams, RiverEntry, WidthEntry,
+};
+use codec::LayerPack;
+use constants_world::*;
 use std::cmp::Ordering;
+use units::translate;
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ METHODS ▒▒▒▒▒▒▒▒▒▒▒▒▒
+#[rustfmt::skip]
 impl RgParams {
-	pub fn map_paths(
-		&mut self,
-		lp: &mut LayerPack,
-	) {
+	pub fn map_paths(&mut self, lp: &mut LayerPack,) {
 		for river_entry in self.rivers_paths.list.clone().iter().rev() {
 			self.map_rivers_reverse(lp, river_entry);
 		}
@@ -17,35 +19,27 @@ impl RgParams {
 		lp: &mut LayerPack,
 		river_entry: &RiverEntry,
 	) {
-		//Aliases
 		let path_array = &river_entry.path_array;
 		//Store temporary values, must be here
 		self.river_id = river_entry.river_id;
 		self.river_width = river_entry.width;
 		self.river_source = river_entry.source;
 		self.river_end = river_entry.end;
-
-		let index_river_source =
-			lp.xy.ind(self.river_source.0, self.river_source.1);
+		let index_river_source = lp.xy.ind(self.river_source.0, self.river_source.1);
 		let index_end = lp.xy.ind(self.river_end.0, self.river_end.1);
 		let mut river_length = 0;
 		//Cold run to figure out river lengths and truncate short ones
 		for n in path_array.windows(2) {
 			//Must be here
 			river_length += 1;
-			//Aliases
-			let i0 = n[0].0;
-			let j0 = n[0].1;
-			let i1 = n[1].0;
-			let j1 = n[1].1;
+			let i0 = n[0].0; let j0 = n[0].1; let i1 = n[1].0; let j1 = n[1].1;
 			let index_current = lp.xy.ind(i0, j0);
 			let index_downstr = lp.xy.ind(i1, j1);
 			let temp_current = lp.climate.read(lp.climate.TEMPERATURE, index_current);
 			let river_elem_current = lp.rivers.read(lp.rivers.ELEMENT, index_current);
 			let river_elem_downstr = lp.rivers.read(lp.rivers.ELEMENT, index_downstr);
 			let river_id_downstr = lp.rivers_id.read(index_downstr);
-			let wmask_current =
-				lp.topography.read(lp.topography.WATERMASK, index_current);
+			let wmask_current = lp.topography.read(lp.topography.WATERMASK, index_current);
 			//Stop if the temperature is too low
 			let temp = translate::get_abs(
 				temp_current as f32,
@@ -53,42 +47,20 @@ impl RgParams {
 				lp.wi.abs_temp_min as f32,
 				lp.wi.abs_temp_max as f32,
 			) as isize;
-			if temp <= TEMP_POLAR {
-				break;
-			}
+			if temp <= TEMP_POLAR {break;}
 			//Minimum sink size check and stop if sink is big enough
-			if wmask_current > lp.wi.river_sink_min_pool_size_pow {
-				break;
-			}
+			if wmask_current > lp.wi.river_sink_min_pool_size_pow {break;}
 			//Check if river spawns on an existing one
 			//also terminates rivers upon crossing
 			//but allows loops, which should be adressed below
 			//enabling makes rivers disappear sometimes
-			if (river_elem_current != NO_RIVER) && (river_length == 1) {
-				break;
-			}
+			if (river_elem_current != NO_RIVER) && (river_length == 1) {break;}
 			match river_elem_downstr {
 				NO_RIVER => {}
-				RIVER_BODY => {
-					if self.river_id != river_id_downstr {
-						break;
-					}
-				}
-				RIVER_WATERFALL => {
-					if self.river_id != river_id_downstr {
-						break;
-					}
-				}
-				RIVER_WATERFALLS_MUL => {
-					if self.river_id != river_id_downstr {
-						break;
-					}
-				}
-				RIVER_SOURCE => {
-					if self.river_id != river_id_downstr {
-						break;
-					}
-				}
+				RIVER_BODY => {if self.river_id != river_id_downstr {break;}}
+				RIVER_WATERFALL => {if self.river_id != river_id_downstr {break;}}
+				RIVER_WATERFALLS_MUL => {if self.river_id != river_id_downstr {break;}}
+				RIVER_SOURCE => {if self.river_id != river_id_downstr {break;}}
 				RIVER_END => {}
 				_ => {
 					println!("Elem downstream: {:?}", river_elem_downstr);
@@ -106,28 +78,17 @@ impl RgParams {
 			for n in path_array.windows(2) {
 				//Must be here
 				river_length += 1;
-				//Aliases
-				let i0 = n[0].0;
-				let j0 = n[0].1;
-				let i1 = n[1].0;
-				let j1 = n[1].1;
+				let i0 = n[0].0; let j0 = n[0].1; let i1 = n[1].0; let j1 = n[1].1;
 				let index_current = lp.xy.ind(i0, j0);
 				let index_downstr = lp.xy.ind(i1, j1);
-				let temp_current =
-					lp.climate.read(lp.climate.TEMPERATURE, index_current);
-				let river_elem_current =
-					lp.rivers.read(lp.rivers.ELEMENT, index_current);
-				let river_elem_downstr =
-					lp.rivers.read(lp.rivers.ELEMENT, index_downstr);
+				let temp_current = lp.climate.read(lp.climate.TEMPERATURE, index_current);
+				let river_elem_current = lp.rivers.read(lp.rivers.ELEMENT, index_current);
+				let river_elem_downstr = lp.rivers.read(lp.rivers.ELEMENT, index_downstr);
 				let river_id_downstr = lp.rivers_id.read(index_downstr);
-				let wmask_current =
-					lp.topography.read(lp.topography.WATERMASK, index_current);
-				let wmask_downstr =
-					lp.topography.read(lp.topography.WATERMASK, index_downstr);
-				let terrain_current =
-					lp.topography.read(lp.topography.TERRAIN, index_current);
-				let terrain_downstr =
-					lp.topography.read(lp.topography.TERRAIN, index_downstr);
+				let wmask_current = lp.topography.read(lp.topography.WATERMASK, index_current);
+				let wmask_downstr = lp.topography.read(lp.topography.WATERMASK, index_downstr);
+				let terrain_current = lp.topography.read(lp.topography.TERRAIN, index_current);
+				let terrain_downstr = lp.topography.read(lp.topography.TERRAIN, index_downstr);
 				//Stop if the temperature is too low
 				let temp = translate::get_abs(
 					temp_current as f32,
@@ -135,122 +96,61 @@ impl RgParams {
 					lp.wi.abs_temp_min as f32,
 					lp.wi.abs_temp_max as f32,
 				) as isize;
-				if temp <= TEMP_POLAR {
-					break;
-				}
+				if temp <= TEMP_POLAR {break;}
 				//Minimum sink size check and stop if sink is big enough
-				if wmask_current > lp.wi.river_sink_min_pool_size_pow {
-					break;
-				}
+				if wmask_current > lp.wi.river_sink_min_pool_size_pow {break;}
 				//Check if river spawns on an existing one
 				//also terminates rivers upon crossing
 				//but allows loops, which should be adressed below
 				//enabling makes rivers disappear sometimes
-				if (river_elem_current != NO_RIVER) && (river_length == 1) {
-					break;
-				}
+				if (river_elem_current != NO_RIVER) && (river_length == 1) {break;}
 				//Mark upstream neighbor
 				//skip first cell, which is source
 				if river_length > 1 {
 					let i0_prev = self.upstream_neighbor.0;
 					let j0_prev = self.upstream_neighbor.1;
 					let upstream_neighbor = neighbor_flag(i0, j0, i0_prev, j0_prev);
-					lp.rivers
-						.write(upstream_neighbor, lp.rivers.UPSTREAM, index_current);
+					lp.rivers.write(upstream_neighbor, lp.rivers.UPSTREAM, index_current);
 				}
-				//Remember for next step
-				self.upstream_neighbor = (i0, j0);
-				//map according to mask
+				self.upstream_neighbor = (i0, j0); //Remember for next step
 				match river_elem_downstr {
 					NO_RIVER => {
 						self.sort_uninterrupted(lp, index_current, index_river_source);
-						//Write down downstream neighbor direction
 						let downstream_neighbor = neighbor_flag(i0, j0, i1, j1);
-						lp.rivers.write(
-							downstream_neighbor,
-							lp.rivers.DOWNSTREAM,
-							index_current,
-						);
-						//If the end of the river is on land (map border)
-						//then make sure the last cell is marked
+						lp.rivers.write(downstream_neighbor, lp.rivers.DOWNSTREAM, index_current,);
+						//If the end of the river is on land (map border) then make sure the last cell is marked
 						if (wmask_downstr == NO_WATER) && (index_downstr == index_end) {
-							lp.rivers
-								.write(RIVER_BODY, lp.rivers.ELEMENT, index_downstr);
+							lp.rivers.write(RIVER_BODY, lp.rivers.ELEMENT, index_downstr);
 						}
 					}
 					RIVER_BODY => {
-						self.sort_crossing(
-							lp,
-							index_current,
-							index_river_source,
-							index_downstr,
-						);
+						self.sort_crossing(lp, index_current, index_river_source, index_downstr,);
 						//Make a waterfall if elevation differs
 						if terrain_downstr < terrain_current {
-							lp.rivers.write(
-								RIVER_WATERFALL,
-								lp.rivers.ELEMENT,
-								index_downstr,
-							);
+							lp.rivers.write(RIVER_WATERFALL, lp.rivers.ELEMENT, index_downstr,);
 						}
-						//Break river if it is not a loop, let loops go on
-						if self.river_id != river_id_downstr {
-							break;
-						}
+						if self.river_id != river_id_downstr {break;} //Break river if it is not a loop, let loops go on
 					}
 					RIVER_WATERFALL => {
-						self.sort_crossing(
-							lp,
-							index_current,
-							index_river_source,
-							index_downstr,
-						);
+						self.sort_crossing(lp, index_current, index_river_source, index_downstr,);
 						//Make a waterfalls if elevation diff & waterfall exist
 						if terrain_downstr < terrain_current {
-							lp.rivers.write(
-								RIVER_WATERFALLS_MUL,
-								lp.rivers.ELEMENT,
-								index_downstr,
-							);
+							lp.rivers.write(RIVER_WATERFALLS_MUL, lp.rivers.ELEMENT,index_downstr,);
 						}
-						//Break river if it is not a loop, let loops go on
-						if self.river_id != river_id_downstr {
-							break;
-						}
+						if self.river_id != river_id_downstr {break;} //Break river if it is not a loop, let loops go on
 					}
 					RIVER_WATERFALLS_MUL => {
-						self.sort_crossing(
-							lp,
-							index_current,
-							index_river_source,
-							index_downstr,
-						);
-						//Break river if it is not a loop, let loops go on
-						if self.river_id != river_id_downstr {
-							break;
-						}
+						self.sort_crossing(lp, index_current, index_river_source, index_downstr,);
+						if self.river_id != river_id_downstr {break;} //Break river if it is not a loop, let loops go on
 					}
 					RIVER_SOURCE => {
-						self.sort_crossing(
-							lp,
-							index_current,
-							index_river_source,
-							index_downstr,
-						);
-						//Break river if it is not a loop, let loops go on
-						if self.river_id != river_id_downstr {
-							break;
-						}
+						self.sort_crossing(lp, index_current, index_river_source, index_downstr,);
+						if self.river_id != river_id_downstr {break;} //Break river if it is not a loop, let loops go on
 					}
 					RIVER_END => {
 						self.sort_uninterrupted(lp, index_current, index_river_source);
-						//Write down downstream neighbor direction
 						let downstream_neighbor = neighbor_flag(i0, j0, i1, j1);
-						lp.rivers.write(
-							downstream_neighbor,
-							lp.rivers.DOWNSTREAM,
-							index_current,
-						);
+						lp.rivers.write(downstream_neighbor, lp.rivers.DOWNSTREAM, index_current,);
 					}
 					_ => {
 						println!("Elem downstream: {:?}", river_elem_downstr);
@@ -268,16 +168,12 @@ impl RgParams {
 		index_current: usize,
 		index_river_source: usize,
 	) {
-		lp.rivers
-			.write(RIVER_BODY, lp.rivers.ELEMENT, index_current);
-		lp.rivers
-			.write(RIVER_SOURCE, lp.rivers.ELEMENT, index_river_source);
-		lp.rivers
-			.write(self.river_width, lp.rivers.WIDTH, index_current);
+		lp.rivers.write(RIVER_BODY, lp.rivers.ELEMENT, index_current);
+		lp.rivers.write(RIVER_SOURCE, lp.rivers.ELEMENT, index_river_source);
+		lp.rivers.write(self.river_width, lp.rivers.WIDTH, index_current);
 		lp.rivers_id.write(self.river_id, index_current);
 	}
 
-	//CROSSING
 	fn sort_crossing(
 		&mut self,
 		lp: &mut LayerPack,
@@ -285,23 +181,18 @@ impl RgParams {
 		index_river_source: usize,
 		index_downstr: usize,
 	) {
-		lp.rivers
-			.write(RIVER_BODY, lp.rivers.ELEMENT, index_current);
-		lp.rivers
-			.write(RIVER_SOURCE, lp.rivers.ELEMENT, index_river_source);
-		lp.rivers
-			.write(self.river_width, lp.rivers.WIDTH, index_current);
+		lp.rivers.write(RIVER_BODY, lp.rivers.ELEMENT, index_current);
+		lp.rivers.write(RIVER_SOURCE, lp.rivers.ELEMENT, index_river_source);
+		lp.rivers.write(self.river_width, lp.rivers.WIDTH, index_current);
 		lp.rivers_id.write(self.river_id, index_current);
 		//Modify river downstream
-		self.width_routine(lp, index_current, index_downstr);
+		self.width_routine(lp, index_downstr);
 		self.erosion_adjust(lp, index_current, index_downstr);
 	}
 
-	//WIDTH ROUTINE
 	fn width_routine(
 		&mut self,
 		lp: &mut LayerPack,
-		_index_current: usize,
 		index_downstr: usize,
 	) {
 		//Find the downstream river in queue and its width
@@ -312,14 +203,8 @@ impl RgParams {
 		);
 		//Get the width value from river downstream
 		let width_downstr = match result {
-			Some(x) => {
-				//If in queue - return its last recorded value
-				x.width_new
-			}
-			None => {
-				//If not in queue - just take its width as is
-				lp.rivers.read(lp.rivers.WIDTH, index_downstr)
-			}
+			Some(x) => {x.width_new} //If in queue - return its last recorded value
+			None => {lp.rivers.read(lp.rivers.WIDTH, index_downstr)} //If not in queue - just take its width as is
 		};
 		//Increment the width downstream
 		let mut width_downstr_new = width_downstr.saturating_add(1);
@@ -334,19 +219,15 @@ impl RgParams {
 		});
 	}
 
-	//EROSION ROUTINES
 	fn erosion_adjust(
 		&mut self,
 		lp: &mut LayerPack,
 		index_current: usize,
 		index_downstr: usize,
 	) {
-		//Aliasess
 		let river_id_downstr = lp.rivers_id.read(index_downstr);
-		let terrain_current =
-			lp.topography.read(lp.topography.TERRAIN, index_current);
-		let terrain_downstr =
-			lp.topography.read(lp.topography.TERRAIN, index_downstr);
+		let terrain_current = lp.topography.read(lp.topography.TERRAIN, index_current);
+		let terrain_downstr = lp.topography.read(lp.topography.TERRAIN, index_downstr);
 		//Add difference in topography to queue
 		let terrain_diff = match terrain_downstr.cmp(&terrain_current) {
 			Ordering::Greater => terrain_downstr - terrain_current,
@@ -359,7 +240,7 @@ impl RgParams {
 			terrain_diff,
 		});
 	}
-
+	
 	fn erosion_initiate(
 		&mut self,
 		river_id: u16,
@@ -371,7 +252,6 @@ impl RgParams {
 	}
 } //impl
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ FUNCTIONS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 fn neighbor_flag(
 	i0: usize,
 	j0: usize,

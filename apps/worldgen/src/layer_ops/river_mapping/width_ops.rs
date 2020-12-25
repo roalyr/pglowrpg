@@ -1,4 +1,6 @@
-use crate::layer_ops::river_mapping::*;
+use crate::layer_ops::river_mapping::{RgParams, RiverEntry};
+use codec::LayerPack;
+use constants_world::*;
 
 impl RgParams {
 	pub fn map_width(
@@ -24,7 +26,6 @@ impl RgParams {
 		}
 		//Enact mapping
 		for entry in to_do_queue.iter().rev() {
-			//Aliases
 			let river_id_downstr = entry.river_id_downstr;
 			let width_new = entry.width_new;
 			//Skip if there is a null ID in queue somehow
@@ -41,7 +42,6 @@ impl RgParams {
 				.clone();
 			let path_array = river_entry.path_array;
 			for pos in path_array.iter() {
-				//Aliases
 				let i = pos.0;
 				let j = pos.1;
 				let index = lp.xy.ind(i, j);
@@ -77,7 +77,6 @@ impl RgParams {
 	) -> Vec<path::Pos> {
 		let mut path_array_downstr = Vec::new();
 		for n in path_array.windows(2) {
-			//Aliases
 			let i0 = n[0].0;
 			let j0 = n[0].1;
 			let i1 = n[1].0;

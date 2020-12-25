@@ -1,6 +1,8 @@
-use crate::layer_ops::river_mapping::*;
+use crate::layer_ops::river_mapping::{ErosionEntry, RgParams, RiverEntry};
+use codec::LayerPack;
+use constants_world::*;
+use units::translate;
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ METHODS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 impl RgParams {
 	pub fn map_erosion(
 		&mut self,
@@ -94,7 +96,6 @@ impl RgParams {
 			let j0 = n[0].1;
 			let i1 = n[1].0;
 			let j1 = n[1].1;
-			//Aliases
 			let index_downstr = lp.xy.ind(i1, j1);
 			let index_current = lp.xy.ind(i0, j0);
 			let terrain_current =
@@ -143,7 +144,6 @@ impl RgParams {
 	}
 } // impl
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ FUNCTIONS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 fn erosion(
 	lp: &mut LayerPack,
 	erosion_width_iter: usize,

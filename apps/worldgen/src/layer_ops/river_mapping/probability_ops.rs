@@ -1,14 +1,12 @@
 use crate::layer_ops::river_mapping::RgParams;
 use codec::LayerPack;
 use constants_world::*;
-use io_ops::toml::strings;
 use units::translate;
 
 impl RgParams {
 	pub fn estimate_sources_number(
 		&mut self,
 		lp: &mut LayerPack,
-		_wg_str: &strings::worldgen_strings::Stuff,
 	) {
 		for i in 0..lp.wi.map_size {
 			for j in 0..lp.wi.map_size {

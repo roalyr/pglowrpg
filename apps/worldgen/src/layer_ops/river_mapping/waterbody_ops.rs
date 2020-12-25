@@ -1,5 +1,11 @@
-use crate::layer_ops::river_mapping::*;
+use crate::array_ops::noise_maps;
+use crate::layer_ops::river_mapping::RgParams;
+use codec::LayerPack;
+use constants_world::*;
+use line_drawing::BresenhamCircle;
+use units::translate;
 
+// Has to be imprived, refactoring later
 impl RgParams {
 	pub fn with_water(
 		&mut self,
