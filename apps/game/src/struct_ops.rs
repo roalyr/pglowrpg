@@ -89,11 +89,14 @@ pub fn init_gd(
 	Some(gd)
 }
 //Strings for printing
-pub fn init_gs(
-	gm_str: strings::game_strings::Stuff,
-	panic_str: strings::panic_strings::Stuff,
-	ui_el: strings::ui_elements::Stuff,
-) -> GameStrings {
+pub fn init_gs() -> GameStrings {
+	let input_locale = options::get().locale;
+	let gm_str: strings::game_strings::Stuff =
+		strings::game_strings::get(&input_locale);
+	let panic_str: strings::panic_strings::Stuff =
+		strings::panic_strings::get(&input_locale);
+	let ui_el: strings::ui_elements::Stuff =
+		strings::ui_elements::get(&input_locale);
 	GameStrings {
 		//Structs
 		gm_str,

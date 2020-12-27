@@ -4,7 +4,6 @@ use io_ops::writepng::*;
 
 pub fn write_images_raw(
 	lp: &mut LayerPack,
-	wg_str: &strings::worldgen_strings::Stuff,
 	options: &options::Stuff,
 	world_dir: &std::path::PathBuf,
 ) {
@@ -18,7 +17,7 @@ pub fn write_images_raw(
 
 	//Watermask and terraim
 	if options.render_topography {
-		println!("{}", wg_str.wg14);
+		//println!("{}", wg_str.wg14);
 		let file_path = raw_img_dir
 			.join("terrain")
 			.with_extension(EXTENSION_SAVE_IMAGE);
@@ -46,7 +45,7 @@ pub fn write_images_raw(
 
 	//Temperature
 	if options.render_temperature {
-		println!("{}", wg_str.wg10);
+		//println!("{}", wg_str.wg10);
 		let file_path = raw_img_dir
 			.join("temperature")
 			.with_extension(EXTENSION_SAVE_IMAGE);
@@ -62,7 +61,7 @@ pub fn write_images_raw(
 
 	//Rainfall
 	if options.render_rainfall {
-		println!("{}", wg_str.wg12);
+		//println!("{}", wg_str.wg12);
 		let file_path = raw_img_dir
 			.join("rainfall")
 			.with_extension(EXTENSION_SAVE_IMAGE);
@@ -78,7 +77,7 @@ pub fn write_images_raw(
 
 	//Rivers
 	if options.render_rivers {
-		println!("{}", wg_str.wg18);
+		//println!("{}", wg_str.wg18);
 		let file_path = raw_img_dir
 			.join("rivers_elements")
 			.with_extension(EXTENSION_SAVE_IMAGE);
@@ -107,7 +106,7 @@ pub fn write_images_raw(
 
 	//Biomes
 	if options.render_biomes {
-		println!("{}", wg_str.wg20);
+		//println!("{}", wg_str.wg20);
 		let file_path = raw_img_dir
 			.join("biomes")
 			.with_extension(EXTENSION_SAVE_IMAGE);

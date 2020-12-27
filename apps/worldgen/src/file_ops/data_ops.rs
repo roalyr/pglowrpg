@@ -4,7 +4,6 @@ use io_ops::{compress_to_storage, create_dir};
 
 pub fn write_data(
 	lp: &mut LayerPack,
-	wg_str: &strings::worldgen_strings::Stuff,
 	_options: &options::Stuff,
 	world_dir: &std::path::PathBuf,
 ) {
@@ -16,7 +15,7 @@ pub fn write_data(
 		.join(NAME_DATA_WORLD)
 		.with_extension(EXTENSION_SAVE_DATA);
 
-	println!("{}", wg_str.wg27);
+	//println!("{}", wg_str.wg27);
 	let encoded: Vec<u8> = bincode::serialize(&lp).unwrap();
 	compress_to_storage(encoded, &file_path);
 }

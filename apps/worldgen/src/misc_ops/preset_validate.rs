@@ -6,37 +6,28 @@ struct Cap2<T> {
 	max: T,
 }
 
-pub fn all(
-	wi: &mut presets::presets_worldgen::Stuff,
-	panic_str: &strings::panic_strings::Stuff,
-) {
-	map_size(wi, panic_str);
-	noisemap_size(wi, panic_str);
-	params(wi, panic_str);
+pub fn all(wi: &mut presets::presets_worldgen::Stuff) {
+	map_size(wi);
+	noisemap_size(wi);
+	params(wi);
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ CHECK SIZES ▒▒▒▒▒▒▒▒▒▒▒▒▒
-fn map_size(
-	wi: &presets::presets_worldgen::Stuff,
-	panic_str: &strings::panic_strings::Stuff,
-) {
+fn map_size(wi: &presets::presets_worldgen::Stuff) {
 	let size = MAP_SIZES.iter().find(|&&s| s == wi.map_size);
 	if size == None {
-		let msg = &panic_str.map_size_1;
-		let msg2 = &panic_str.map_size_2;
+		let msg = ""; // &panic_str.map_size_1;
+		let msg2 = ""; //  &panic_str.map_size_2;
 		println!("{}{:?}{}{}", msg, MAP_SIZES, msg2, wi.map_size,);
 		std::process::exit(0);
 	}
 }
 
-fn noisemap_size(
-	wi: &presets::presets_worldgen::Stuff,
-	panic_str: &strings::panic_strings::Stuff,
-) {
+fn noisemap_size(wi: &presets::presets_worldgen::Stuff) {
 	let size = NOISEMAP_SIZES.iter().find(|&&s| s == wi.noisemap_size);
 	if size == None {
-		let msg = &panic_str.noisemap_size_1;
-		let msg2 = &panic_str.noisemap_size_2;
+		let msg = ""; //  &panic_str.noisemap_size_1;
+		let msg2 = ""; //  &panic_str.noisemap_size_2;
 		println!("{}{:?}{}{}", msg, NOISEMAP_SIZES, msg2, wi.noisemap_size,);
 		std::process::exit(0);
 	}
@@ -47,10 +38,7 @@ fn noisemap_size(
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ CHECK VALUES ▒▒▒▒▒▒▒▒▒▒▒▒▒
-fn params(
-	wi: &mut presets::presets_worldgen::Stuff,
-	_panic_str: &strings::panic_strings::Stuff,
-) {
+fn params(wi: &mut presets::presets_worldgen::Stuff) {
 	wi.waterlevel = cap1("Waterlevel", wi.waterlevel, ABS_ELEV_MIN, ABS_ELEV_MAX);
 
 	let abs_elev: Cap2<usize> = cap2(

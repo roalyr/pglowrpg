@@ -4,10 +4,7 @@ use io_ops::toml::strings;
 
 const ID_INIT: u16 = 1;
 
-pub fn get(
-	lp: &mut LayerPack,
-	_wg_str: &strings::worldgen_strings::Stuff,
-) {
+pub fn get(lp: &mut LayerPack) {
 	let xy = Index {
 		map_size: lp.wi.map_size,
 	};

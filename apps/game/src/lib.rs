@@ -23,15 +23,13 @@ use std::path::Path;
 use ui::prompts;
 use units::translate;
 
-pub fn start(
-	options: options::Stuff,
-	commands: strings::commands::Stuff,
-	gm_str: strings::game_strings::Stuff,
-	panic_str: strings::panic_strings::Stuff,
-	ui_el: strings::ui_elements::Stuff,
-) {
+pub fn start() {
+	let options: options::Stuff = options::get();
+	let input_locale = &options.locale;
+	let commands: strings::commands::Stuff =
+		strings::commands::get(&input_locale);
 	//Init game structs
-	let mut gs = init_gs(gm_str, panic_str, ui_el);
+	let mut gs = init_gs();
 	let mut gd = match init_gd(&gs, options, commands) {
 		//Selecting preset may return None
 		Some(gd) => gd,
@@ -40,9 +38,9 @@ pub fn start(
 
 	//Welcoming message
 	//Banner
-	println!("{}", &gs.gm_str.gm1);
+	//println!("{}", &gs.gm_str.gm1);
 	//Intro message
-	println!("{}", &gs.gm_str.gm2);
+	//println!("{}", &gs.gm_str.gm2);
 
 	//Main loop
 	loop {

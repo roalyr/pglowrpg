@@ -11,8 +11,6 @@ use std::path::Path;
 
 pub fn write_save(
 	lp: &mut LayerPack,
-	wg_str: &strings::worldgen_strings::Stuff,
-	ui_el: &strings::ui_elements::Stuff,
 	options: &options::Stuff,
 	preset_name: &str,
 ) {
@@ -28,23 +26,23 @@ pub fn write_save(
 
 	//Write the data
 	if options.write_data_files {
-		println!("{}", wg_str.wg25);
-		write_data(lp, wg_str, options, &world_dir);
+		//println!("{}", wg_str.wg25);
+		write_data(lp, options, &world_dir);
 	} else {
-		println!("{}", wg_str.wg26);
+		//println!("{}", wg_str.wg26);
 	}
-	println!("{}", &ui_el.separator2);
+	//println!("{}", &ui_el.separator2);
 
 	//Optionally render colorful images
 	if options.render_colorized_maps {
-		println!("{}", wg_str.wg15);
-		write_images_color(lp, wg_str, options, &world_dir);
+		//println!("{}", wg_str.wg15);
+		write_images_color(lp, options, &world_dir);
 	}
-	println!("{}", &ui_el.separator2);
+	//println!("{}", &ui_el.separator2);
 
 	//Optionally render raw images
 	if options.render_raw_maps {
-		println!("{}", wg_str.wg16);
-		write_images_raw(lp, wg_str, options, &world_dir);
+		//println!("{}", wg_str.wg16);
+		write_images_raw(lp, options, &world_dir);
 	}
 }
