@@ -3,11 +3,7 @@ pub mod file_ops;
 pub mod layer_ops;
 pub mod misc_ops;
 
-use crate::file_ops::data_ops::*;
-use crate::file_ops::image_color_ops::*;
-use crate::file_ops::image_raw_ops::*;
-use crate::file_ops::writing_ops::*;
-use crate::layer_ops::*;
+use crate::file_ops::write_save;
 use crate::misc_ops::preset_validate;
 use crate::misc_ops::seed_generating;
 use codec::*;
@@ -16,6 +12,7 @@ use coords::Index;
 use io_ops::toml::{options, presets, strings};
 use ui::prompts;
 
+#[rustfmt::skip]
 pub fn start(
 	options: &options::Stuff,
 	wg_str: &strings::worldgen_strings::Stuff,
@@ -24,7 +21,6 @@ pub fn start(
 ) {
 	//Intro message
 	println!("{}", &wg_str.wg1);
-
 	//Preset selection
 	//List files in default and user dirs
 	let preset_def_tuple = io_ops::dir_file_contents(
@@ -39,27 +35,19 @@ pub fn start(
 		&ui_el.bullet1,
 		&ui_el.separator1,
 	);
-
+	
 	//Get the contents of the presets folder
 	let mut presets_paths = preset_def_tuple.1;
 	presets_paths.append(&mut preset_user_tuple.1);
-	let presets_formatted =
-		[preset_def_tuple.0, preset_user_tuple.0, "\n".to_string()].concat();
-	let mut input_preset =
-		prompts::new_line_io(&presets_formatted, &ui_el.prompt2);
+	let presets_formatted = [preset_def_tuple.0, preset_user_tuple.0, "\n".to_string()].concat();
+	let mut input_preset = prompts::new_line_io(&presets_formatted, &ui_el.prompt2);
 	input_preset = prompts::autocomplete(&input_preset, &presets_paths);
-	if input_preset.is_empty() {
-		//Warning about no such preset
-		println!("{}", &wg_str.wg28);
-		return;
-	}
+	//Decide how to treat no input
+	if input_preset.is_empty() {println!("{}", &wg_str.wg28); return;}
+	//if input_preset.is_empty() {input_preset = options.default_preset.clone();}
 	println!("{}", &ui_el.separator2);
-	if input_preset.is_empty() {
-		input_preset = options.default_preset.clone();
-	}
 
-	let mut wi: presets::presets_worldgen::Stuff =
-		presets::presets_worldgen::get(&input_preset);
+	let mut wi: presets::presets_worldgen::Stuff = presets::presets_worldgen::get(&input_preset);
 	//Show selected preset
 	prompts::selected(&wg_str.wg3, &input_preset);
 	preset_validate::all(&mut wi, &panic_str);
@@ -99,8 +87,7 @@ pub fn start(
 		temp_seed += iter;
 
 		//Re-call this every loop iteration
-		let mut wi: presets::presets_worldgen::Stuff =
-			presets::presets_worldgen::get(&input_preset);
+		let mut wi: presets::presets_worldgen::Stuff = presets::presets_worldgen::get(&input_preset);
 		preset_validate::all(&mut wi, &panic_str);
 		wi.seed = temp_seed;
 
@@ -144,21 +131,21 @@ pub fn start(
 		prompts::selected(&wg_str.wg5, &(lp.wi.seed.to_string()));
 		//Perform generation
 		println!("{}", wg_str.wg7);
-		terrain_mapping::get(&mut lp);
+		layer_ops::terrain_mapping::get(&mut lp);
 		println!("{}", wg_str.wg9);
-		climate_mapping::get(&mut lp);
+		layer_ops::climate_mapping::get(&mut lp);
 		//Requires temperature
 		println!("{}", wg_str.wg13);
-		watermask_mapping::get(&mut lp);
+		layer_ops::watermask_mapping::get(&mut lp);
 		//Requires terrain, watermask, temperature, rainfall
 		println!("{}", wg_str.wg17);
-		river_mapping::get(&mut lp);
+		layer_ops::river_mapping::get(&mut lp);
 		//Requires the above, must be called after rivers (erosion)
 		println!("{}", wg_str.wg19);
-		biome_mapping::get(&mut lp);
+		layer_ops::biome_mapping::get(&mut lp);
 		//Requires biomes
 		println!("{}", wg_str.wg21);
-		georegion_mapping::get(&mut lp, &wg_str);
+		layer_ops::georegion_mapping::get(&mut lp, &wg_str);
 
 		//WRITING DATA
 		write_save(&mut lp, &wg_str, &ui_el, &options, &input_preset);

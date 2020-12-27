@@ -8,7 +8,7 @@ edition = "2018"
 [dependencies]
 serde = { version = "1.0", features = ["derive"]  }
 noise = { version = "0.6", default-features = false }
-#num = { version = "0.2", default-features = false }
+num = { version = "0.3", default-features = false }
 resize = "0.3"
 line_drawing = "0.8"
 #flate2 = "1.0"
