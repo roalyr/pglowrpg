@@ -11,7 +11,7 @@ use codec::*;
 use constants_app::*;
 use coords::Index;
 use io_ops::toml::{options, presets, strings};
-use print_ops::*;
+use print_ops::locale_load;
 use ui::prompts;
 
 #[rustfmt::skip]
@@ -27,12 +27,12 @@ pub fn start() {
 	let preset_def_tuple = io_ops::dir_file_contents(
 		PATH_PRESETS_WORLD,
 		EXTENSION_PRESET_WORLD,
-		l.ui_bul1(), l.ui_sep1(),
+		l.ui_bul1(), l.ui_newline(),
 	);
 	let mut preset_user_tuple = io_ops::dir_file_contents(
 		PATH_PRESETS_WORLD_USER,
 		EXTENSION_PRESET_WORLD,
-		l.ui_bul1(), l.ui_sep1(),
+		l.ui_bul1(), l.ui_newline(),
 	);
 	
 	//Get the contents of the presets folder
@@ -44,8 +44,9 @@ pub fn start() {
 	
 	//Decide how to treat no input
 	if input_preset.is_empty() {
-		//println!("{}", &wg_str.wg28); 
+		l.print_no_input_preset();
 	return;}
+	//enable this later
 	//if input_preset.is_empty() {input_preset = options.default_preset.clone();}
 	l.print_sep2();
 
@@ -58,7 +59,7 @@ pub fn start() {
 	let input_seed = prompts::new_line_io(l.str_seed_rand(), l.ui_ps2());
 	l.print_sep2();
 	let mut temp_seed = if (input_seed == "r") || (input_seed == "R") {
-		//println!("{}", wg_str.wg4);
+		l.print_seed_rand();
 		seed_generating::get()
 	} else {
 		wi.seed
@@ -73,8 +74,7 @@ pub fn start() {
 		input_world_num.trim().parse::<usize>().expect("Expected an integer")
 	};
 	l.print_sep2();
-	prompts::selected(l.str_worlds_to_gen(), &world_num.to_string());
-	l.print_sep2();
+	l.print_world_num(&world_num);
 
 	//▒▒▒▒▒▒▒▒▒▒ GENERATION ▒▒▒▒▒▒▒▒▒▒▒
 	let layer_vec_len = wi.map_size * wi.map_size;
@@ -84,18 +84,24 @@ pub fn start() {
 	for iter in 0..world_num {
 		//Increment seed for multiple worlds, must be before wi
 		temp_seed += iter;
-
+		
+		//Create a "WorldInit" struct that holds all the WG options.
 		//Re-call this every loop iteration due to new seed
 		let mut wi: presets::presets_worldgen::Stuff = presets::presets_worldgen::get(&input_preset);
 		preset_validate::all(&mut wi);
 		wi.seed = temp_seed;
-
+		
+		//Create a "LayerPack" struct which holds all the world data.
 		//Re-call this every loop iteration due to new seed
 		let mut lp = LayerPack {
 			xy: Index { map_size },
 			wi,
 			noisemap_vec_len,
 			layer_vec_len,
+			
+			//Defining the "flags" for each layer
+			//here insures there will be no mistake
+			//in using wrong offsets for them later on
 			biomes: BitLayerBiomes {
 				data: vec![0; layer_vec_len],
 			},
@@ -127,27 +133,23 @@ pub fn start() {
 		};
 
 		//Show selected seed
-		prompts::selected(l.str_seed_used(), &(lp.wi.seed.to_string()));
+		l.print_sep1();
+		l.print_seed_used(&lp.wi.seed);
+		l.print_newline();
+		
 		//Perform generation
-		//println!("{}", wg_str.wg7);
-		layer_ops::terrain_mapping::get(&mut lp);
-		//println!("{}", wg_str.wg9);
-		layer_ops::climate_mapping::get(&mut lp);
-		//Requires temperature
-		//println!("{}", wg_str.wg13);
-		layer_ops::watermask_mapping::get(&mut lp);
-		//Requires terrain, watermask, temperature, rainfall
-		//println!("{}", wg_str.wg17);
-		layer_ops::river_mapping::get(&mut lp);
-		//Requires the above, must be called after rivers (erosion)
-		//println!("{}", wg_str.wg19);
-		layer_ops::biome_mapping::get(&mut lp);
-		//Requires biomes
-		//println!("{}", wg_str.wg21);
-		layer_ops::georegion_mapping::get(&mut lp);
+		//Keep the order as is, because the data is incrfmentally
+		//generated and used for later generation process
+		l.print_prep_topog(); layer_ops::terrain_mapping::get(&mut lp);
+		l.print_prep_climate(); layer_ops::climate_mapping::get(&mut lp);
+		l.print_prep_wmask(); layer_ops::watermask_mapping::get(&mut lp);
+		l.print_prep_rmap(); layer_ops::river_mapping::get(&mut lp);
+		l.print_prep_biome(); layer_ops::biome_mapping::get(&mut lp);
+		l.print_prep_georeg(); layer_ops::georegion_mapping::get(&mut lp);
 
 		//WRITING DATA
 		write_save(&mut lp, &options, &input_preset);
 		l.print_sep2();
+		l.print_done_worldgen();
 	}
 }

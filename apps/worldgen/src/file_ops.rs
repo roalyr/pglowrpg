@@ -14,6 +14,7 @@ pub fn write_save(
 	options: &options::Stuff,
 	preset_name: &str,
 ) {
+	let l = locale_load();
 	let world_name = [preset_name, "_", &lp.wi.seed.to_string()].concat();
 
 	//Add custom save names, check for existing, etc.
@@ -26,23 +27,24 @@ pub fn write_save(
 
 	//Write the data
 	if options.write_data_files {
-		//println!("{}", wg_str.wg25);
+		l.print_write_data();
 		write_data(lp, options, &world_dir);
 	} else {
-		//println!("{}", wg_str.wg26);
+		//But still save a copy of preset into a save folder
+		l.print_write_no_data();
 	}
-	//println!("{}", &ui_el.separator2);
+	l.print_sep2();
 
 	//Optionally render colorful images
 	if options.render_colorized_maps {
-		//println!("{}", wg_str.wg15);
+		l.print_write_color();
 		write_images_color(lp, options, &world_dir);
 	}
-	//println!("{}", &ui_el.separator2);
+	l.print_sep2();
 
 	//Optionally render raw images
 	if options.render_raw_maps {
-		//println!("{}", wg_str.wg16);
+		l.print_write_raw();
 		write_images_raw(lp, options, &world_dir);
 	}
 }

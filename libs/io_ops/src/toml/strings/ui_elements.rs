@@ -6,6 +6,7 @@ const FILENAME: &str = "ui_elements";
 
 #[derive(Serialize, Deserialize)]
 pub struct Stuff {
+	pub newline: String,
 	pub prompt1: String,
 	pub prompt2: String,
 	pub bullet1: String,
