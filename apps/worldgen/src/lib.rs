@@ -10,7 +10,7 @@ use crate::misc_ops::seed_generating;
 use codec::*;
 use constants_app::*;
 use coords::Index;
-use io_ops::toml::{options, presets, strings};
+use io_ops::toml::{options, presets};
 use print_ops::locale_load;
 use ui::prompts;
 

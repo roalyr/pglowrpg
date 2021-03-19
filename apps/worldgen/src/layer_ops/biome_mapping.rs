@@ -13,6 +13,7 @@ fn match_biomes(
 	lp: &mut LayerPack,
 	index: usize,
 ) -> u8 {
+	//Get the absolute values for the climate.
 	let temp = translate::get_abs(
 		lp.climate.read(lp.climate.TEMPERATURE, index) as f32,
 		255.0,
@@ -27,7 +28,8 @@ fn match_biomes(
 		lp.wi.abs_rain_max as f32,
 	) as usize;
 
-	//take above waterlevel, waterlevel is "zero"
+	//Take anything on land that is above waterlevel,
+	//waterlevel is "zero", and everything below it is submerged.
 	let elev = (translate::get_abs(
 		lp.topography.read(lp.topography.TERRAIN, index) as f32,
 		255.0,
@@ -36,6 +38,9 @@ fn match_biomes(
 	) as usize)
 		.saturating_sub(lp.wi.waterlevel);
 
+	//Relative value (map value from 0 to 256) for waterlevel.
+	//Used for making "solid" polar icecap surfaces by
+	//modifying the yopographical map.
 	let waterlevel_rel = if lp.wi.waterlevel < lp.wi.abs_elev_min {
 		0
 	} else {
@@ -48,14 +53,14 @@ fn match_biomes(
 	};
 	let watermask = lp.topography.read(lp.topography.WATERMASK, index);
 
-	#[allow(overlapping_patterns, clippy::match_overlapping_arm)]
+	#[allow(overlapping_range_endpoints, clippy::match_overlapping_arm)]
 	match temp {
 		//▒▒▒▒▒▒▒▒▒▒ PERM ICE ▒▒▒▒▒▒▒▒▒▒
 		TEMP_MIN..=TEMP_PERM_ICE => {
 			if lp.topography.read(lp.topography.TERRAIN, index)
 				< waterlevel_rel as u16
 			{
-				//fix elevation
+				//Create topographical surface on polar icecaps.
 				lp.topography
 					.write(waterlevel_rel as u16, lp.topography.TERRAIN, index)
 			}
@@ -67,21 +72,21 @@ fn match_biomes(
 				if watermask != NO_WATER {
 					BIOME_WATER_ICECAP
 				} else {
-					//river basin biomes
+					//River basin biomes.
 					match rain {
 						RAIN_MIN..=RAIN_DESERT => BIOME_POLAR_ICE_DESERT,
 						RAIN_DESERT..=RAIN_MAX => BIOME_POLAR_SNOWY_GLACIER,
-						_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+						_ => unreachable!(),
 					}
 				}
 			}
 			ELEV_MIN..=ELEV_ALPINE => match rain {
 				RAIN_MIN..=RAIN_DESERT => BIOME_POLAR_ICE_DESERT,
 				RAIN_DESERT..=RAIN_MAX => BIOME_POLAR_SNOWY_GLACIER,
-				_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+				_ => unreachable!(),
 			},
 			ELEV_ALPINE..=ELEV_MAX => BIOME_POLAR_MOUNTAIN_TOP,
-			_ => panic!("Unexpected elevation biome value for biome {}", elev),
+			_ => unreachable!(),
 		},
 		//▒▒▒▒▒▒▒▒▒ TUNDRA ▒▒▒▒▒▒▒▒▒▒▒
 		TEMP_POLAR..=TEMP_TUNDRA => match elev {
@@ -89,20 +94,20 @@ fn match_biomes(
 				if watermask != NO_WATER {
 					BIOME_ICY_WATERS
 				} else {
-					//river basin biomes
+					//River basin biomes.
 					match rain {
 						RAIN_MIN..=RAIN_MAX => BIOME_TUNDRA_GRASSLAND,
-						_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+						_ => unreachable!(),
 					}
 				}
 			}
 			ELEV_MIN..=ELEV_ALPINE => match rain {
 				RAIN_MIN..=RAIN_DESERT => BIOME_BARREN_TUNDRA,
 				RAIN_DESERT..=RAIN_MAX => BIOME_TUNDRA_GRASSLAND,
-				_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+				_ => unreachable!(),
 			},
 			ELEV_ALPINE..=ELEV_MAX => BIOME_TUNDRA_MOUNTAIN_TOP,
-			_ => panic!("Unexpected elevation biome value for biome {}", elev),
+			_ => unreachable!(),
 		},
 		//▒▒▒▒▒▒▒▒▒▒ BOREAL ▒▒▒▒▒▒▒▒▒▒▒
 		TEMP_TUNDRA..=TEMP_BOREAL => match elev {
@@ -110,14 +115,14 @@ fn match_biomes(
 				if watermask != NO_WATER {
 					BIOME_COLD_WATERS
 				} else {
-					//river basin biomes
+					//River basin biomes.
 					match rain {
 						RAIN_MIN..=RAIN_DESERT => BIOME_BOREAL_GRASSLAND,
 						RAIN_DESERT..=RAIN_GRASSLAND => BIOME_BOREAL_WOODLAND,
 						RAIN_GRASSLAND..=RAIN_WOODLAND => BIOME_BOREAL_FOREST,
 						RAIN_WOODLAND..=RAIN_FOREST => BIOME_BOREAL_FOREST,
 						RAIN_FOREST..=RAIN_MAX => BIOME_BOREAL_SWAMP,
-						_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+						_ => unreachable!(),
 					}
 				}
 			}
@@ -127,7 +132,7 @@ fn match_biomes(
 				RAIN_GRASSLAND..=RAIN_WOODLAND => BIOME_BOREAL_WOODLAND,
 				RAIN_WOODLAND..=RAIN_FOREST => BIOME_BOREAL_FOREST,
 				RAIN_FOREST..=RAIN_MAX => BIOME_BOREAL_SWAMP,
-				_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+				_ => unreachable!(),
 			},
 			ELEV_WATERHOLD..=ELEV_LOWLANDS => match rain {
 				RAIN_MIN..=RAIN_DESERT => BIOME_COLD_DESERT,
@@ -135,21 +140,21 @@ fn match_biomes(
 				RAIN_GRASSLAND..=RAIN_WOODLAND => BIOME_BOREAL_WOODLAND,
 				RAIN_WOODLAND..=RAIN_FOREST => BIOME_BOREAL_FOREST,
 				RAIN_FOREST..=RAIN_MAX => BIOME_BOREAL_RAINFOREST,
-				_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+				_ => unreachable!(),
 			},
 			ELEV_LOWLANDS..=ELEV_HIGHLANDS => match rain {
 				RAIN_MIN..=RAIN_DESERT => BIOME_COLD_DESERT,
 				RAIN_DESERT..=RAIN_GRASSLAND => BIOME_BOREAL_GRASSLAND,
 				RAIN_GRASSLAND..=RAIN_MAX => BIOME_BOREAL_SHRUBLAND,
-				_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+				_ => unreachable!(),
 			},
 			ELEV_HIGHLANDS..=ELEV_ALPINE => match rain {
 				RAIN_MIN..=RAIN_WOODLAND => BIOME_COLD_DESERT,
 				RAIN_WOODLAND..=RAIN_MAX => BIOME_BOREAL_ALPINE_GRASSLAND,
-				_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+				_ => unreachable!(),
 			},
 			ELEV_ALPINE..=ELEV_MAX => BIOME_BOREAL_MOUNTAIN_TOP,
-			_ => panic!("Unexpected elevation biome value for biome {}", elev),
+			_ => unreachable!(),
 		},
 		//▒▒▒▒▒▒▒▒▒ TEMPERATE ▒▒▒▒▒▒▒▒▒▒
 		TEMP_BOREAL..=TEMP_TEMPERATE => match elev {
@@ -157,14 +162,14 @@ fn match_biomes(
 				if watermask != NO_WATER {
 					BIOME_TEMPERATE_WATERS
 				} else {
-					//river basin biomes
+					//River basin biomes.
 					match rain {
 						RAIN_MIN..=RAIN_DESERT => BIOME_TEMPERATE_GRASSLAND,
 						RAIN_DESERT..=RAIN_GRASSLAND => BIOME_TEMPERATE_WOODLAND,
 						RAIN_GRASSLAND..=RAIN_WOODLAND => BIOME_TEMPERATE_FOREST,
 						RAIN_WOODLAND..=RAIN_FOREST => BIOME_TEMPERATE_FOREST,
 						RAIN_FOREST..=RAIN_MAX => BIOME_TEMPERATE_SWAMP,
-						_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+						_ => unreachable!(),
 					}
 				}
 			}
@@ -174,7 +179,7 @@ fn match_biomes(
 				RAIN_GRASSLAND..=RAIN_WOODLAND => BIOME_TEMPERATE_WOODLAND,
 				RAIN_WOODLAND..=RAIN_FOREST => BIOME_TEMPERATE_FOREST,
 				RAIN_FOREST..=RAIN_MAX => BIOME_TEMPERATE_SWAMP,
-				_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+				_ => unreachable!(),
 			},
 			ELEV_WATERHOLD..=ELEV_LOWLANDS => match rain {
 				RAIN_MIN..=RAIN_DESERT => BIOME_TEMPERATE_DESERT,
@@ -182,21 +187,21 @@ fn match_biomes(
 				RAIN_GRASSLAND..=RAIN_WOODLAND => BIOME_TEMPERATE_WOODLAND,
 				RAIN_WOODLAND..=RAIN_FOREST => BIOME_TEMPERATE_FOREST,
 				RAIN_FOREST..=RAIN_MAX => BIOME_TEMPERATE_RAINFOREST,
-				_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+				_ => unreachable!(),
 			},
 			ELEV_LOWLANDS..=ELEV_HIGHLANDS => match rain {
 				RAIN_MIN..=RAIN_DESERT => BIOME_TEMPERATE_DESERT,
 				RAIN_DESERT..=RAIN_GRASSLAND => BIOME_TEMPERATE_GRASSLAND,
 				RAIN_GRASSLAND..=RAIN_MAX => BIOME_TEMPERATE_SHRUBLAND,
-				_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+				_ => unreachable!(),
 			},
 			ELEV_HIGHLANDS..=ELEV_ALPINE => match rain {
 				RAIN_MIN..=RAIN_WOODLAND => BIOME_TEMPERATE_DESERT,
 				RAIN_WOODLAND..=RAIN_MAX => BIOME_TEMPERATE_ALPINE_GRASSLAND,
-				_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+				_ => unreachable!(),
 			},
 			ELEV_ALPINE..=ELEV_MAX => BIOME_TEMPERATE_MOUNTAIN_TOP,
-			_ => panic!("Unexpected elevation biome value for biome {}", elev),
+			_ => unreachable!(),
 		},
 		//▒▒▒▒▒▒▒▒▒ TROPICAL ▒▒▒▒▒▒▒▒▒▒▒
 		TEMP_TEMPERATE..=TEMP_MAX => match elev {
@@ -204,14 +209,14 @@ fn match_biomes(
 				if watermask != NO_WATER {
 					BIOME_TROPICAL_WATERS
 				} else {
-					//river basin biomes
+					//River basin biomes.
 					match rain {
 						RAIN_MIN..=RAIN_DESERT => BIOME_TROPICAL_GRASSLAND,
 						RAIN_DESERT..=RAIN_GRASSLAND => BIOME_TROPICAL_WOODLAND,
 						RAIN_GRASSLAND..=RAIN_WOODLAND => BIOME_TROPICAL_FOREST,
 						RAIN_WOODLAND..=RAIN_FOREST => BIOME_TROPICAL_FOREST,
 						RAIN_FOREST..=RAIN_MAX => BIOME_TROPICAL_SWAMP,
-						_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+						_ => unreachable!(),
 					}
 				}
 			}
@@ -221,7 +226,7 @@ fn match_biomes(
 				RAIN_GRASSLAND..=RAIN_WOODLAND => BIOME_TROPICAL_WOODLAND,
 				RAIN_WOODLAND..=RAIN_FOREST => BIOME_TROPICAL_FOREST,
 				RAIN_FOREST..=RAIN_MAX => BIOME_TROPICAL_SWAMP,
-				_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+				_ => unreachable!(),
 			},
 			ELEV_WATERHOLD..=ELEV_LOWLANDS => match rain {
 				RAIN_MIN..=RAIN_DESERT => BIOME_TROPICAL_DESERT,
@@ -229,22 +234,22 @@ fn match_biomes(
 				RAIN_GRASSLAND..=RAIN_WOODLAND => BIOME_TROPICAL_WOODLAND,
 				RAIN_WOODLAND..=RAIN_FOREST => BIOME_TROPICAL_FOREST,
 				RAIN_FOREST..=RAIN_MAX => BIOME_TROPICAL_RAINFOREST,
-				_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+				_ => unreachable!(),
 			},
 			ELEV_LOWLANDS..=ELEV_HIGHLANDS => match rain {
 				RAIN_MIN..=RAIN_DESERT => BIOME_TROPICAL_DESERT,
 				RAIN_DESERT..=RAIN_GRASSLAND => BIOME_TROPICAL_GRASSLAND,
 				RAIN_GRASSLAND..=RAIN_MAX => BIOME_TROPICAL_SHRUBLAND,
-				_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+				_ => unreachable!(),
 			},
 			ELEV_HIGHLANDS..=ELEV_ALPINE => match rain {
 				RAIN_MIN..=RAIN_GRASSLAND => BIOME_TROPICAL_DESERT,
 				RAIN_GRASSLAND..=RAIN_MAX => BIOME_TROPICAL_ALPINE_GRASSLAND,
-				_ => panic!("Unexpected rainfall biome value for biome {}", rain),
+				_ => unreachable!(),
 			},
 			ELEV_ALPINE..=ELEV_MAX => BIOME_TROPICAL_MOUNTAIN_TOP,
-			_ => panic!("Unexpected elevation biome value for biome {}", elev),
+			_ => unreachable!(),
 		}, //elev
-		_ => panic!("Unexpected temperature biome value for biome {}", temp),
+		_ => unreachable!(),
 	} //temp
 }

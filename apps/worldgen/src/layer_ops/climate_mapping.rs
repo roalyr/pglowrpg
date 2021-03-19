@@ -10,8 +10,10 @@ pub fn get(lp: &mut LayerPack) {
 //▒▒▒▒▒▒▒▒▒▒ TEMPERATURE ▒▒▒▒▒▒▒▒▒▒▒
 fn temperature(lp: &mut LayerPack) {
 	let mut array = vec![0.0; lp.noisemap_vec_len];
+	//Main gradient according to pole location.
 	let array_grad =
 		array_ops::gradients::get(lp.wi.noisemap_size, lp.wi.temp_mode);
+	//Multi-freq noise layers.
 	let array_noise1 = array_ops::noise_maps::get(
 		lp.wi.noisemap_size,
 		lp.wi.temp_noise_size,
@@ -24,12 +26,15 @@ fn temperature(lp: &mut LayerPack) {
 		lp.wi.seed + 10,
 		Perlin,
 	);
+	//Additional noise to compensate for polar regions gradient
+	//values close to 0.
 	let array_noise_polar = array_ops::noise_maps::get(
 		lp.wi.noisemap_size,
 		lp.wi.temp_noise_size,
 		lp.wi.seed + 100,
 		Multi,
 	);
+	//Combine all the maps.
 	for (index, cell_v) in array.iter_mut().enumerate().take(lp.noisemap_vec_len)
 	{
 		let grad_rel = array_grad[index] / 255.0;
@@ -43,7 +48,9 @@ fn temperature(lp: &mut LayerPack) {
 			*cell_v = 0.0;
 		}
 	}
+	//Stretch between 0 and 256.
 	array_ops::modify::normalize(&mut array);
+	//Scale up.
 	let temp_map = array_ops::interpolate::mitchell(
 		array,
 		lp.wi.noisemap_size,
@@ -58,8 +65,12 @@ fn temperature(lp: &mut LayerPack) {
 //▒▒▒▒▒▒▒▒▒▒▒ RAINFALL ▒▒▒▒▒▒▒▒▒▒▒▒▒
 fn rainfall(lp: &mut LayerPack) {
 	let mut array = vec![0.0; lp.noisemap_vec_len];
+	//Gradient to account for polar regions being dryer.
 	let array_grad =
 		array_ops::gradients::get(lp.wi.noisemap_size, lp.wi.temp_mode);
+	//Noise maps that will be subtracted and added to base value
+	//of 128 to make rainfall and desert zones.
+	//Proportional to landmass size (topog_scope).
 	let array_ds1 = array_ops::diamond_square::get(
 		lp.wi.noisemap_size,
 		0.1,
@@ -74,12 +85,14 @@ fn rainfall(lp: &mut LayerPack) {
 		0.5,
 		lp.wi.seed + 100,
 	);
+	//Flat noise.
 	let array_noise = array_ops::noise_maps::get(
 		lp.wi.noisemap_size,
 		lp.wi.rain_noise_size,
 		lp.wi.seed + 1000,
 		Multi,
 	);
+	//Combining all the noise maps together.
 	for (index, cell_v) in array.iter_mut().enumerate().take(lp.noisemap_vec_len)
 	{
 		*cell_v = (127.0 - array_ds1[index] + array_ds2[index]) * array_grad[index]
@@ -90,7 +103,9 @@ fn rainfall(lp: &mut LayerPack) {
 			*cell_v = 0.0;
 		}
 	}
+	//Stretch between 0 and 256.
 	array_ops::modify::normalize(&mut array);
+	//Scale up.
 	let rain_map = array_ops::interpolate::mitchell(
 		array,
 		lp.wi.noisemap_size,

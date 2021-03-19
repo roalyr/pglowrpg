@@ -10,7 +10,7 @@ use codec::LayerPack;
 use constants_world::*;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ STRUCTURES ▒▒▒▒▒▒▒▒▒▒▒▒▒
-//river entry stores all the relevant river data
+//River entry stores all the relevant river data.
 #[derive(Clone)]
 pub struct RiverEntry {
 	river_id: u16,
@@ -20,30 +20,29 @@ pub struct RiverEntry {
 	end: (usize, usize),
 }
 
-//for river width generation only
+//For river width generation only.
 #[derive(Clone, Debug)]
 pub struct WidthEntry {
 	river_id_downstr: u16,
 	width_new: u16,
 }
 
-//for river erosion generation only
+//For river erosion generation only.
 #[derive(Copy, Clone, Debug)]
 pub struct ErosionEntry {
 	river_id_downstr: u16,
 	terrain_diff: u16,
 }
 
-//structure to hold the lists and queues
+//Structure to hold the lists and queues.
 pub struct RiversPaths {
 	list: Vec<RiverEntry>,
 	width_queue: Vec<WidthEntry>,
 	erosion_queue: Vec<ErosionEntry>,
 }
 
-//global rivergen param structure for data transfer
+//Global rivergen param structure for data transfer.
 pub struct RgParams {
-	//temporary value storage
 	river_id: u16,    //check for overflow?
 	river_width: u16, //saturated
 	river_source: (usize, usize),
@@ -51,16 +50,13 @@ pub struct RgParams {
 	river_est_number: usize,
 	river_count_number: usize,
 	upstream_neighbor: (usize, usize),
-	//nested structures
 	dv: path::DirVector,
 	rivers_paths: RiversPaths,
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ MAIN ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn get(lp: &mut LayerPack) {
-	//initiate the parameter structure
 	let mut rg = RgParams {
-		//temporary value storage
 		river_id: INIT_ID_U16,
 		river_width: RIVER_MIN_WIDTH,
 		river_source: (0, 0),
@@ -68,12 +64,11 @@ pub fn get(lp: &mut LayerPack) {
 		river_est_number: 0,
 		river_count_number: 0,
 		upstream_neighbor: (0, 0),
-		//nested structures
 		dv: path::DirVector {
 			x0: 0,
 			y0: 0,
-			x1: lp.wi.map_size / 2, //make end in the center
-			y1: lp.wi.map_size / 2, //make end in the center
+			x1: lp.wi.map_size / 2, //end in the center
+			y1: lp.wi.map_size / 2, //end in the center
 			r: ONE_USIZE,
 			hit: false,
 			path_heuristic: RIVER_HEUR_INIT,
@@ -84,7 +79,8 @@ pub fn get(lp: &mut LayerPack) {
 			erosion_queue: Vec::new(),
 		},
 	};
-	//perform rivergen
+	
+	//Perform rivergen.
 	rg.estimate_sources_number(lp);
 	rg.set_paths(lp);
 	rg.map_paths(lp);

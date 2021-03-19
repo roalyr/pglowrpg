@@ -11,7 +11,9 @@ pub fn get(lp: &mut LayerPack) {
 		lp.wi.topog_continuity,
 		lp.wi.seed,
 	);
+	//Filter from the bottom.
 	array_ops::modify::level(&mut array, lp.wi.topog_filter);
+	//Specific erosion and additional noise.
 	erode(
 		&mut array,
 		lp.wi.noisemap_size,
@@ -20,18 +22,23 @@ pub fn get(lp: &mut LayerPack) {
 		lp.wi.topog_erosion_factor,
 		lp.wi.seed,
 	);
+	//Stretch the map between 0 and 256.
 	array_ops::modify::normalize(&mut array);
+	//Resize to world map size.
 	let topog_map = array_ops::interpolate::mitchell(
 		array,
 		lp.wi.noisemap_size,
 		lp.wi.map_size,
 	);
+	//Write the map.
 	for index in 0..lp.layer_vec_len {
 		lp.topography
 			.write(topog_map[index] as u16, lp.topography.TERRAIN, index)
 	}
 }
 
+//Terrain-specific array operations.
+//This "erode" function is yet to be improved for better hi-freq noise.
 fn erode(
 	array: &mut Vec<f32>,
 	size: usize,

@@ -2,6 +2,7 @@ use constants_world::*;
 use coords::Index;
 use std::f32::consts::PI;
 
+//Into the constants lib
 const SQUARE_255: f32 = 32512.5;
 
 //GRADIENT BOTH

@@ -1,6 +1,4 @@
 use crate::print_ops::*;
-
-use io_ops::toml::{options, strings};
 use ui::prompts;
 
 pub fn start() {

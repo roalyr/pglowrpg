@@ -2,6 +2,7 @@ use crate::array_ops::interpolate::mitchell;
 use coords::Index;
 
 //Constants to generic and app
+//a margin that is meant to crop the border artifacts in DS algorithm
 const DS_CROP: usize = 20;
 const ONE_F32: f32 = 1.0;
 
@@ -143,7 +144,6 @@ fn normalize_crop(
 	let k = 255.0 / max_v;
 	for (index, cell_v) in array_final.iter_mut().enumerate().take(size * size) {
 		*cell_v = array[index] * k;
-		//println!("{:?}", cell_v);
 	}
 	let array_sized = mitchell(array_final.clone(), size, size + DS_CROP);
 	for i in 0..size {

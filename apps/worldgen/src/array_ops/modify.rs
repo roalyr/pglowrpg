@@ -1,4 +1,5 @@
 //FILTER
+//Set min and max values, thresholds.
 pub fn filter(
 	array: &mut Vec<f32>,
 	low_v: f32,
@@ -15,6 +16,7 @@ pub fn filter(
 }
 
 //LEVEL
+//Decrease every cell by given amount, threshold is 0.
 pub fn level(
 	array: &mut Vec<f32>,
 	low_v: usize,
@@ -29,6 +31,7 @@ pub fn level(
 }
 
 //NORMALIZE
+//Stretch the map between the 0 and maximum value.
 pub fn normalize(array: &mut Vec<f32>) {
 	let size = array.len();
 	let mut max_v = 0.0;

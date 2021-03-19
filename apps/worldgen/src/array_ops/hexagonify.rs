@@ -1,7 +1,7 @@
 use coords::Index;
 use std::collections::BTreeMap;
 
-//HEXAGONIFY is not currently used
+//HEXAGONIFY is not currently used.
 pub fn hexagonify<T>(
 	mut array: Vec<T>,
 	size: usize,
@@ -24,7 +24,7 @@ where
 }
 
 //For now let it hang around.
-//Need to make a proper switch between max / mean value use
+//Need to make a proper switch between max / mean value use.
 #[allow(unused_assignments, unused_variables)]
 fn hexrow<T>(
 	mut array: Vec<T>,
@@ -50,7 +50,7 @@ where
 	let mut k = 0;
 	let mut l = 0;
 	for n in 0..(size / 8 + 1) as isize {
-		//read mean value
+		//Read mean value.
 		//int val = 0;
 		let mut cell_vals = Vec::new();
 		let mut num_vals = 0;
@@ -82,13 +82,13 @@ where
 			}
 		}
 		k = 0;
-		//get mean value in cell
+		//Get mean value in cell.
 		if num_vals > 0 {
 			mean_val = sum_val / (num_vals as f32);
 		} else {
 			mean_val = 0.0;
 		}
-		//get most frequent value in cell
+		//Get the most frequent value in cell.
 		let mut counts = BTreeMap::new();
 		for val in cell_vals.iter() {
 			*counts.entry(val).or_insert(0) += 1;
@@ -97,11 +97,11 @@ where
 		let max_val = match result {
 			Some(x) => x,
 			None => {
-				//return early
+				//Return early if not found anything outstanding in numbers.
 				return array;
 			}
 		};
-		//put data in hexagons
+		//Put data in hexagons.
 		for i in 0..9 {
 			for j in 0..8 {
 				if hexagon[k][l] == 1 {
@@ -110,7 +110,7 @@ where
 					{
 						let index =
 							xy.ind((i + off_i) as usize, (j + off_j + 8 * n) as usize);
-						//store eith max value or mean value
+						//Store either max value or mean value (todo).
 						array[index] = *max_val.0;
 					}
 				}

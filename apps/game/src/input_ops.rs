@@ -4,7 +4,7 @@ use crate::*;
 pub fn parse_input(
 	gd: &mut GameData,
 	gs: &GameStrings,
-) -> Vec<(Command)> {
+) -> Vec<Command> {
 	//Init the input reply sequence which will be returned to the game
 	let mut seq = Vec::new();
 
@@ -24,40 +24,40 @@ pub fn parse_input(
 	match input.as_str() {
 		//Move
 		i if i == gd.commands.move_west => {
-			seq.push((Command::West));
+			seq.push(Command::West);
 		}
 		i if i == gd.commands.move_north => {
-			seq.push((Command::North));
+			seq.push(Command::North);
 		}
 		i if i == gd.commands.move_east => {
-			seq.push((Command::East));
+			seq.push(Command::East);
 		}
 		i if i == gd.commands.move_south => {
-			seq.push((Command::South));
+			seq.push(Command::South);
 		}
 		//Teleport
 		i if i == gd.commands.teleport_x => {
-			seq.push((Command::CoordX));
+			seq.push(Command::CoordX);
 		}
 		i if i == gd.commands.teleport_y => {
-			seq.push((Command::CoordY));
+			seq.push(Command::CoordY);
 		}
 		//General
 		i if i == gd.commands.quit => {
-			seq.push((Command::Quit));
+			seq.push(Command::Quit);
 		}
 		i if i == gd.commands.map_render_land => {
-			seq.push((Command::MapRenderLand));
+			seq.push(Command::MapRenderLand);
 		}
 		i if i == gd.commands.print_help => {
-			seq.push((Command::PrintHelp));
+			seq.push(Command::PrintHelp);
 		}
 		i if i == gd.commands.test => {
-			seq.push((Command::Test));
+			seq.push(Command::Test);
 		}
 
 		&_ => {
-			seq.push((Command::NoInput));
+			seq.push(Command::NoInput);
 		}
 	}
 	seq

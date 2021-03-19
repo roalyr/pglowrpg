@@ -3,7 +3,7 @@ use io_ops::toml::{options, strings};
 pub struct WgLocale {
 	s: strings::worldgen_strings::Stuff,
 	u: strings::ui_elements::Stuff,
-	p: strings::panic_strings::Stuff,
+	_p: strings::panic_strings::Stuff,
 }
 
 pub fn locale_load() -> WgLocale {
@@ -11,7 +11,7 @@ pub fn locale_load() -> WgLocale {
 	WgLocale {
 		s: strings::worldgen_strings::get(&input_locale),
 		u: strings::ui_elements::get(&input_locale),
-		p: strings::panic_strings::get(&input_locale),
+		_p: strings::panic_strings::get(&input_locale),
 	}
 }
 
