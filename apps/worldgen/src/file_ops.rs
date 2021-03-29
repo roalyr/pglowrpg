@@ -5,6 +5,7 @@ pub mod image_raw_ops;
 use crate::file_ops::data_ops::write_data;
 use crate::file_ops::image_color_ops::write_images_color;
 use crate::file_ops::image_raw_ops::write_images_raw;
+use crate::PRINT;
 use crate::*;
 use io_ops::create_dir;
 use std::path::Path;
@@ -14,7 +15,6 @@ pub fn write_save(
 	options: &options::Stuff,
 	preset_name: &str,
 ) {
-	let l = locale_load();
 	let world_name = [preset_name, "_", &lp.wi.seed.to_string()].concat();
 
 	//Add custom save names, check for existing, etc.
@@ -27,24 +27,24 @@ pub fn write_save(
 
 	//Write the data
 	if options.write_data_files {
-		l.print_write_data();
+		PRINT.write_data();
 		write_data(lp, options, &world_dir);
 	} else {
 		//But still save a copy of preset into a save folder
-		l.print_write_no_data();
+		PRINT.write_no_data();
 	}
-	l.print_sep2();
+	PRINT.sep2();
 
 	//Optionally render colorful images
 	if options.render_colorized_maps {
-		l.print_write_color();
+		PRINT.write_color();
 		write_images_color(lp, options, &world_dir);
 	}
-	l.print_sep2();
+	PRINT.sep2();
 
 	//Optionally render raw images
 	if options.render_raw_maps {
-		l.print_write_raw();
+		PRINT.write_raw();
 		write_images_raw(lp, options, &world_dir);
 	}
 }

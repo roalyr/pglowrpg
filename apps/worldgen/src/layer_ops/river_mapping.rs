@@ -79,7 +79,7 @@ pub fn get(lp: &mut LayerPack) {
 			erosion_queue: Vec::new(),
 		},
 	};
-	
+
 	//Perform rivergen.
 	rg.estimate_sources_number(lp);
 	rg.set_paths(lp);

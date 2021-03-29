@@ -11,7 +11,6 @@ impl RgParams {
 		//existing composite data structures
 		let terrain_map = get_terrain_map(lp);
 		let random_map = get_random_map(lp);
-		println!("Accessory maps written",);
 		for i in 0..lp.wi.map_size {
 			for j in 0..lp.wi.map_size {
 				self.make_paths(i, j, lp, &terrain_map, &random_map);
@@ -39,7 +38,7 @@ impl RgParams {
 			progress::percent_step(
 				self.river_count_number,
 				self.river_est_number,
-				10,
+				5,
 			);
 			//Set vector according to waterbodies presence
 			//and randomization.
