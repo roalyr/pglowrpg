@@ -1,12 +1,12 @@
-use crate::print_ops::*;
+use str_ops::menu_str::LOC;
 use ui::prompts;
 
 pub fn start() {
-	let l = locale_load();
-	l.print_intro();
-	//Menu loop
+	LOC.print_intro();
+	
 	loop {
-		let input = prompts::new_line_io("", &l.u.prompt1);
+		LOC.print_menu();
+		let input = prompts::new_line_io("", LOC.prompt1());
 		if input.is_empty() {
 			continue;
 		}

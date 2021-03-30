@@ -15,7 +15,7 @@ line_drawing = "0.8"
 bincode = "1.3"
 #deepsize = "0.1"
 #respk = "0.1"
-lazy_static = "1.4"
+
 
 
 coords = { path = "../../libs/coords" }
@@ -24,6 +24,7 @@ codec = { path = "../../libs/codec" }
 constants_app = { path = "../../libs/constants_app" }
 constants_world = { path = "../../libs/constants_world" }
 io_ops = { path = "../../libs/io_ops" }
+str_ops = { path = "../../libs/str_ops" }
 ui = { path = "../../libs/ui" }
 prng = { path = "../../libs/prng" }
 path = { path = "../../libs/path" }
