@@ -1,0 +1,9 @@
+(
+color_0 : "#FF005FF9", //water
+color_1 : "#FF41C23C", //lowlands
+color_2 : "#FFACCA65", //highlands
+color_3 : "#FF918863", //mountains
+color_4 : "#FFE5E4E2", //peaks
+
+color_100 : "#FF000000", //error color
+)

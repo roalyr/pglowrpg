@@ -1,0 +1,37 @@
+{ //Strings must be kept within the hashmap
+"gm1" : r#"▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ GAME ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒"#,
+"gm2" : r#"(q) - quit
+			(?) - help"#,
+
+"gm3" : r#"Select a world to load, leave empty to abort and return
+			to main menu. You can enter a few characters from any
+			word in the list to select the respective option:"#,
+
+"gm4" : r#"Selected world save file: "#,
+"gm5" : r#"No save matches the input, or no worlds were generated."#,
+
+"gm6" : r#"Location coordinates: "#,
+"gm8" : r#"Temperature annual mean: "#,
+"gm9" : r#"Rainfall annual mean: "#,
+"gm10" : r#"Elevation: "#,
+"gm16" : r#"Biome type: "#,
+"gm17" : r#"Geological region ID: "#,
+
+"gm11" : r#"Waterbody: "#,
+"gm12" : r#"no bodies of water are present"#,
+"gm13" : r#"a body of water a size of: "#,
+"gm14" : r#"(underwater)"#,
+"gm15" : r#"(above the water level)"#,
+
+"gm18" : r#"Rivers: "#,
+"gm19" : r#"no rivers"#,
+"gm20" : r#"river ID is "#,
+"gm21" : r#"river width:"#,
+"gm22" : r#"river element: "#,
+"gm23" : r#"river upstream: "#,
+"gm24" : r#"river downstream: "#,
+
+"gm7" : r#"Input the coordinate: "#,
+
+"gm25" : r#"Input the value for render size (default is 13): "#,
+}

@@ -1,0 +1,31 @@
+(
+//gradient
+color_0 : "#FF00640A",
+color_1 : "#FF106D0B",
+color_2 : "#FF21770D",
+color_3 : "#FF31800F",
+color_4 : "#FF428A11",
+color_5 : "#FF529413",
+color_6 : "#FF639D15",
+color_7 : "#FF73A717",
+color_8 : "#FF84B019",
+color_9 : "#FF94BA1B",
+color_10 : "#FFA5C41D",
+color_11 : "#FFB5CD1F",
+color_12 : "#FFC6D721",
+color_13 : "#FFD7E123",
+color_14 : "#FFD0CE26",
+color_15 : "#FFCABC2A",
+color_16 : "#FFC4AA2E",
+color_17 : "#FFBE9732",
+color_18 : "#FFB88536",
+color_19 : "#FFB2733A",
+color_20 : "#FFAC603E",
+color_21 : "#FFA64E42",
+color_22 : "#FFA03C46",
+color_23 : "#FFBA787E",
+color_24 : "#FFD5B4B7",
+color_25 : "#FFF0F0F0",
+
+color_100 : "#FFFF00FF", //error color
+)

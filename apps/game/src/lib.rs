@@ -16,10 +16,11 @@ use codec::LayerPack;
 use colored::*;
 use constants_app::*;
 use io_ops::decompress_to_memory;
-use io_ops::toml::palettes::biomes;
-use io_ops::toml::{options, strings};
+use io_ops::readron::palettes::biomes;
+use io_ops::readron::{options, strings};
 use io_ops::writepng::from_hex;
 use std::path::Path;
+use str_ops::game_str::LOC;
 use ui::prompts;
 use units::translate;
 

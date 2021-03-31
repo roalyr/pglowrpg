@@ -16,10 +16,10 @@ pub const PATH_SAVE_DATA: &str = "data/";
 pub const PATH_PRESETS_WORLD_USER: &str = "./presets_user/world/";
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ EXTENSIONS ▒▒▒▒▒▒▒▒▒▒▒▒▒
-pub const EXTENSION_PRESET_WORLD: &str = "toml";
-pub const EXTENSION_PRESET_PALETTE: &str = "toml";
-pub const EXTENSION_OPTION: &str = "toml";
-pub const EXTENSION_LOCALE: &str = "toml";
+pub const EXTENSION_PRESET_WORLD: &str = "ron";
+pub const EXTENSION_PRESET_PALETTE: &str = "ron";
+pub const EXTENSION_OPTION: &str = "ron";
+pub const EXTENSION_LOCALE: &str = "ron";
 
 pub const EXTENSION_SAVE_IMAGE: &str = "png";
 pub const EXTENSION_SAVE_DATA: &str = "lz4";

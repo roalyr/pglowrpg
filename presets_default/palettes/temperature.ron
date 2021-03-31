@@ -1,0 +1,31 @@
+(
+//gradient
+color_0 : "#FF0A2850",
+color_1 : "#FF50287D",
+color_2 : "#FF9628AA",
+color_3 : "#FF9D2E9D",
+color_4 : "#FFA43490",
+color_5 : "#FFAB3A83",
+color_6 : "#FFB24076",
+color_7 : "#FFB94669",
+color_8 : "#FFC04C5C",
+color_9 : "#FFC7524F",
+color_10 : "#FFCE5842",
+color_11 : "#FFD55E35",
+color_12 : "#FFDC6428",
+color_13 : "#FFDD6E32",
+color_14 : "#FFDE783C",
+color_15 : "#FFDF8346",
+color_16 : "#FFE08D50",
+color_17 : "#FFE1975A",
+color_18 : "#FFE2A264",
+color_19 : "#FFE4AC6E",
+color_20 : "#FFE5B778",
+color_21 : "#FFE6C182",
+color_22 : "#FFE7CB8C",
+color_23 : "#FFE8D696",
+color_24 : "#FFE9E0A0",
+color_25 : "#FFEBEBAA",
+
+color_100 : "#FFFF00FF", //error color
+)

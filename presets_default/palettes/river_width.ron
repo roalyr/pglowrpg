@@ -1,0 +1,23 @@
+(
+color_0 : "#FF000000", //background
+
+//streams
+color_1 : "#FF344C52",
+color_2 : "#FF5D6D91",
+color_3 : "#FF1A65B6",
+color_4 : "#FF0B3CB8",
+
+//small rivers
+color_5 : "#FF9C007F",
+color_6 : "#FFB3004A",
+color_7 : "#FFCF0003",
+color_8 : "#FFFF3700",
+
+//large rivers
+color_9 : "#FFA5A800",
+color_10 : "#FF96CC00",
+color_11 : "#FF2EE800",
+color_12 : "#FF00FF7B",
+
+color_100 : "#FF2FFFE7", //other
+)

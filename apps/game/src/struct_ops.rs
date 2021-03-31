@@ -31,10 +31,6 @@ pub struct GameData {
 }
 
 pub struct GameStrings {
-	//Structs
-	pub gm_str: strings::game_strings::Stuff,
-	pub panic_str: strings::panic_strings::Stuff,
-	pub ui_el: strings::ui_elements::Stuff,
 	//Temporary value
 	pub s: String,
 	//Basic strings
@@ -91,17 +87,8 @@ pub fn init_gd(
 //Strings for printing
 pub fn init_gs() -> GameStrings {
 	let input_locale = options::get().locale;
-	let gm_str: strings::game_strings::Stuff =
-		strings::game_strings::get(&input_locale);
-	let panic_str: strings::panic_strings::Stuff =
-		strings::panic_strings::get(&input_locale);
-	let ui_el: strings::ui_elements::Stuff =
-		strings::ui_elements::get(&input_locale);
+
 	GameStrings {
-		//Structs
-		gm_str,
-		panic_str,
-		ui_el,
 		//Temporary string
 		s: String::new(),
 		//Basic strings

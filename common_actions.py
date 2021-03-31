@@ -301,11 +301,13 @@ def sync_files():
 	cl_divider();
 	flietype_sync('*.rs', '.timestamp_rs', path_source, path_target)
 	flietype_sync('*.toml', '.timestamp_toml', path_source, path_target)
+	flietype_sync('*.ron', '.timestamp_ron', path_source, path_target)
 	
 def clear_target():
 	try: #must be removed to trigger copying
 		os.remove('.timestamp_rs')
 		os.remove('.timestamp_toml')
+		os.remove('.timestamp_ron')
 	except: pass
 	dir_remove('src', path_target)
 	dir_remove('apps', path_target)

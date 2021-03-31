@@ -1,0 +1,51 @@
+{
+"wg1" : r#"▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ WORLDGEN ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+			Select a preset by entering its name, or leave empty to
+			abort worldgen and return to main memu. You can enter
+			a few characters from any word in the list to select
+			the respective option.
+			See ./presets_default/world and ./presets_user/world 
+			for available presets:"#,
+
+"wg28" : r#"No preset matches input, aborting."#,
+"wg4" : r#"Randomizing the world seed for this generation."#,
+
+"wg7" : r#"Preparing topography map..."#,
+"wg9" : r#"Preparing climate maps..."#,
+"wg13" : r#"Preparing watermask map..."#,
+"wg17" : r#"Preparing river map..."#,
+"wg19" : r#"Preparing biome map..."#,
+"wg21" : r#"Preparing georegion map..."#,
+
+"wg2" : r#"Using default seed from preset, enter «R» to randomize."#,
+"wg3" : r#"Selected preset: "#,
+"wg24" : r#"How many worlds to generate? Enter the value, or 
+			leave empty to use the value from worldgen options."#,
+
+"wg5" : r#"Using seed: "#,
+
+"wg6" : r#"The amount of worlds to generate is: "#,
+
+"wg25" : r#"Preparing data files:"#,
+"wg26" : r#"No data files were written (set in worldgen options)."#,
+"wg15" : r#"Preparing colorized maps:"#,
+"wg16" : r#"Preparing raw maps:"#,
+
+"wg23" : r#"Worldgen done."#,
+
+//unused below
+
+
+"wg11" : r#"Preparing rainfall map..."#,
+
+"wg8" : r#"Saving topography map..."#,
+"wg10" : r#"Saving temperature map..."#,
+"wg12" : r#"Saving rainfall map..."#,
+"wg14" : r#"Saving watermask map..."#,
+"wg18" : r#"Saving river map..."#,
+"wg20" : r#"Saving biome map..."#,
+"wg22" : r#"Saving georegion map..."#,
+
+"wg27" : r#"Saving world layers data..."#,
+
+}

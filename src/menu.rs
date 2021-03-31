@@ -3,7 +3,7 @@ use ui::prompts;
 
 pub fn start() {
 	LOC.print_intro();
-	
+
 	loop {
 		LOC.print_menu();
 		let input = prompts::new_line_io("", LOC.prompt1());

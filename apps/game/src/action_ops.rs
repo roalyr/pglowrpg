@@ -50,24 +50,24 @@ pub fn process_input(
 			//Default
 			Command::NoInput => {}
 			Command::MapRenderLand => {
-				gd.map_render_size =
-					prompts::new_line_io(&gs.gm_str.gm25, &gs.ui_el.prompt2)
-						.trim()
-						.parse::<usize>()
-						.unwrap_or(gd.map_render_size);
-				println!("{}", &gs.ui_el.separator2);
+				gd.map_render_size = prompts::new_line_io("", "")
+					//&gs.gm_str.gm25, &gs.ui_el.prompt2)
+					.trim()
+					.parse::<usize>()
+					.unwrap_or(gd.map_render_size);
+				//println!("{}", &gs.ui_el.separator2);
 				let cx = gd.x;
 				let cy = gd.y;
 				map_render_land(gd, cx, cy);
-				println!("{}", &gs.ui_el.separator2);
+				//println!("{}", &gs.ui_el.separator2);
 			}
 			Command::PrintHelp => {
-				println!("{}", &gs.gm_str.gm2);
+				//println!("{}", &gs.gm_str.gm2);
 				//Make this better
 				println!("Registered commands are:\n{:?}", &gd.commands_vec);
-				println!("{}", &gs.ui_el.separator2);
+				//println!("{}", &gs.ui_el.separator2);
 				//to hold the loop or browse topics (planned feature)
-				prompts::new_line_io("", &gs.ui_el.prompt2);
+				prompts::new_line_io("", "");
 			}
 			Command::Quit => {
 				continue_loop = false;

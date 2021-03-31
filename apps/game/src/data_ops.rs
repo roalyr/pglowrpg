@@ -2,27 +2,22 @@ use crate::*;
 
 pub fn get_layerpack(gs: &GameStrings) -> Option<LayerPack> {
 	//Select a world to load
-	let save_dir_tuple = io_ops::dir_dir_contents(
-		PATH_SAVE,
-		&gs.ui_el.bullet1,
-		&gs.ui_el.separator1,
-	);
+	let save_dir_tuple = io_ops::dir_dir_contents(PATH_SAVE, "", "");
 
 	//Get the contents of save dir
 	let save_dir_paths = save_dir_tuple.1;
 	let save_dir_formatted = [save_dir_tuple.0, "\n".to_string()].concat();
-	println!("{}", &gs.gm_str.gm3);
+	//println!("{}", &gs.gm_str.gm3);
 
 	//Read input to pick a specific save
-	let mut input_save =
-		prompts::new_line_io(&save_dir_formatted, &gs.ui_el.prompt2);
+	let mut input_save = prompts::new_line_io(&save_dir_formatted, "");
 	input_save = prompts::autocomplete(&input_save, &save_dir_paths);
 
 	if !input_save.is_empty() {
-		println!("{}", &gs.ui_el.separator2);
+		//println!("{}", &gs.ui_el.separator2);
 		//Show selected world
-		prompts::selected(&gs.gm_str.gm4, &input_save);
-		println!("{}", &gs.ui_el.separator2);
+		//prompts::selected(&gs.gm_str.gm4, &input_save);
+		//println!("{}", &gs.ui_el.separator2);
 		let save_data = Path::new(PATH_SAVE)
 			.to_path_buf()
 			.join(input_save)
@@ -33,7 +28,7 @@ pub fn get_layerpack(gs: &GameStrings) -> Option<LayerPack> {
 		Some(bincode::deserialize(&data_read[..]).unwrap())
 	} else {
 		//Warning about no such folder
-		println!("{}", &gs.gm_str.gm5);
+		//println!("{}", &gs.gm_str.gm5);
 		None
 	}
 }

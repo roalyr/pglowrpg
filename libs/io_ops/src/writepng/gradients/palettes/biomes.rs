@@ -1,4 +1,4 @@
-use crate::toml::palettes::biomes;
+use crate::readron::palettes::biomes;
 
 use crate::writepng::from_hex;
 

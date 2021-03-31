@@ -1,4 +1,4 @@
-use crate::toml::palettes::rainfall;
+use crate::readron::palettes::rainfall;
 
 use crate::writepng::from_hex;
 

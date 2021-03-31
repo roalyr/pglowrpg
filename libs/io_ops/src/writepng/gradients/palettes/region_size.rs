@@ -1,4 +1,4 @@
-use crate::toml::palettes::region_size;
+use crate::readron::palettes::region_size;
 
 use crate::writepng::from_hex;
 

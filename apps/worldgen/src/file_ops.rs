@@ -5,10 +5,10 @@ pub mod image_raw_ops;
 use crate::file_ops::data_ops::write_data;
 use crate::file_ops::image_color_ops::write_images_color;
 use crate::file_ops::image_raw_ops::write_images_raw;
-use str_ops::worldgen_str::LOC;
 use crate::*;
 use io_ops::create_dir;
 use std::path::Path;
+use str_ops::worldgen_str::LOC;
 
 pub fn write_save(
 	lp: &mut LayerPack,

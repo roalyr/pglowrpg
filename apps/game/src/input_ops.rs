@@ -16,9 +16,8 @@ pub fn parse_input(
 	}
 
 	//User input handling
-	let mut input = prompts::new_line_io("", &gs.ui_el.prompt2);
+	let mut input = prompts::new_line_io("", "");
 	input = prompts::autocomplete(&input, &gd.commands_vec);
-	println!("{}", &gs.ui_el.separator2);
 
 	//▒▒▒▒▒▒ ADD NEW COMMANDS, STEP 2/4 ▒▒▒▒▒▒▒▒
 	match input.as_str() {
@@ -64,7 +63,5 @@ pub fn parse_input(
 }
 
 pub fn input_coord(gs: &GameStrings) -> Result<usize, std::num::ParseIntError> {
-	prompts::new_line_io(&gs.gm_str.gm7, &gs.ui_el.prompt2)
-		.trim()
-		.parse::<usize>()
+	prompts::new_line_io("", "").trim().parse::<usize>()
 }

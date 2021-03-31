@@ -1,0 +1,18 @@
+{ //Strings must be kept withn the hashmap
+"intro": r##"
+╔═════════════════════════════════════════════════════╗
+║                                                     ║
+║                     pGLOWrpg                        ║
+║   "Procedurally Generated Living Open World RPG"    ║
+║                  @Roal-Yr, 2021                     ║
+║                                                     ║
+╚═════════════════════════════════════════════════════╝
+"##,
+
+"menu" : r##"
+▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ MENU ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+(w) - worldgen
+(g) - game
+(q) - quit
+"##,
+}

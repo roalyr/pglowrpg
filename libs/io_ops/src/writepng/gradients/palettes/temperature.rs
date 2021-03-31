@@ -1,4 +1,4 @@
-use crate::toml::palettes::temperature;
+use crate::readron::palettes::temperature;
 
 use crate::writepng::from_hex;
 

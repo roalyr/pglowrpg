@@ -1,0 +1,14 @@
+//Preset validation
+{
+"map_size_1" : r#"
+══════════════════════════════════════════════════\n\
+THE MAP MUST BE OF A PROPER SIZE: "#,
+
+"map_size_2" : "The map size you've picked is: ",
+
+"noisemap_size_1" : r#"
+══════════════════════════════════════════════════\n\
+THE NOISEMAP MUST BE OF A PROPER SIZE: "#,
+
+"noisemap_size_2" : "The noisemap size you've picked is:",
+}
