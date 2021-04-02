@@ -20,7 +20,7 @@ use io_ops::readron::palettes::biomes;
 use io_ops::readron::{options, strings};
 use io_ops::writepng::from_hex;
 use std::path::Path;
-use str_ops::game_str::LOC;
+use str_ops::GS;
 use ui::prompts;
 use units::translate;
 
@@ -38,9 +38,9 @@ pub fn start() {
 	};
 
 	//Welcoming message
-	LOC.print_banner();
+	GS.print_banner();
 	//Intro message
-	LOC.print_menu();
+	GS.print_menu();
 
 	//Main loop
 	loop {

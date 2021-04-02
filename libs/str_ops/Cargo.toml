@@ -7,6 +7,9 @@ edition = "2018"
 
 [dependencies]
 io_ops = { path = "../../libs/io_ops" }
+constants_app = { path = "../../libs/constants_app" }
 
+terminal_size = "0.1"
+colored = "2.0"
 lazy_static = "1.4"
 textwrap = { version = "0.13", features = ["terminal_size"] }

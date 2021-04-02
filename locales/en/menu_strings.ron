@@ -1,18 +1,10 @@
 { //Strings must be kept withn the hashmap
-"intro": r##"
-╔═════════════════════════════════════════════════════╗
-║                                                     ║
-║                     pGLOWrpg                        ║
-║   "Procedurally Generated Living Open World RPG"    ║
-║                  @Roal-Yr, 2021                     ║
-║                                                     ║
-╚═════════════════════════════════════════════════════╝
-"##,
-
-"menu" : r##"
-▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ MENU ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
-(w) - worldgen
-(g) - game
-(q) - quit
-"##,
+"game_title":  "pGLOWrpg",
+"game_name": "Procedurally Generated Living Open World RPG",
+"developer" : "@Roal-Yr, 2021",
+"menu_title" : "MENU",
+"menu" : 
+" (w) - worldgen
+ (g) - game
+ (q) - quit",
 }

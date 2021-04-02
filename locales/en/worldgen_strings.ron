@@ -3,10 +3,10 @@
 // Code formats the strings with text wrapper by the term size.
 
 {
-"wg0" : r#"▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ WORLDGEN ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒"#,
+"wg0" : r#"WORLDGEN"#,
 	
 "wg1" : r#"
-	Select a preset by entering its name, or leave empty to
+	Select a preset by entering its name, or leave empty to 
 	abort worldgen and return to main memu. You can enter
 	a few characters from any word in the list to select
 	the respective option.

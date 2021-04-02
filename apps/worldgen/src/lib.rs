@@ -18,7 +18,7 @@ pub fn start() {
 	//Load options and locale/style presets
 	let options: options::Stuff = options::get();
 	
-	WS.print_banner();
+	UI.print_banner3_col(WS.str_banner_title());
 	WS.print_intro();
 	
 	//Preset selection
@@ -26,19 +26,19 @@ pub fn start() {
 	let preset_def_tuple = io_ops::dir_file_contents(
 		PATH_PRESETS_WORLD,
 		EXTENSION_PRESET_WORLD,
-		UI.bul1(), UI.newline(),
+		&UI.str_bul1(), &UI.str_newline(),
 	);
 	let mut preset_user_tuple = io_ops::dir_file_contents(
 		PATH_PRESETS_WORLD_USER,
 		EXTENSION_PRESET_WORLD,
-		UI.bul1(), UI.newline(),
+		&UI.str_bul1(), &UI.str_newline(),
 	);
 	
 	//Get the contents of the presets folder
 	let mut presets_paths = preset_def_tuple.1;
 	presets_paths.append(&mut preset_user_tuple.1);
 	let presets_formatted = [preset_def_tuple.0, preset_user_tuple.0, "\n".to_string()].concat();
-	let mut input_preset = prompts::new_line_io(&presets_formatted, UI.prompt2());
+	let mut input_preset = prompts::new_line_io(&presets_formatted, &UI.str_prompt2());
 	input_preset = prompts::autocomplete(&input_preset, &presets_paths);
 	
 	//Decide how to treat no input
@@ -55,7 +55,7 @@ pub fn start() {
 	preset_validate::all(&mut wi);
 
 	//Seed selection
-	let input_seed = prompts::new_line_io(&WS.str_seed_rand(), UI.prompt2());
+	let input_seed = prompts::new_line_io(&WS.str_seed_rand(), &UI.str_prompt2());
 	UI.print_sep2();
 	let mut temp_seed = if (input_seed == "r") || (input_seed == "R") {
 		WS.print_seed_rand();
@@ -65,7 +65,7 @@ pub fn start() {
 	};
 
 	//Decide how many worlds to generate
-	let input_world_num = prompts::new_line_io(&WS.str_world_num(), UI.prompt2());
+	let input_world_num = prompts::new_line_io(&WS.str_world_num(), &UI.str_prompt2());
 	let world_num = if input_world_num.is_empty() {
 		options.worlds_to_generate
 	} else {

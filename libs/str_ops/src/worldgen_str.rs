@@ -1,13 +1,13 @@
-use crate::{
-	printable_strings, printable_strings_with_arg, returnable_strings,
-};
-use crate::{Locale, WS};
+use crate::print_paragraph;
+use crate::print_paragraph_with_color;
+use crate::print_paragraph_with_escape;
+use crate::print_paragraph_with_var;
+use crate::return_paragraph;
+use crate::WgStrings;
 use textwrap::{fill, termwidth, Options};
 
-printable_strings! {
-	Locale(
-	print_banner, "wg0";
-	print_intro, "wg1";
+print_paragraph! {
+	WgStrings(
 	print_no_input_preset, "wg28";
 	print_seed_rand, "wg4";
 	print_prep_topog, "wg7";
@@ -24,15 +24,22 @@ printable_strings! {
 	)
 }
 
-printable_strings_with_arg! {
-	Locale(
+print_paragraph_with_color! {
+	WgStrings(
+	print_intro, "wg1", (0, 100, 0);
+	)
+}
+
+print_paragraph_with_var! {
+	WgStrings(
 	print_world_num, "wg6", usize;
 	print_seed_used, "wg5", usize;
 	)
 }
 
-returnable_strings! {
-	Locale(
+return_paragraph! {
+	WgStrings(
+	str_banner_title, "wg0";
 	str_sel_preset, "wg3";
 	str_seed_rand, "wg2";
 	str_world_num, "wg24";
