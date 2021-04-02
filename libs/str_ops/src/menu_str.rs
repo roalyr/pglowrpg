@@ -17,7 +17,7 @@ fn initiate() -> Locale {
 	Locale {
 		//call it by a macro, macro be in io_ops
 		s: strings::menu_strings::get(&input_locale),
-		u: strings::ui_elements::get(&input_locale),
+		u: strings::ui_strings::get(&input_locale),
 		_p: strings::panic_strings::get(&input_locale),
 	}
 }

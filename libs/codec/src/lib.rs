@@ -66,7 +66,7 @@ pub struct BitLayerGeoregID {
 }
 
 macro_rules! impl_with_masks {
-    ($($struct_type:ty, $val_type:ty);*) => {
+    ($($struct_type:ty, $val_type:ty);*;) => {
         $(impl $struct_type {
 		pub fn write(
 				&mut self,
@@ -104,7 +104,7 @@ macro_rules! impl_with_masks {
 }
 
 macro_rules! impl_without_masks {
-    ($($struct_type: ty, $val_type: ty);*) => {
+    ($($struct_type: ty, $val_type: ty);*;) => {
         $(impl $struct_type {
 		pub fn write(
 				&mut self,
@@ -131,15 +131,19 @@ macro_rules! impl_without_masks {
     }
 }
 
+//▒▒▒▒▒▒▒▒▒▒▒▒ INIT ▒▒▒▒▒▒▒▒▒▒▒▒▒
+
 impl_with_masks!(
-	BitLayerRivers, u16; 
-	BitLayerClimate, u16; 
-	BitLayerTopography, u16);
+	BitLayerRivers, u16;
+	BitLayerClimate, u16;
+	BitLayerTopography, u16;
+);
 
 impl_without_masks!(
-	BitLayerGeoregID, u16; 
-	BitLayerRiversID, u16; 
-	BitLayerBiomes, u8);
+	BitLayerGeoregID, u16;
+	BitLayerRiversID, u16;
+	BitLayerBiomes, u8;
+);
 
 //▒▒▒▒▒▒▒▒ BIT LAYER STORAGE ▒▒▒▒▒▒▒▒▒▒▒▒
 //credits to ZippyMagician from "One Lone Coder" community

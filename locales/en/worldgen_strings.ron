@@ -1,11 +1,17 @@
+// Strings should be raw and lay within the map.
+// Characters of \t and \n (tab and newline) are ignored by the code.
+// Code formats the strings with text wrapper by the term size.
+
 {
-"wg1" : r#"▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ WORLDGEN ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
-			Select a preset by entering its name, or leave empty to
-			abort worldgen and return to main memu. You can enter
-			a few characters from any word in the list to select
-			the respective option.
-			See ./presets_default/world and ./presets_user/world 
-			for available presets:"#,
+"wg0" : r#"▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ WORLDGEN ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒"#,
+	
+"wg1" : r#"
+	Select a preset by entering its name, or leave empty to
+	abort worldgen and return to main memu. You can enter
+	a few characters from any word in the list to select
+	the respective option.
+	See ./presets_default/world and ./presets_user/world 
+	for available presets:"#,
 
 "wg28" : r#"No preset matches input, aborting."#,
 "wg4" : r#"Randomizing the world seed for this generation."#,

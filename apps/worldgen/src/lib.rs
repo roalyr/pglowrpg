@@ -10,7 +10,7 @@ use codec::*;
 use constants_app::*;
 use coords::Index;
 use io_ops::readron::{options, presets};
-use str_ops::worldgen_str::LOC;
+use str_ops::{UI, WS};
 use ui::prompts;
 
 #[rustfmt::skip]
@@ -18,61 +18,62 @@ pub fn start() {
 	//Load options and locale/style presets
 	let options: options::Stuff = options::get();
 	
-	LOC.print_intro();
+	WS.print_banner();
+	WS.print_intro();
 	
 	//Preset selection
 	//List files in both default and user dirs
 	let preset_def_tuple = io_ops::dir_file_contents(
 		PATH_PRESETS_WORLD,
 		EXTENSION_PRESET_WORLD,
-		LOC.bul1(), LOC.newline(),
+		UI.bul1(), UI.newline(),
 	);
 	let mut preset_user_tuple = io_ops::dir_file_contents(
 		PATH_PRESETS_WORLD_USER,
 		EXTENSION_PRESET_WORLD,
-		LOC.bul1(), LOC.newline(),
+		UI.bul1(), UI.newline(),
 	);
 	
 	//Get the contents of the presets folder
 	let mut presets_paths = preset_def_tuple.1;
 	presets_paths.append(&mut preset_user_tuple.1);
 	let presets_formatted = [preset_def_tuple.0, preset_user_tuple.0, "\n".to_string()].concat();
-	let mut input_preset = prompts::new_line_io(&presets_formatted, LOC.prompt2());
+	let mut input_preset = prompts::new_line_io(&presets_formatted, UI.prompt2());
 	input_preset = prompts::autocomplete(&input_preset, &presets_paths);
 	
 	//Decide how to treat no input
 	if input_preset.is_empty() {
-		LOC.print_no_input_preset();
+		WS.print_no_input_preset();
 	return;}
 	//enable this later
 	//if input_preset.is_empty() {input_preset = options.default_preset.clone();}
-	LOC.print_sep2();
+	UI.print_sep2();
 
 	//Load a preset
 	let mut wi: presets::presets_worldgen::Stuff = presets::presets_worldgen::get(&input_preset);
-	prompts::selected(LOC.sel_preset(), &input_preset);
+	prompts::selected(&WS.str_sel_preset(), &input_preset);
 	preset_validate::all(&mut wi);
 
 	//Seed selection
-	let input_seed = prompts::new_line_io(LOC.seed_rand(), LOC.prompt2());
-	LOC.print_sep2();
+	let input_seed = prompts::new_line_io(&WS.str_seed_rand(), UI.prompt2());
+	UI.print_sep2();
 	let mut temp_seed = if (input_seed == "r") || (input_seed == "R") {
-		LOC.print_seed_rand();
+		WS.print_seed_rand();
 		seed_generating::get()
 	} else {
 		wi.seed
 	};
 
 	//Decide how many worlds to generate
-	let input_world_num = prompts::new_line_io(LOC.world_num(), LOC.prompt2());
+	let input_world_num = prompts::new_line_io(&WS.str_world_num(), UI.prompt2());
 	let world_num = if input_world_num.is_empty() {
 		options.worlds_to_generate
 	} else {
 		//proper panic str later (uwrap_or)
 		input_world_num.trim().parse::<usize>().expect("Expected an integer")
 	};
-	LOC.print_sep2();
-	LOC.print_world_num(&world_num);
+	UI.print_sep2();
+	WS.print_world_num(&world_num);
 
 	//▒▒▒▒▒▒▒▒▒▒ GENERATION ▒▒▒▒▒▒▒▒▒▒▒
 	let layer_vec_len = wi.map_size * wi.map_size;
@@ -83,7 +84,7 @@ pub fn start() {
 		//Increment seed for multiple worlds, must be before wi
 		temp_seed += iter;
 		
-		//Create a "WorldInit" struct that holds all the WG options.
+		//Create a "WorldInit" struct that holds all the WS options.
 		//Re-call this every loop iteration due to new seed
 		let mut wi: presets::presets_worldgen::Stuff = presets::presets_worldgen::get(&input_preset);
 		preset_validate::all(&mut wi);
@@ -131,23 +132,23 @@ pub fn start() {
 		};
 
 		//Show selected seed
-		LOC.print_sep1();
-		LOC.print_seed_used(&lp.wi.seed);
-		LOC.print_newline();
+		UI.print_sep1();
+		WS.print_seed_used(&lp.wi.seed);
+		UI.print_newline();
 		
 		//Perform generation
 		//Keep the order as is, because the data is incrfmentally
 		//generated and used for later generation process
-		LOC.print_prep_topog(); layer_ops::terrain_mapping::get(&mut lp);
-		LOC.print_prep_climate(); layer_ops::climate_mapping::get(&mut lp);
-		LOC.print_prep_wmask(); layer_ops::watermask_mapping::get(&mut lp);
-		LOC.print_prep_rmap(); layer_ops::river_mapping::get(&mut lp);
-		LOC.print_prep_biome(); layer_ops::biome_mapping::get(&mut lp);
-		LOC.print_prep_georeg(); layer_ops::georegion_mapping::get(&mut lp);
+		WS.print_prep_topog(); layer_ops::terrain_mapping::get(&mut lp);
+		WS.print_prep_climate(); layer_ops::climate_mapping::get(&mut lp);
+		WS.print_prep_wmask(); layer_ops::watermask_mapping::get(&mut lp);
+		WS.print_prep_rmap(); layer_ops::river_mapping::get(&mut lp);
+		WS.print_prep_biome(); layer_ops::biome_mapping::get(&mut lp);
+		WS.print_prep_georeg(); layer_ops::georegion_mapping::get(&mut lp);
 
 		//WRITING DATA
 		write_save(&mut lp, &options, &input_preset);
-		LOC.print_sep2();
-		LOC.print_done_worldgen();
+		UI.print_sep2();
+		WS.print_done_worldgen();
 	}
 }
