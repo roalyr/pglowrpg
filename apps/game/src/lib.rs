@@ -38,10 +38,9 @@ pub fn start() {
 	};
 
 	//Welcoming message
-	//Banner
-	//println!("{}", &gs.gm_str.gm1);
+	LOC.print_banner();
 	//Intro message
-	//println!("{}", &gs.gm_str.gm2);
+	LOC.print_menu();
 
 	//Main loop
 	loop {

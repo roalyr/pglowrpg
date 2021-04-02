@@ -1,7 +1,7 @@
 #▒▒▒▒▒▒▒▒▒▒▒▒ USER OPTIONS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 default_editor = "nano" # a text editor command to call by default
 # use "python" to disable prompt and always use native input
-text_width = 55 #in characters 55...80 should be good
+text_width_fallback = 55 #in characters 55...80 should be good
 
 #▒▒▒▒▒▒▒▒▒▒▒▒ IMPORTS / CONSTANTS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 import os, fnmatch, shutil, pathlib, tempfile, subprocess, textwrap
@@ -84,6 +84,7 @@ def git_menu():
 		elif inp == "s": git_status()
 		elif inp == "c": git_commit_f()
 		elif inp == "p": git_push()
+		elif inp == "pu": git_pull()
 		elif inp == "r": git_revert_f()
 		elif inp == "ha": git_reset_hard_f()
 		elif inp == "u": git_launch_gitui()
@@ -110,28 +111,103 @@ def main_menu():
 		elif inp == "q": cl_divider(); quit()
 		
 #▒▒▒▒▒▒▒▒▒▒▒▒ FORMATTING ▒▒▒▒▒▒▒▒▒▒▒▒▒
-if text_width < 30: print('minimal text width value is 30'); text_width = 30
 in_tags = ' tags:   '
 in_links_out = ' └ to:   '
 in_links_in = ' └ by:   '
 indent = '         '; ph = '...'
 right_indent = 4; ml = 3
-tw_tags = textwrap.TextWrapper(text_width-right_indent, 
-	initial_indent=in_tags, subsequent_indent=indent,
-	placeholder=ph, max_lines=ml)
-tw_links_out = textwrap.TextWrapper(text_width-right_indent, 
-	initial_indent=in_links_out, subsequent_indent=indent,
-	placeholder=ph, max_lines=ml)
-tw_links_in = textwrap.TextWrapper(text_width-right_indent, 
-	initial_indent=in_links_in, subsequent_indent=indent,
-	placeholder=ph, max_lines=ml)
-tw = textwrap.TextWrapper(text_width)
-tw_w = textwrap.TextWrapper(text_width-1, initial_indent=' ', subsequent_indent=' ', replace_whitespace=False)
-tw_i = textwrap.TextWrapper(text_width, subsequent_indent=indent)
+
+def check_min_width(text_width):
+	if text_width < 30: print('minimal text width value is 30'); return 30
+	else: return text_width
+
+def width_update():
+	return shutil.get_terminal_size((text_width_fallback, 24)).columns
+	
+def tw_tags_update():
+	text_width = width_update()
+	check_min_width(text_width)
+	return textwrap.TextWrapper(text_width-right_indent, 
+		initial_indent=in_tags, subsequent_indent=indent,
+		placeholder=ph, max_lines=ml)
+	
+def tw_links_out_update():
+	text_width = width_update()
+	check_min_width(text_width)
+	return textwrap.TextWrapper(text_width-right_indent, 
+		initial_indent=in_links_out, subsequent_indent=indent,
+		placeholder=ph, max_lines=ml)
+		
+def tw_links_in_update():
+	text_width = width_update()
+	check_min_width(text_width)
+	return textwrap.TextWrapper(text_width-right_indent, 
+		initial_indent=in_links_in, subsequent_indent=indent,
+		placeholder=ph, max_lines=ml)
+		
+def tw_update():
+	text_width = width_update()
+	check_min_width(text_width)
+	return textwrap.TextWrapper(text_width)
+	
+def tw_w_update():
+	text_width = width_update()
+	check_min_width(text_width)
+	return textwrap.TextWrapper(text_width-1, initial_indent=' ', 
+		subsequent_indent=' ', replace_whitespace=False)
+		
+def tw_i_update():
+	text_width = width_update()
+	check_min_width(text_width)
+	return textwrap.TextWrapper(text_width, subsequent_indent=indent)
 
 #▒▒▒▒▒▒▒▒▒▒▒▒ PRINT OPS ▒▒▒▒▒▒▒▒▒▒▒▒▒
+#WRITING GENERAL 
+def print_num_wrong_input(): 
+	tw = tw_update()
+	cl_divider(); 
+	print(tw.fill('''
+make sure you enter numbers
+'''.strip()))
+
+def print_wrong_num_type(): 
+	tw = tw_update()
+	cl_divider(); 
+	print(tw.fill('''
+wrong numeric type supplied
+'''.strip()))
+
+def print_abort_writing():
+	tw = tw_update(); tw_i = tw_i_update()
+	cl_divider()
+	print(tw.fill('no text was written, you can try again or abort'))
+	print(tw_i.fill('() - resume writing'))
+	print_qm()
+	
+def print_abort_writing_quit_allowed():
+	tw = tw_update(); tw_i = tw_i_update()
+	cl_divider()
+	print(tw.fill('no text was written, you can try again or abort'))
+	print(tw_i.fill('() - resume writing'))
+	print_q()
+	print_qm()
+	
+def print_no_default_editor(option): 
+	tw = tw_update()
+	cl_divider(); 
+	print(tw.fill('unable to use default editor: {0}'.format(option)))
+	print(tw.fill('will switch to standard python input'))
+	
+def print_fallback_editor(inject_text): 
+	tw_w = tw_w_update()
+	if inject_text:
+		divider()
+		for line in inject_text.splitlines():
+			print(tw_w.fill('{0}'.format(line)))
+
 #GIT OPS
 def print_git_current_head(): 
+	tw_i = tw_i_update()
 	divider() 
 	print(tw_i.fill('Current head:'))
 	os.system("git log --branches --oneline -n 1")
@@ -148,7 +224,12 @@ def print_git_push():
 	cl_divider()
 	os.system("git push --all")
 	
+def print_git_pull():
+	cl_divider()
+	os.system("git pull")
+	
 def print_git_add_modified():
+	tw_i = tw_i_update()
 	cl_divider()
 	print(tw_i.fill('New / modified files:'))
 	os.system("git add . ")
@@ -156,7 +237,10 @@ def print_git_add_modified():
 	
 #MENUS
 def print_main_ops():
+	tw_i = tw_i_update()
 	cl_divider()
+	print(tw_i.fill('pGLOWrpg - common dev actions'))
+	divider()
 	print(tw_i.fill('(s) - sync and "cargo run" the project'))
 	print(tw_i.fill('(tts) - sync and "cargo run" the project, output via terminal and text-to-speech (Termux only)'))
 	print()
@@ -176,18 +260,22 @@ def print_main_ops():
 	print(tw_i.fill('(q) - quit'))
 	
 def print_git_ops():
+	tw_i = tw_i_update()
 	cl_divider()
+	print(tw_i.fill('pGLOWrpg - GIT menu'))
+	divider()
 	print(tw_i.fill('() - current'))
 	print(tw_i.fill('(l) - log'))
 	print(tw_i.fill('(s) - status'))
 	print(tw_i.fill('(c) - commit all'))
 	print(tw_i.fill('(p) - push'))
+	print(tw_i.fill('(pu) - pull'))
 	print(tw_i.fill('(r) - revert'))
 	print(tw_i.fill('(ha) - hard reset'))
 	print(tw_i.fill('(u) - launch "gitui" (must be installed)'))
 	print_q()
 
-#PROMPTS
+#▒▒▒▒▒▒▒▒▒▒▒▒ STANDARD PROMPTS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 def c_prompt(prompt): 
 	divider(); 
 	try: inp = input(prompt+" : ").rstrip()
@@ -200,15 +288,28 @@ def s_prompt(prompt):
 	except KeyboardInterrupt: inp = ''
 	return inp 
 	
-def p(): divider(); l=(text_width-10)//2; s="░"*l+" CONTINUE "+"░"*l; input(s)
-def print_qc(ch): print(tw_i.fill("({0}) - return | confirm".format(ch)))
-def print_q(): print(tw_i.fill('(q) - return'))
-def print_qm(): print(tw_i.fill('(qm) - return to main menu | abort everything'))
+def p(): 
+	text_width = width_update()
+	divider(); l=(text_width-10)//2; s="░"*l+" CONTINUE "+"░"*l; input(s)
+	
+def print_qc(ch):
+	tw_i = tw_i_update()
+	print(tw_i.fill("({0}) - return | confirm".format(ch)))
+	
+def print_q(): 
+	tw_i = tw_i_update()
+	print(tw_i.fill('(q) - return'))
+	
+def print_qm(): 
+	tw_i = tw_i_update()
+	print(tw_i.fill('(qm) - return to main menu | abort everything'))
 
-#CLEAR SCREEN AND DIVIDER 
+#▒▒▒▒▒▒▒▒▒▒▒▒ CLEAR SCREEN AND DIVIDER ▒▒▒▒▒▒▒▒▒▒▒▒▒
 def divider(): 
+	text_width = width_update()
 	d_line = '─' * text_width
 	print(d_line)
+	
 def cl(): os.system('cls' if os.name == 'nt' else 'clear')
 def cl_divider(): cl(); divider()
 
@@ -221,6 +322,7 @@ def git_log_f():
 	
 def git_launch_gitui(): os.system('gitui')
 def git_push(): print_git_push()
+def git_pull(): print_git_pull()
 
 def git_commit_f():
 	print_git_add_modified(); print_git_current_head();p()
@@ -321,7 +423,7 @@ def clear_target():
 	os.system('ls'+' '+path_target)
 	
 def clear_save():
-	inp = input("Really? » ").strip()
+	inp = c_prompt("really? ('yes' to proceed)")
 	if inp == "yes":
 		dir_remove('save', path_target)
 		print('target directory saves cleared')

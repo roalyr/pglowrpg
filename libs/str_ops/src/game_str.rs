@@ -44,8 +44,8 @@ impl Locale {
 //▒▒▒▒▒▒▒▒▒ STRINGS PRINT ▒▒▒▒▒▒▒▒▒▒▒▒▒
 #[rustfmt::skip]
 impl Locale {
-	pub fn print_intro(&self) {println!("{}", self.s["intro"]);}
-	pub fn print_menu(&self) {println!("{}", self.s["menu"]);}
+	pub fn print_banner(&self) {println!("{}", self.s["gm1"]);}
+	pub fn print_menu(&self) {println!("{}", self.s["gm2"]);}
 }
 
 //▒▒▒▒▒▒▒▒▒▒ STRINGS RETURN ▒▒▒▒▒▒▒▒▒▒▒
