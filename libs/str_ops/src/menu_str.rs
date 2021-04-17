@@ -1,18 +1,19 @@
 use crate::print_paragraph;
-use crate::print_paragraph_with_color;
-use crate::print_paragraph_with_escape;
-use crate::print_paragraph_with_var;
-use crate::return_paragraph;
+use crate::return_string;
 use crate::MnStrings;
 use textwrap::{fill, termwidth, Options};
+use io_ops::readron::palettes;
 
-print_paragraph_with_escape! {
+// Menu
+print_paragraph! {
+	[]; // Tabs and newlines allowed.
+	palettes::text_colors::get().menu;
 	MnStrings(
 	print_menu, "menu";
 	)
 }
 
-return_paragraph! {
+return_string! {
 	MnStrings(
 	str_game_title, "game_title";
 	str_game_name, "game_name";

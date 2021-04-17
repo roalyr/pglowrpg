@@ -1,13 +1,15 @@
 use crate::print_paragraph;
-use crate::print_paragraph_with_color;
-use crate::print_paragraph_with_escape;
-use crate::print_paragraph_with_var;
-use crate::return_paragraph;
+use crate::return_string;
 use crate::WgStrings;
 use textwrap::{fill, termwidth, Options};
+use io_ops::readron::palettes;
 
+// Ordinary text
 print_paragraph! {
+	['\t', '\n'];  // No tabs and newline characters.
+	palettes::text_colors::get().normal;
 	WgStrings(
+	print_intro, "wg1";
 	print_no_input_preset, "wg28";
 	print_seed_rand, "wg4";
 	print_prep_topog, "wg7";
@@ -20,24 +22,30 @@ print_paragraph! {
 	print_write_no_data, "wg26";
 	print_write_color, "wg15";
 	print_write_raw, "wg16";
+	)
+}
+
+// Announcement
+print_paragraph! {
+	['\t', '\n'];  // No tabs and newline characters.
+	palettes::text_colors::get().announcement;
+	WgStrings(
 	print_done_worldgen, "wg23";
 	)
 }
 
-print_paragraph_with_color! {
-	WgStrings(
-	print_intro, "wg1", (0, 100, 0);
-	)
-}
-
-print_paragraph_with_var! {
+// Announcement with number
+print_paragraph! {
+	['\t', '\n'];  // No tabs and newline characters.
+	palettes::text_colors::get().announcement;
+	palettes::text_colors::get().number;
 	WgStrings(
 	print_world_num, "wg6", usize;
 	print_seed_used, "wg5", usize;
 	)
 }
 
-return_paragraph! {
+return_string! {
 	WgStrings(
 	str_banner_title, "wg0";
 	str_sel_preset, "wg3";

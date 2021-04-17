@@ -1,0 +1,14 @@
+// Available colors: 
+// black (might not be seen on dark themed terminal),
+// red, green, yellow, blue, magenta (or purple), cyan, white. 
+// Truecolor not implemented (yet).
+
+(
+normal : "magenta",
+announcement : "green",
+menu : "purple",
+prompt : "purple",
+banner : "blue",
+number : "red",
+name : "blue",
+)
