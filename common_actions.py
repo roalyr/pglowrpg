@@ -6,6 +6,9 @@ text_width_fallback = 55 #in characters 55...80 should be good
 #▒▒▒▒▒▒▒▒▒▒▒▒ IMPORTS / CONSTANTS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 import os, fnmatch, shutil, pathlib, tempfile, subprocess, textwrap
 
+# SSH for termux to ask for key
+os.system("ssh-add /data/data/com.termux/files/usr/etc/ssh/id_ed25519")
+
 # Must begin with /data/data/com.termux/files/home for Termux. For the desktop feel free to
 # set any directory that you see fit, it will keep source, target and output separate.
 path_source = "/data/data/com.termux/files/home/storage/shared/project_src/pglowrpg/"
