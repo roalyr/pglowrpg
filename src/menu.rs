@@ -1,21 +1,22 @@
-use str_ops::{MS, UI};
-use ui::prompts;
+use str_ops::{prompt_option, MS, UI};
 
 pub fn start() {
 	UI.print_newline();
-	UI.print_sep1("");
-	UI.print_banner1(String::new());
-	UI.print_banner1_col(MS.str_game_title());
-	UI.print_banner1_col(MS.str_game_name());
-	UI.print_banner2_col(MS.str_developer());
-	UI.print_banner1(String::new());
-	UI.print_sep1("");
+	UI.print_separator_thick("");
 	UI.print_newline();
+	UI.print_banner_block(MS.game_title());
+	UI.print_banner_empty(MS.game_name());
+	UI.print_banner_empty(MS.developer());
+	UI.print_newline();
+	UI.print_separator_thick("");
 
 	loop {
-		UI.print_banner3_col(MS.str_menu_title());
+		UI.print_newline();
+		UI.print_banner_dash(MS.menu_title());
+		UI.print_newline();
 		MS.print_menu();
-		let input = prompts::new_line_io("", &UI.str_prompt1());
+
+		let input = prompt_option();
 		if input.is_empty() {
 			continue;
 		}

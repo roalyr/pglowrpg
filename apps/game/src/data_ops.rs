@@ -10,8 +10,11 @@ pub fn get_layerpack(gs: &GameStrings) -> Option<LayerPack> {
 	//println!("{}", &gs.gm_str.gm3);
 
 	//Read input to pick a specific save
-	let mut input_save = prompts::new_line_io(&save_dir_formatted, "");
-	input_save = prompts::autocomplete(&input_save, &save_dir_paths);
+
+	//TODO
+	println!("{}", &save_dir_formatted);
+
+	let input_save = prompt_word(&save_dir_paths);
 
 	if !input_save.is_empty() {
 		//println!("{}", &gs.ui_el.separator2);

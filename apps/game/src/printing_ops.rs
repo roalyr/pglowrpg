@@ -262,7 +262,7 @@ pub fn map_render_land(
 				}
 			} else {
 				//Outside of data range
-				render_line.push("██".truecolor(20, 20, 20));
+				render_line.push(".'".truecolor(20, 20, 20));
 			}
 		} //for j
 		for item in render_line.iter() {

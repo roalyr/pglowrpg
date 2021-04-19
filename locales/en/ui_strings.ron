@@ -1,12 +1,12 @@
 //➠➣➤❯❯✦◼⋙ ∘⋄⊳
 {
-"prompt1" : ":",
-"prompt2" : "⊳ ",
+"prompt_option" : " : ",
+"prompt_word" : " ⊳  ",
 "bullet1" : "    ✦ ",
 "newline" : "",
-"separator1" : "─",
-"separator2" : "┈",
-"banner1" : " ",
-"banner2" : "░",
-"banner3" : "╲",
+"separator_thick" : "─",
+"separator_thin" : "┈",
+"banner_empty" : " ",
+"banner_block" : "░",
+"banner_dash" : "╲",
 }

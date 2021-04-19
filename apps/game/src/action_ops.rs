@@ -50,7 +50,7 @@ pub fn process_input(
 			//Default
 			Command::NoInput => {}
 			Command::MapRenderLand => {
-				gd.map_render_size = prompts::new_line_io("", "")
+				gd.map_render_size = prompt_option()
 					//&gs.gm_str.gm25, &gs.ui_el.prompt2)
 					.trim()
 					.parse::<usize>()
@@ -67,7 +67,7 @@ pub fn process_input(
 				println!("Registered commands are:\n{:?}", &gd.commands_vec);
 				//println!("{}", &gs.ui_el.separator2);
 				//to hold the loop or browse topics (planned feature)
-				prompts::new_line_io("", "");
+				prompt_option();
 			}
 			Command::Quit => {
 				continue_loop = false;

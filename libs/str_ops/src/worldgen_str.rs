@@ -1,8 +1,8 @@
 use crate::print_paragraph;
 use crate::return_string;
 use crate::WgStrings;
-use textwrap::{fill, termwidth, Options};
 use io_ops::readron::palettes;
+use textwrap::{fill, termwidth, Options};
 
 // Ordinary text
 print_paragraph! {

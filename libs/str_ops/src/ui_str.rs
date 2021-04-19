@@ -3,8 +3,8 @@ use crate::print_paragraph;
 use crate::return_banner;
 use crate::return_string;
 use crate::UiStrings;
-use textwrap::{fill, termwidth, Options};
 use io_ops::readron::palettes;
+use textwrap::{fill, termwidth, Options};
 
 // Special characters
 print_paragraph! {
@@ -15,18 +15,16 @@ print_paragraph! {
 	)
 }
 
-// Banners and separators (with and without titles in them)
+// Banners and separators (with and without titles in them).
+// Those function may take a string as argument.
 print_banner! {
 	palettes::text_colors::get().banner;
 	UiStrings(
-	print_banner1, "banner1";
-	print_banner2, "banner2";
-	print_banner3, "banner3";
-	print_banner1_col, "banner1";
-	print_banner2_col, "banner2";
-	print_banner3_col, "banner3";
-	print_sep1, "separator1";
-	print_sep2,"separator2";
+	print_banner_empty, "banner_empty";
+	print_banner_block, "banner_block";
+	print_banner_dash, "banner_dash";
+	print_separator_thin, "separator_thin";
+	print_separator_thick,"separator_thick";
 	)
 }
 
@@ -34,8 +32,6 @@ return_string! {
 	UiStrings(
 	str_newline, "newline";
 	str_bul1, "bullet1";
-	str_prompt1, "prompt1";
-	str_prompt2, "prompt2";
 	)
 }
 

@@ -33,14 +33,14 @@ pub fn write_save(
 		//But still save a copy of preset into a save folder
 		WS.print_write_no_data();
 	}
-	UI.print_sep2("");
+	UI.print_separator_thin("");
 
 	//Optionally render colorful images
 	if options.render_colorized_maps {
 		WS.print_write_color();
 		write_images_color(lp, options, &world_dir);
 	}
-	UI.print_sep2("");
+	UI.print_separator_thin("");
 
 	//Optionally render raw images
 	if options.render_raw_maps {

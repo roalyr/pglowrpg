@@ -2,26 +2,27 @@ pub mod game_str;
 pub mod menu_str;
 pub mod ui_str;
 pub mod worldgen_str;
+use colored::{Color, Colorize};
+use io_ops::readron::palettes;
 use io_ops::readron::{options, strings};
 use lazy_static::lazy_static;
 use std::collections::HashMap;
+use std::io;
+use std::io::Write;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ INIT ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub struct WgStrings {
 	s: HashMap<String, String>,
 }
-
 pub struct GmStrings {
 	s: HashMap<String, String>,
 }
 pub struct MnStrings {
 	s: HashMap<String, String>,
 }
-
 pub struct UiStrings {
 	s: HashMap<String, String>,
 }
-
 lazy_static! {
 	pub static ref WS: WgStrings = {
 		WgStrings {
@@ -49,7 +50,7 @@ lazy_static! {
 #[macro_export]
 macro_rules! print_paragraph {
 	// A simple case without variables
-	($exclude: expr; $text_col: expr; 
+	($exclude: expr; $text_col: expr;
 	$struct_name: ident($($fn_name: ident, $str_name: expr);*;)) =>
 	{
 		$(impl $struct_name {
@@ -63,17 +64,17 @@ macro_rules! print_paragraph {
 					Err(_) => {println!("{}", fill(&self.s[$str_name]
 						.replace(&$exclude[..], ""), Options::new(termwidth())));}
 				}
-			} 
+			}
 		})*
 	};
 	// With variables
-	($exclude: expr; $text_col: expr; $val_col: expr; 
+	($exclude: expr; $text_col: expr; $val_col: expr;
 	$struct_name: ident($($fn_name: ident, $str_name: expr);*;)) =>
 	{
 		$(impl $struct_name {
 			pub fn $fn_name<T>(&self, x_gen: T)
 				where
-					//String: From<T>, 
+					//String: From<T>,
 					T : std::fmt::Display,
 					T : std::string::ToString,
 			{
@@ -96,14 +97,14 @@ macro_rules! print_paragraph {
 				}
 				match color1_good{
 					// Added space after {}.
-					true => {print!("{} ", s1.color($text_col));}, 
+					true => {print!("{} ", s1.color($text_col));},
 					false => {print!("{} ", s1);},
 				}
 				match color2_good{
 					true => {println!("{}", s2.color($val_col));},
 					false => {println!("{}", s2);},
 				}
-			} 
+			}
 		})*
 	};
 }
@@ -211,7 +212,6 @@ macro_rules! print_banner {
 	};//macro
 } //macro rules
 
-
 //▒▒▒▒▒▒▒▒▒▒ RETURN BANNERS ▒▒▒▒▒▒▒▒▒▒▒
 #[macro_export]
 macro_rules! return_banner {
@@ -230,3 +230,65 @@ macro_rules! return_banner {
 		})*//impl
 	};//macro
 } //macro rules
+
+//▒▒▒▒▒▒▒▒▒▒▒▒ INPUT ▒▒▒▒▒▒▒▒▒▒▒▒▒
+// Prompts start after empty newline.
+fn new_line_input(prompt_symbol: &String) -> String {
+	let mut input = String::new();
+	print!(
+		"\n{}",
+		prompt_symbol.color(palettes::text_colors::get().prompt)
+	);
+	let _ = io::stdout().flush();
+	io::stdin().read_line(&mut input).unwrap();
+	input.trim().to_string()
+}
+
+// Returns just the input as is.
+pub fn prompt_option() -> String {
+	new_line_input(&UI.s["prompt_option"])
+}
+
+// Returns input but only if it matvhes the list of allowed words.
+pub fn prompt_word(allowed_words: &Vec<String>) -> String {
+	// If allowed words is empty return as is.
+	if allowed_words.is_empty() {
+		return new_line_input(&UI.s["prompt_word"]);
+	}
+	let input = new_line_input(&UI.s["prompt_word"]);
+	if input.is_empty() {
+		return String::new();
+	}
+	let mut selected_queue = Vec::new();
+	let mut priority_queue = Vec::new();
+	//Gather all matches
+	for entry in allowed_words {
+		if entry.contains(&input.as_str()) {
+			selected_queue.push(entry.to_string());
+		}
+	}
+	//Priority is decided by character appearance in word
+	//The earlier - the higher the priority
+	for entry in selected_queue.iter().by_ref() {
+		let offset = entry.find(&input).unwrap_or(entry.len());
+		let priority = entry.clone().drain(..offset).count();
+		priority_queue.push(priority);
+		//println!("{} {:?}", entry, priority);
+	}
+	//Pick the highest priority one
+	let min = priority_queue.iter().min().unwrap_or(&0);
+	let index = priority_queue.iter().position(|x| x == min).unwrap_or(0);
+	if selected_queue.is_empty() {
+		return String::new();
+	} else {
+		selected_queue[index].clone()
+	}
+}
+
+//▒▒▒▒▒▒▒▒▒▒▒▒ CONFIRMATION ▒▒▒▒▒▒▒▒▒▒▒▒▒
+pub fn selected(
+	prompt: &str,
+	input: &str,
+) {
+	println!("{}", [&prompt, "\"", &input, "\""].concat());
+}

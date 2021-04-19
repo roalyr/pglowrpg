@@ -20,8 +20,7 @@ use io_ops::readron::palettes::biomes;
 use io_ops::readron::{options, strings};
 use io_ops::writepng::from_hex;
 use std::path::Path;
-use str_ops::GS;
-use ui::prompts;
+use str_ops::{prompt_option, prompt_word, GS};
 use units::translate;
 
 pub fn start() {
