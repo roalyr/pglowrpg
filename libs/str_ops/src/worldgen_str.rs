@@ -25,7 +25,7 @@ print_paragraph! {
 	)
 }
 
-// Announcement
+// Announcement without variables
 print_paragraph! {
 	['\t', '\n'];  // No tabs and newline characters.
 	palettes::text_colors::get().announcement;
@@ -37,11 +37,11 @@ print_paragraph! {
 // Announcement with number
 print_paragraph! {
 	['\t', '\n'];  // No tabs and newline characters.
-	palettes::text_colors::get().announcement;
-	palettes::text_colors::get().number;
+	palettes::text_colors::get().announcement; //Main color
+	palettes::text_colors::get().number; //Number color
 	WgStrings(
-	print_world_num, "wg6", usize;
-	print_seed_used, "wg5", usize;
+	print_world_num, "wg6";
+	print_seed_used, "wg5";
 	)
 }
 

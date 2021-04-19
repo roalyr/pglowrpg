@@ -68,16 +68,22 @@ macro_rules! print_paragraph {
 	};
 	// With variables
 	($exclude: expr; $text_col: expr; $val_col: expr; 
-	$struct_name: ident($($fn_name: ident, $str_name: expr, $type: ty);*;)) =>
+	$struct_name: ident($($fn_name: ident, $str_name: expr);*;)) =>
 	{
 		$(impl $struct_name {
-			pub fn $fn_name(&self, x: &$type) {
+			pub fn $fn_name<T>(&self, x_gen: T)
+				where
+					//String: From<T>, 
+					T : std::fmt::Display,
+					T : std::string::ToString,
+			{
+				let x = x_gen.to_string();
 				use colored::{Colorize, Color};
 				// Chek if color from preset can be parsed, or fallback.
 				let color_res1 : Result<Color, ()> = $text_col.parse();
 				let color_res2 : Result<Color, ()> = $val_col.parse();
 				let s1 = fill(&self.s[$str_name].replace(&$exclude[..], ""), Options::new(termwidth()));
-				let s2 = x.to_string();
+				let s2 = x.to_owned();
 				let mut color1_good = false;
 				let mut color2_good = false;
 				match color_res1 {
@@ -118,10 +124,15 @@ macro_rules! return_string {
 //▒▒▒▒▒▒▒▒▒▒ PRINT BANNERS ▒▒▒▒▒▒▒▒▒▒▒
 #[macro_export]
 macro_rules! print_banner {
-	($fg: expr; $struct_name: ident($($fn_name: ident, $str_name: expr, $type: ty);*;)) =>
+	($fg: expr; $struct_name: ident($($fn_name: ident, $str_name: expr);*;)) =>
 	{
 		$(impl $struct_name {
-			pub fn $fn_name(&self, title: $type) {
+			pub fn $fn_name<T>(&self, title_gen: T)
+				where
+					T : std::fmt::Display,
+					T : std::string::ToString,
+			{
+				let title = title_gen.to_string();
 				use terminal_size::{Width, Height, terminal_size};
 				use colored::{Colorize, Color};
 				// Chek if color from preset can be parsed, or fallback.

@@ -13,6 +13,7 @@ print_paragraph! {
 	)
 }
 
+// Make it into banners
 return_string! {
 	MnStrings(
 	str_game_title, "game_title";

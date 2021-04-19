@@ -6,19 +6,27 @@ use crate::UiStrings;
 use textwrap::{fill, termwidth, Options};
 use io_ops::readron::palettes;
 
-//make a proper macro for this
+// Special characters
+print_paragraph! {
+	[]; // Tabs and newlines allowed.
+	palettes::text_colors::get().normal;
+	UiStrings(
+	print_newline, "newline";
+	)
+}
+
+// Banners and separators (with and without titles in them)
 print_banner! {
 	palettes::text_colors::get().banner;
 	UiStrings(
-	print_newline, "newline", String;
-	print_banner1, "banner1", String;
-	print_banner2, "banner2", String;
-	print_banner3, "banner3", String;
-	print_banner1_col, "banner1", String;
-	print_banner2_col, "banner2", String;
-	print_banner3_col, "banner3", String;
-	print_sep1, "separator1", String;
-	print_sep2,"separator2", String;
+	print_banner1, "banner1";
+	print_banner2, "banner2";
+	print_banner3, "banner3";
+	print_banner1_col, "banner1";
+	print_banner2_col, "banner2";
+	print_banner3_col, "banner3";
+	print_sep1, "separator1";
+	print_sep2,"separator2";
 	)
 }
 

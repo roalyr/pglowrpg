@@ -47,7 +47,7 @@ pub fn start() {
 	return;}
 	//enable this later
 	//if input_preset.is_empty() {input_preset = options.default_preset.clone();}
-	UI.print_sep2("".to_string());
+	UI.print_sep2("");
 
 	//Load a preset
 	let mut wi: presets::presets_worldgen::Stuff = presets::presets_worldgen::get(&input_preset);
@@ -72,8 +72,8 @@ pub fn start() {
 		//proper panic str later (uwrap_or)
 		input_world_num.trim().parse::<usize>().expect("Expected an integer")
 	};
-	UI.print_sep2("".to_string());
-	WS.print_world_num(&world_num);
+	UI.print_sep2("");
+	WS.print_world_num(world_num);
 
 	//▒▒▒▒▒▒▒▒▒▒ GENERATION ▒▒▒▒▒▒▒▒▒▒▒
 	let layer_vec_len = wi.map_size * wi.map_size;
@@ -132,9 +132,9 @@ pub fn start() {
 		};
 
 		//Show selected seed
-		UI.print_sep1("".to_string());
-		WS.print_seed_used(&lp.wi.seed);
-		UI.print_newline("".to_string());
+		UI.print_sep1("");
+		WS.print_seed_used(lp.wi.seed);
+		UI.print_newline();
 		
 		//Perform generation
 		//Keep the order as is, because the data is incrfmentally
@@ -148,7 +148,7 @@ pub fn start() {
 
 		//WRITING DATA
 		write_save(&mut lp, &options, &input_preset);
-		UI.print_sep2("".to_string());
+		UI.print_sep2("");
 		WS.print_done_worldgen();
 	}
 }
