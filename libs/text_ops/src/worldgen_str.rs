@@ -12,6 +12,8 @@ print_paragraph! {
 	print_intro, "wg1";
 	print_no_input_preset, "wg28";
 	print_seed_rand, "wg4";
+	print_prompt_seed_rand, "wg2";
+	print_prompt_world_num, "wg24";
 	print_prep_topog, "wg7";
 	print_prep_climate, "wg9";
 	print_prep_wmask, "wg13";
@@ -49,7 +51,6 @@ return_string! {
 	WgStrings(
 	str_banner_title, "wg0";
 	str_sel_preset, "wg3";
-	str_seed_rand, "wg2";
-	str_world_num, "wg24";
+	
 	)
 }

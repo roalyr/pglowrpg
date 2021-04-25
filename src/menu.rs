@@ -1,4 +1,4 @@
-use str_ops::{prompt_option, MS, UI};
+use text_ops::{prompt_option, MS, UI};
 
 pub fn start() {
 	UI.print_newline();

@@ -10,7 +10,7 @@ use codec::*;
 use constants_app::*;
 use coords::Index;
 use io_ops::readron::{options, presets};
-use str_ops::{prompt_option, prompt_word, selected, UI, WS};
+use text_ops::{prompt_option, prompt_word, selected, UI, WS};
 
 #[rustfmt::skip]
 pub fn start() {
@@ -59,7 +59,8 @@ pub fn start() {
 	preset_validate::all(&mut wi);
 
 	//Seed selection
-	let input_seed = prompt_option(); //(&WS.str_seed_rand());
+	WS.print_prompt_seed_rand();
+	let input_seed = prompt_option();
 	UI.print_separator_thin("");
 	let mut temp_seed = if (input_seed == "r") || (input_seed == "R") {
 		WS.print_seed_rand();
@@ -69,7 +70,8 @@ pub fn start() {
 	};
 
 	//Decide how many worlds to generate
-	let input_world_num = prompt_option(); //(&WS.str_world_num());
+	WS.print_prompt_world_num();
+	let input_world_num = prompt_option();
 	let world_num = if input_world_num.is_empty() {
 		options.worlds_to_generate
 	} else {

@@ -1,5 +1,5 @@
 [package]
-name = "str_ops"
+name = "text_ops"
 version = "0.1.0"
 authors = ["roal_yr"]
 edition = "2018"

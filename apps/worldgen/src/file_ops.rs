@@ -8,7 +8,7 @@ use crate::file_ops::image_raw_ops::write_images_raw;
 use crate::*;
 use io_ops::create_dir;
 use std::path::Path;
-use str_ops::{UI, WS};
+use text_ops::{UI, WS};
 
 pub fn write_save(
 	lp: &mut LayerPack,

@@ -1,6 +1,5 @@
 use crate::print_banner;
 use crate::print_paragraph;
-use crate::return_banner;
 use crate::return_string;
 use crate::UiStrings;
 use io_ops::readron::palettes;
@@ -32,12 +31,5 @@ return_string! {
 	UiStrings(
 	str_newline, "newline";
 	str_bul1, "bullet1";
-	)
-}
-
-return_banner! {
-	UiStrings(
-	str_sep1, "separator1";
-	str_sep2, "separator2";
 	)
 }

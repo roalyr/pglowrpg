@@ -18,8 +18,7 @@ codec = { path = "../../libs/codec" }
 constants_app = { path = "../../libs/constants_app" }
 constants_world = { path = "../../libs/constants_world" }
 io_ops = { path = "../../libs/io_ops" }
-str_ops = { path = "../../libs/str_ops" }
-ui = { path = "../../libs/ui" }
+text_ops = { path = "../../libs/text_ops" }
 prng = { path = "../../libs/prng" }
 path = { path = "../../libs/path" }
 #floodfill = { path = "../../libs/floodfill" }

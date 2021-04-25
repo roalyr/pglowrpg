@@ -10,7 +10,7 @@ use std::collections::HashMap;
 use std::io;
 use std::io::Write;
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ INIT ▒▒▒▒▒▒▒▒▒▒▒▒▒
+//▒▒▒▒▒▒▒▒▒▒▒▒ LOCALE ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub struct WgStrings {
 	s: HashMap<String, String>,
 }
@@ -46,7 +46,8 @@ lazy_static! {
 	};
 }
 
-//▒▒▒▒▒▒▒▒▒▒ PRINT PARAGRAPH ▒▒▒▒▒▒▒▒▒▒
+//▒▒▒▒▒▒▒▒▒▒ PRINT MACROS ▒▒▒▒▒▒▒▒▒▒
+// Print a block of text with different options.
 #[macro_export]
 macro_rules! print_paragraph {
 	// A simple case without variables
@@ -109,20 +110,7 @@ macro_rules! print_paragraph {
 	};
 }
 
-//▒▒▒▒▒▒▒▒▒ RETURN STRING ▒▒▒▒▒▒▒▒▒▒
-#[macro_export]
-macro_rules! return_string {
-	($struct_name: ident($($fn_name: ident, $str_name: expr);*;)) =>
-	{
-		$(impl $struct_name {
-			pub fn $fn_name(&self,) -> String {
-				self.s[$str_name].replace(&['\n', '\t',][..], "")
-			}//fn
-		})*//impl
-	};//macro
-} //macro rules
-
-//▒▒▒▒▒▒▒▒▒▒ PRINT BANNERS ▒▒▒▒▒▒▒▒▒▒▒
+// Print a banner (a row of symbols) with optional title.
 #[macro_export]
 macro_rules! print_banner {
 	($fg: expr; $struct_name: ident($($fn_name: ident, $str_name: expr);*;)) =>
@@ -206,30 +194,24 @@ macro_rules! print_banner {
 							},
 						}
 					}
-				} // match title len
-			}//fn
-		})*//impl
-	};//macro
-} //macro rules
+				}
+			}
+		})*
+	};
+}
 
-//▒▒▒▒▒▒▒▒▒▒ RETURN BANNERS ▒▒▒▒▒▒▒▒▒▒▒
+// Doesn't print, but returns a string for some special cases.
 #[macro_export]
-macro_rules! return_banner {
+macro_rules! return_string {
 	($struct_name: ident($($fn_name: ident, $str_name: expr);*;)) =>
 	{
 		$(impl $struct_name {
-			pub fn $fn_name(&self,) -> String{
-				use terminal_size::{Width, Height, terminal_size};
-				let size = terminal_size();
-				if let Some((Width(w), Height(h))) = size {
-					self.s[$str_name].repeat(w.into())
-				} else {
-					self.s[$str_name].repeat(constants_app::TERM_WIDTH_FALLBACK)
-				}
-			}//fn
-		})*//impl
-	};//macro
-} //macro rules
+			pub fn $fn_name(&self,) -> String {
+				self.s[$str_name].replace(&['\n', '\t',][..], "")
+			}
+		})*
+	};
+}
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ INPUT ▒▒▒▒▒▒▒▒▒▒▒▒▒
 // Prompts start after empty newline.
@@ -285,10 +267,24 @@ pub fn prompt_word(allowed_words: &Vec<String>) -> String {
 	}
 }
 
+//TODO add tw
 //▒▒▒▒▒▒▒▒▒▒▒▒ CONFIRMATION ▒▒▒▒▒▒▒▒▒▒▒▒▒
-pub fn selected(
+pub fn selected( // Make a macro for different colors?
 	prompt: &str,
 	input: &str,
 ) {
 	println!("{}", [&prompt, "\"", &input, "\""].concat());
+}
+
+pub fn print_progress(
+	count: usize,
+	total: usize,
+	step: usize,
+) {
+	for k in 0..=step {
+		if count == k * total / 20 {
+			let per = k * 100 / step;
+			println!("...{}%", per); //color of numbers
+		}
+	}
 }
