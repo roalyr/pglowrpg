@@ -124,6 +124,7 @@ macro_rules! print_banner {
 				let title = title_gen.to_string();
 				use terminal_size::{Width, Height, terminal_size};
 				use colored::{Colorize, Color};
+				use substring::Substring;
 				// Chek if color from preset can be parsed, or fallback.
 				let color_res1 : Result<Color, ()> = $fg.parse();
 				let mut color1_good = false;
@@ -136,61 +137,74 @@ macro_rules! print_banner {
 				// If term size can be found
 				if let Some((Width(w), Height(h))) = terminal_size() {
 					term_width = termwidth();
-					width = w as usize - title.len();
+					width = (w as usize).saturating_sub(title.len());
 				// If term size can't be found
 				} else {
 					term_width = constants_app::TERM_WIDTH_FALLBACK;
-					width = term_width - title.len();
+					width = term_width.saturating_sub(title.len());
 				}
 				match title.len(){
 					// If no title - just draw a separator
 					0 => {
+						// Take into account odd width value
+						let chars = self.s[$str_name].clone().repeat(width);
+						let chars = chars.substring(0, width);
 						match color1_good {
-							true =>{println!("{}", &self.s[$str_name]
-								.repeat(term_width.into()).color($fg));
+							true =>{
+								println!("{}", chars.color($fg));
 							},
-							false =>{println!("{}", &self.s[$str_name]
-								.repeat(term_width.into()));
+							false =>{
+								println!("{}", chars);
 							},
 						}
 					},
 					// If title is shorter than screen width and can fit in
 					x if x < (term_width-2).into() => {
+						// Take into account odd width value
+						let chars = self.s[$str_name].clone().repeat(width);
+						let mut chars_half = chars.substring(0, width/2-1).to_string();
+						
+						
 						match color1_good {
 							true =>{
 								println!("{} {} {}",
-									&self.s[$str_name].repeat(width/2 - 1).color($fg),
+									chars_half.color($fg),
 									title.color($fg),
-									&self.s[$str_name].repeat(
-										// Take into account odd width value
-										width/2 - if let 0 = width % 2 {1} else {0}
-									).color($fg)
+									{ // Odd width compensation
+										let mut ch = chars_half.clone();
+										if width %2 != 0 { ch += &self.s[$str_name]; }
+										ch.color($fg)
+									}
 								);
 							},
 							false =>{
-								println!("{} {} {}",
-									&self.s[$str_name].repeat(width/2 - 1),
-									title,
-									&self.s[$str_name].repeat(
-										// Take into account odd width value
-										width/2 - if let 0 = width % 2 {1} else {0}
-									)
+								println!("{} {} {}", chars_half, title, 
+									{ // Odd width compensation
+										let mut ch = chars_half.clone();
+										if width %2 != 0 { ch += &self.s[$str_name]; }
+										ch
+									}
 								);
 							},
 						}
 					},
 					// Otherwise text-wrap it
 					_ => {
+						// Take into account odd width value
+
+						let chars = self.s[$str_name].clone().repeat(width);
+						let chars = chars.substring(0, width);
+						
 						match color1_good {
 							true =>{
-								println!("{}", &self.s[$str_name].repeat(term_width.into()).color($fg));
+								println!("{}", chars.color($fg));
 								println!("{}", fill(&title, Options::new(termwidth())).color($fg));
-								println!("{}", &self.s[$str_name].repeat(term_width.into()).color($fg));
+								println!("{}", chars.color($fg));
 							},
 							false =>{
-								println!("{}", &self.s[$str_name].repeat(term_width.into()));
+								println!("{}", chars);
 								println!("{}", fill(&title, Options::new(termwidth())));
-								println!("{}", &self.s[$str_name].repeat(term_width.into()));
+								println!("{}", chars);
 							},
 						}
 					}

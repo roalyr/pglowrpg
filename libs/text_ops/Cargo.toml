@@ -9,6 +9,7 @@ edition = "2018"
 io_ops = { path = "../../libs/io_ops" }
 constants_app = { path = "../../libs/constants_app" }
 
+substring = "1.4"
 terminal_size = "0.1"
 colored = "2.0"
 lazy_static = "1.4"

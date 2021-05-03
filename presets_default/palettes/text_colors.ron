@@ -1,14 +1,14 @@
 // Available colors: 
 // black (might not be seen on dark themed terminal),
 // red, green, yellow, blue, magenta (or purple), cyan, white. 
-// Truecolor not implemented (yet).
+// Optionally use "bright x", where x is color ftom above.
 
 (
-normal : "magenta",
-announcement : "green",
-menu : "purple",
+normal : "",
+announcement : "blue",
+menu : "cyan",
 prompt : "purple",
-banner : "blue",
+banner : "bright red",
 number : "red",
-name : "blue",
+name : "green",
 )
