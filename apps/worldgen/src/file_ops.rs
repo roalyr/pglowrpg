@@ -6,13 +6,13 @@ use crate::file_ops::data_ops::write_data;
 use crate::file_ops::image_color_ops::write_images_color;
 use crate::file_ops::image_raw_ops::write_images_raw;
 use crate::*;
+use game_options::OPTIONS;
 use io_ops::create_dir;
 use std::path::Path;
 use text_ops::{UI, WS};
 
 pub fn write_save(
 	lp: &mut LayerPack,
-	options: &options::Stuff,
 	preset_name: &str,
 ) {
 	let world_name = [preset_name, "_", &lp.wi.seed.to_string()].concat();
@@ -26,9 +26,9 @@ pub fn write_save(
 	create_dir(&world_dir);
 
 	//Write the data
-	if options.write_data_files {
+	if OPTIONS.write_data_files {
 		WS.print_write_data();
-		write_data(lp, options, &world_dir);
+		write_data(lp, &world_dir);
 	} else {
 		//But still save a copy of preset into a save folder
 		WS.print_write_no_data();
@@ -36,15 +36,15 @@ pub fn write_save(
 	UI.print_separator_thin("");
 
 	//Optionally render colorful images
-	if options.render_colorized_maps {
+	if OPTIONS.render_colorized_maps {
 		WS.print_write_color();
-		write_images_color(lp, options, &world_dir);
+		write_images_color(lp, &world_dir);
 	}
 	UI.print_separator_thin("");
 
 	//Optionally render raw images
-	if options.render_raw_maps {
+	if OPTIONS.render_raw_maps {
 		WS.print_write_raw();
-		write_images_raw(lp, options, &world_dir);
+		write_images_raw(lp, &world_dir);
 	}
 }

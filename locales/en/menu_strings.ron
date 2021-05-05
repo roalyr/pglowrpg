@@ -1,10 +1,12 @@
 { //Strings must be kept withn the hashmap
-"game_title":  "pGLOWrpg",
-"game_name": "Procedurally Generated Living Open World RPG",
-"developer" : "@Roal-Yr, 2021",
+"game_title":  "p G L O W r p g",
+"game_name": "Procedurally Generated Living Open World RPG.",
+"developer" : "@Roal-Yr, 2021.",
 "menu_title" : "MENU",
 "menu" : 
-" (w) - worldgen
- (g) - game
- (q) - quit",
+"Select an application to run:
+
+ (w) - worldgen.
+ (g) - game.
+ (q) - quit.",
 }

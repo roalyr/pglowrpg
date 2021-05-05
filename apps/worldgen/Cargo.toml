@@ -14,7 +14,7 @@ line_drawing = "0.8"
 bincode = "1.3"
 
 
-
+game_options = { path = "../../libs/game_options" }
 coords = { path = "../../libs/coords" }
 units = { path = "../../libs/units" }
 codec = { path = "../../libs/codec" }

@@ -23,6 +23,8 @@ pub struct Stuff {
 	pub render_colorized_maps: bool,
 	pub render_raw_maps: bool,
 	pub write_data_files: bool,
+
+	pub use_textwrap: bool,
 }
 
 pub fn get() -> Stuff {

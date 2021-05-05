@@ -4,7 +4,6 @@ use crate::*;
 pub struct GameData {
 	//World
 	pub lp: LayerPack,
-	pub options: options::Stuff,
 	//Commands
 	pub commands: strings::commands::Stuff,
 	pub commands_vec: Vec<String>,
@@ -47,7 +46,6 @@ pub struct GameStrings {
 //▒▒▒▒▒▒▒▒▒▒▒▒ INITS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn init_gd(
 	gs: &GameStrings,
-	options: options::Stuff,
 	commands: strings::commands::Stuff,
 ) -> Option<GameData> {
 	let lp = match get_layerpack(&gs) {
@@ -57,7 +55,6 @@ pub fn init_gd(
 	let gd = GameData {
 		//Move previously cloned structs here
 		lp,
-		options,
 		//Commands
 		commands,
 		commands_vec: Vec::new(),
@@ -86,8 +83,6 @@ pub fn init_gd(
 }
 //Strings for printing
 pub fn init_gs() -> GameStrings {
-	let input_locale = options::get().locale;
-
 	GameStrings {
 		//Temporary string
 		s: String::new(),

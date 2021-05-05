@@ -1,10 +1,10 @@
 use crate::*;
+use game_options::OPTIONS;
 use io_ops::create_dir;
 use io_ops::writepng::*;
 
 pub fn write_images_raw(
 	lp: &mut LayerPack,
-	options: &options::Stuff,
 	world_dir: &std::path::PathBuf,
 ) {
 	//Make a directory if none exists
@@ -16,7 +16,7 @@ pub fn write_images_raw(
 	let mut array_bg = vec![0u8; lp.layer_vec_len];
 
 	//Watermask and terraim
-	if options.render_topography {
+	if OPTIONS.render_topography {
 		//println!("{}", wg_str.wg14);
 		let file_path = raw_img_dir
 			.join("terrain")
@@ -44,7 +44,7 @@ pub fn write_images_raw(
 	}
 
 	//Temperature
-	if options.render_temperature {
+	if OPTIONS.render_temperature {
 		//println!("{}", wg_str.wg10);
 		let file_path = raw_img_dir
 			.join("temperature")
@@ -60,7 +60,7 @@ pub fn write_images_raw(
 	}
 
 	//Rainfall
-	if options.render_rainfall {
+	if OPTIONS.render_rainfall {
 		//println!("{}", wg_str.wg12);
 		let file_path = raw_img_dir
 			.join("rainfall")
@@ -76,7 +76,7 @@ pub fn write_images_raw(
 	}
 
 	//Rivers
-	if options.render_rivers {
+	if OPTIONS.render_rivers {
 		//println!("{}", wg_str.wg18);
 		let file_path = raw_img_dir
 			.join("rivers_elements")
@@ -105,7 +105,7 @@ pub fn write_images_raw(
 	}
 
 	//Biomes
-	if options.render_biomes {
+	if OPTIONS.render_biomes {
 		//println!("{}", wg_str.wg20);
 		let file_path = raw_img_dir
 			.join("biomes")

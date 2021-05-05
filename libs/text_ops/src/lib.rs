@@ -3,12 +3,13 @@ pub mod menu_str;
 pub mod ui_str;
 pub mod worldgen_str;
 use colored::{Color, Colorize};
-use io_ops::readron::palettes;
-use io_ops::readron::{options, strings};
+use io_ops::readron::{palettes, strings};
 use lazy_static::lazy_static;
 use std::collections::HashMap;
 use std::io;
 use std::io::Write;
+
+use game_options::OPTIONS;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ LOCALE ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub struct WgStrings {
@@ -26,22 +27,22 @@ pub struct UiStrings {
 lazy_static! {
 	pub static ref WS: WgStrings = {
 		WgStrings {
-			s: strings::worldgen_strings::get(&options::get().locale),
+			s: strings::worldgen_strings::get(&OPTIONS.locale),
 		}
 	};
 	pub static ref GS: GmStrings = {
 		GmStrings {
-			s: strings::game_strings::get(&options::get().locale),
+			s: strings::game_strings::get(&OPTIONS.locale),
 		}
 	};
 	pub static ref MS: MnStrings = {
 		MnStrings {
-			s: strings::menu_strings::get(&options::get().locale),
+			s: strings::menu_strings::get(&OPTIONS.locale),
 		}
 	};
 	pub static ref UI: UiStrings = {
 		UiStrings {
-			s: strings::ui_strings::get(&options::get().locale),
+			s: strings::ui_strings::get(&OPTIONS.locale),
 		}
 	};
 }
@@ -57,13 +58,17 @@ macro_rules! print_paragraph {
 		$(impl $struct_name {
 			pub fn $fn_name(&self,) {
 				use colored::{Colorize, Color};
+				let term_width = termwidth();
 				// Chek if color from preset can be parsed, or fallback.
 				let color_res : Result<Color, ()> = $text_col.parse();
+				let mut s = self.s[$str_name].replace(&$exclude[..], "");
+				match OPTIONS.use_textwrap{
+					true => {s = fill(&s, Options::new(term_width));},
+					false => {}
+				}
 				match color_res{
-					Ok(col) => {println!("{}", fill(&self.s[$str_name]
-						.replace(&$exclude[..], ""), Options::new(termwidth())).color(col));}
-					Err(_) => {println!("{}", fill(&self.s[$str_name]
-						.replace(&$exclude[..], ""), Options::new(termwidth())));}
+					Ok(col) => {println!("{}", s.color(col));}
+					Err(_) => {println!("{}", s);}
 				}
 			}
 		})*
@@ -79,13 +84,22 @@ macro_rules! print_paragraph {
 					T : std::fmt::Display,
 					T : std::string::ToString,
 			{
-				let x = x_gen.to_string();
 				use colored::{Colorize, Color};
+				let term_width = termwidth();
+				let x = x_gen.to_string();
 				// Chek if color from preset can be parsed, or fallback.
 				let color_res1 : Result<Color, ()> = $text_col.parse();
 				let color_res2 : Result<Color, ()> = $val_col.parse();
-				let s1 = fill(&self.s[$str_name].replace(&$exclude[..], ""), Options::new(termwidth()));
-				let s2 = x.to_owned();
+				// Apply textwrap if enabled in options
+				let mut s1 = self.s[$str_name].replace(&$exclude[..], "");
+				let mut s2 = x.to_owned();
+				match OPTIONS.use_textwrap{
+					true => {
+						s1 = fill(&s1, Options::new(term_width));
+						s2 = fill(&s2, Options::new(term_width));
+					},
+					false => {}
+				}
 				let mut color1_good = false;
 				let mut color2_good = false;
 				match color_res1 {
@@ -97,7 +111,7 @@ macro_rules! print_paragraph {
 					Err(_) => {}
 				}
 				match color1_good{
-					// Added space after {}.
+					// Added space after {} because value goes after.
 					true => {print!("{} ", s1.color($text_col));},
 					false => {print!("{} ", s1);},
 				}
@@ -121,27 +135,17 @@ macro_rules! print_banner {
 					T : std::fmt::Display,
 					T : std::string::ToString,
 			{
-				let title = title_gen.to_string();
-				use terminal_size::{Width, Height, terminal_size};
 				use colored::{Colorize, Color};
 				use substring::Substring;
+				let title = title_gen.to_string();
+				let term_width = termwidth();
+				let width = (term_width as usize).saturating_sub(title.len());
 				// Chek if color from preset can be parsed, or fallback.
 				let color_res1 : Result<Color, ()> = $fg.parse();
 				let mut color1_good = false;
 				match color_res1 {
 					Ok(_) => {color1_good = true;}
 					Err(_) => {}
-				}
-				let mut term_width = 0;
-				let mut width = 0;
-				// If term size can be found
-				if let Some((Width(w), Height(h))) = terminal_size() {
-					term_width = termwidth();
-					width = (w as usize).saturating_sub(title.len());
-				// If term size can't be found
-				} else {
-					term_width = constants_app::TERM_WIDTH_FALLBACK;
-					width = term_width.saturating_sub(title.len());
 				}
 				match title.len(){
 					// If no title - just draw a separator
@@ -163,8 +167,6 @@ macro_rules! print_banner {
 						// Take into account odd width value
 						let chars = self.s[$str_name].clone().repeat(width);
 						let mut chars_half = chars.substring(0, width/2-1).to_string();
-						
-						
 						match color1_good {
 							true =>{
 								println!("{} {} {}",
@@ -178,7 +180,7 @@ macro_rules! print_banner {
 								);
 							},
 							false =>{
-								println!("{} {} {}", chars_half, title, 
+								println!("{} {} {}", chars_half, title,
 									{ // Odd width compensation
 										let mut ch = chars_half.clone();
 										if width %2 != 0 { ch += &self.s[$str_name]; }
@@ -191,19 +193,25 @@ macro_rules! print_banner {
 					// Otherwise text-wrap it
 					_ => {
 						// Take into account odd width value
-
 						let chars = self.s[$str_name].clone().repeat(width);
 						let chars = chars.substring(0, width);
-						
+						// Check for textwrap option
+						let mut s = title;
+						match OPTIONS.use_textwrap {
+							true => {
+								s = fill(&s, Options::new(term_width))
+							},
+							false => {}
+						}
 						match color1_good {
 							true =>{
 								println!("{}", chars.color($fg));
-								println!("{}", fill(&title, Options::new(termwidth())).color($fg));
+								println!("{}", s.color($fg));
 								println!("{}", chars.color($fg));
 							},
 							false =>{
 								println!("{}", chars);
-								println!("{}", fill(&title, Options::new(termwidth())));
+								println!("{}", s);
 								println!("{}", chars);
 							},
 						}
@@ -283,7 +291,8 @@ pub fn prompt_word(allowed_words: &Vec<String>) -> String {
 
 //TODO add tw
 //▒▒▒▒▒▒▒▒▒▒▒▒ CONFIRMATION ▒▒▒▒▒▒▒▒▒▒▒▒▒
-pub fn selected( // Make a macro for different colors?
+pub fn selected(
+	// Make a macro for different colors?
 	prompt: &str,
 	input: &str,
 ) {

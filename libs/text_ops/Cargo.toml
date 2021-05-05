@@ -8,6 +8,7 @@ edition = "2018"
 [dependencies]
 io_ops = { path = "../../libs/io_ops" }
 constants_app = { path = "../../libs/constants_app" }
+game_options = { path = "../../libs/game_options" }
 
 substring = "1.4"
 terminal_size = "0.1"

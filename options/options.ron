@@ -1,6 +1,11 @@
 //▒▒▒▒▒▒▒▒▒▒▒▒ GENERAL OPTIONS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 (
 	locale : "en",
+	
+// It is advised to disable textwrap for better TTS support.
+// The narration will be smoother due to no line breaks.
+
+	use_textwrap: false,
 
 // ▒▒▒▒▒▒▒▒▒▒▒ WORLDGEN OPTIONS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 // General options for the world generator.

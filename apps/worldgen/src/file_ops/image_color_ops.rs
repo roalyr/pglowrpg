@@ -1,10 +1,10 @@
 use crate::*;
+use game_options::OPTIONS;
 use io_ops::create_dir;
 use io_ops::writepng::*;
 
 pub fn write_images_color(
 	lp: &mut LayerPack,
-	options: &options::Stuff,
 	world_dir: &std::path::PathBuf,
 ) {
 	//Make a directory if none exists
@@ -17,7 +17,7 @@ pub fn write_images_color(
 	let mut array_fg = vec![0u8; lp.layer_vec_len];
 
 	//Watermask over terraim
-	if options.render_topography {
+	if OPTIONS.render_topography {
 		//println!("{}", wg_str.wg14);
 		let file_path = color_img_dir
 			.join("watermask_over_terrain")
@@ -43,7 +43,7 @@ pub fn write_images_color(
 	}
 
 	//Temperature
-	if options.render_temperature {
+	if OPTIONS.render_temperature {
 		//println!("{}", wg_str.wg10);
 		let file_path = color_img_dir
 			.join("temperature")
@@ -64,7 +64,7 @@ pub fn write_images_color(
 	}
 
 	//Rainfall
-	if options.render_rainfall {
+	if OPTIONS.render_rainfall {
 		//println!("{}", wg_str.wg12);
 		let file_path = color_img_dir
 			.join("rainfall")
@@ -85,7 +85,7 @@ pub fn write_images_color(
 	}
 
 	//Georegion
-	if options.render_georegions {
+	if OPTIONS.render_georegions {
 		//println!("{}", wg_str.wg22);
 		let file_path = color_img_dir
 			.join("georegions")
@@ -101,7 +101,7 @@ pub fn write_images_color(
 	}
 
 	//Rivers
-	if options.render_rivers {
+	if OPTIONS.render_rivers {
 		//Rivers and watermasks
 		//println!("{}", wg_str.wg18);
 		let file_path = color_img_dir
@@ -174,7 +174,7 @@ pub fn write_images_color(
 	}
 
 	//Biomes
-	if options.render_biomes {
+	if OPTIONS.render_biomes {
 		//println!("{}", wg_str.wg20);
 		let file_path = color_img_dir
 			.join("biomes")

@@ -9,13 +9,14 @@ use crate::misc_ops::seed_generating;
 use codec::*;
 use constants_app::*;
 use coords::Index;
-use io_ops::readron::{options, presets};
+use game_options::OPTIONS;
+use io_ops::readron::presets;
 use text_ops::{prompt_option, prompt_word, selected, UI, WS};
 
 #[rustfmt::skip]
 pub fn start() {
-	//Load options and locale/style presets
-	let options: options::Stuff = options::get();
+	//Load OPTIONS and locale/style presets
+	
 	
 	UI.print_newline();
 	UI.print_banner_dash(WS.str_banner_title());
@@ -50,7 +51,7 @@ pub fn start() {
 		WS.print_no_input_preset();
 	return;}
 	//enable this later
-	//if input_preset.is_empty() {input_preset = options.default_preset.clone();}
+	//if input_preset.is_empty() {input_preset = OPTIONS.default_preset.clone();}
 	UI.print_separator_thin("");
 
 	//Load a preset
@@ -73,7 +74,7 @@ pub fn start() {
 	WS.print_prompt_world_num();
 	let input_world_num = prompt_option();
 	let world_num = if input_world_num.is_empty() {
-		options.worlds_to_generate
+		OPTIONS.worlds_to_generate
 	} else {
 		//proper panic str later (uwrap_or)
 		input_world_num.trim().parse::<usize>().expect("Expected an integer")
@@ -90,7 +91,7 @@ pub fn start() {
 		//Increment seed for multiple worlds, must be before wi
 		temp_seed += iter;
 		
-		//Create a "WorldInit" struct that holds all the WS options.
+		//Create a "WorldInit" struct that holds all the WS OPTIONS.
 		//Re-call this every loop iteration due to new seed
 		let mut wi: presets::presets_worldgen::Stuff = presets::presets_worldgen::get(&input_preset);
 		preset_validate::all(&mut wi);
@@ -153,7 +154,7 @@ pub fn start() {
 		WS.print_prep_georeg(); layer_ops::georegion_mapping::get(&mut lp);
 
 		//WRITING DATA
-		write_save(&mut lp, &options, &input_preset);
+		write_save(&mut lp, &input_preset);
 		UI.print_separator_thin("");
 		WS.print_done_worldgen();
 		// Add an empty prompt "continue..."

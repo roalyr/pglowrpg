@@ -4,7 +4,6 @@ use io_ops::{compress_to_storage, create_dir};
 
 pub fn write_data(
 	lp: &mut LayerPack,
-	_options: &options::Stuff,
 	world_dir: &std::path::PathBuf,
 ) {
 	//Make a directory if none exists

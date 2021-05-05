@@ -15,22 +15,22 @@ use struct_ops::*;
 use codec::LayerPack;
 use colored::*;
 use constants_app::*;
+use game_options::OPTIONS;
 use io_ops::decompress_to_memory;
 use io_ops::readron::palettes::biomes;
-use io_ops::readron::{options, strings};
+use io_ops::readron::strings;
 use io_ops::writepng::from_hex;
 use std::path::Path;
 use text_ops::{prompt_option, prompt_word, GS};
 use units::translate;
 
 pub fn start() {
-	let options: options::Stuff = options::get();
-	let input_locale = &options.locale;
+	let input_locale = &OPTIONS.locale;
 	let commands: strings::commands::Stuff =
 		strings::commands::get(&input_locale);
 	//Init game structs
 	let mut gs = init_gs();
-	let mut gd = match init_gd(&gs, options, commands) {
+	let mut gd = match init_gd(&gs, commands) {
 		//Selecting preset may return None
 		Some(gd) => gd,
 		_ => return,

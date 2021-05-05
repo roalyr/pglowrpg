@@ -1,6 +1,7 @@
 use crate::print_paragraph;
 use crate::return_string;
 use crate::WgStrings;
+use game_options::OPTIONS;
 use io_ops::readron::palettes;
 use textwrap::{fill, termwidth, Options};
 
@@ -51,6 +52,6 @@ return_string! {
 	WgStrings(
 	str_banner_title, "wg0";
 	str_sel_preset, "wg3";
-	
+
 	)
 }
