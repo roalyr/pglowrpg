@@ -13,6 +13,7 @@ pub struct Stuff {
 	pub banner: String,
 	pub number: String,
 	pub name: String,
+	pub list: String,
 }
 
 pub fn get() -> Stuff {

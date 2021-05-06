@@ -11,4 +11,5 @@ prompt : "purple",
 banner : "bright red",
 number : "red",
 name : "green",
+list : "green",
 )

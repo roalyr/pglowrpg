@@ -14,9 +14,7 @@ use std::path::Path;
 pub fn dir_file_contents(
 	path_str: &str,
 	seek_extension: &str,
-	prefix: &str,
-	separator: &str,
-) -> (String, Vec<String>) {
+) -> Vec<String> {
 	let path = Path::new(path_str);
 
 	//Get directory contents
@@ -28,11 +26,8 @@ pub fn dir_file_contents(
 		}
 	};
 
-	//Make a vector for paths
-	let mut contents_paths = Vec::new();
-
-	//Make a neat string
-	let mut contents_str = "".to_owned();
+	//Make a vector for paths and names
+	let mut contents = Vec::new();
 
 	for entry in contents_iter {
 		let entry_unwrapped = entry.unwrap().path();
@@ -40,16 +35,11 @@ pub fn dir_file_contents(
 		let entry_extension =
 			&entry_unwrapped.extension().unwrap().to_str().unwrap();
 
-		//Clone raw data to vec
-		contents_paths.push(entry_name.to_string());
-
 		if *entry_extension == seek_extension {
-			contents_str.push_str(prefix);
-			contents_str.push_str(entry_name);
-			contents_str.push_str(separator);
+			contents.push(entry_name.to_string());
 		}
 	}
-	(contents_str, contents_paths)
+	contents
 }
 
 pub fn dir_dir_contents(

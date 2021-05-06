@@ -8,7 +8,6 @@ use textwrap::{fill, termwidth, Options};
 
 // Special characters
 print_paragraph! {
-	[]; // Tabs and newlines allowed.
 	palettes::text_colors::get().normal;
 	UiStrings(
 	print_newline, "newline";

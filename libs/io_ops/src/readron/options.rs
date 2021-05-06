@@ -8,10 +8,12 @@ const FILENAME: &str = "options";
 pub struct Stuff {
 	//General options
 	pub locale: String,
+	pub use_textwrap: bool,
+	pub use_text_colors: bool,
+	pub repeat_text_if_no_input: bool,
 
 	//Worldgen options
 	pub worlds_to_generate: usize,
-	pub default_preset: String,
 
 	pub render_topography: bool,
 	pub render_temperature: bool,
@@ -23,8 +25,6 @@ pub struct Stuff {
 	pub render_colorized_maps: bool,
 	pub render_raw_maps: bool,
 	pub write_data_files: bool,
-
-	pub use_textwrap: bool,
 }
 
 pub fn get() -> Stuff {

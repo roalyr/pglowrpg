@@ -11,47 +11,38 @@ use constants_app::*;
 use coords::Index;
 use game_options::OPTIONS;
 use io_ops::readron::presets;
-use text_ops::{prompt_option, prompt_word, selected, UI, WS};
+use text_ops::{prompt_input, selected, UI, WS};
 
 #[rustfmt::skip]
 pub fn start() {
-	//Load OPTIONS and locale/style presets
-	
 	
 	UI.print_newline();
 	UI.print_banner_dash(WS.str_banner_title());
 	UI.print_newline();
-	WS.print_intro();
 	
 	//Preset selection
-	//List files in both default and user dirs
-	let preset_def_tuple = io_ops::dir_file_contents(
+	let preset_def = io_ops::dir_file_contents(
 		PATH_PRESETS_WORLD,
 		EXTENSION_PRESET_WORLD,
-		&UI.str_bul1(), &UI.str_newline(),
 	);
-	let mut preset_user_tuple = io_ops::dir_file_contents(
+	let preset_user = io_ops::dir_file_contents(
 		PATH_PRESETS_WORLD_USER,
 		EXTENSION_PRESET_WORLD,
-		&UI.str_bul1(), &UI.str_newline(),
 	);
-	
-	//Get the contents of the presets folder
-	let mut presets_paths = preset_def_tuple.1;
-	presets_paths.append(&mut preset_user_tuple.1);
-	let presets_formatted = [preset_def_tuple.0, preset_user_tuple.0, "\n".to_string()].concat();
-	
-	//TODO
-	println!("{}", &presets_formatted);
-	
-	let input_preset = prompt_word( &presets_paths);
-	
+	let presets = [preset_def, preset_user].concat();
+	let input_preset = prompt_input!( 
+		&presets;
+		{
+			WS.print_preset_select();
+			WS.print_list_preset(&presets);
+		}
+	);
 	//Decide how to treat no input
 	if input_preset.is_empty() {
 		WS.print_no_input_preset();
-	return;}
-	//enable this later
-	//if input_preset.is_empty() {input_preset = OPTIONS.default_preset.clone();}
+		return;
+	}
+	
 	UI.print_separator_thin("");
 
 	//Load a preset
@@ -60,25 +51,27 @@ pub fn start() {
 	preset_validate::all(&mut wi);
 
 	//Seed selection
-	WS.print_prompt_seed_rand();
-	let input_seed = prompt_option();
+	let input_seed = prompt_input!( 
+		{ WS.print_prompt_seed_rand(); }
+	);
+	
 	UI.print_separator_thin("");
+	
 	let mut temp_seed = if (input_seed == "r") || (input_seed == "R") {
 		WS.print_seed_rand();
 		seed_generating::get()
-	} else {
+	} else if (input_seed == "p") || (input_seed == "P") {
 		wi.seed
-	};
+	} else {
+		input_seed.trim().parse::<usize>().unwrap_or(wi.seed)
+	} ;
 
 	//Decide how many worlds to generate
-	WS.print_prompt_world_num();
-	let input_world_num = prompt_option();
-	let world_num = if input_world_num.is_empty() {
-		OPTIONS.worlds_to_generate
-	} else {
-		//proper panic str later (uwrap_or)
-		input_world_num.trim().parse::<usize>().expect("Expected an integer")
-	};
+	let input_world_num = prompt_input!( 
+		{ WS.print_prompt_world_num(); }
+	);
+	let world_num = input_world_num.trim().parse::<usize>().unwrap_or(1);
+	
 	UI.print_separator_thin("");
 	WS.print_world_num(world_num);
 

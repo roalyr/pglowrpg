@@ -52,7 +52,7 @@ lazy_static! {
 #[macro_export]
 macro_rules! print_paragraph {
 	// A simple case without variables
-	($exclude: expr; $text_col: expr;
+	($text_col: expr;
 	$struct_name: ident($($fn_name: ident, $str_name: expr);*;)) =>
 	{
 		$(impl $struct_name {
@@ -61,20 +61,27 @@ macro_rules! print_paragraph {
 				let term_width = termwidth();
 				// Chek if color from preset can be parsed, or fallback.
 				let color_res : Result<Color, ()> = $text_col.parse();
-				let mut s = self.s[$str_name].replace(&$exclude[..], "");
+				let mut color_good = false;
+				match color_res {
+					Ok(_) => {
+						if OPTIONS.use_text_colors {color_good = true;}
+				}
+					Err(_) => {}
+				}
+				let mut s = self.s[$str_name].clone();
 				match OPTIONS.use_textwrap{
 					true => {s = fill(&s, Options::new(term_width));},
 					false => {}
 				}
-				match color_res{
-					Ok(col) => {println!("{}", s.color(col));}
-					Err(_) => {println!("{}", s);}
+				match color_good{
+					true => {println!("{}", s.color($text_col));}
+					false => {println!("{}", s);}
 				}
 			}
 		})*
 	};
 	// With variables
-	($exclude: expr; $text_col: expr; $val_col: expr;
+	($text_col: expr; $val_col: expr;
 	$struct_name: ident($($fn_name: ident, $str_name: expr);*;)) =>
 	{
 		$(impl $struct_name {
@@ -91,7 +98,7 @@ macro_rules! print_paragraph {
 				let color_res1 : Result<Color, ()> = $text_col.parse();
 				let color_res2 : Result<Color, ()> = $val_col.parse();
 				// Apply textwrap if enabled in options
-				let mut s1 = self.s[$str_name].replace(&$exclude[..], "");
+				let mut s1 = self.s[$str_name].clone();
 				let mut s2 = x.to_owned();
 				match OPTIONS.use_textwrap{
 					true => {
@@ -103,11 +110,15 @@ macro_rules! print_paragraph {
 				let mut color1_good = false;
 				let mut color2_good = false;
 				match color_res1 {
-					Ok(_) => {color1_good = true;}
+					Ok(_) => {
+						if OPTIONS.use_text_colors {color1_good = true;}
+				}
 					Err(_) => {}
 				}
 				match color_res2 {
-					Ok(_) => {color2_good = true;}
+					Ok(_) => {
+						if OPTIONS.use_text_colors {color2_good = true;}
+				}
 					Err(_) => {}
 				}
 				match color1_good{
@@ -118,6 +129,42 @@ macro_rules! print_paragraph {
 				match color2_good{
 					true => {println!("{}", s2.color($val_col));},
 					false => {println!("{}", s2);},
+				}
+			}
+		})*
+	};
+}
+
+// Print a list of options
+#[macro_export]
+macro_rules! print_list {
+	($bul: expr; $text_col: expr;
+	$struct_name: ident($($fn_name: ident);*;)) =>
+	{
+		$(impl $struct_name {
+			pub fn $fn_name(&self, str_list: &Vec<String>){
+				use colored::{Colorize, Color};
+				let term_width = termwidth();
+				// Chek if color from preset can be parsed, or fallback.
+				let color_res : Result<Color, ()> = $text_col.parse();
+				let mut color_good = false;
+				match color_res {
+					Ok(_) => {
+						if OPTIONS.use_text_colors {color_good = true;}
+				}
+					Err(_) => {}
+				}
+				let mut s = String::new();
+				println!("");
+				for entry in str_list {
+					match OPTIONS.use_textwrap{
+						true => {s = fill(&entry, Options::new(term_width));},
+						false => {s = entry.to_string();}
+					}
+					match color_good{
+						true => {println!("{}{}", $bul.color($text_col), s.color($text_col));}
+						false => {println!("{}{}", $bul, s);}
+					}
 				}
 			}
 		})*
@@ -144,7 +191,9 @@ macro_rules! print_banner {
 				let color_res1 : Result<Color, ()> = $fg.parse();
 				let mut color1_good = false;
 				match color_res1 {
-					Ok(_) => {color1_good = true;}
+					Ok(_) => {
+						if OPTIONS.use_text_colors {color1_good = true;}
+				}
 					Err(_) => {}
 				}
 				match title.len(){
@@ -154,12 +203,8 @@ macro_rules! print_banner {
 						let chars = self.s[$str_name].clone().repeat(width);
 						let chars = chars.substring(0, width);
 						match color1_good {
-							true =>{
-								println!("{}", chars.color($fg));
-							},
-							false =>{
-								println!("{}", chars);
-							},
+							true =>{ println!("{}", chars.color($fg)); },
+							false =>{ println!("{}", chars); },
 						}
 					},
 					// If title is shorter than screen width and can fit in
@@ -198,9 +243,7 @@ macro_rules! print_banner {
 						// Check for textwrap option
 						let mut s = title;
 						match OPTIONS.use_textwrap {
-							true => {
-								s = fill(&s, Options::new(term_width))
-							},
+							true => { s = fill(&s, Options::new(term_width)); },
 							false => {}
 						}
 						match color1_good {
@@ -229,7 +272,7 @@ macro_rules! return_string {
 	{
 		$(impl $struct_name {
 			pub fn $fn_name(&self,) -> String {
-				self.s[$str_name].replace(&['\n', '\t',][..], "")
+				self.s[$str_name].clone()
 			}
 		})*
 	};
@@ -239,10 +282,26 @@ macro_rules! return_string {
 // Prompts start after empty newline.
 fn new_line_input(prompt_symbol: &String) -> String {
 	let mut input = String::new();
-	print!(
-		"\n{}",
-		prompt_symbol.color(palettes::text_colors::get().prompt)
-	);
+	// Chek if color from preset can be parsed, or fallback.
+	let text_col = palettes::text_colors::get().prompt;
+	let color_res: Result<Color, ()> = text_col.parse();
+	let mut color_good = false;
+	match color_res {
+		Ok(_) => {
+			if OPTIONS.use_text_colors {
+				color_good = true;
+			}
+		}
+		Err(_) => {}
+	}
+	match color_good {
+		true => {
+			print!("\n{}", prompt_symbol.color(text_col));
+		}
+		false => {
+			print!("\n{}", prompt_symbol);
+		}
+	}
 	let _ = io::stdout().flush();
 	io::stdin().read_line(&mut input).unwrap();
 	input.trim().to_string()
@@ -287,6 +346,60 @@ pub fn prompt_word(allowed_words: &Vec<String>) -> String {
 	} else {
 		selected_queue[index].clone()
 	}
+}
+
+// Return an input according to specifics. Execute specific functions
+// before input (print prompts, for instance).
+#[macro_export]
+macro_rules! prompt_input {
+	// If word list is supplied the prompt_word will be used
+	($word_list: expr; $b: block) => {
+		{
+			use text_ops::prompt_word;
+			let mut input = String::new();
+			match OPTIONS.repeat_text_if_no_input{
+				// Keep pestering the player to no end
+				true => {
+					while input.is_empty() {
+						// Call all the suggested functions (prompts)
+						$b
+						input = prompt_word($word_list);
+					}
+				},
+				// Or ask once.
+				false => {
+					// Call all the suggested functions (prompts)
+					$b
+					input = prompt_word($word_list);
+				}
+			}
+			input
+		}
+	};
+	// If no word list is supplied the prompt_word will be used
+	($b: block) => {
+		{
+			use text_ops::prompt_option;
+			let mut input = String::new();
+			match OPTIONS.repeat_text_if_no_input{
+				// Keep pestering the player to no end
+				true => {
+					while input.is_empty() {
+						// Call all the suggested functions (prompts)
+						$b
+						input = prompt_option();
+					}
+				},
+				// Or ask once.
+				false => {
+					// Call all the suggested functions (prompts)
+					$b
+					input = prompt_option();
+				}
+			}
+			input
+		}
+	};
 }
 
 //TODO add tw

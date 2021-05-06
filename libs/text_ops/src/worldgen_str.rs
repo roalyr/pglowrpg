@@ -1,19 +1,19 @@
+use crate::print_list;
 use crate::print_paragraph;
 use crate::return_string;
 use crate::WgStrings;
+use crate::UI;
 use game_options::OPTIONS;
 use io_ops::readron::palettes;
 use textwrap::{fill, termwidth, Options};
 
 // Ordinary text
 print_paragraph! {
-	['\t', '\n'];  // No tabs and newline characters.
 	palettes::text_colors::get().normal;
 	WgStrings(
-	print_intro, "wg1";
+	print_preset_select, "wg1";
 	print_no_input_preset, "wg28";
 	print_seed_rand, "wg4";
-	print_prompt_seed_rand, "wg2";
 	print_prompt_world_num, "wg24";
 	print_prep_topog, "wg7";
 	print_prep_climate, "wg9";
@@ -28,9 +28,25 @@ print_paragraph! {
 	)
 }
 
+// List options / entries for selection from a vector.
+print_list! {
+	UI.s["bullet1"];
+	palettes::text_colors::get().list;
+	WgStrings(
+	print_list_preset;
+	)
+}
+
+// List options / entries.
+print_paragraph! {
+	palettes::text_colors::get().menu;
+	WgStrings(
+	print_prompt_seed_rand, "wg2";
+	)
+}
+
 // Announcement without variables
 print_paragraph! {
-	['\t', '\n'];  // No tabs and newline characters.
 	palettes::text_colors::get().announcement;
 	WgStrings(
 	print_done_worldgen, "wg23";
@@ -39,7 +55,6 @@ print_paragraph! {
 
 // Announcement with number
 print_paragraph! {
-	['\t', '\n'];  // No tabs and newline characters.
 	palettes::text_colors::get().announcement; //Main color
 	palettes::text_colors::get().number; //Number color
 	WgStrings(

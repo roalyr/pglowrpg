@@ -7,7 +7,6 @@ use textwrap::{fill, termwidth, Options};
 
 // Menu
 print_paragraph! {
-	[]; // Tabs and newlines allowed.
 	palettes::text_colors::get().menu;
 	MnStrings(
 	print_menu, "menu";

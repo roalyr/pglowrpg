@@ -1,8 +1,10 @@
+// Strings will be used as is, with tabs and newlines
 //➠➣➤❯❯✦◼⋙ ∘⋄⊳›⁕↳⌷⌶⎆◜▫◦
+
 {
 "prompt_option" : " ⊳ ",
 "prompt_word" : " ⌶  ",
-"bullet1" : "    ✦ ",
+"bullet1" : " ✦ ",
 "newline" : "",
 "separator_thick" : "─",
 "separator_thin" : "◜ ",

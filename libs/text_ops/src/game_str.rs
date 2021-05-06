@@ -4,7 +4,7 @@ use game_options::OPTIONS;
 use textwrap::{fill, termwidth, Options};
 
 print_paragraph! {
-	[]; "color";
+	"color";
 	GmStrings(
 	print_banner, "gm1";
 	print_menu, "gm2";

@@ -1,10 +1,12 @@
-{ //Strings must be kept withn the hashmap
+//Strings must be kept within the hashmap
+// Strings will be used as is, with tabs and newlines
+
+{
 "game_title":  "p G L O W r p g",
 "game_name": "Procedurally Generated Living Open World RPG.",
 "developer" : "@Roal-Yr, 2021.",
 "menu_title" : "MENU",
-"menu" : 
-"Select an application to run:
+"menu" : "Select an application to run:
 
  (w) - worldgen.
  (g) - game.
