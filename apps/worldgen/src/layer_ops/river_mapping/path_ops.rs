@@ -2,7 +2,7 @@ use crate::array_ops::noise_maps::NoiseMode::*;
 use crate::layer_ops::river_mapping::{RgParams, RiverEntry};
 use codec::LayerPack;
 use constants_world::*;
-use text_ops::print_progress;
+use text_ops::WS;
 
 #[rustfmt::skip]
 impl RgParams {
@@ -35,10 +35,10 @@ impl RgParams {
 		if (random <= total_prob) && (wmask == NO_WATER) {
 			// Print the progress
 			self.river_count_number += 1;
-			print_progress(
+			WS.print_progress_rivers(
 				self.river_count_number,
 				self.river_est_number,
-				5, // 20% step
+				20
 			);
 			//Set vector according to waterbodies presence
 			//and randomization.

@@ -14,7 +14,7 @@ pub fn get_layerpack(gs: &GameStrings) -> Option<LayerPack> {
 	//TODO
 	println!("{}", &save_dir_formatted);
 
-	let input_save = prompt_word(&save_dir_paths);
+	let input_save = prompt_input!(&save_dir_paths, {});
 
 	if !input_save.is_empty() {
 		//println!("{}", &gs.ui_el.separator2);

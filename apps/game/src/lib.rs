@@ -21,7 +21,7 @@ use io_ops::readron::palettes::biomes;
 use io_ops::readron::strings;
 use io_ops::writepng::from_hex;
 use std::path::Path;
-use text_ops::{prompt_option, prompt_word, GS};
+use text_ops::{prompt_input, GS};
 use units::translate;
 
 pub fn start() {

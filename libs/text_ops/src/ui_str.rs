@@ -1,7 +1,5 @@
-use crate::print_banner;
-use crate::print_paragraph;
-use crate::return_string;
 use crate::UiStrings;
+use crate::{print_banner, print_paragraph, return_string};
 use game_options::OPTIONS;
 use io_ops::readron::palettes;
 use textwrap::{fill, termwidth, Options};

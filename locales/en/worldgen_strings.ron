@@ -2,17 +2,18 @@
 // Strings will be used as is, with tabs and newlines.
 
 {
-"wg0" : "WORLDGEN",
-"intro" : r#"This application generates a world or a number of worlds from a selected preset, writes saved data and images (see options) into the "save" folder."#,
+"worldgen_banner" : "WORLDGEN",
+"worldgen_intro" : r#"This application generates a world or a number of worlds from a selected preset, writes saved data and images (see options) into the "save" folder."#,
 "preset_prompt" : "Select a preset by entering its name, or leave empty to abort worldgen and return to main menu. You can enter a few characters from any word in the list to select the respective option. See ./presets_default/world and ./presets_user/world for available presets:",
-"preset_selected" : "Selected preset is:",
-"wg28" : "No preset matches input, aborting.",
+"preset_selected" : "Selected preset is: ",
+"preset_not_found" : "No preset matches input, aborting.",
 
-"seed_default_value" : "Default seed value is:",
+"seed_default_value" : "Default seed value is: ",
+
 "seed_menu_prompt" : "Select a seed to be used.",
-"seed_entry_man" : "manually enter seed value.",
-"seed_entry_rand" : "randomize seed.",
-"seed_entry_pres" : "use seed from preset.",
+"seed_entry_man" : "manually enter seed value",
+"seed_entry_rand" : "randomize seed",
+"seed_entry_pres" : "use seed from preset",
 
 "seed_rand" : "Randomizing the world seed for this generation.",
 "seed_man" : "Seed value must be an integer. Invalid input will be replaced with default value.",
@@ -20,26 +21,25 @@
 "seed_base" : "Base seed for worldgen is: ",
 "seed_used" : "Using seed: ",
 
-"wg7" : "Preparing topography map...",
-"wg9" : "Preparing climate maps...",
-"wg13" : "Preparing watermask map...",
-"wg17" : "Preparing river map...",
-"wg19" : "Preparing biome map...",
-"wg21" : "Preparing georegion map...",
+"world_num_default" : "Default number of worlds to generate is:",
+"world_num_prompt" : "How many worlds to generate? Enter the value, or leave empty to use the default value.",
+"world_num" : "The amount of worlds to generate is: ",
 
-"wg3" : "Selected preset: ",
-"wg24" : "How many worlds to generate? Enter the value, or leave empty to use the value from worldgen options.",
+"prep_topog" : "Preparing topography map...",
+"prep_climate" : "Preparing climate maps...",
+"prep_wmask" : "Preparing watermask map...",
+"prep_rmap" : "Preparing river map...",
+"progress_rivers" : " Rivers: ",
 
+"prep_biome" : "Preparing biome map...",
+"prep_georeg" : "Preparing georegion map...",
 
+"write_data" : "Preparing data files: ",
+"write_no_data" : "No data files were written (set in worldgen options).",
+"write_img_col" : "Preparing colorized maps: ",
+"write_img_raw" : "Preparing raw maps: ",
 
-"wg6" : "The amount of worlds to generate is: ",
-
-"wg25" : "Preparing data files:",
-"wg26" : "No data files were written (set in worldgen options).",
-"wg15" : "Preparing colorized maps:",
-"wg16" : "Preparing raw maps:",
-
-"wg23" : "Worldgen done.",
+"worldgen_done" : "Worldgen done.",
 
 //unused below
 

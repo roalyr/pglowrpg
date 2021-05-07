@@ -8,8 +8,8 @@
 "menu_title" : "MENU",
 
 "menu_prompt" : "Select an application to run:",
-"menu_entry_worldgen" : "worldgen.",
-"menu_entry_game" : "game.",
-"menu_entry_quit" : "quit.",
-"menu_entry_settings" : "settings.",
+"menu_entry_worldgen" : "worldgen",
+"menu_entry_game" : "game",
+"menu_entry_quit" : "quit",
+"menu_entry_settings" : "settings",
 }

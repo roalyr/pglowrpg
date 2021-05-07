@@ -74,7 +74,11 @@ pub fn start() {
 	
 	// Decide how many worlds to generate.
 	let input_world_num = prompt_input!( 
-		{ UI.print_separator_thin(""); WS.print_prompt_world_num(); }
+		{
+			UI.print_separator_thin(""); 
+			WS.print_world_num_default(constants_world::DEFAULT_WORLDS_NUM);
+			WS.print_prompt_world_num();
+		}
 	);
 	let world_num = input_world_num.trim().parse::<usize>().unwrap_or(1);
 	UI.print_separator_thin("");

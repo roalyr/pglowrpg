@@ -1,4 +1,5 @@
 use crate::*;
+use game_options::OPTIONS;
 
 //▒▒▒▒▒▒▒▒▒▒ INPUT HANDLING ▒▒▒▒▒▒▒▒▒▒▒
 pub fn parse_input(
@@ -16,7 +17,7 @@ pub fn parse_input(
 	}
 
 	//User input handling
-	let input = prompt_word(&gd.commands_vec);
+	let input = prompt_input!(&gd.commands_vec; {});
 
 	//▒▒▒▒▒▒ ADD NEW COMMANDS, STEP 2/4 ▒▒▒▒▒▒▒▒
 	match input.as_str() {
@@ -62,5 +63,5 @@ pub fn parse_input(
 }
 
 pub fn input_coord(gs: &GameStrings) -> Result<usize, std::num::ParseIntError> {
-	prompt_option().trim().parse::<usize>()
+	prompt_input!({}).trim().parse::<usize>()
 }

@@ -15,6 +15,7 @@ pub const NONE_ID_U16: u16 = 0;
 
 //▒▒▒▒▒▒▒▒▒ WORLDGEN PRESET ▒▒▒▒▒▒▒▒▒▒▒
 pub const DEFAULT_SEED: usize = 0;
+pub const DEFAULT_WORLDS_NUM: usize = 1;
 
 pub const ABS_ELEV_MIN: usize = 0;
 pub const ABS_ELEV_MAX: usize = 10000;
