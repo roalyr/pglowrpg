@@ -5,7 +5,7 @@
 
 (
 normal : "",
-announcement : "blue",
+announcement : "green",
 menu : "cyan",
 prompt : "purple",
 banner : "bright red",

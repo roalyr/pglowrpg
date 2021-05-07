@@ -3,10 +3,22 @@
 
 {
 "wg0" : "WORLDGEN",
-"wg1" : "Select a preset by entering its name, or leave empty to abort worldgen and return to main menu. You can enter a few characters from any word in the list to select the respective option. See ./presets_default/world and ./presets_user/world for available presets:",
-
+"intro" : r#"This application generates a world or a number of worlds from a selected preset, writes saved data and images (see options) into the "save" folder."#,
+"preset_prompt" : "Select a preset by entering its name, or leave empty to abort worldgen and return to main menu. You can enter a few characters from any word in the list to select the respective option. See ./presets_default/world and ./presets_user/world for available presets:",
+"preset_selected" : "Selected preset is:",
 "wg28" : "No preset matches input, aborting.",
-"wg4" : "Randomizing the world seed for this generation.",
+
+"seed_default_value" : "Default seed value is:",
+"seed_menu_prompt" : "Select a seed to be used.",
+"seed_entry_man" : "manually enter seed value.",
+"seed_entry_rand" : "randomize seed.",
+"seed_entry_pres" : "use seed from preset.",
+
+"seed_rand" : "Randomizing the world seed for this generation.",
+"seed_man" : "Seed value must be an integer. Invalid input will be replaced with default value.",
+"seed_pres" : "Using the seed from preset.",
+"seed_base" : "Base seed for worldgen is: ",
+"seed_used" : "Using seed: ",
 
 "wg7" : "Preparing topography map...",
 "wg9" : "Preparing climate maps...",
@@ -15,16 +27,10 @@
 "wg19" : "Preparing biome map...",
 "wg21" : "Preparing georegion map...",
 
-"wg2" : "Select a seed to be used:
-
- (number) - use entered value.
- (r) - randomize seed.
- (p) - use seed from preset.",
-
 "wg3" : "Selected preset: ",
 "wg24" : "How many worlds to generate? Enter the value, or leave empty to use the value from worldgen options.",
 
-"wg5" : "Using seed: ",
+
 
 "wg6" : "The amount of worlds to generate is: ",
 

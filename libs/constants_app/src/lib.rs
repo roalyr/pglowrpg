@@ -1,5 +1,3 @@
-pub const TERM_WIDTH_FALLBACK: usize = 50;
-
 //▒▒▒▒▒▒▒▒▒▒▒▒ PATHS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub const PATH_PRESETS_WORLD: &str = "./presets_default/world/";
 pub const PATH_PRESETS_PALETTES: &str = "./presets_default/palettes/";

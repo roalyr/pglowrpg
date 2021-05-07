@@ -1,4 +1,5 @@
-use text_ops::{prompt_option, MS, UI};
+use game_options::OPTIONS;
+use text_ops::{prompt_input, MS, UI};
 
 pub fn start() {
 	UI.print_newline();
@@ -11,19 +12,21 @@ pub fn start() {
 	UI.print_separator_thick("");
 
 	loop {
-		UI.print_newline();
-		UI.print_banner_dash(MS.menu_title());
-		UI.print_newline();
-		MS.print_menu();
-
-		let input = prompt_option();
+		let input = prompt_input!({
+			UI.print_newline();
+			UI.print_banner_dash(MS.menu_title());
+			UI.print_newline();
+			MS.print_menu();
+		});
 		if input.is_empty() {
 			continue;
 		}
+
 		match input.as_str() {
-			"w" => worldgen::start(),
-			"g" => game::start(),
-			"q" => return,
+			"1" => game::start(),
+			"2" => worldgen::start(),
+			"3" => {} // Settings.
+			"4" => return,
 			_ => {}
 		}
 	}

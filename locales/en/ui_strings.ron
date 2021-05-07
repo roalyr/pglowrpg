@@ -2,9 +2,15 @@
 //➠➣➤❯❯✦◼⋙ ∘⋄⊳›⁕↳⌷⌶⎆◜▫◦
 
 {
-"prompt_option" : " ⊳ ",
-"prompt_word" : " ⌶  ",
+"prompt_option" : " enter option number ⊳ ",
+"prompt_word" : " enter word or name ⌷  ",
+"prompt_number" : " enter numerical value ◼  ",
+
 "bullet1" : " ✦ ",
+
+"menu_left_bracket" : " (",
+"menu_right_bracket" : ") - ",
+
 "newline" : "",
 "separator_thick" : "─",
 "separator_thin" : "◜ ",

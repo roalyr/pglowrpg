@@ -11,16 +11,16 @@ use constants_app::*;
 use coords::Index;
 use game_options::OPTIONS;
 use io_ops::readron::presets;
-use text_ops::{prompt_input, selected, UI, WS};
+use text_ops::{prompt_input, UI, WS};
 
 #[rustfmt::skip]
 pub fn start() {
-	
-	UI.print_newline();
+	// Intro block.
 	UI.print_banner_dash(WS.str_banner_title());
 	UI.print_newline();
+	WS.print_intro();
 	
-	//Preset selection
+	// Preset selection.
 	let preset_def = io_ops::dir_file_contents(
 		PATH_PRESETS_WORLD,
 		EXTENSION_PRESET_WORLD,
@@ -33,74 +33,87 @@ pub fn start() {
 	let input_preset = prompt_input!( 
 		&presets;
 		{
-			WS.print_preset_select();
+			UI.print_separator_thin("");
 			WS.print_list_preset(&presets);
 		}
 	);
-	//Decide how to treat no input
+	// Decide how to treat no input.
 	if input_preset.is_empty() {
 		WS.print_no_input_preset();
 		return;
 	}
-	
-	UI.print_separator_thin("");
-
-	//Load a preset
 	let mut wi: presets::presets_worldgen::Stuff = presets::presets_worldgen::get(&input_preset);
-	selected(&WS.str_sel_preset(), &input_preset);
+	WS.print_preset_selected(&input_preset);
+	// TODO: make validator panic prompts.
 	preset_validate::all(&mut wi);
 
-	//Seed selection
-	let input_seed = prompt_input!( 
-		{ WS.print_prompt_seed_rand(); }
+	// Seed selection.
+	let input_seed = prompt_input!(
+		{
+			UI.print_separator_thin(""); 
+			WS.print_seed_default(constants_world::DEFAULT_SEED); 
+			WS.print_seed_menu(); 
+		} 
 	);
+	let mut world_seed = match input_seed.as_str(){
+		"1" => {
+			let seed_man = prompt_input!( Usize, { WS.print_seed_man(); });
+			seed_man.trim().parse::<usize>().unwrap_or(constants_world::DEFAULT_SEED)
+		},
+		"2" => {
+			WS.print_seed_rand();
+			seed_generating::get()
+		},
+		"3" => {
+			WS.print_seed_pres();
+			wi.seed
+		},
+		_ => { constants_world::DEFAULT_SEED }
+	};
+	WS.print_seed_base(world_seed);
 	
-	UI.print_separator_thin("");
-	
-	let mut temp_seed = if (input_seed == "r") || (input_seed == "R") {
-		WS.print_seed_rand();
-		seed_generating::get()
-	} else if (input_seed == "p") || (input_seed == "P") {
-		wi.seed
-	} else {
-		input_seed.trim().parse::<usize>().unwrap_or(wi.seed)
-	} ;
-
-	//Decide how many worlds to generate
+	// Decide how many worlds to generate.
 	let input_world_num = prompt_input!( 
-		{ WS.print_prompt_world_num(); }
+		{ UI.print_separator_thin(""); WS.print_prompt_world_num(); }
 	);
 	let world_num = input_world_num.trim().parse::<usize>().unwrap_or(1);
-	
 	UI.print_separator_thin("");
 	WS.print_world_num(world_num);
-
+	
 	//▒▒▒▒▒▒▒▒▒▒ GENERATION ▒▒▒▒▒▒▒▒▒▒▒
 	let layer_vec_len = wi.map_size * wi.map_size;
 	let noisemap_vec_len = wi.noisemap_size * wi.noisemap_size;
 	let map_size = wi.map_size;
 
 	for iter in 0..world_num {
-		//Increment seed for multiple worlds, must be before wi
-		temp_seed += iter;
+		// Increment seed for multiple worlds, must be before wi.
+		world_seed += iter;
 		
-		//Create a "WorldInit" struct that holds all the WS OPTIONS.
-		//Re-call this every loop iteration due to new seed
-		let mut wi: presets::presets_worldgen::Stuff = presets::presets_worldgen::get(&input_preset);
+		// Text block.
+		UI.print_separator_thick("");
+		WS.print_seed_used(world_seed);
+		UI.print_newline();
+		// After this will be the print-outs from the layer generation
+		// modules, as well as other progress reports.
+		
+		// Create a "WorldInit" struct that holds all the preset data.
+		// Re-call this every loop iteration due to new seed.
+		let mut wi: presets::presets_worldgen::Stuff = 
+			presets::presets_worldgen::get(&input_preset);
 		preset_validate::all(&mut wi);
-		wi.seed = temp_seed;
+		wi.seed = world_seed;
 		
-		//Create a "LayerPack" struct which holds all the world data.
-		//Re-call this every loop iteration due to new seed
+		// Create a "LayerPack" struct which holds all the world data.
+		// Re-call this every loop iteration due to new seed.
 		let mut lp = LayerPack {
 			xy: Index { map_size },
 			wi,
 			noisemap_vec_len,
 			layer_vec_len,
 			
-			//Defining the "flags" for each layer
-			//here insures there will be no mistake
-			//in using wrong offsets for them later on
+			// Defining the "flags" for each layer
+			// here insures there will be no mistake
+			// in using wrong offsets for them later on.
 			biomes: BitLayerBiomes {
 				data: vec![0; layer_vec_len],
 			},
@@ -130,15 +143,10 @@ pub fn start() {
 				data: vec![0; layer_vec_len],
 			},
 		};
-
-		//Show selected seed
-		UI.print_separator_thick("");
-		WS.print_seed_used(lp.wi.seed);
-		UI.print_newline();
 		
-		//Perform generation
-		//Keep the order as is, because the data is incrfmentally
-		//generated and used for later generation process
+		// Perform generation.
+		// Keep the order as is, because the data is incrfmentally
+		// generated and used for later generation process.
 		WS.print_prep_topog(); layer_ops::terrain_mapping::get(&mut lp);
 		WS.print_prep_climate(); layer_ops::climate_mapping::get(&mut lp);
 		WS.print_prep_wmask(); layer_ops::watermask_mapping::get(&mut lp);
@@ -146,10 +154,9 @@ pub fn start() {
 		WS.print_prep_biome(); layer_ops::biome_mapping::get(&mut lp);
 		WS.print_prep_georeg(); layer_ops::georegion_mapping::get(&mut lp);
 
-		//WRITING DATA
+		// Write data.
 		write_save(&mut lp, &input_preset);
-		UI.print_separator_thin("");
 		WS.print_done_worldgen();
-		// Add an empty prompt "continue..."
 	}
+// TODO: Add an empty prompt "continue..."
 }

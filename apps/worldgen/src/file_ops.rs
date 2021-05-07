@@ -17,32 +17,44 @@ pub fn write_save(
 ) {
 	let world_name = [preset_name, "_", &lp.wi.seed.to_string()].concat();
 
-	//Add custom save names, check for existing, etc.
+	// Add custom save names, check for existing, etc.
 
-	//Make a save directory if none exists
-	let save_dir = Path::new(PATH_SAVE).to_path_buf();
-	let world_dir = Path::new(PATH_SAVE).to_path_buf().join(world_name);
-	create_dir(&save_dir);
-	create_dir(&world_dir);
+	// Make a save directory if none exists (unless it is a cold run).
+	let mut make_dirs = false;
+	let mut save_dir = Path::new("").to_path_buf();
+	let mut world_dir = Path::new("").to_path_buf();
 
-	//Write the data
+	if OPTIONS.write_data_files
+		|| OPTIONS.write_data_files
+		|| OPTIONS.write_data_files
+	{
+		UI.print_separator_thin("");
+		make_dirs = true;
+	}
+
+	if make_dirs {
+		save_dir = Path::new(PATH_SAVE).to_path_buf();
+		world_dir = Path::new(PATH_SAVE).to_path_buf().join(world_name);
+		create_dir(&save_dir);
+		create_dir(&world_dir);
+		// TODO: save a copy of preset into a save folder
+	}
+
+	// Write the data
 	if OPTIONS.write_data_files {
 		WS.print_write_data();
 		write_data(lp, &world_dir);
 	} else {
-		//But still save a copy of preset into a save folder
 		WS.print_write_no_data();
 	}
-	UI.print_separator_thin("");
 
-	//Optionally render colorful images
+	// Optionally render colorful images
 	if OPTIONS.render_colorized_maps {
 		WS.print_write_color();
 		write_images_color(lp, &world_dir);
 	}
-	UI.print_separator_thin("");
 
-	//Optionally render raw images
+	// Optionally render raw images
 	if OPTIONS.render_raw_maps {
 		WS.print_write_raw();
 		write_images_raw(lp, &world_dir);

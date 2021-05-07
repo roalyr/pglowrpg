@@ -13,7 +13,7 @@
 // This option will force the game to repeat the text and prompts
 // until valid input is provided. For accessibility purposes and TTS.
 
-	repeat_text_if_no_input: true,
+	repeat_text_if_no_input: false,
 	
 // Whether to use colorized text or not. Text colors are according to
 // preset in <where? the folder will change>
@@ -40,10 +40,10 @@
 // If data files writing is disabled, no actual world data will be written
 // it will be a "cold run" generation.
 	
-	write_data_files : true,
+	write_data_files : false,
 
 // This will render raw (not colorized) images where applicable.
 
-	render_colorized_maps : true,
-	render_raw_maps : true,
+	render_colorized_maps : false,
+	render_raw_maps : false,
 )

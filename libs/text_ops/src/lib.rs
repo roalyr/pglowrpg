@@ -47,6 +47,8 @@ lazy_static! {
 	};
 }
 
+// TODO: split into modules. 
+
 //▒▒▒▒▒▒▒▒▒▒ PRINT MACROS ▒▒▒▒▒▒▒▒▒▒
 // Print a block of text with different options.
 #[macro_export]
@@ -135,11 +137,11 @@ macro_rules! print_paragraph {
 	};
 }
 
-// Print a list of options
+// Print a list of vector options (strings)
 #[macro_export]
 macro_rules! print_list {
 	($bul: expr; $text_col: expr;
-	$struct_name: ident($($fn_name: ident);*;)) =>
+	$struct_name: ident($($fn_name: ident, $str_name: expr);*;)) =>
 	{
 		$(impl $struct_name {
 			pub fn $fn_name(&self, str_list: &Vec<String>){
@@ -154,16 +156,82 @@ macro_rules! print_list {
 				}
 					Err(_) => {}
 				}
-				let mut s = String::new();
-				println!("");
+				let mut s1 = self.s[$str_name].to_string();
+				let mut s2 = String::new();
+				// Print the prompt before the list (same color).
+				match OPTIONS.use_textwrap{
+					true => {s1 = fill(&s1, Options::new(term_width));},
+					false => {}
+				}
+				match color_good{
+					// Put newline before the list itself.
+					true => {println!("{}\n", s1.color($text_col));}
+					false => {println!("{}\n", s1);}
+				}
+				// Print the list itself.
 				for entry in str_list {
 					match OPTIONS.use_textwrap{
-						true => {s = fill(&entry, Options::new(term_width));},
-						false => {s = entry.to_string();}
+						true => {s2 = fill(&entry, Options::new(term_width));},
+						false => {s2 = entry.to_string();}
 					}
 					match color_good{
-						true => {println!("{}{}", $bul.color($text_col), s.color($text_col));}
-						false => {println!("{}{}", $bul, s);}
+						true => {println!("{}{}", $bul.color($text_col), s2.color($text_col));}
+						false => {println!("{}{}", $bul, s2);}
+					}
+				}
+			}
+		})*
+	};
+}
+
+// Print a list of menu options
+#[macro_export]
+macro_rules! print_menu {
+	($text_col: expr; $lb: expr; $rb: expr;
+	$struct_name: ident($($fn_name: ident, $str_name: expr, $entries: expr);*;)) =>
+	{
+		$(impl $struct_name {
+			pub fn $fn_name(&self){
+				use colored::{Colorize, Color};
+				let term_width = termwidth();
+				// Chek if color from preset can be parsed, or fallback.
+				let color_res : Result<Color, ()> = $text_col.parse();
+				let mut color_good = false;
+				match color_res {
+					Ok(_) => {
+						if OPTIONS.use_text_colors {color_good = true;}
+				}
+					Err(_) => {}
+				}
+				let mut s1 = self.s[$str_name].to_string();
+				let mut s2 = String::new();
+				// Print the prompt before the list (same color).
+				match OPTIONS.use_textwrap{
+					true => {s1 = fill(&s1, Options::new(term_width));},
+					false => {}
+				}
+				match color_good{
+					// Put newline before the list itself.
+					true => {println!("{}\n", s1.color($text_col));}
+					false => {println!("{}\n", s1);}
+				}
+				// Print the list itself.
+				for (i, entry) in $entries.iter().enumerate() {
+					let i = (i + 1).to_string(); // Start from 1
+					match OPTIONS.use_textwrap{
+						true => {s2 = fill(&self.s[&entry.to_string()], Options::new(term_width));},
+						false => {s2 = self.s[&entry.to_string()].to_string();}
+					}
+					match color_good{
+						true => {
+							println!("{}{}{}{}",
+								$lb.color($text_col), // Left bracket.
+								i.color($text_col),
+								$rb.color($text_col), // Right bracket.
+								s2.color($text_col)
+							);
+						}
+						false => {println!("{}{}{}{}", $lb, i, $rb, s2);}
 					}
 				}
 			}
@@ -304,12 +372,18 @@ fn new_line_input(prompt_symbol: &String) -> String {
 	}
 	let _ = io::stdout().flush();
 	io::stdin().read_line(&mut input).unwrap();
+	println!(""); // Empty line after input.
 	input.trim().to_string()
 }
 
 // Returns just the input as is.
 pub fn prompt_option() -> String {
 	new_line_input(&UI.s["prompt_option"])
+}
+
+// Returns just the input as is.
+pub fn prompt_number() -> String {
+	new_line_input(&UI.s["prompt_number"])
 }
 
 // Returns input but only if it matvhes the list of allowed words.
@@ -400,18 +474,35 @@ macro_rules! prompt_input {
 			input
 		}
 	};
+	// If type is defined then it will be asking for number.
+	// Type is but a flag here though.
+	($_: ty, $b: block) => {
+		{
+			use text_ops::prompt_number;
+			let mut input = String::new();
+			match OPTIONS.repeat_text_if_no_input{
+				// Keep pestering the player to no end
+				true => {
+					while input.is_empty() {
+						// Call all the suggested functions (prompts)
+						$b
+						input = prompt_number();
+					}
+				},
+				// Or ask once.
+				false => {
+					// Call all the suggested functions (prompts)
+					$b
+					input = prompt_number();
+				}
+			}
+			input
+		}
+	};
 }
 
-//TODO add tw
+//TODO add tw, or?
 //▒▒▒▒▒▒▒▒▒▒▒▒ CONFIRMATION ▒▒▒▒▒▒▒▒▒▒▒▒▒
-pub fn selected(
-	// Make a macro for different colors?
-	prompt: &str,
-	input: &str,
-) {
-	println!("{}", [&prompt, "\"", &input, "\""].concat());
-}
-
 pub fn print_progress(
 	count: usize,
 	total: usize,

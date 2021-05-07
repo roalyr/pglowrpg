@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ GENERIC ▒▒▒▒▒▒▒▒▒▒▒▒▒
+// TODO: move these to app constants and make it in order.
 pub const ONE_USIZE: usize = 1;
 pub const ONE_U16: u16 = 1;
 pub const ZERO_USIZE: usize = 0;
@@ -13,6 +14,8 @@ pub const INIT_ID_U16: u16 = 1;
 pub const NONE_ID_U16: u16 = 0;
 
 //▒▒▒▒▒▒▒▒▒ WORLDGEN PRESET ▒▒▒▒▒▒▒▒▒▒▒
+pub const DEFAULT_SEED: usize = 0;
+
 pub const ABS_ELEV_MIN: usize = 0;
 pub const ABS_ELEV_MAX: usize = 10000;
 pub const ABS_RAIN_MIN: usize = 0;

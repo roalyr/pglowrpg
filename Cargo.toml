@@ -90,6 +90,7 @@ members = [
 
 [dependencies]
 io_ops = { path = "./libs/io_ops" }
+game_options = { path = "./libs/game_options" }
 text_ops = { path = "./libs/text_ops" }
 worldgen = { path = "./apps/worldgen" }
 game = { path = "./apps/game" }
