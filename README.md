@@ -4,6 +4,8 @@
 ## Features
 ![Biomes map of some medium continent][biomes]
 
+![Worldgen UI sample][ui_sample]
+
 ![Some redundant rendering][animation]
 
 * World generation with optional image maps output (colorized and raw).
@@ -36,5 +38,6 @@ You must run pGLOWrpg from the folder that contains "options", "presets", "local
 folders, so there is no need to do "cargo install".
 
 [splash]: doc/images/pglowrpg_banner.png "Banner"
+[ui_sample]: doc/images/pglowrpg_ui_sample.jpg "Ui sample"
 [biomes]: doc/images/biomes_example.png "Biomes map of some medium continent"
 [animation]: doc/images/pglowrpg.gif "Animation"
