@@ -40,10 +40,10 @@
 // If data files writing is disabled, no actual world data will be written
 // it will be a "cold run" generation.
 	
-	write_data_files : false,
+	write_data_files : true,
 
 // This will render raw (not colorized) images where applicable.
 
-	render_colorized_maps : false,
-	render_raw_maps : false,
+	render_colorized_maps : true,
+	render_raw_maps : true,
 )

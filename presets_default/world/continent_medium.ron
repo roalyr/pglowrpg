@@ -1,3 +1,4 @@
+(
 // ▓▓▓▓▓▓▓▓▓▓ GENERAL OPTIONS ▓▓▓▓▓▓▓▓▓▓▓
 // These options do not affect the generator as much as they 
 // affect the boundary and initial conditions. They can be freely
@@ -226,3 +227,4 @@
 	magic1 : 0,  //
 	magic2 : 0, //
 	magic3 : 0, //
+)
