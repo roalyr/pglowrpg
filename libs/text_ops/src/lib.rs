@@ -5,10 +5,13 @@ pub mod output;
 pub mod ui_str;
 pub mod worldgen_str;
 
+use constants_app::*;
 use game_options::OPTIONS;
-use io_ops::readron::{palettes, strings};
+use io_ops::get_strings_hash;
 use lazy_static::lazy_static;
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use std::path::Path;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ LOCALE ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub struct WgStrings {
@@ -26,22 +29,29 @@ pub struct UiStrings {
 lazy_static! {
 	pub static ref WS: WgStrings = {
 		WgStrings {
-			s: strings::worldgen_strings::get(&OPTIONS.locale),
+			s: get_strings_hash!(OPTIONS.locale, NAME_STRINGS_WORLDGEN),
 		}
 	};
 	pub static ref GS: GmStrings = {
 		GmStrings {
-			s: strings::game_strings::get(&OPTIONS.locale),
+			s: get_strings_hash!(OPTIONS.locale, NAME_STRINGS_GAME),
 		}
 	};
 	pub static ref MS: MnStrings = {
 		MnStrings {
-			s: strings::menu_strings::get(&OPTIONS.locale),
+			s: get_strings_hash!(OPTIONS.locale, NAME_STRINGS_MENU),
 		}
 	};
 	pub static ref UI: UiStrings = {
 		UiStrings {
-			s: strings::ui_strings::get(&OPTIONS.locale),
+			s: get_strings_hash!(OPTIONS.locale, NAME_STRINGS_UI),
 		}
 	};
+}
+
+pub fn print_error(st: String) {
+	println!(
+		"ERROR in locale .ron file. Key for string not found: \n{}\n",
+		st
+	);
 }

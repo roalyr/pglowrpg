@@ -10,8 +10,10 @@ io_ops = { path = "../../libs/io_ops" }
 constants_app = { path = "../../libs/constants_app" }
 game_options = { path = "../../libs/game_options" }
 
+serde = { version = "1.0", features = ["derive"]  }
 substring = "1.4"
 terminal_size = "0.1"
 colored = "2.0"
+ron = "0.6"
 lazy_static = "1.4"
 textwrap = { version = "0.13", features = ["terminal_size"] }

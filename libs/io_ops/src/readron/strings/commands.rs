@@ -2,9 +2,10 @@ use constants_app::*;
 use serde::{Deserialize, Serialize};
 use std::path::Path;
 
-const FILENAME: &str = "commands";
-
 //▒▒▒▒▒▒ ADD NEW COMMANDS, STEP 1/4 ▒▒▒▒▒▒▒▒
+// TODO: check if this can also be rep'aced with a hashmap after
+// implementing the algorithm to pre-check stgings.
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Stuff {
 	pub move_west: String,
@@ -22,7 +23,7 @@ pub struct Stuff {
 pub fn get(input: &str) -> Stuff {
 	let path = Path::new(PATH_LOCALES)
 		.join(&input)
-		.join(FILENAME)
+		.join(NAME_STRINGS_COMMANDS)
 		.with_extension(EXTENSION_LOCALE);
 	let data = crate::file_to_string(&vec![path.clone()]);
 	let stuff: Stuff = match ron::from_str(&data) {

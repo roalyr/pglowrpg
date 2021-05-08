@@ -7,6 +7,7 @@ edition = "2018"
 
 [dependencies]
 constants_world = { path = "../../libs/constants_world" }
+#game_options = { path = "../../libs/game_options" }
 constants_app = { path = "../../libs/constants_app" }
 prng = { path = "../../libs/prng" }
 
