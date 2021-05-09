@@ -7,7 +7,7 @@ pub mod worldgen_str;
 
 use constants_app::*;
 use game_options::OPTIONS;
-use io_ops::get_strings_hash;
+use io_ops::get_strings_hashmaps;
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -29,22 +29,22 @@ pub struct UiStrings {
 lazy_static! {
 	pub static ref WS: WgStrings = {
 		WgStrings {
-			s: get_strings_hash!(OPTIONS.locale, NAME_STRINGS_WORLDGEN),
+			s: get_strings_hashmaps!(OPTIONS.locale, NAME_STRINGS_WORLDGEN),
 		}
 	};
 	pub static ref GS: GmStrings = {
 		GmStrings {
-			s: get_strings_hash!(OPTIONS.locale, NAME_STRINGS_GAME),
+			s: get_strings_hashmaps!(OPTIONS.locale, NAME_STRINGS_GAME),
 		}
 	};
 	pub static ref MS: MnStrings = {
 		MnStrings {
-			s: get_strings_hash!(OPTIONS.locale, NAME_STRINGS_MENU),
+			s: get_strings_hashmaps!(OPTIONS.locale, NAME_STRINGS_MENU),
 		}
 	};
 	pub static ref UI: UiStrings = {
 		UiStrings {
-			s: get_strings_hash!(OPTIONS.locale, NAME_STRINGS_UI),
+			s: get_strings_hashmaps!(OPTIONS.locale, NAME_STRINGS_UI),
 		}
 	};
 }

@@ -4,7 +4,6 @@ version = "0.1.0"
 authors = ["roal_yr"]
 edition = "2018"
 
-
 # The development profile, used for `cargo build`.
 [profile.dev]
 
@@ -80,16 +79,13 @@ codegen-units = 16
 incremental = false
 overflow-checks = false
 
-
 [workspace]
 members = [
 	"apps/*", 
 	"libs/*",
 ]
 
-
 [dependencies]
-io_ops = { path = "./libs/io_ops" }
 game_options = { path = "./libs/game_options" }
 text_ops = { path = "./libs/text_ops" }
 worldgen = { path = "./apps/worldgen" }

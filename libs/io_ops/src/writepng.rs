@@ -38,6 +38,7 @@ pub enum GradMode {
 	Random,
 }
 
+// TODO: make things more neat here via macros?
 pub fn combined_png(
 	array_bg: &Vec<u8>,
 	array_fg: &Vec<u8>,

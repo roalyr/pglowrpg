@@ -2,19 +2,9 @@ use crate::*;
 
 pub fn get_layerpack(gs: &GameStrings) -> Option<LayerPack> {
 	//Select a world to load
-	let save_dir_tuple = io_ops::dir_dir_contents(PATH_SAVE, "", "");
+	let save_dir = io_ops::dir_dir_contents(PATH_SAVE);
 
-	//Get the contents of save dir
-	let save_dir_paths = save_dir_tuple.1;
-	let save_dir_formatted = [save_dir_tuple.0, "\n".to_string()].concat();
-	//println!("{}", &gs.gm_str.gm3);
-
-	//Read input to pick a specific save
-
-	//TODO
-	println!("{}", &save_dir_formatted);
-
-	let input_save = prompt_input!(&save_dir_paths, {});
+	let input_save = prompt_input!(&save_dir, {});
 
 	if !input_save.is_empty() {
 		//println!("{}", &gs.ui_el.separator2);

@@ -12,6 +12,11 @@ impl Index {
 		i: usize,
 		j: usize,
 	) -> usize {
+		// Attempt to sync i, j which are used in worldgen, and x, y
+		// coordinates in the game... But, well, I think it turned out
+		// to be y, x instead.
+		// TODO: move in-game coordinate interpreting function here and
+		// make them synchronized.
 		let x = (self.map_size - 1).saturating_sub(i);
 		let y = j;
 		let result = (x * self.map_size).checked_add(y);

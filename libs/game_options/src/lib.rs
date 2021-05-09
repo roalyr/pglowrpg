@@ -1,4 +1,5 @@
 use constants_app::*;
+use io_ops::file_to_string;
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
 use std::path::Path;
@@ -36,7 +37,7 @@ pub fn get_options() -> Stuff {
 		.join(NAME_OPTIONS)
 		.with_extension(EXTENSION_OPTION);
 
-	let data = io_ops::file_to_string(&vec![path.clone()]);
+	let data = file_to_string(&vec![path.clone()]);
 
 	let stuff: Stuff = match ron::from_str(&data) {
 		Ok(f) => f,

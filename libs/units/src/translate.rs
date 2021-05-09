@@ -1,12 +1,14 @@
+// Return absolute value from relative.
 pub fn get_abs(
-	val: f32,
-	val_cap: f32,
+	val_rel: f32,
+	val_cap: f32, // Maximum possible value (like 255.0).
 	abs_min: f32,
 	abs_max: f32,
 ) -> f32 {
-	val / val_cap * (abs_max - abs_min) + abs_min
+	val_rel / val_cap * (abs_max - abs_min) + abs_min
 }
 
+// Return relative from absolute.
 pub fn get_rel(
 	val_abs: f32,
 	val_cap: f32,
@@ -16,9 +18,9 @@ pub fn get_rel(
 	val_cap * (val_abs - abs_min) / (abs_max - abs_min)
 }
 
+// A table that returns a value of power x from y = 2^x.
+// Used in storing region size as u8.
 pub fn get_pow_2_size(thing_size: usize) -> u8 {
-	//Should be moved to libe?
-	//Vlues must not be changed
 	match thing_size {
 		0..=2 => 1,
 		3..=4 => 2,

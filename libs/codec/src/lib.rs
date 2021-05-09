@@ -1,5 +1,4 @@
 #![allow(non_snake_case)]
-
 use coords::Index;
 use io_ops::readron::presets;
 use serde::{Deserialize, Serialize};
@@ -65,6 +64,9 @@ pub struct BitLayerGeoregID {
 	pub data: Vec<u16>,
 }
 
+//▒▒▒▒▒▒▒▒▒▒▒▒ METHODS ▒▒▒▒▒▒▒▒▒▒▒▒▒
+// Those macros implement write and read methods for the
+// bit layer structs.
 macro_rules! impl_with_masks {
     ($($struct_type:ty, $val_type:ty);*;) => {
         $(impl $struct_type {
@@ -75,16 +77,13 @@ macro_rules! impl_with_masks {
 				index: usize,
 			) {
 				let zeros = mask.trailing_zeros();
-
-				//overflow guard
+				// Overflow guard.
 				if val > (mask >> zeros) {
-					panic!("bit layer value overflow for mask {:#0b}", mask)
+					panic!("ERROR: bit layer value overflow for mask {:#0b}", mask)
 				}
-
-				//flush then write
+				// Flush then write.
 				self.data[index] = (self.data[index] & !mask) | (((mask >> zeros) & val) << zeros);
 			}
-
 			pub fn read(
 				&self,
 				mask: $val_type,
@@ -92,7 +91,7 @@ macro_rules! impl_with_masks {
 			) -> $val_type {
 				(self.data[index] & mask) >> mask.trailing_zeros()
 			}
-
+			// I don't remember why was this made. Maybe for debug.
 			pub fn expose(
 				&self,
 				index: usize,
@@ -111,64 +110,42 @@ macro_rules! impl_without_masks {
 				val: $val_type,
 				index: usize,
 			) {
-				//overflow guard
+				// Overflow guard.
 				let max_val = <$val_type>::MAX;
 				if val > max_val {
-					panic!("bit layer value overflow for type max value {}", max_val)
+					panic!("ERROR: bit layer value overflow for type max value {}", max_val)
 				}
-
 				self.data[index] = val;
 			}
-
 			pub fn read(
 				&self,
 				index: usize,
 			) -> $val_type {
 				self.data[index]
 			}
-
         })*
     }
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ INIT ▒▒▒▒▒▒▒▒▒▒▒▒▒
-
-impl_with_masks!(
-	BitLayerRivers, u16;
-	BitLayerClimate, u16;
-	BitLayerTopography, u16;
-);
-
-impl_without_masks!(
-	BitLayerGeoregID, u16;
-	BitLayerRiversID, u16;
-	BitLayerBiomes, u8;
-);
-
 //▒▒▒▒▒▒▒▒ BIT LAYER STORAGE ▒▒▒▒▒▒▒▒▒▒▒▒
-//credits to ZippyMagician from "One Lone Coder" community
-//for initial draft of this macro.
-
+// Credits to ZippyMagician from "One Lone Coder" community
+// for initial draft of this macro.
+// This macro initiates a bit layer structure.
 #[macro_export]
 macro_rules! bit_layer {
-
 	//general case with masks
-	($layer_val_type: ty,
-	$length: expr,
-	[$($mask_name: ident : $mask_val: expr), *]
-	) => {{
-
+	($layer_val_type: ty, $length: expr,
+	[$($mask_name: ident : $mask_val: expr), *]) => {
+	{
 		#[derive(Debug)]
 		struct Masks {
 			$($mask_name : $layer_val_type), *
 		}
-
 		#[derive(Debug)]
 		struct BitLayer {
 			data: Vec<$layer_val_type>,
 			masks: Masks,
-			}
-
+		}
 		impl BitLayer {
 			fn new(
 				length: usize
@@ -177,8 +154,7 @@ macro_rules! bit_layer {
 					data: vec![0; length],
 					masks: Masks{ $($mask_name : $mask_val), * },
 				}
-				}
-
+			}
 			pub fn write(
 				&mut self,
 				val: $layer_val_type,
@@ -186,37 +162,30 @@ macro_rules! bit_layer {
 				index: usize,
 			) {
 				let zeros = mask.trailing_zeros();
-
 				//overflow guard
 				if val > (mask >> zeros) {
 					panic!("bit layer value overflow for mask {:#0b}", mask)
 				}
-
 				self.data[index] |= ((mask >> zeros) & val) << zeros;
-				}
-
+			}
 			pub fn read(
 				&self,
 				mask: $layer_val_type,
 				index: usize,
 			) -> $layer_val_type {
 				(self.data[index] & mask) >> mask.trailing_zeros()
-				}
 			}
-
+		}
 		BitLayer::new($length)
-		}};
-
+		}
+	};
 	//whole-value case
-	($layer_val_type: ty,
-	$length: expr
-	) => {{
-
+	($layer_val_type: ty, $length: expr) => {
+	{
 		#[derive(Debug)]
 		struct BitLayer {
 			data: Vec<$layer_val_type>,
-			}
-
+		}
 		impl BitLayer {
 			fn new(
 				length: usize
@@ -224,8 +193,7 @@ macro_rules! bit_layer {
 				Self {
 					data: vec![0; length],
 				}
-				}
-
+			}
 			pub fn write(
 				&mut self,
 				val: $layer_val_type,
@@ -236,22 +204,34 @@ macro_rules! bit_layer {
 				if val > max_val {
 					panic!("bit layer value overflow for type max value {}", max_val)
 				}
-
 				self.data[index] = val;
-				}
-
+			}
 			pub fn read(
 				&self,
 				index: usize,
 			) -> $layer_val_type {
 				self.data[index]
-				}
 			}
-
+		}
 		BitLayer::new($length)
-		}};
-
+		}
+	};
 }
+
+//▒▒▒▒▒▒▒▒▒▒▒▒ INIT ▒▒▒▒▒▒▒▒▒▒▒▒▒
+// Set up laysers which have the masks to i/o different kinds of data.
+impl_with_masks!(
+	BitLayerRivers, u16;
+	BitLayerClimate, u16;
+	BitLayerTopography, u16;
+);
+
+// Simple data layers without masks.
+impl_without_masks!(
+	BitLayerGeoregID, u16;
+	BitLayerRiversID, u16;
+	BitLayerBiomes, u8;
+);
 
 //For table maps
 // vector of vectors filled with different things
