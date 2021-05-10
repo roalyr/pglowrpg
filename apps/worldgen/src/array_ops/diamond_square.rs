@@ -1,5 +1,5 @@
 use crate::array_ops::interpolate::mitchell;
-use coords::Index;
+use unit_systems::coords::Index;
 
 //Constants to generic and app
 //a margin that is meant to crop the border artifacts in DS algorithm
@@ -56,7 +56,7 @@ pub fn get(
 					+ p.array[xy.ind(x, region_y)]
 					+ p.array[xy.ind(region_x, y)]
 					+ p.array[xy.ind(region_x, region_y)];
-				let shift = prng::get(
+				let shift = pseudo_rng::get(
 					-half_size_f
 						+ land_continuity * half_size_f * (ONE_F32 - land_concentrator),
 					half_size_f
@@ -107,7 +107,7 @@ fn diamond_substep(
 		+ p.array[xy.ind((center_x + half_size) % p.size, center_y)]
 		+ p.array[xy.ind(center_x, (center_y.saturating_sub(half_size)) % p.size)]
 		+ p.array[xy.ind(center_x, (center_y + half_size) % p.size)];
-	let shift = prng::get(
+	let shift = pseudo_rng::get(
 		-half_size_f
 			+ p.land_continuity * half_size_f * (ONE_F32 - p.land_concentrator),
 		half_size_f

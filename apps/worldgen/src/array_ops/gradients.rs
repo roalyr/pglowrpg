@@ -1,6 +1,6 @@
-use constants_world::*;
-use coords::Index;
+use constants::world::*;
 use std::f32::consts::PI;
+use unit_systems::coords::Index;
 
 //Into the constants lib
 const SQUARE_255: f32 = 32512.5;

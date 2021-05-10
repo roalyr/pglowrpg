@@ -1,4 +1,4 @@
-use coords::Index;
+use unit_systems::coords::Index;
 use pathfinding::prelude::astar;
 
 // Weights of moving orthogonally and diagonally.

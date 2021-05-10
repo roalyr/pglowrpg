@@ -1,6 +1,6 @@
 use crate::array_ops;
 use crate::array_ops::noise_maps::NoiseMode::*;
-use codec::LayerPack;
+use game_data_codec::LayerPack;
 
 pub fn get(lp: &mut LayerPack) {
 	temperature(lp);

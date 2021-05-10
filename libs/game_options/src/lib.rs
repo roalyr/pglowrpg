@@ -1,4 +1,4 @@
-use constants_app::*;
+use constants::app::*;
 use io_ops::file_to_string;
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};

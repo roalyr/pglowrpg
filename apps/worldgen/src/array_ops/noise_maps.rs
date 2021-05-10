@@ -1,5 +1,5 @@
-use coords::Index;
 use noise::*;
+use unit_systems::coords::Index;
 
 #[derive(Copy, Clone)]
 pub enum NoiseMode {

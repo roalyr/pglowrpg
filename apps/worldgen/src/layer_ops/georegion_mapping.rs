@@ -1,6 +1,7 @@
-use codec::LayerPack;
-use coords::Index;
+use game_data_codec::LayerPack;
+use unit_systems::coords::Index;
 
+// To consts
 const ID_INIT: u16 = 1;
 
 //This code is unfinished

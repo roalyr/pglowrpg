@@ -6,15 +6,15 @@ pub mod vector_ops;
 pub mod waterbody_ops;
 pub mod width_ops;
 
-use codec::LayerPack;
-use constants_world::*;
+use constants::world::*;
+use game_data_codec::LayerPack;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ STRUCTURES ▒▒▒▒▒▒▒▒▒▒▒▒▒
 //River entry stores all the relevant river data.
 #[derive(Clone)]
 pub struct RiverEntry {
 	river_id: u16,
-	path_array: Vec<path::Pos>,
+	path_array: Vec<pathfinding::Pos>,
 	width: u16,
 	source: (usize, usize),
 	end: (usize, usize),
@@ -50,7 +50,7 @@ pub struct RgParams {
 	river_est_number: usize,
 	river_count_number: usize,
 	upstream_neighbor: (usize, usize),
-	dv: path::DirVector,
+	dv: pathfinding::DirVector,
 	rivers_paths: RiversPaths,
 }
 
@@ -64,7 +64,7 @@ pub fn get(lp: &mut LayerPack) {
 		river_est_number: 0,
 		river_count_number: 0,
 		upstream_neighbor: (0, 0),
-		dv: path::DirVector {
+		dv: pathfinding::DirVector {
 			x0: 0,
 			y0: 0,
 			x1: lp.wi.map_size / 2, //end in the center

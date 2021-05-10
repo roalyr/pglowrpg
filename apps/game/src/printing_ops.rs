@@ -193,7 +193,7 @@ pub fn map_render_land(
 
 				//Swap characters every other row for better visuals
 				//Or do it randomly
-				let random = prng::get(0.0, 1.0, gd.lp.wi.seed, gd.index);
+				let random = pseudo_rng::get(0.0, 1.0, gd.lp.wi.seed, gd.index);
 
 				if random < 0.5 {
 					//if x % 2 == 0 {

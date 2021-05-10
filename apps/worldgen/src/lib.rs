@@ -6,12 +6,13 @@ pub mod misc_ops;
 use crate::file_ops::write_save;
 use crate::misc_ops::preset_validate;
 use crate::misc_ops::seed_generating;
-use codec::*;
-use constants_app::*;
-use coords::Index;
+use constants::app::*;
+use constants::world::*;
+use game_data_codec::*;
 use game_options::OPTIONS;
 use io_ops::readron::presets;
 use text_ops::{prompt_input, UI, WS};
+use unit_systems::coords::Index;
 
 #[rustfmt::skip]
 pub fn start() {
@@ -51,14 +52,14 @@ pub fn start() {
 	let input_seed = prompt_input!(
 		{
 			UI.print_separator_thin(""); 
-			WS.print_seed_default(constants_world::DEFAULT_SEED); 
+			WS.print_seed_default(DEFAULT_SEED); 
 			WS.print_seed_menu(); 
 		} 
 	);
 	let mut world_seed = match input_seed.as_str(){
 		"1" => {
 			let seed_man = prompt_input!( Usize, { WS.print_seed_man(); });
-			seed_man.trim().parse::<usize>().unwrap_or(constants_world::DEFAULT_SEED)
+			seed_man.trim().parse::<usize>().unwrap_or(DEFAULT_SEED)
 		},
 		"2" => {
 			WS.print_seed_rand();
@@ -68,7 +69,7 @@ pub fn start() {
 			WS.print_seed_pres();
 			wi.seed
 		},
-		_ => { constants_world::DEFAULT_SEED }
+		_ => {DEFAULT_SEED }
 	};
 	WS.print_seed_base(world_seed);
 	
@@ -76,7 +77,7 @@ pub fn start() {
 	let input_world_num = prompt_input!( 
 		{
 			UI.print_separator_thin(""); 
-			WS.print_world_num_default(constants_world::DEFAULT_WORLDS_NUM);
+			WS.print_world_num_default(DEFAULT_WORLDS_NUM);
 			WS.print_prompt_world_num();
 		}
 	);

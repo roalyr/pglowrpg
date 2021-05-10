@@ -1,6 +1,6 @@
 use crate::layer_ops::river_mapping::{RgParams, RiverEntry};
-use codec::LayerPack;
-use constants_world::*;
+use constants::world::*;
+use game_data_codec::LayerPack;
 
 impl RgParams {
 	pub fn map_width(
@@ -73,8 +73,8 @@ impl RgParams {
 	fn fix_width(
 		&mut self,
 		lp: &mut LayerPack,
-		path_array: Vec<path::Pos>,
-	) -> Vec<path::Pos> {
+		path_array: Vec<pathfinding::Pos>,
+	) -> Vec<pathfinding::Pos> {
 		let mut path_array_downstr = Vec::new();
 		for n in path_array.windows(2) {
 			let i0 = n[0].0;

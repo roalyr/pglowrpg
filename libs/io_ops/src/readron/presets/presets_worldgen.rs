@@ -1,8 +1,7 @@
-use constants_app::*;
+use constants::app::*;
+use constants::world::TempGrad;
 use serde::{Deserialize, Serialize};
 use std::path::Path;
-
-use constants_world::TempGrad;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Stuff {

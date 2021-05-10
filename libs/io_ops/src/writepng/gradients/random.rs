@@ -7,11 +7,11 @@ pub fn get(array: &Vec<u8>) -> Vec<u8> {
 
 		if *cell_v != 0 {
 			idat[index + 3] = 255;
-			idat[index] = prng::get(0.0, 255.0, 1, *cell_v as usize) as u8;
+			idat[index] = pseudo_rng::get(0.0, 255.0, 1, *cell_v as usize) as u8;
 
-			idat[index + 1] = prng::get(0.0, 255.0, 2, *cell_v as usize) as u8;
+			idat[index + 1] = pseudo_rng::get(0.0, 255.0, 2, *cell_v as usize) as u8;
 
-			idat[index + 2] = prng::get(0.0, 255.0, 3, *cell_v as usize) as u8;
+			idat[index + 2] = pseudo_rng::get(0.0, 255.0, 3, *cell_v as usize) as u8;
 		} else {
 			idat[index + 3] = 255;
 			idat[index] = 0;

@@ -1,6 +1,6 @@
-use codec::LayerPack;
-use constants_world::*;
-use units::translate;
+use constants::world::*;
+use game_data_codec::LayerPack;
+use unit_systems::translate;
 
 pub fn get(lp: &mut LayerPack) {
 	for index in 0..lp.layer_vec_len {

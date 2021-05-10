@@ -1,4 +1,4 @@
-use coords::Index;
+use unit_systems::coords::Index;
 
 pub struct FloodFill<'a, T> {
 	template_data: &'a Vec<T>, // input to determine adjacent cells

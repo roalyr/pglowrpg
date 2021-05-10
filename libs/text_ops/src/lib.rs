@@ -5,7 +5,7 @@ pub mod output;
 pub mod ui_str;
 pub mod worldgen_str;
 
-use constants_app::*;
+use constants::app::*;
 use game_options::OPTIONS;
 use io_ops::get_strings_hashmaps;
 use lazy_static::lazy_static;

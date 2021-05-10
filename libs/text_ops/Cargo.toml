@@ -7,7 +7,7 @@ edition = "2018"
 
 [dependencies]
 io_ops = { path = "../../libs/io_ops" }
-constants_app = { path = "../../libs/constants_app" }
+constants = { path = "../../libs/constants" }
 game_options = { path = "../../libs/game_options" }
 
 serde = { version = "1.0", features = ["derive"]  }

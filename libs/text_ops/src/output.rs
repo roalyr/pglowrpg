@@ -283,7 +283,7 @@ macro_rules! print_banner {
 					x if x < (term_width-2).into() => {
 						// Take into account odd width value
 						let chars = self.s[$str_name].clone().repeat(width);
-						let mut chars_half = chars.substring(0, width/2-1).to_string();
+						let chars_half = chars.substring(0, width/2-1).to_string();
 						match color1_good {
 							true =>{
 								println!("{} {} {}",

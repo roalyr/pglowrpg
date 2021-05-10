@@ -1,7 +1,7 @@
-use codec::LayerPack;
-use constants_world::*;
-use coords::Index;
-use units::translate;
+use constants::world::*;
+use game_data_codec::LayerPack;
+use unit_systems::coords::Index;
+use unit_systems::translate;
 
 pub fn get(lp: &mut LayerPack) {
 	let xy = Index {

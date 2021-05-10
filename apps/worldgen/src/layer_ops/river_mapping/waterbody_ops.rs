@@ -1,9 +1,9 @@
 use crate::array_ops::noise_maps;
 use crate::layer_ops::river_mapping::RgParams;
-use codec::LayerPack;
-use constants_world::*;
+use constants::world::*;
+use game_data_codec::LayerPack;
 use line_drawing::BresenhamCircle;
-use units::translate;
+use unit_systems::translate;
 
 // Has to be imprived, refactoring later
 impl RgParams {
@@ -13,7 +13,7 @@ impl RgParams {
 	) {
 		let iter = self.dv.x0 + self.dv.y0;
 		let random =
-			prng::get(0.0, 1.0, lp.wi.seed, self.dv.x0 * self.dv.y0 * iter);
+			pseudo_rng::get(0.0, 1.0, lp.wi.seed, self.dv.x0 * self.dv.y0 * iter);
 		if random < lp.wi.river_rand_vectors {
 			self.without_water(lp);
 		} else {
@@ -97,7 +97,7 @@ impl RgParams {
 		let noise_factor = lp.wi.river_vect_angle_noise;
 		let size = lp.wi.map_size as f32;
 		let radius = size * 1.5;
-		let random = prng::get(
+		let random = pseudo_rng::get(
 			0.0,
 			1.0,
 			lp.wi.seed,

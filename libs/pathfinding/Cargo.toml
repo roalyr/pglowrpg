@@ -1,13 +1,13 @@
 [package]
-name = "path"
+name = "pathfinding"
 version = "0.1.0"
 authors = ["roal_yr"]
 edition = "2018"
 
 
 [dependencies]
-coords = { path = "../../libs/coords" }
-prng = { path = "../../libs/prng" }
+unit_systems = { path = "../../libs/unit_systems" }
+pseudo_rng = { path = "../../libs/pseudo_rng" }
 
 noise = { version = "0.6", default-features = false }
 pathfinding = "2.0"

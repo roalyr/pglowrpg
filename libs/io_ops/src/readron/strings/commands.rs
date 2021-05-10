@@ -1,4 +1,4 @@
-use constants_app::*;
+use constants::app::*;
 use serde::{Deserialize, Serialize};
 use std::path::Path;
 
