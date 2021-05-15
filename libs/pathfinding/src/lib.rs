@@ -1,5 +1,5 @@
-use unit_systems::coords::Index;
 use pathfinding::prelude::astar;
+use unit_systems::coords::Index;
 
 // Weights of moving orthogonally and diagonally.
 // If we imagine a square with a size of a side being 1,

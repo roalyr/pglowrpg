@@ -1,0 +1,31 @@
+[package]
+name = "dev_test_corner"
+version = "0.1.0"
+authors = ["roal_yr"]
+edition = "2018"
+
+
+[dependencies]
+colored = "2.0"
+serde = { version = "1.0", features = ["derive"]  }
+toml = "0.5"
+bincode = "1.3"
+slots = "0.3"
+deepsize = "0.2"
+
+
+unit_systems = { path = "../../libs/unit_systems" }
+game_data_codec = { path = "../../libs/game_data_codec" }
+constants = { path = "../../libs/constants" }
+io_ops = { path = "../../libs/io_ops" }
+text_ops = { path = "../../libs/text_ops" }
+pseudo_rng = { path = "../../libs/pseudo_rng" }
+pathfinding = { path = "../../libs/pathfinding" }
+game_options = { path = "../../libs/game_options" }
+floodfill = { path = "../../libs/floodfill" }
+
+
+
+
+
+

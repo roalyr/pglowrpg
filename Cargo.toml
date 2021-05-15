@@ -90,3 +90,4 @@ game_options = { path = "./libs/game_options" }
 text_ops = { path = "./libs/text_ops" }
 worldgen = { path = "./apps/worldgen" }
 game = { path = "./apps/game" }
+dev_test_corner = { path = "./apps/dev_test_corner" }

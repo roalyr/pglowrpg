@@ -14,6 +14,7 @@ print_menu! {
 			"menu_entry_game",
 			"menu_entry_worldgen",
 			"menu_entry_settings",
+			"menu_entry_dev_test_corner",
 			"menu_entry_quit",
 		];
 	)

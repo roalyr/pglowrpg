@@ -26,7 +26,8 @@ pub fn start() {
 			"1" => game::start(),
 			"2" => worldgen::start(),
 			"3" => {} // Settings.
-			"4" => return,
+			"4" => dev_test_corner::start(),
+			"5" => return,
 			_ => {}
 		}
 	}
