@@ -5,7 +5,8 @@ pub mod image_raw_ops;
 use crate::file_ops::data_ops::write_data;
 use crate::file_ops::image_color_ops::write_images_color;
 use crate::file_ops::image_raw_ops::write_images_raw;
-use crate::*;
+use crate::LayerPack;
+use constants::app::*;
 use game_options::OPTIONS;
 use io_ops::create_dir;
 use std::path::Path;
@@ -21,6 +22,8 @@ pub fn write_save(
 
 	// Make a save directory if none exists (unless it is a cold run).
 	let mut make_dirs = false;
+
+	#[allow(unused_assignments)]
 	let mut save_dir = Path::new("").to_path_buf();
 	let mut world_dir = Path::new("").to_path_buf();
 

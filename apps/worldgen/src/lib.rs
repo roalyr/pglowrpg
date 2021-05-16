@@ -32,7 +32,7 @@ pub fn start() {
 	);
 	let presets = [preset_def, preset_user].concat();
 	let input_preset = prompt_input!( 
-		&presets;
+		"word"; &presets;
 		{
 			UI.print_separator_thin("");
 			WS.print_list_preset(&presets);
@@ -50,6 +50,7 @@ pub fn start() {
 
 	// Seed selection.
 	let input_seed = prompt_input!(
+		"num";
 		{
 			UI.print_separator_thin(""); 
 			WS.print_seed_default(DEFAULT_SEED); 
@@ -58,7 +59,7 @@ pub fn start() {
 	);
 	let mut world_seed = match input_seed.as_str(){
 		"1" => {
-			let seed_man = prompt_input!( Usize, { WS.print_seed_man(); });
+			let seed_man = prompt_input!( "num"; { WS.print_seed_man(); });
 			seed_man.trim().parse::<usize>().unwrap_or(DEFAULT_SEED)
 		},
 		"2" => {
@@ -75,6 +76,7 @@ pub fn start() {
 	
 	// Decide how many worlds to generate.
 	let input_world_num = prompt_input!( 
+		"num";
 		{
 			UI.print_separator_thin(""); 
 			WS.print_world_num_default(DEFAULT_WORLDS_NUM);

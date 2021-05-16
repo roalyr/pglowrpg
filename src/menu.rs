@@ -12,7 +12,9 @@ pub fn start() {
 	UI.print_separator_thick("");
 
 	loop {
-		let input = prompt_input!({
+		let input = prompt_input!(
+			"opt";
+		{
 			UI.print_newline();
 			UI.print_banner_dash(MS.menu_title());
 			UI.print_newline();

@@ -1,10 +1,10 @@
 use colored::*;
 use deepsize::DeepSizeOf;
-use slots::consts::*;
-use slots::slots::Slots;
 use std::collections::HashMap;
 use unit_systems::coords::Index;
 
+//use slots::consts::*;
+//use slots::slots::Slots;
 //use constants::app::*;
 //use game_data_codec::LayerPack;
 //use game_options::OPTIONS;
@@ -44,8 +44,8 @@ pub fn start() {
 	}
 	#[derive(Debug, Clone, DeepSizeOf)]
 	enum CreatureType {
-		Fish(CreatureProperties),
-		Bird(CreatureProperties),
+		//Fish(CreatureProperties),
+		//Bird(CreatureProperties),
 		Animal(CreatureProperties),
 	}
 	// Keep generic data in the header of the struct for ease of access.

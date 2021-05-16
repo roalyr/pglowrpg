@@ -1,10 +1,3 @@
-use crate::UI;
-use colored::{Color, Colorize};
-use game_options::OPTIONS;
-use io_ops::readron::{palettes, strings};
-use std::io;
-use std::io::Write;
-
 // Print a block of text with different options.
 #[macro_export]
 macro_rules! print_paragraph {
@@ -26,9 +19,8 @@ macro_rules! print_paragraph {
 					Err(_) => {}
 				}
 				// Check for string in .ron file.
-				let mut s1 = String::new();
-				match self.s.contains_key($str_name) {
-					true => { s1 = self.s[$str_name].to_string(); },
+				let mut s1 = match self.s.contains_key($str_name) {
+					true => { self.s[$str_name].to_string() },
 					false => {
 						crate::print_error($str_name.to_string());
 						std::process::exit(0);
@@ -64,9 +56,8 @@ macro_rules! print_paragraph {
 				let color_res2 : Result<Color, ()> = $val_col.parse();
 				// Apply textwrap if enabled in options
 				// Check for string in .ron file.
-				let mut s1 = String::new();
-				match self.s.contains_key($str_name) {
-					true => { s1 = self.s[$str_name].to_string(); },
+				let mut s1 = match self.s.contains_key($str_name) {
+					true => { self.s[$str_name].to_string() },
 					false => {
 						crate::print_error($str_name.to_string());
 						std::process::exit(0);
@@ -128,15 +119,13 @@ macro_rules! print_list {
 					Err(_) => {}
 				}
 				// Check for string in .ron file.
-				let mut s1 = String::new();
-				match self.s.contains_key($str_name) {
-					true => { s1 = self.s[$str_name].to_string(); },
+				let mut s1 = match self.s.contains_key($str_name) {
+					true => { self.s[$str_name].to_string()  },
 					false => {
 						crate::print_error($str_name.to_string());
 						std::process::exit(0);
 					}
 				};
-				let mut s2 = String::new();
 				// Print the prompt before the list (same color).
 				match OPTIONS.use_textwrap{
 					true => {s1 = fill(&s1, Options::new(term_width));},
@@ -149,10 +138,10 @@ macro_rules! print_list {
 				}
 				// Print the list itself.
 				for entry in str_list {
-					match OPTIONS.use_textwrap{
-						true => {s2 = fill(&entry, Options::new(term_width));},
-						false => {s2 = entry.to_string();}
-					}
+					let s2 = match OPTIONS.use_textwrap{
+						true => { fill(&entry, Options::new(term_width)) },
+						false => { entry.to_string() }
+					};
 					match color_good{
 						true => {println!("{}{}", $bul.color($text_col), s2.color($text_col));}
 						false => {println!("{}{}", $bul, s2);}
@@ -183,15 +172,13 @@ macro_rules! print_menu {
 					Err(_) => {}
 				}
 				// Check for string in .ron file.
-				let mut s1 = String::new();
-				match self.s.contains_key($str_name) {
-					true => { s1 = self.s[$str_name].to_string(); },
+				let mut s1 = match self.s.contains_key($str_name) {
+					true => { self.s[$str_name].to_string() },
 					false => {
 						crate::print_error($str_name.to_string());
 						std::process::exit(0);
 					}
 				};
-				let mut s2 = String::new();
 				// Print the prompt before the list (same color).
 				match OPTIONS.use_textwrap{
 					true => {s1 = fill(&s1, Options::new(term_width));},
@@ -207,17 +194,17 @@ macro_rules! print_menu {
 					let i = (i + 1).to_string(); // Start from 1
 					// Check for string in .ron file.
 					match self.s.contains_key(&entry.to_string()) {
-						true => { s2 = self.s[&entry.to_string()].to_string(); },
+						true => { },
 						false => {
 							crate::print_error(entry.to_string());
 							std::process::exit(0);
 						}
 					}
 
-					match OPTIONS.use_textwrap{
-						true => {s2 = fill(&self.s[&entry.to_string()], Options::new(term_width));},
-						false => {s2 = self.s[&entry.to_string()].to_string();}
-					}
+					let s2 = match OPTIONS.use_textwrap{
+						true => { fill(&self.s[&entry.to_string()], Options::new(term_width)) },
+						false => { self.s[&entry.to_string()].to_string() }
+					};
 					match color_good{
 						true => {
 							println!("{}{}{}{}",
@@ -345,9 +332,8 @@ macro_rules! return_string {
 		$(impl $struct_name {
 			pub fn $fn_name(&self,) -> String {
 				// Check for string in .ron file.
-				let mut s1 = String::new();
-				match self.s.contains_key($str_name) {
-					true => { s1 = self.s[$str_name].to_string(); },
+				let s1 =  match self.s.contains_key($str_name) {
+					true => { self.s[$str_name].to_string() },
 					false => {
 						crate::print_error($str_name.to_string());
 						std::process::exit(0);
@@ -381,22 +367,20 @@ macro_rules! print_progress {
 				let color_res2 : Result<Color, ()> = $val_col.parse();
 				// Apply textwrap if enabled in options
 				// Check for string in .ron file.
-				let mut s1 = String::new();
-				match self.s.contains_key($str_name) {
-					true => { s1 = self.s[$str_name].to_string(); },
+				let mut s1 = match self.s.contains_key($str_name) {
+					true => { self.s[$str_name].to_string()},
 					false => {
 						crate::print_error($str_name.to_string());
 						std::process::exit(0);
 					}
 				};
-				let mut s2 = String::new();
 				// Get the percentage value.
 				let intervals = 100 / step.into();
 				let print_calls = 100 / intervals;
 				for interval in 0..=intervals {
 					if curr.into() == interval * total.into() / print_calls {
 						let percentage = interval * print_calls;
-						s2 = [percentage.to_string(), "%".to_string()].concat();
+						let mut s2 = [percentage.to_string(), "%".to_string()].concat();
 
 						match OPTIONS.use_textwrap{
 							true => {

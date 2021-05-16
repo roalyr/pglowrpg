@@ -1,7 +1,7 @@
 use crate::UI;
 use colored::{Color, Colorize};
 use game_options::OPTIONS;
-use io_ops::readron::{palettes, strings};
+use io_ops::readron::palettes;
 use std::io;
 use std::io::Write;
 
@@ -85,7 +85,7 @@ pub fn prompt_word(allowed_words: &Vec<String>) -> String {
 #[macro_export]
 macro_rules! prompt_input {
 	// If word list is supplied the prompt_word will be used
-	($word_list: expr; $b: block) => {
+	($flag: expr;  $word_list: expr; $b: block) => {
 		{
 			use text_ops::input::prompt_word;
 			let mut input = String::new();
@@ -95,47 +95,35 @@ macro_rules! prompt_input {
 					while input.is_empty() {
 						// Call all the suggested functions (prompts)
 						$b
-						input = prompt_word($word_list);
+						match $flag {
+							"word" => {input = prompt_word($word_list);},
+							_ => {
+								text_ops::input_flag_error_word($flag.to_string());
+								panic!();
+							}
+						}
 					}
 				},
 				// Or ask once.
 				false => {
 					// Call all the suggested functions (prompts)
 					$b
-					input = prompt_word($word_list);
+					match $flag {
+						"word" => {input = prompt_word($word_list);},
+						_ => {
+							text_ops::input_flag_error_word($flag.to_string());
+							panic!();
+						}
+					}
 				}
 			}
 			input
 		}
 	};
-	// If no word list is supplied the prompt_word will be used
-	($b: block) => {
+	// For number or option prompt.
+	($flag: expr; $b: block) => {
 		{
 			use text_ops::input::prompt_option;
-			let mut input = String::new();
-			match OPTIONS.repeat_text_if_no_input{
-				// Keep pestering the player to no end
-				true => {
-					while input.is_empty() {
-						// Call all the suggested functions (prompts)
-						$b
-						input = prompt_option();
-					}
-				},
-				// Or ask once.
-				false => {
-					// Call all the suggested functions (prompts)
-					$b
-					input = prompt_option();
-				}
-			}
-			input
-		}
-	};
-	// If type is defined then it will be asking for number.
-	// Type is but a flag here though.
-	($_: ty, $b: block) => {
-		{
 			use text_ops::input::prompt_number;
 			let mut input = String::new();
 			match OPTIONS.repeat_text_if_no_input{
@@ -144,14 +132,28 @@ macro_rules! prompt_input {
 					while input.is_empty() {
 						// Call all the suggested functions (prompts)
 						$b
-						input = prompt_number();
+						match $flag {
+							"num" => {input = prompt_number();},
+							"opt" => {input = prompt_option();},
+							_ => {
+								text_ops::input_flag_error($flag.to_string());
+								panic!();
+							}
+						}
 					}
 				},
 				// Or ask once.
 				false => {
 					// Call all the suggested functions (prompts)
 					$b
-					input = prompt_number();
+					match $flag {
+						"num" => {input = prompt_number();},
+						"opt" => {input = prompt_option();},
+						_ => {
+							text_ops::input_flag_error($flag.to_string());
+							panic!();
+						}
+					}
 				}
 			}
 			input

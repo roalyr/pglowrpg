@@ -1,4 +1,9 @@
-use crate::*;
+use crate::input_ops::{input_coord, parse_input};
+use crate::printing_ops::map_render_land;
+use crate::struct_ops::{GameData, GameStrings};
+
+use game_options::OPTIONS;
+use text_ops::prompt_input;
 
 //▒▒▒▒▒▒ ADD NEW COMMANDS, STEP 3/4 ▒▒▒▒▒▒▒▒
 #[derive(Clone)]
@@ -50,7 +55,7 @@ pub fn process_input(
 			//Default
 			Command::NoInput => {}
 			Command::MapRenderLand => {
-				gd.map_render_size = prompt_input!({})
+				gd.map_render_size = prompt_input!("num"; {})
 					//&gs.gm_str.gm25, &gs.ui_el.prompt2)
 					.trim()
 					.parse::<usize>()
@@ -67,7 +72,7 @@ pub fn process_input(
 				println!("Registered commands are:\n{:?}", &gd.commands_vec);
 				//println!("{}", &gs.ui_el.separator2);
 				//to hold the loop or browse topics (planned feature)
-				prompt_input!({});
+				prompt_input!("word"; &gd.commands_vec; {});
 			}
 			Command::Quit => {
 				continue_loop = false;

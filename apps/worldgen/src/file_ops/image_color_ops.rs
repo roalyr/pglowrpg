@@ -1,4 +1,5 @@
-use crate::*;
+use crate::LayerPack;
+use constants::app::*;
 use game_options::OPTIONS;
 use io_ops::create_dir;
 use io_ops::writepng::*;

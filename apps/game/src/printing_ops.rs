@@ -1,4 +1,8 @@
-use crate::*;
+use crate::struct_ops::{GameData, GameStrings};
+
+use colored::*;
+use io_ops::readron::palettes::biomes;
+use io_ops::writepng::from_hex;
 
 pub fn print_strings_basic(gs: &GameStrings) {
 	println!("{}", gs.coord_str);

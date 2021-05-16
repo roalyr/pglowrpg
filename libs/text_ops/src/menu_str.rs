@@ -1,4 +1,4 @@
-use crate::{print_menu, print_paragraph, return_string};
+use crate::{print_menu, return_string};
 use crate::{MnStrings, UI};
 use game_options::OPTIONS;
 use io_ops::readron::palettes;

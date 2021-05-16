@@ -1,10 +1,13 @@
-use crate::*;
+use crate::action_ops::Command;
+use crate::struct_ops::{GameData, GameStrings};
+
 use game_options::OPTIONS;
+use text_ops::prompt_input;
 
 //▒▒▒▒▒▒▒▒▒▒ INPUT HANDLING ▒▒▒▒▒▒▒▒▒▒▒
 pub fn parse_input(
 	gd: &mut GameData,
-	gs: &GameStrings,
+	_gs: &GameStrings,
 ) -> Vec<Command> {
 	//Init the input reply sequence which will be returned to the game
 	let mut seq = Vec::new();
@@ -17,7 +20,7 @@ pub fn parse_input(
 	}
 
 	//User input handling
-	let input = prompt_input!(&gd.commands_vec; {});
+	let input = prompt_input!("word"; &gd.commands_vec; {});
 
 	//▒▒▒▒▒▒ ADD NEW COMMANDS, STEP 2/4 ▒▒▒▒▒▒▒▒
 	match input.as_str() {
@@ -62,6 +65,8 @@ pub fn parse_input(
 	seq
 }
 
-pub fn input_coord(gs: &GameStrings) -> Result<usize, std::num::ParseIntError> {
-	prompt_input!({}).trim().parse::<usize>()
+pub fn input_coord(
+	_gs: &GameStrings
+) -> Result<usize, std::num::ParseIntError> {
+	prompt_input!("num"; {}).trim().parse::<usize>()
 }

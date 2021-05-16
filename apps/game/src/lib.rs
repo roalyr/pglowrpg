@@ -5,24 +5,15 @@ pub mod input_ops;
 pub mod printing_ops;
 pub mod struct_ops;
 
-use action_ops::*;
-use data_ops::*;
-use formatting_ops::*;
-use input_ops::*;
-use printing_ops::*;
-use struct_ops::*;
+use crate::action_ops::process_input;
+use crate::data_ops::get_world_current;
+use crate::formatting_ops::get_strings_basic;
+use crate::printing_ops::{map_render_land, print_strings_basic};
+use crate::struct_ops::{init_gd, init_gs};
 
-use colored::*;
-use constants::app::*;
-use game_data_codec::LayerPack;
 use game_options::OPTIONS;
-use io_ops::decompress_to_memory;
-use io_ops::readron::palettes::biomes;
 use io_ops::readron::strings;
-use io_ops::writepng::from_hex;
-use std::path::Path;
-use text_ops::{prompt_input, GS};
-use unit_systems::translate;
+use text_ops::GS;
 
 pub fn start() {
 	let input_locale = &OPTIONS.locale;

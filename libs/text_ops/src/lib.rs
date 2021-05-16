@@ -9,7 +9,6 @@ use constants::app::*;
 use game_options::OPTIONS;
 use io_ops::get_strings_hashmaps;
 use lazy_static::lazy_static;
-use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::path::Path;
 
@@ -54,4 +53,20 @@ pub fn print_error(st: String) {
 		"ERROR in locale .ron file. Key for string not found: \n{}\n",
 		st
 	);
+}
+
+pub fn input_flag_error(st: String) {
+	println!(
+		"ERROR, wrong flag used in macro invocation for input: \n{}\n",
+		st
+	);
+	println!("Should be either opt or num (or you forgot the wordlist).");
+}
+
+pub fn input_flag_error_word(st: String) {
+	println!(
+		"ERROR, wrong flag used in macro invocation for input: \n{}\n",
+		st
+	);
+	println!("Should be word, and there must be a wordlist provided.");
 }

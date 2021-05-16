@@ -1,10 +1,18 @@
-use crate::*;
+use crate::struct_ops::{GameData, GameStrings};
 
-pub fn get_layerpack(gs: &GameStrings) -> Option<LayerPack> {
+use constants::app::*;
+use game_data_codec::LayerPack;
+use game_options::OPTIONS;
+use io_ops::decompress_to_memory;
+use std::path::Path;
+use text_ops::prompt_input;
+use unit_systems::translate;
+
+pub fn get_layerpack(_gs: &GameStrings) -> Option<LayerPack> {
 	//Select a world to load
 	let save_dir = io_ops::dir_dir_contents(PATH_SAVE);
-
-	let input_save = prompt_input!(&save_dir, {});
+	let input_save =
+		prompt_input!("word"; &save_dir; {println!("{:?}", save_dir);});
 
 	if !input_save.is_empty() {
 		//println!("{}", &gs.ui_el.separator2);

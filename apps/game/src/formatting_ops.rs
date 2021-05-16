@@ -1,4 +1,4 @@
-use crate::*;
+use crate::struct_ops::{GameData, GameStrings};
 
 pub fn get_strings_basic(
 	gd: &GameData,
