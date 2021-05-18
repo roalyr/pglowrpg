@@ -36,8 +36,8 @@ pub fn get_layerpack(_gs: &GameStrings) -> Option<LayerPack> {
 
 pub fn get_world_current(gd: &mut GameData) {
 	//Coordinates 1D,  2D, height
-	//+x is north, +y is east due to how worldgen was made
-	gd.index = gd.lp.xy.ind(gd.x, gd.y);
+	//Swapping x and y, in reverse to worldgen.
+	gd.index = gd.lp.xy.ind(gd.y, gd.x);
 	//Into data ops
 	gd.temp = translate::get_abs(
 		gd.lp.climate.read(gd.lp.climate.TEMPERATURE, gd.index) as f32,

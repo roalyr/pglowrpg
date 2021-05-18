@@ -61,18 +61,18 @@ pub fn process_input(
 					.parse::<usize>()
 					.unwrap_or(gd.map_render_size);
 				//println!("{}", &gs.ui_el.separator2);
-				let cx = gd.x;
 				let cy = gd.y;
-				map_render_land(gd, cx, cy);
+				let cx = gd.x;
+				map_render_land(gd, cy, cx);
 				//println!("{}", &gs.ui_el.separator2);
 			}
 			Command::PrintHelp => {
 				//println!("{}", &gs.gm_str.gm2);
 				//Make this better
-				println!("Registered commands are:\n{:?}", &gd.commands_vec);
+				//println!("Registered commands are:\n{:?}", &gd.commands_vec);
 				//println!("{}", &gs.ui_el.separator2);
 				//to hold the loop or browse topics (planned feature)
-				prompt_input!("word"; &gd.commands_vec; {});
+				//prompt_input!("word"; &gd.commands_vec; {});
 			}
 			Command::Quit => {
 				continue_loop = false;
@@ -80,33 +80,33 @@ pub fn process_input(
 			Command::Test => {}
 
 			Command::North => {
-				gd.x = gd.x.saturating_add(1);
-				if gd.x >= gd.lp.wi.map_size {
-					gd.x = gd.lp.wi.map_size - 1;
-				}
-			}
-			Command::East => {
 				gd.y = gd.y.saturating_add(1);
 				if gd.y >= gd.lp.wi.map_size {
 					gd.y = gd.lp.wi.map_size - 1;
 				}
 			}
-			Command::South => {
-				gd.x = gd.x.saturating_sub(1);
-			}
-			Command::West => {
-				gd.y = gd.y.saturating_sub(1);
-			}
-			Command::CoordX => {
-				gd.x = input_coord(gs).unwrap_or(gd.x);
+			Command::East => {
+				gd.x = gd.x.saturating_add(1);
 				if gd.x >= gd.lp.wi.map_size {
 					gd.x = gd.lp.wi.map_size - 1;
-				};
+				}
+			}
+			Command::South => {
+				gd.y = gd.y.saturating_sub(1);
+			}
+			Command::West => {
+				gd.x = gd.x.saturating_sub(1);
 			}
 			Command::CoordY => {
 				gd.y = input_coord(gs).unwrap_or(gd.y);
 				if gd.y >= gd.lp.wi.map_size {
 					gd.y = gd.lp.wi.map_size - 1;
+				};
+			}
+			Command::CoordX => {
+				gd.x = input_coord(gs).unwrap_or(gd.x);
+				if gd.x >= gd.lp.wi.map_size {
+					gd.x = gd.lp.wi.map_size - 1;
 				};
 			}
 		} //match

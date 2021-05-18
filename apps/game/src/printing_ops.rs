@@ -18,16 +18,16 @@ pub fn print_strings_basic(gs: &GameStrings) {
 //▒▒▒▒▒▒▒▒▒▒▒▒ MESSY CODE AHEAD ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn map_render_land(
 	gd: &mut GameData,
-	center_x: usize,
 	center_y: usize,
+	center_x: usize,
 ) {
 	let mut render_line = Vec::new();
 	let bi: biomes::Stuff = biomes::get();
 
 	for i in 0..gd.map_render_size * 2 {
-		let shift_x: isize = i as isize - gd.map_render_size as isize;
+		let shift_y: isize = i as isize - gd.map_render_size as isize;
 		for j in (0..gd.map_render_size * 2).rev() {
-			let shift_y: isize = j as isize - gd.map_render_size as isize;
+			let shift_x: isize = j as isize - gd.map_render_size as isize;
 
 			let xx = (center_x as isize - shift_x) as isize;
 			let yy = (center_y as isize - shift_y) as isize;
@@ -37,7 +37,8 @@ pub fn map_render_land(
 				&& ((xx as usize) < gd.lp.wi.map_size)
 				&& ((yy as usize) < gd.lp.wi.map_size)
 			{
-				gd.index = gd.lp.xy.ind(xx as usize, yy as usize);
+				//Swapped in reverse to worldgen.
+				gd.index = gd.lp.xy.ind(yy as usize, xx as usize);
 				let elev = gd.lp.topography.read(gd.lp.topography.TERRAIN, gd.index);
 				//let elev_rel = (elev as f32) / 255.0;
 
@@ -259,7 +260,7 @@ pub fn map_render_land(
 				}
 
 				//Highlight central tile to see current position
-				if ((xx as usize) == center_x) && ((yy as usize) == center_y) {
+				if ((yy as usize) == center_y) && ((xx as usize) == center_x) {
 					render_line.push(element.reversed());
 				} else {
 					render_line.push(element);

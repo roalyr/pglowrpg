@@ -11,15 +11,6 @@ pub fn parse_input(
 ) -> Vec<Command> {
 	//Init the input reply sequence which will be returned to the game
 	let mut seq = Vec::new();
-
-	//Copy all the commands to the vector for autocomplete
-	let temp_str = toml::to_string(&gd.commands).unwrap();
-	let parsed = temp_str.parse::<toml::Value>().unwrap();
-	for (_, v) in parsed.as_table().unwrap().iter() {
-		gd.commands_vec.push((v.as_str().unwrap()).to_string());
-	}
-
-	//User input handling
 	let input = prompt_input!("word"; &gd.commands_vec; {});
 
 	//▒▒▒▒▒▒ ADD NEW COMMANDS, STEP 2/4 ▒▒▒▒▒▒▒▒

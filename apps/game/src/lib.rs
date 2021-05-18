@@ -5,12 +5,6 @@ pub mod input_ops;
 pub mod printing_ops;
 pub mod struct_ops;
 
-use crate::action_ops::process_input;
-use crate::data_ops::get_world_current;
-use crate::formatting_ops::get_strings_basic;
-use crate::printing_ops::{map_render_land, print_strings_basic};
-use crate::struct_ops::{init_gd, init_gs};
-
 use game_options::OPTIONS;
 use io_ops::readron::strings;
 use text_ops::GS;
@@ -20,12 +14,19 @@ pub fn start() {
 	let commands: strings::commands::Stuff =
 		strings::commands::get(&input_locale);
 	//Init game structs
-	let mut gs = init_gs();
-	let mut gd = match init_gd(&gs, commands) {
+	let mut gs = struct_ops::init_gs();
+	let mut gd = match struct_ops::init_gd(&gs, commands) {
 		//Selecting preset may return None
 		Some(gd) => gd,
 		_ => return,
 	};
+
+	//Copy all the commands to the vector for autocomplete
+	let temp_str = toml::to_string(&gd.commands).unwrap();
+	let parsed = temp_str.parse::<toml::Value>().unwrap();
+	for (_, v) in parsed.as_table().unwrap().iter() {
+		gd.commands_vec.push((v.as_str().unwrap()).to_string());
+	}
 
 	//Welcoming message
 	GS.print_banner();
@@ -35,19 +36,21 @@ pub fn start() {
 	//Main loop
 	loop {
 		//Game mechanics
-		get_world_current(&mut gd);
+		data_ops::get_world_current(&mut gd);
 
 		//UI printing and rendering
-		get_strings_basic(&gd, &mut gs);
-		print_strings_basic(&gs);
+		formatting_ops::get_strings_basic(&gd, &mut gs);
+		printing_ops::print_strings_basic(&gs);
 
 		//temporary here, for debug
 		let cx = gd.x;
 		let cy = gd.y;
-		map_render_land(&mut gd, cx, cy);
+		printing_ops::map_render_land(&mut gd, cy, cx);
+
+		println!("Registered commands are:\n{:?}", &gd.commands_vec);
 
 		//Input and actions
-		match process_input(&mut gd, &gs) {
+		match action_ops::process_input(&mut gd, &gs) {
 			true => continue,
 			false => return,
 		}

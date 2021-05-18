@@ -10,7 +10,7 @@ pub struct GameData {
 	pub commands: strings::commands::Stuff,
 	pub commands_vec: Vec<String>,
 	//Coordinates
-	//+x is north, +y is east due to how worldgen was made
+	//+x is east, +y is north
 	pub x: usize,
 	pub y: usize,
 	pub index: usize,
@@ -61,7 +61,6 @@ pub fn init_gd(
 		commands,
 		commands_vec: Vec::new(),
 		//Coordinates
-		//+x is north, +y is east due to how worldgen was made
 		x: 0,
 		y: 0,
 		index: 0,
