@@ -44,7 +44,7 @@ impl RgParams {
 			for pos in path_array.iter() {
 				let i = pos.0;
 				let j = pos.1;
-				let index = lp.xy.ind(i, j);
+				let index = lp.index.get(i, j);
 				let river_element = lp.rivers.read(lp.rivers.ELEMENT, index);
 				let river_id = lp.rivers_id.read(index);
 				//Map width
@@ -81,8 +81,8 @@ impl RgParams {
 			let j0 = n[0].1;
 			let i1 = n[1].0;
 			let j1 = n[1].1;
-			let index_downstr = lp.xy.ind(i1, j1);
-			let index_current = lp.xy.ind(i0, j0);
+			let index_downstr = lp.index.get(i1, j1);
+			let index_current = lp.index.get(i0, j0);
 			let cell_river_id_current = lp.rivers_id.read(index_current);
 			let cell_river_id_downstr = lp.rivers_id.read(index_downstr);
 			let cell_element_current =
@@ -119,7 +119,7 @@ impl RgParams {
 				for pos in path_array_downstr.iter() {
 					let i = pos.0;
 					let j = pos.1;
-					let index = lp.xy.ind(i, j);
+					let index = lp.index.get(i, j);
 					let cell_element_next = lp.rivers.read(lp.rivers.ELEMENT, index);
 					let cell_id_next = lp.rivers_id.read(index);
 					//Map width

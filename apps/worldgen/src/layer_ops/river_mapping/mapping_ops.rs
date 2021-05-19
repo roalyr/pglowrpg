@@ -25,16 +25,16 @@ impl RgParams {
 		self.river_width = river_entry.width;
 		self.river_source = river_entry.source;
 		self.river_end = river_entry.end;
-		let index_river_source = lp.xy.ind(self.river_source.0, self.river_source.1);
-		let index_end = lp.xy.ind(self.river_end.0, self.river_end.1);
+		let index_river_source = lp.index.get(self.river_source.0, self.river_source.1);
+		let index_end = lp.index.get(self.river_end.0, self.river_end.1);
 		let mut river_length = cw::ZERO_USIZE;
 		//Cold run to figure out river lengths and truncate short ones
 		for n in path_array.windows(2) {
 			//Must be here
 			river_length += 1;
 			let i0 = n[0].0; let j0 = n[0].1; let i1 = n[1].0; let j1 = n[1].1;
-			let index_current = lp.xy.ind(i0, j0);
-			let index_downstr = lp.xy.ind(i1, j1);
+			let index_current = lp.index.get(i0, j0);
+			let index_downstr = lp.index.get(i1, j1);
 			let temp_current = lp.climate.read(lp.climate.TEMPERATURE, index_current);
 			let river_elem_current = lp.rivers.read(lp.rivers.ELEMENT, index_current);
 			let river_elem_downstr = lp.rivers.read(lp.rivers.ELEMENT, index_downstr);
@@ -79,8 +79,8 @@ impl RgParams {
 				//Must be here
 				river_length += 1;
 				let i0 = n[0].0; let j0 = n[0].1; let i1 = n[1].0; let j1 = n[1].1;
-				let index_current = lp.xy.ind(i0, j0);
-				let index_downstr = lp.xy.ind(i1, j1);
+				let index_current = lp.index.get(i0, j0);
+				let index_downstr = lp.index.get(i1, j1);
 				let temp_current = lp.climate.read(lp.climate.TEMPERATURE, index_current);
 				let river_elem_current = lp.rivers.read(lp.rivers.ELEMENT, index_current);
 				let river_elem_downstr = lp.rivers.read(lp.rivers.ELEMENT, index_downstr);
@@ -262,16 +262,20 @@ fn neighbor_flag(
 	let dj: isize = j1 as isize - j0 as isize;
 	let neighbor = match (di, dj) {
 		//Zero value is for none, at source and end
-		(0, 0) => panic!("ERROR: river neighbor downstream matches current"),
-		(1, 0) => 1,   //N
+		(0, 0) => {
+			panic!("ERROR: river neighbor downstream matches current (loops on self)")
+		}
+		(0, 1) => 1,   //N
 		(1, 1) => 2,   //NE
-		(0, 1) => 3,   //E
-		(-1, 1) => 4,  //SE
-		(-1, 0) => 5,  //S
+		(1, 0) => 3,   //E
+		(1, -1) => 4,  //SE
+		(0, -1) => 5,  //S
 		(-1, -1) => 6, //SW
-		(0, -1) => 7,  //W
-		(1, -1) => 8,  //NW
-		(_, _) => panic!("ERROR: unexpected neighbor {:?}", (di, dj)),
+		(-1, 0) => 7,  //W
+		(-1, 1) => 8,  //NW
+		(_, _) => {
+			panic!("ERROR: unexpected neighbor direction x, y: {:?}", (di, dj))
+		}
 	};
 	neighbor
 }

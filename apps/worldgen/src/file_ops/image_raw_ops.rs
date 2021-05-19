@@ -24,7 +24,7 @@ pub fn write_images_raw(
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for i in 0..map_size {
 			for j in 0..map_size {
-				let index = lp.xy.ind(i, j);
+				let index = lp.index.get(i, j);
 				let bg = lp.topography.read(lp.topography.TERRAIN, index);
 				array_bg[index] = bg as u8;
 			}
@@ -34,9 +34,9 @@ pub fn write_images_raw(
 		let file_path = raw_img_dir
 			.join("watermask")
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
-		for i in 0..map_size {
-			for j in 0..map_size {
-				let index = lp.xy.ind(i, j);
+		for y in 0..map_size {
+			for x in 0..map_size {
+				let index = lp.index.get(x, y);
 				let bg = lp.topography.read(lp.topography.WATERMASK, index);
 				array_bg[index] = bg as u8;
 			}
@@ -50,9 +50,9 @@ pub fn write_images_raw(
 		let file_path = raw_img_dir
 			.join("temperature")
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
-		for i in 0..map_size {
-			for j in 0..map_size {
-				let index = lp.xy.ind(i, j);
+		for y in 0..map_size {
+			for x in 0..map_size {
+				let index = lp.index.get(x, y);
 				let bg = lp.climate.read(lp.climate.TEMPERATURE, index);
 				array_bg[index] = bg as u8;
 			}
@@ -66,9 +66,9 @@ pub fn write_images_raw(
 		let file_path = raw_img_dir
 			.join("rainfall")
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
-		for i in 0..map_size {
-			for j in 0..map_size {
-				let index = lp.xy.ind(i, j);
+		for y in 0..map_size {
+			for x in 0..map_size {
+				let index = lp.index.get(x, y);
 				let bg = lp.climate.read(lp.climate.RAINFALL, index);
 				array_bg[index] = bg as u8;
 			}
@@ -82,9 +82,9 @@ pub fn write_images_raw(
 		let file_path = raw_img_dir
 			.join("rivers_elements")
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
-		for i in 0..map_size {
-			for j in 0..map_size {
-				let index = lp.xy.ind(i, j);
+		for y in 0..map_size {
+			for x in 0..map_size {
+				let index = lp.index.get(x, y);
 				let bg = lp.rivers.read(lp.rivers.ELEMENT, index);
 				array_bg[index] = bg as u8;
 			}
@@ -95,9 +95,9 @@ pub fn write_images_raw(
 		let file_path = raw_img_dir
 			.join("rivers_width")
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
-		for i in 0..map_size {
-			for j in 0..map_size {
-				let index = lp.xy.ind(i, j);
+		for y in 0..map_size {
+			for x in 0..map_size {
+				let index = lp.index.get(x, y);
 				let bg = lp.rivers.read(lp.rivers.WIDTH, index);
 				array_bg[index] = bg as u8;
 			}
@@ -111,9 +111,9 @@ pub fn write_images_raw(
 		let file_path = raw_img_dir
 			.join("biomes")
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
-		for i in 0..map_size {
-			for j in 0..map_size {
-				let index = lp.xy.ind(i, j);
+		for y in 0..map_size {
+			for x in 0..map_size {
+				let index = lp.index.get(x, y);
 				let bg = lp.biomes.read(index);
 				array_bg[index] = bg as u8;
 			}

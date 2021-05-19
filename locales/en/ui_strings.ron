@@ -3,7 +3,7 @@
 
 {
 "prompt_option" : " enter option number ⊳ ",
-"prompt_word" : " enter word or name ⌷  ",
+"prompt_word" : " enter word ⌷  ",
 "prompt_number" : " enter numerical value ◼  ",
 
 "bullet1" : " ✦ ",

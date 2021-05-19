@@ -23,9 +23,9 @@ pub fn write_images_color(
 		let file_path = color_img_dir
 			.join("watermask_over_terrain")
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
-		for i in 0..map_size {
-			for j in 0..map_size {
-				let index = lp.xy.ind(i, j);
+		for y in 0..map_size {
+			for x in 0..map_size {
+				let index = lp.index.get(x, y);
 				let bg = lp.topography.read(lp.topography.TERRAIN, index);
 				let fg = lp.topography.read(lp.topography.WATERMASK, index);
 				array_bg[index] = bg as u8;
@@ -49,9 +49,9 @@ pub fn write_images_color(
 		let file_path = color_img_dir
 			.join("temperature")
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
-		for i in 0..map_size {
-			for j in 0..map_size {
-				let index = lp.xy.ind(i, j);
+		for y in 0..map_size {
+			for x in 0..map_size {
+				let index = lp.index.get(x, y);
 				let bg = lp.climate.read(lp.climate.TEMPERATURE, index);
 				array_bg[index] = bg as u8;
 			}
@@ -70,9 +70,9 @@ pub fn write_images_color(
 		let file_path = color_img_dir
 			.join("rainfall")
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
-		for i in 0..map_size {
-			for j in 0..map_size {
-				let index = lp.xy.ind(i, j);
+		for y in 0..map_size {
+			for x in 0..map_size {
+				let index = lp.index.get(x, y);
 				let bg = lp.climate.read(lp.climate.RAINFALL, index);
 				array_bg[index] = bg as u8;
 			}
@@ -91,9 +91,9 @@ pub fn write_images_color(
 		let file_path = color_img_dir
 			.join("georegions")
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
-		for i in 0..map_size {
-			for j in 0..map_size {
-				let index = lp.xy.ind(i, j);
+		for y in 0..map_size {
+			for x in 0..map_size {
+				let index = lp.index.get(x, y);
 				let bg = lp.georeg_id.read(index);
 				array_bg[index] = bg as u8;
 			}
@@ -108,9 +108,9 @@ pub fn write_images_color(
 		let file_path = color_img_dir
 			.join("rivers_elements")
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
-		for i in 0..map_size {
-			for j in 0..map_size {
-				let index = lp.xy.ind(i, j);
+		for y in 0..map_size {
+			for x in 0..map_size {
+				let index = lp.index.get(x, y);
 				let bg = lp.topography.read(lp.topography.WATERMASK, index);
 				let fg = lp.rivers.read(lp.rivers.ELEMENT, index);
 				array_bg[index] = bg as u8;
@@ -131,9 +131,9 @@ pub fn write_images_color(
 		let file_path = color_img_dir
 			.join("rivers_id")
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
-		for i in 0..map_size {
-			for j in 0..map_size {
-				let index = lp.xy.ind(i, j);
+		for y in 0..map_size {
+			for x in 0..map_size {
+				let index = lp.index.get(x, y);
 				let bg = lp.topography.read(lp.topography.WATERMASK, index);
 				let fg = lp.rivers_id.read(index);
 				array_bg[index] = bg as u8;
@@ -154,9 +154,9 @@ pub fn write_images_color(
 		let file_path = color_img_dir
 			.join("rivers_width")
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
-		for i in 0..map_size {
-			for j in 0..map_size {
-				let index = lp.xy.ind(i, j);
+		for y in 0..map_size {
+			for x in 0..map_size {
+				let index = lp.index.get(x, y);
 				let bg = lp.topography.read(lp.topography.WATERMASK, index);
 				let fg = lp.rivers.read(lp.rivers.WIDTH, index);
 				array_bg[index] = bg as u8;
@@ -180,9 +180,9 @@ pub fn write_images_color(
 		let file_path = color_img_dir
 			.join("biomes")
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
-		for i in 0..map_size {
-			for j in 0..map_size {
-				let index = lp.xy.ind(i, j);
+		for y in 0..map_size {
+			for x in 0..map_size {
+				let index = lp.index.get(x, y);
 				let bg = lp.biomes.read(index);
 				let fg = lp.rivers.read(lp.rivers.WIDTH, index);
 				array_bg[index] = bg as u8;

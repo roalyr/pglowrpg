@@ -39,7 +39,7 @@ impl Pos {
 		&self,
 		map: &Vec<T>,
 		map_size: usize,
-		xy: Index,
+		index: Index,
 		step: usize,
 		goal: Pos,
 		diag_flag: bool,
@@ -55,32 +55,32 @@ impl Pos {
 			let j = y + step;
 			if within_bounds(i, j, map_size) {
 				let dir_weight = W_DIA;
-				let index = xy.ind(i, j);
-				let map_val = dir_weight * map[index].into();
+				let ind = index.get(i, j);
+				let map_val = dir_weight * map[ind].into();
 				vect.push((Pos(i, j), map_val))
 			};
 			let i = x.saturating_sub(step);
 			let j = y.saturating_sub(step);
 			if within_bounds(i, j, map_size) {
 				let dir_weight = W_DIA;
-				let index = xy.ind(i, j);
-				let map_val = dir_weight * map[index].into();
+				let ind = index.get(i, j);
+				let map_val = dir_weight * map[ind].into();
 				vect.push((Pos(i, j), map_val))
 			};
 			let i = x + step;
 			let j = y.saturating_sub(step);
 			if within_bounds(i, j, map_size) {
 				let dir_weight = W_DIA;
-				let index = xy.ind(i, j);
-				let map_val = dir_weight * map[index].into();
+				let ind = index.get(i, j);
+				let map_val = dir_weight * map[ind].into();
 				vect.push((Pos(i, j), map_val))
 			};
 			let i = x.saturating_sub(step);
 			let j = y + step;
 			if within_bounds(i, j, map_size) {
 				let dir_weight = W_DIA;
-				let index = xy.ind(i, j);
-				let map_val = dir_weight * map[index].into();
+				let ind = index.get(i, j);
+				let map_val = dir_weight * map[ind].into();
 				vect.push((Pos(i, j), map_val))
 			};
 		}
@@ -89,35 +89,36 @@ impl Pos {
 		let j = y + step;
 		if within_bounds(i, j, map_size) {
 			let dir_weight = W_ORT;
-			let index = xy.ind(i, j);
-			let map_val = dir_weight * map[index].into();
+			let ind = index.get(i, j);
+			let map_val = dir_weight * map[ind].into();
 			vect.push((Pos(i, j), map_val))
 		};
 		let i = x;
 		let j = y.saturating_sub(step);
 		if within_bounds(i, j, map_size) {
 			let dir_weight = W_ORT;
-			let index = xy.ind(i, j);
-			let map_val = dir_weight * map[index].into();
+			let ind = index.get(i, j);
+			let map_val = dir_weight * map[ind].into();
 			vect.push((Pos(i, j), map_val))
 		};
 		let i = x + step;
 		let j = y;
 		if within_bounds(i, j, map_size) {
 			let dir_weight = W_ORT;
-			let index = xy.ind(i, j);
-			let map_val = dir_weight * map[index].into();
+			let ind = index.get(i, j);
+			let map_val = dir_weight * map[ind].into();
 			vect.push((Pos(i, j), map_val))
 		};
 		let i = x.saturating_sub(step);
 		let j = y;
 		if within_bounds(i, j, map_size) {
 			let dir_weight = W_ORT;
-			let index = xy.ind(i, j);
-			let map_val = dir_weight * map[index].into();
+			let ind = index.get(i, j);
+			let map_val = dir_weight * map[ind].into();
 			vect.push((Pos(i, j), map_val))
 		};
 		// Check to force pathfinding to converge when step is > 1.
+		// Distance < step length. A bit longer for safe measure.
 		if self.distance(&goal) < step * 2 {
 			vect.push((goal, 0))
 		}
@@ -147,10 +148,10 @@ where
 {
 	let goal: Pos = Pos(v.x1, v.y1);
 	let start: Pos = Pos(v.x0, v.y0);
-	let xy = Index { map_size };
+	let index = Index { map_size };
 	let path = astar(
 		&start,
-		|p| p.neighbors(map, map_size, xy, step, goal, diag_flag),
+		|p| p.neighbors(map, map_size, index, step, goal, diag_flag),
 		|p| p.distance(&goal) * v.path_heuristic,
 		|p| *p == goal,
 	);

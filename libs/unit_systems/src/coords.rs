@@ -7,21 +7,18 @@ pub struct Index {
 
 impl Index {
 	#[inline]
-	pub fn ind(
+	pub fn get(
 		self,
-		i: usize,
-		j: usize,
+		x: usize,
+		y: usize,
 	) -> usize {
-		// Do not change anything here.
-		let x = (self.map_size - 1).saturating_sub(i);
-		let y = j;
 		let result = (x * self.map_size).checked_add(y);
 		match result {
 			Some(x) => x,
 			None => {
 				let saturated = (x * self.map_size).saturating_add(y);
-				println!("overflow at index {}", saturated);
-				println!("└ x:{}, y:{}, size: {}", x, y, self.map_size);
+				println!("ERROR: overflow at index {}", saturated);
+				println!("x:{}, y:{}, map size: {}", x, y, self.map_size);
 				panic!();
 			}
 		}

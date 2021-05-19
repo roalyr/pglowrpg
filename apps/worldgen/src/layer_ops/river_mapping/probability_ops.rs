@@ -8,9 +8,9 @@ impl RgParams {
 		&mut self,
 		lp: &mut LayerPack,
 	) {
-		for i in 0..lp.wi.map_size {
-			for j in 0..lp.wi.map_size {
-				let index = lp.xy.ind(i, j);
+		for j in 0..lp.wi.map_size {
+			for i in 0..lp.wi.map_size {
+				let index = lp.index.get(i, j);
 				let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed, index);
 				let total_prob = self.prob(i, j, lp);
 				if (random <= total_prob)
@@ -31,7 +31,7 @@ impl RgParams {
 		lp: &mut LayerPack,
 	) -> f32 {
 		//Aliases
-		let index = lp.xy.ind(i, j);
+		let index = lp.index.get(i, j);
 		let terrain = lp.topography.read(lp.topography.TERRAIN, index);
 		let rainfall = lp.climate.read(lp.climate.RAINFALL, index);
 		let temperature = lp.climate.read(lp.climate.TEMPERATURE, index);

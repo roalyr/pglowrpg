@@ -11,8 +11,8 @@ impl RgParams {
 		//existing composite data structures
 		let terrain_map = get_terrain_map(lp);
 		let random_map = get_random_map(lp);
-		for i in 0..lp.wi.map_size {
-			for j in 0..lp.wi.map_size {
+		for j in 0..lp.wi.map_size {
+			for i in 0..lp.wi.map_size {
 				self.make_paths(i, j, lp, &terrain_map, &random_map);
 			}
 		}
@@ -27,7 +27,7 @@ impl RgParams {
 		random_map: &Vec<u8>,
 	) {
 		//Aliases
-		let index = lp.xy.ind(i, j);
+		let index = lp.index.get(i, j);
 		let wmask = lp.topography.read(lp.topography.WATERMASK, index);
 		//To spawn or not to spawn?
 		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed, index);
@@ -125,12 +125,11 @@ fn get_random_map(lp: &mut LayerPack) -> Vec<u8> {
 		lp.wi.seed + 1000,
 		NoiseMode::Perlin,
 	);
-	for (index, cell_v) in
-		random_map.iter_mut().enumerate().take(lp.layer_vec_len)
+	for (ind, cell_v) in random_map.iter_mut().enumerate().take(lp.layer_vec_len)
 	{
 		*cell_v =
-			(array_noise1[index] * cw::VAL_255_F32 * (1.0 - lp.wi.river_noise_blend)
-				+ array_noise2[index] * cw::VAL_255_F32 * lp.wi.river_noise_blend) as u8;
+			(array_noise1[ind] * cw::VAL_255_F32 * (1.0 - lp.wi.river_noise_blend)
+				+ array_noise2[ind] * cw::VAL_255_F32 * lp.wi.river_noise_blend) as u8;
 	}
 	random_map
 }
@@ -140,9 +139,9 @@ fn get_terrain_map(lp: &mut LayerPack) -> Vec<u8> {
 	//river nodes would be done on this
 	let map_size = lp.wi.map_size;
 	let mut terrain_map = vec![cw::ZERO_U8; lp.layer_vec_len];
-	for i in 0..map_size {
-		for j in 0..map_size {
-			let index = lp.xy.ind(i, j);
+	for j in 0..map_size {
+		for i in 0..map_size {
+			let index = lp.index.get(i, j);
 			terrain_map[index] =
 				lp.topography.read(lp.topography.TERRAIN, index) as u8;
 		}

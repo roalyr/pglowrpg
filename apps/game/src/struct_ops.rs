@@ -54,6 +54,10 @@ pub fn init_gd(
 		Some(lp) => lp,
 		_ => return None,
 	};
+	let x = lp.wi.map_size/2;
+	let y = x;
+	let index =  lp.index.get(x, y);
+	
 	let gd = GameData {
 		//Move previously cloned structs here
 		lp,
@@ -61,9 +65,9 @@ pub fn init_gd(
 		commands,
 		commands_vec: Vec::new(),
 		//Coordinates
-		x: 0,
-		y: 0,
-		index: 0,
+		x,
+		y,
+		index,
 		//Temporary working variables
 		//World data abs values
 		temp: 0,

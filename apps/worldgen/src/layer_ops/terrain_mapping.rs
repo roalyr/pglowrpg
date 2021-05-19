@@ -32,9 +32,9 @@ pub fn get(lp: &mut LayerPack) {
 		lp.wi.map_size,
 	);
 	//Write the map.
-	for index in 0..lp.layer_vec_len {
+	for ind in 0..lp.layer_vec_len {
 		lp.topography
-			.write(topog_map[index] as u16, lp.topography.TERRAIN, index)
+			.write(topog_map[ind] as u16, lp.topography.TERRAIN, ind)
 	}
 }
 
@@ -62,10 +62,10 @@ fn erode(
 		seed + 1000,
 		NoiseMode::Multi,
 	);
-	for index in 0..array.len() {
-		let noise = (0.2 * nm1[index] + 0.4 * nm2[index] + 0.6 * nm3[index])
+	for ind in 0..array.len() {
+		let noise = (0.2 * nm1[ind] + 0.4 * nm2[ind] + 0.6 * nm3[ind])
 			* elevation_noise_weight
 			+ (1.0 - elevation_noise_weight);
-		array[index] = (array[index] * noise).powf(erosion_factor);
+		array[ind] = (array[ind] * noise).powf(erosion_factor);
 	}
 }

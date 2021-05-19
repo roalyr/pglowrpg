@@ -24,7 +24,7 @@ pub fn get(
 	land_continuity: f32,
 	seed: usize,
 ) -> Vec<f32> {
-	let xy = Index { map_size: size };
+	let index = Index { map_size: size };
 	//size+1 in both directions
 	let size_big = size * size + 2 * size + 1;
 	let mut p = Params {
@@ -51,10 +51,10 @@ pub fn get(
 				let half_size_f = half_size as f32;
 				let center_x = x + half_size;
 				let center_y = y + half_size;
-				let sum = p.array[xy.ind(x, y)]
-					+ p.array[xy.ind(x, region_y)]
-					+ p.array[xy.ind(region_x, y)]
-					+ p.array[xy.ind(region_x, region_y)];
+				let sum = p.array[index.get(x, y)]
+					+ p.array[index.get(x, region_y)]
+					+ p.array[index.get(region_x, y)]
+					+ p.array[index.get(region_x, region_y)];
 				let shift = pseudo_rng::get(
 					-half_size_f
 						+ land_continuity * half_size_f * (cw::ONE_F32 - land_concentrator),
@@ -66,7 +66,7 @@ pub fn get(
 				let avg = sum / 4.0
 					+ (cw::ONE_F32 - land_concentrator) * land_scope * sum * shift
 					+ land_concentrator * shift;
-				p.array[xy.ind(center_x, center_y)] = avg;
+				p.array[index.get(center_x, center_y)] = avg;
 				y += p.step_len;
 			}
 			x += p.step_len;
@@ -97,15 +97,16 @@ fn diamond_substep(
 	center_x: usize,
 	center_y: usize,
 ) {
-	let xy = Index { map_size: p.size };
+	let index = Index { map_size: p.size };
 	p.iter += 1;
 	let half_size = p.step_len / 2;
 	let half_size_f = half_size as f32;
 	let sum2 = p.array
-		[xy.ind((center_x.saturating_sub(half_size)) % p.size, center_y)]
-		+ p.array[xy.ind((center_x + half_size) % p.size, center_y)]
-		+ p.array[xy.ind(center_x, (center_y.saturating_sub(half_size)) % p.size)]
-		+ p.array[xy.ind(center_x, (center_y + half_size) % p.size)];
+		[index.get((center_x.saturating_sub(half_size)) % p.size, center_y)]
+		+ p.array[index.get((center_x + half_size) % p.size, center_y)]
+		+ p.array
+			[index.get(center_x, (center_y.saturating_sub(half_size)) % p.size)]
+		+ p.array[index.get(center_x, (center_y + half_size) % p.size)];
 	let shift = pseudo_rng::get(
 		-half_size_f
 			+ p.land_continuity * half_size_f * (cw::ONE_F32 - p.land_concentrator),
@@ -119,15 +120,15 @@ fn diamond_substep(
 		+ p.land_concentrator * p.land_scope * shift
 		+ (cw::ONE_F32 - p.land_concentrator) * sum2 / 4.0)
 		/ (p.land_concentrator * half_size_f + (cw::ONE_F32 - p.land_concentrator));
-	p.array[xy.ind(center_x, center_y)] = avg2;
+	p.array[index.get(center_x, center_y)] = avg2;
 }
 
 fn normalize_crop(
 	mut array: Vec<f32>,
 	size: usize,
 ) -> Vec<f32> {
-	let xy = Index { map_size: size };
-	let xy_big = Index {
+	let index = Index { map_size: size };
+	let index_big = Index {
 		map_size: size + DS_CROP,
 	};
 	let mut array_final = vec![cw::ZERO_F32; size * size];
@@ -141,14 +142,14 @@ fn normalize_crop(
 		}
 	}
 	let k = cw::VAL_255_F32 / max_v;
-	for (index, cell_v) in array_final.iter_mut().enumerate().take(size * size) {
-		*cell_v = array[index] * k;
+	for (ind, cell_v) in array_final.iter_mut().enumerate().take(size * size) {
+		*cell_v = array[ind] * k;
 	}
 	let array_sized = mitchell(array_final.clone(), size, size + DS_CROP);
 	for i in 0..size {
 		for j in 0..size {
-			array_final[xy.ind(i, j)] =
-				array_sized[xy_big.ind(i + DS_CROP / 2, j + DS_CROP / 2)] as f32;
+			array_final[index.get(i, j)] =
+				array_sized[index_big.get(i + DS_CROP / 2, j + DS_CROP / 2)] as f32;
 		}
 	}
 	array_final

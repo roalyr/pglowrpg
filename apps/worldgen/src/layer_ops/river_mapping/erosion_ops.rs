@@ -69,7 +69,7 @@ impl RgParams {
 		let erosion_width_max = lp.wi.river_erosion_width;
 		let i_source = path_array[0].0;
 		let j_source = path_array[0].1;
-		let index_source = lp.xy.ind(i_source, j_source);
+		let index_source = lp.index.get(i_source, j_source);
 		//Level at source of river
 		let terrain_source =
 			lp.topography.read(lp.topography.TERRAIN, index_source);
@@ -96,8 +96,8 @@ impl RgParams {
 			let j0 = n[0].1;
 			let i1 = n[1].0;
 			let j1 = n[1].1;
-			let index_downstr = lp.xy.ind(i1, j1);
-			let index_current = lp.xy.ind(i0, j0);
+			let index_downstr = lp.index.get(i1, j1);
+			let index_current = lp.index.get(i0, j0);
 			let terrain_current =
 				lp.topography.read(lp.topography.TERRAIN, index_current);
 			let terrain_downstr =
@@ -155,7 +155,7 @@ fn erosion(
 	let map_size = lp.wi.map_size;
 	//Check if within the map
 	if (erosion_i < map_size) && (erosion_j < map_size) {
-		let index = lp.xy.ind(erosion_i, erosion_j);
+		let index = lp.index.get(erosion_i, erosion_j);
 		if lp.topography.read(lp.topography.TERRAIN, index) > terrain_current {
 			let terrain_current = terrain_current as f32;
 			let terrain_to_erode =

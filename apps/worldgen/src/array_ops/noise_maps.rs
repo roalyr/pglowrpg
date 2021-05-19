@@ -33,7 +33,7 @@ fn multi(
 	noise_size: f32,
 	seed: usize,
 ) -> Vec<f32> {
-	let xy = Index { map_size: size };
+	let index = Index { map_size: size };
 	let noise = BasicMulti::new();
 	let rotate = RotatePoint::new(&noise)
 		.set_x_angle(22.0)
@@ -41,11 +41,11 @@ fn multi(
 		.set_z_angle(45.0);
 	let abs = Abs::new(&rotate);
 	let mut array = vec![0.0; size * size];
-	for i in 0..size {
-		for j in 0..size {
-			array[xy.ind(i, j)] = abs.get([
-				(i as f64) * f64::from(noise_size),
-				(j as f64) * f64::from(noise_size),
+	for y in 0..size {
+		for x in 0..size {
+			array[index.get(x, y)] = abs.get([
+				(x as f64) * f64::from(noise_size),
+				(y as f64) * f64::from(noise_size),
 				(seed as f64),
 			]) as f32;
 		}
@@ -59,7 +59,7 @@ fn perlin(
 	noise_size: f32,
 	seed: usize,
 ) -> Vec<f32> {
-	let xy = Index { map_size: size };
+	let index = Index { map_size: size };
 	let noise = Perlin::new();
 	let rotate = RotatePoint::new(&noise)
 		.set_x_angle(22.0)
@@ -67,11 +67,11 @@ fn perlin(
 		.set_z_angle(45.0);
 	let abs = Abs::new(&rotate);
 	let mut array = vec![0.0; size * size];
-	for i in 0..size {
-		for j in 0..size {
-			array[xy.ind(i, j)] = abs.get([
-				(i as f64) * f64::from(noise_size),
-				(j as f64) * f64::from(noise_size),
+	for y in 0..size {
+		for x in 0..size {
+			array[index.get(x, y)] = abs.get([
+				(x as f64) * f64::from(noise_size),
+				(y as f64) * f64::from(noise_size),
 				(seed as f64),
 			]) as f32;
 		}

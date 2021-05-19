@@ -6,7 +6,7 @@ use unit_systems::coords::Index;
 //▒▒▒▒▒▒▒▒▒▒▒▒ LAYER PACK ▒▒▒▒▒▒▒▒▒▒▒▒▒
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LayerPack {
-	pub xy: Index,
+	pub index: Index,
 	pub wi: presets::presets_worldgen::Stuff,
 
 	pub layer_vec_len: usize,

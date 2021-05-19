@@ -114,7 +114,7 @@ pub fn start() {
 		// Create a "LayerPack" struct which holds all the world data.
 		// Re-call this every loop iteration due to new seed.
 		let mut lp = LayerPack {
-			xy: Index { map_size },
+			index: Index { map_size },
 			wi,
 			noisemap_vec_len,
 			layer_vec_len,

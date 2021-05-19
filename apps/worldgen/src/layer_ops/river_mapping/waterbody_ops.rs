@@ -53,7 +53,7 @@ impl RgParams {
 				let i = i as usize;
 				let j = j as usize;
 				if (i < size) && (j < size) {
-					let index = lp.xy.ind(i, j);
+					let index = lp.index.get(i, j);
 					let wmask = lp.topography.read(lp.topography.WATERMASK, index);
 					let temp = lp.climate.read(lp.climate.TEMPERATURE, index);
 					let temp_abs = translate::get_abs(

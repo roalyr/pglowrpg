@@ -46,7 +46,6 @@ pub fn start() {
 		let cx = gd.x;
 		let cy = gd.y;
 		printing_ops::map_render_land(&mut gd, cy, cx);
-
 		println!("Registered commands are:\n{:?}", &gd.commands_vec);
 
 		//Input and actions

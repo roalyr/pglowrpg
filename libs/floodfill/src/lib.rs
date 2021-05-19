@@ -22,13 +22,13 @@ impl<T> FloodFill<'_, T> {
 	) where
 		T: PartialEq + Copy + Clone,
 	{
-		let xy = Index {
+		let index = Index {
 			map_size: self.map_size,
 		};
 		// Reset previous region data.
-		for x in self.x_min..=self.x_max {
-			for y in self.y_min..=self.y_max {
-				self.region_map[xy.ind(x, y)] = false;
+		for y in self.y_min..=self.y_max {
+			for x in self.x_min..=self.x_max {
+				self.region_map[index.get(x, y)] = false;
 			}
 		}
 		self.region_size = 0;
@@ -40,14 +40,14 @@ impl<T> FloodFill<'_, T> {
 		self.y_max = j;
 		let mut queue = Vec::new();
 		let mut neighbors = Vec::with_capacity(4);
-		let target = self.template_data[xy.ind(i, j)];
+		let target = self.template_data[index.get(i, j)];
 		// TODO: why u16 here?
 		let size = self.map_size as u16;
 		queue.push((i as u16, j as u16));
 		while let Some(point) = queue.pop() {
 			let (i, j): (u16, u16) = point;
-			let index = xy.ind(i as usize, j as usize);
-			if self.template_data[index] != target {
+			let ind = index.get(i as usize, j as usize);
+			if self.template_data[ind] != target {
 				continue;
 			}
 			neighbors.clear();
@@ -66,14 +66,14 @@ impl<T> FloodFill<'_, T> {
 				neighbors.push((i, j - 1))
 			};
 			for (ni, nj) in neighbors.iter() {
-				if self.exclusion_map[xy.ind(*ni as usize, *nj as usize)] {
+				if self.exclusion_map[index.get(*ni as usize, *nj as usize)] {
 					continue;
 				};
 				queue.push((*ni, *nj));
 			}
 			// Mark the point passed.
-			self.exclusion_map[index] = true;
-			self.region_map[index] = true;
+			self.exclusion_map[ind] = true;
+			self.region_map[ind] = true;
 			self.region_size += 1;
 			// Bounds coordinates calculation.
 			if (i as usize) < self.x_min {

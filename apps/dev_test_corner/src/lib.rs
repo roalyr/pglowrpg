@@ -146,9 +146,9 @@ pub fn start() {
 	let x = 10;
 	let y = 110;
 	let queue = vec![123, 667, 9986];
-	let xy = Index { map_size };
-	let index = xy.ind(x, y) as u32;
-	entities_cache.insert(index, queue.clone());
+	let index = Index { map_size };
+	let ind = index.get(x, y) as u32;
+	entities_cache.insert(ind, queue.clone());
 	// Update coords in their headers.
 	// Make proper match for error
 	for entity_id in queue.iter() {
@@ -159,10 +159,10 @@ pub fn start() {
 	// MAKE DESTRUCTORS FOR SPEIFIC UNIQUE ENTITY TYPES.
 
 	// Now access the creatures in the given location:
-	let local_entities = &entities_cache[&index];
+	let local_entities = &entities_cache[&ind];
 	println!("{}", "\nCHECKING ENTRIES IN THE LOCATION".green());
 	println!("Putting entities: {:?}", local_entities);
-	println!("At x: {}, y: {}, index: {}\n", x, y, index);
+	println!("At x: {}, y: {}, index: {}\n", x, y, ind);
 	for entity_id in local_entities.iter() {
 		// Destruct the entity. What should this return? How and when?
 		match unique_creatures.get_mut(entity_id) {

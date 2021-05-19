@@ -35,7 +35,7 @@ fn hexrow<T>(
 where
 	T: PartialOrd + Clone + Copy + Ord + num::NumCast,
 {
-	let xy = Index { map_size: size };
+	let index = Index { map_size: size };
 	let hexagon = [
 		[0, 0, 0, 1, 1, 0, 0, 0],
 		[0, 1, 1, 1, 1, 1, 1, 0],
@@ -56,15 +56,15 @@ where
 		let mut num_vals = 0;
 		let mut sum_val = 0.0;
 		let mut mean_val = 0.0;
-		for i in 0..9 {
-			for j in 0..8 {
+		for j in 0..8 {
+			for i in 0..9 {
 				if hexagon[k][l] == 1 {
 					if ((i + off_i) >= 0 && (i + off_i) < size as isize)
 						&& ((j + off_j + 8 * n) >= 0 && (j + off_j + 8 * n) < size as isize)
 					{
 						//println!("x {}, y {:?}", i + off_i, j + off_j + 8 * n);
 						let index =
-							xy.ind((i + off_i) as usize, (j + off_j + 8 * n) as usize);
+							index.get((i + off_i) as usize, (j + off_j + 8 * n) as usize);
 						cell_vals.push(array[index]);
 						sum_val += num::cast::<T, f32>(array[index]).unwrap();
 						num_vals += 1;
@@ -102,14 +102,14 @@ where
 			}
 		};
 		//Put data in hexagons.
-		for i in 0..9 {
-			for j in 0..8 {
+		for j in 0..8 {
+			for i in 0..9 {
 				if hexagon[k][l] == 1 {
 					if ((i + off_i) >= 0 && (i + off_i) < size as isize)
 						&& ((j + off_j + 8 * n) >= 0 && (j + off_j + 8 * n) < size as isize)
 					{
 						let index =
-							xy.ind((i + off_i) as usize, (j + off_j + 8 * n) as usize);
+							index.get((i + off_i) as usize, (j + off_j + 8 * n) as usize);
 						//Store either max value or mean value (todo).
 						array[index] = *max_val.0;
 					}

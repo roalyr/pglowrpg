@@ -24,10 +24,10 @@ pub fn map_render_land(
 	let mut render_line = Vec::new();
 	let bi: biomes::Stuff = biomes::get();
 
-	for i in 0..gd.map_render_size * 2 {
-		let shift_y: isize = i as isize - gd.map_render_size as isize;
-		for j in (0..gd.map_render_size * 2).rev() {
-			let shift_x: isize = j as isize - gd.map_render_size as isize;
+	for j in 0..gd.map_render_size * 2 {
+		let shift_y: isize = j as isize - gd.map_render_size as isize;
+		for i in (0..gd.map_render_size * 2).rev() {
+			let shift_x: isize = i as isize - gd.map_render_size as isize;
 
 			let xx = (center_x as isize - shift_x) as isize;
 			let yy = (center_y as isize - shift_y) as isize;
@@ -38,12 +38,15 @@ pub fn map_render_land(
 				&& ((yy as usize) < gd.lp.wi.map_size)
 			{
 				//Swapped in reverse to worldgen.
-				gd.index = gd.lp.xy.ind(yy as usize, xx as usize);
-				let elev = gd.lp.topography.read(gd.lp.topography.TERRAIN, gd.index);
+				let render_index = gd.lp.index.get(xx as usize, yy as usize);
+				let elev = gd
+					.lp
+					.topography
+					.read(gd.lp.topography.TERRAIN, render_index);
 				//let elev_rel = (elev as f32) / 255.0;
 
-				let river_width = gd.lp.rivers.read(gd.lp.rivers.WIDTH, gd.index);
-				let biome = gd.lp.biomes.read(gd.index);
+				let river_width = gd.lp.rivers.read(gd.lp.rivers.WIDTH, render_index);
+				let biome = gd.lp.biomes.read(render_index);
 
 				//Forgive me what comes below. I will fix it later.
 				let mut element = match river_width {
@@ -198,7 +201,7 @@ pub fn map_render_land(
 
 				//Swap characters every other row for better visuals
 				//Or do it randomly
-				let random = pseudo_rng::get(0.0, 1.0, gd.lp.wi.seed, gd.index);
+				let random = pseudo_rng::get(0.0, 1.0, gd.lp.wi.seed, render_index);
 
 				if random < 0.5 {
 					//if x % 2 == 0 {
