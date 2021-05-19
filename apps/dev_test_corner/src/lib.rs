@@ -88,6 +88,8 @@ pub fn start() {
 			)
 		"#;
 
+	let mut files = Vec::new();
+	// Search all directories for files.
 	let entity_from_file: EntityData = match ron::from_str(&data) {
 		Ok(f) => f,
 		Err(e) => {
@@ -95,28 +97,35 @@ pub fn start() {
 			std::process::exit(0);
 		}
 	};
+	files.push(entity_from_file);
 
 	// MAKING NON-SPATIAL GLOBAL TABLE.
 	// Make init cap and total cap. Defines hasmap size.
 	// Must be less than max ID values which will be U32 max.
 	let entity_cap = 1_000_00;
 	// ENTITY TABLE
-	let mut unique_entities: HashMap<u32, UniqueEntity> =
+	let mut unique_creatures: HashMap<u32, UniqueEntity> =
 		HashMap::with_capacity(entity_cap);
 
-	// Filling up creatures object from preset.
-	// Make match sort to generate different kinds of entities
-	// according to their caps.
-	for uid in 0..entity_cap {
-		unique_entities.insert(
-			uid as u32,
-			UniqueEntity {
-				uid: uid as u32,
-				x: 0,
-				y: 0,
-				data: entity_from_file.clone(),
-			}, //creature
-		); //insert
+	// Make sure uids are only assigned here.
+	// UIDs as usize?
+	let mut uid: u32 = 0;
+	for entity_from_file in files.iter() {
+		match &entity_from_file.entity_type {
+			EntityType::Creature(_) => {
+				unique_creatures.insert(
+					uid,
+					UniqueEntity {
+						uid,
+						x: 0,
+						y: 0,
+						data: files[0].clone(),
+					},
+				);
+			}
+		}
+		// Make this capped at specific entity cap
+		uid.checked_add(1).expect("Overflow at  uid += 1");
 	}
 
 	// WORLD-RELATED DATA TABLES AND CACHES.
@@ -143,9 +152,11 @@ pub fn start() {
 	// Update coords in their headers.
 	// Make proper match for error
 	for entity_id in queue.iter() {
-		unique_entities.get_mut(entity_id).unwrap().x = x as u32;
-		unique_entities.get_mut(entity_id).unwrap().y = y as u32;
+		unique_creatures.get_mut(entity_id).unwrap().x = x as u32;
+		unique_creatures.get_mut(entity_id).unwrap().y = y as u32;
 	}
+
+	// MAKE DESTRUCTORS FOR SPEIFIC UNIQUE ENTITY TYPES.
 
 	// Now access the creatures in the given location:
 	let local_entities = &entities_cache[&index];
@@ -154,7 +165,7 @@ pub fn start() {
 	println!("At x: {}, y: {}, index: {}\n", x, y, index);
 	for entity_id in local_entities.iter() {
 		// Destruct the entity. What should this return? How and when?
-		match unique_entities.get_mut(entity_id) {
+		match unique_creatures.get_mut(entity_id) {
 			Some(entity) => {
 				println!("UID: {}", entity.uid);
 				match &entity.data.entity_type {

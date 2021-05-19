@@ -6,7 +6,7 @@ use crate::file_ops::data_ops::write_data;
 use crate::file_ops::image_color_ops::write_images_color;
 use crate::file_ops::image_raw_ops::write_images_raw;
 use crate::LayerPack;
-use constants::app::*;
+use constants::app as ca;
 use game_options::OPTIONS;
 use io_ops::create_dir;
 use std::path::Path;
@@ -36,8 +36,8 @@ pub fn write_save(
 	}
 
 	if make_dirs {
-		save_dir = Path::new(PATH_SAVE).to_path_buf();
-		world_dir = Path::new(PATH_SAVE).to_path_buf().join(world_name);
+		save_dir = Path::new(ca::PATH_SAVE).to_path_buf();
+		world_dir = Path::new(ca::PATH_SAVE).to_path_buf().join(world_name);
 		create_dir(&save_dir);
 		create_dir(&world_dir);
 		// TODO: save a copy of preset into a save folder

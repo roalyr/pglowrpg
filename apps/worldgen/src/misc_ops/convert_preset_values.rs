@@ -16,9 +16,10 @@ pub fn all(wi: &mut presets::presets_worldgen::Stuff) {
 fn map_size(wi: &presets::presets_worldgen::Stuff) {
 	let size = MAP_SIZES.iter().find(|&&s| s == wi.map_size);
 	if size == None {
-		let msg = ""; // &panic_str.map_size_1;
-		let msg2 = ""; //  &panic_str.map_size_2;
-		println!("{}{:?}{}{}", msg, MAP_SIZES, msg2, wi.map_size,);
+		let msg = "ERROR: map size value is wrong: ";
+		let msg2 = "Allowed values are: ";
+		println!("{}{}", msg, wi.map_size,);
+		println!("{}{:?}", msg2, MAP_SIZES);
 		std::process::exit(0);
 	}
 }
@@ -26,13 +27,16 @@ fn map_size(wi: &presets::presets_worldgen::Stuff) {
 fn noisemap_size(wi: &presets::presets_worldgen::Stuff) {
 	let size = NOISEMAP_SIZES.iter().find(|&&s| s == wi.noisemap_size);
 	if size == None {
-		let msg = ""; //  &panic_str.noisemap_size_1;
-		let msg2 = ""; //  &panic_str.noisemap_size_2;
-		println!("{}{:?}{}{}", msg, NOISEMAP_SIZES, msg2, wi.noisemap_size,);
+		let msg = "ERROR: noisemap size value is wrong: ";
+		let msg2 = "Allowed values are: ";
+		println!("{}{}", msg, wi.noisemap_size,);
+		println!("{}{:?}", msg2, NOISEMAP_SIZES);
 		std::process::exit(0);
 	}
 	if wi.noisemap_size > wi.map_size {
-		println!("Noisemap should be less of equal to map size");
+		println!("ERROR: noisemap should be less or equal to map size");
+		println!("Map size: {}", wi.map_size);
+		println!("Noisemap size: {}", wi.noisemap_size);
 		std::process::exit(0);
 	}
 }
@@ -315,7 +319,7 @@ fn cap1<T>(
 where
 	T: PartialOrd + std::fmt::Display,
 {
-	let warn = "    Warning:";
+	let warn = "WARNING:";
 	let msg1 = "absolute value is capped, adjusting";
 	let mut v = val;
 	if v < cap_min {
@@ -339,7 +343,7 @@ fn cap2<T>(
 where
 	T: PartialOrd + std::fmt::Display + Copy,
 {
-	let warn = "    Warning:";
+	let warn = "WARNING:";
 	let msg1 = "absolute minimal value is capped, adjusting";
 	let msg2 = "absolute maximum value is capped, adjusting";
 	let msg3 = "minimal value is greater than maximum, adjusting maximum";

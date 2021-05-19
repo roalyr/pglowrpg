@@ -1,5 +1,5 @@
 use crate::layer_ops::river_mapping::RgParams;
-use constants::world::*;
+use constants::world as cw;
 use game_data_codec::LayerPack;
 use unit_systems::translate;
 
@@ -14,7 +14,8 @@ impl RgParams {
 				let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed, index);
 				let total_prob = self.prob(i, j, lp);
 				if (random <= total_prob)
-					&& (lp.topography.read(lp.topography.WATERMASK, index) == NO_WATER)
+					&& (lp.topography.read(lp.topography.WATERMASK, index)
+						== cw::NO_WATER)
 				{
 					self.river_est_number += 1;
 				}
@@ -34,21 +35,22 @@ impl RgParams {
 		let terrain = lp.topography.read(lp.topography.TERRAIN, index);
 		let rainfall = lp.climate.read(lp.climate.RAINFALL, index);
 		let temperature = lp.climate.read(lp.climate.TEMPERATURE, index);
-		let rain_prob = f32::from(rainfall) / 255.0;
-		let temp_prob = f32::from(temperature) / 255.0;
-		let terrain_prob = f32::from(terrain) / 255.0;
+		let rain_prob = f32::from(rainfall) / cw::VAL_255_F32;
+		let temp_prob = f32::from(temperature) / cw::VAL_255_F32;
+		let terrain_prob = f32::from(terrain) / cw::VAL_255_F32;
 		let temp_abs = translate::get_abs(
 			temperature as f32,
-			255.0,
+			cw::VAL_255_F32,
 			lp.wi.abs_temp_min as f32,
 			lp.wi.abs_temp_max as f32,
 		) as isize;
-		if temp_abs <= TEMP_PERM_ICE {
-			0.0
+		if temp_abs <= cw::TEMP_PERM_ICE {
+			cw::ZERO_F32
 		} else {
 			lp.wi.river_source_density
 				* rain_prob
-				* (0.75 + temp_prob * 0.25)
+				* ((1.0 - cw::RIVER_SPAWN_TEMPERATURE_INFLUENCE)
+					+ temp_prob * cw::RIVER_SPAWN_TEMPERATURE_INFLUENCE)
 				* terrain_prob
 		}
 	}

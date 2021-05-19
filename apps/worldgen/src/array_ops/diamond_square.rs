@@ -1,10 +1,9 @@
 use crate::array_ops::interpolate::mitchell;
+use constants::world as cw;
 use unit_systems::coords::Index;
 
-//Constants to generic and app
-//a margin that is meant to crop the border artifacts in DS algorithm
+// A margin that is meant to crop the border artifacts in DS algorithm
 const DS_CROP: usize = 20;
-const ONE_F32: f32 = 1.0;
 
 struct Params {
 	size: usize,
@@ -30,7 +29,7 @@ pub fn get(
 	let size_big = size * size + 2 * size + 1;
 	let mut p = Params {
 		size,
-		array: vec![ONE_F32; size_big],
+		array: vec![cw::ONE_F32; size_big],
 		land_concentrator,
 		land_scope,
 		land_continuity,
@@ -58,14 +57,14 @@ pub fn get(
 					+ p.array[xy.ind(region_x, region_y)];
 				let shift = pseudo_rng::get(
 					-half_size_f
-						+ land_continuity * half_size_f * (ONE_F32 - land_concentrator),
+						+ land_continuity * half_size_f * (cw::ONE_F32 - land_concentrator),
 					half_size_f
-						+ land_continuity * half_size_f * (ONE_F32 - land_concentrator),
+						+ land_continuity * half_size_f * (cw::ONE_F32 - land_concentrator),
 					p.seed,
 					p.iter,
 				);
 				let avg = sum / 4.0
-					+ (ONE_F32 - land_concentrator) * land_scope * sum * shift
+					+ (cw::ONE_F32 - land_concentrator) * land_scope * sum * shift
 					+ land_concentrator * shift;
 				p.array[xy.ind(center_x, center_y)] = avg;
 				y += p.step_len;
@@ -109,17 +108,17 @@ fn diamond_substep(
 		+ p.array[xy.ind(center_x, (center_y + half_size) % p.size)];
 	let shift = pseudo_rng::get(
 		-half_size_f
-			+ p.land_continuity * half_size_f * (ONE_F32 - p.land_concentrator),
+			+ p.land_continuity * half_size_f * (cw::ONE_F32 - p.land_concentrator),
 		half_size_f
-			+ p.land_continuity * half_size_f * (ONE_F32 - p.land_concentrator),
+			+ p.land_continuity * half_size_f * (cw::ONE_F32 - p.land_concentrator),
 		p.seed,
 		p.iter,
 	);
 	let avg2 = (p.land_concentrator * sum2 / 4.0 * half_size_f
-		+ (ONE_F32 - p.land_concentrator) * p.land_scope * sum2 * shift
+		+ (cw::ONE_F32 - p.land_concentrator) * p.land_scope * sum2 * shift
 		+ p.land_concentrator * p.land_scope * shift
-		+ (ONE_F32 - p.land_concentrator) * sum2 / 4.0)
-		/ (p.land_concentrator * half_size_f + (ONE_F32 - p.land_concentrator));
+		+ (cw::ONE_F32 - p.land_concentrator) * sum2 / 4.0)
+		/ (p.land_concentrator * half_size_f + (cw::ONE_F32 - p.land_concentrator));
 	p.array[xy.ind(center_x, center_y)] = avg2;
 }
 
@@ -131,17 +130,17 @@ fn normalize_crop(
 	let xy_big = Index {
 		map_size: size + DS_CROP,
 	};
-	let mut array_final = vec![0.0; size * size];
+	let mut array_final = vec![cw::ZERO_F32; size * size];
 	//size+1 in both directions
 	let size_big = size * size + 2 * size + 1;
-	let mut max_v = 0.0;
+	let mut max_v = cw::ZERO_F32;
 	for cell_v in array.iter_mut().take(size_big) {
 		*cell_v *= *cell_v;
 		if *cell_v > max_v {
 			max_v = *cell_v;
 		}
 	}
-	let k = 255.0 / max_v;
+	let k = cw::VAL_255_F32 / max_v;
 	for (index, cell_v) in array_final.iter_mut().enumerate().take(size * size) {
 		*cell_v = array[index] * k;
 	}

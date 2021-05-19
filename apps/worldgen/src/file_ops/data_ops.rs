@@ -1,6 +1,6 @@
 use crate::LayerPack;
 use bincode;
-use constants::app::*;
+use constants::app as ca;
 use io_ops::{compress_to_storage, create_dir};
 
 pub fn write_data(
@@ -8,12 +8,12 @@ pub fn write_data(
 	world_dir: &std::path::PathBuf,
 ) {
 	//Make a directory if none exists
-	let data_dir = world_dir.join(PATH_SAVE_DATA);
+	let data_dir = world_dir.join(ca::PATH_SAVE_DATA);
 	create_dir(&data_dir);
 
 	let file_path = data_dir
-		.join(NAME_DATA_WORLD)
-		.with_extension(EXTENSION_SAVE_DATA);
+		.join(ca::NAME_DATA_WORLD)
+		.with_extension(ca::EXTENSION_SAVE_DATA);
 
 	//println!("{}", wg_str.wg27);
 	let encoded: Vec<u8> = bincode::serialize(&lp).unwrap();

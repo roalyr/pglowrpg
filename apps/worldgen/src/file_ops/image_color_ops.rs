@@ -1,15 +1,15 @@
 use crate::LayerPack;
-use constants::app::*;
+use constants::app as ca;
 use game_options::OPTIONS;
 use io_ops::create_dir;
-use io_ops::writepng::*;
+use io_ops::writepng::{combined_png, simple_png, GradMode, Mode};
 
 pub fn write_images_color(
 	lp: &mut LayerPack,
 	world_dir: &std::path::PathBuf,
 ) {
 	//Make a directory if none exists
-	let color_img_dir = world_dir.join(PATH_SAVE_IMAGES_COLOR);
+	let color_img_dir = world_dir.join(ca::PATH_SAVE_IMAGES_COLOR);
 	create_dir(&color_img_dir);
 
 	//Clean proxy maps for rendering images
@@ -22,7 +22,7 @@ pub fn write_images_color(
 		//println!("{}", wg_str.wg14);
 		let file_path = color_img_dir
 			.join("watermask_over_terrain")
-			.with_extension(EXTENSION_SAVE_IMAGE);
+			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = lp.xy.ind(i, j);
@@ -48,7 +48,7 @@ pub fn write_images_color(
 		//println!("{}", wg_str.wg10);
 		let file_path = color_img_dir
 			.join("temperature")
-			.with_extension(EXTENSION_SAVE_IMAGE);
+			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = lp.xy.ind(i, j);
@@ -69,7 +69,7 @@ pub fn write_images_color(
 		//println!("{}", wg_str.wg12);
 		let file_path = color_img_dir
 			.join("rainfall")
-			.with_extension(EXTENSION_SAVE_IMAGE);
+			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = lp.xy.ind(i, j);
@@ -90,7 +90,7 @@ pub fn write_images_color(
 		//println!("{}", wg_str.wg22);
 		let file_path = color_img_dir
 			.join("georegions")
-			.with_extension(EXTENSION_SAVE_IMAGE);
+			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = lp.xy.ind(i, j);
@@ -107,7 +107,7 @@ pub fn write_images_color(
 		//println!("{}", wg_str.wg18);
 		let file_path = color_img_dir
 			.join("rivers_elements")
-			.with_extension(EXTENSION_SAVE_IMAGE);
+			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = lp.xy.ind(i, j);
@@ -130,7 +130,7 @@ pub fn write_images_color(
 		//Rivers ids
 		let file_path = color_img_dir
 			.join("rivers_id")
-			.with_extension(EXTENSION_SAVE_IMAGE);
+			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = lp.xy.ind(i, j);
@@ -153,7 +153,7 @@ pub fn write_images_color(
 		//Rivers widths
 		let file_path = color_img_dir
 			.join("rivers_width")
-			.with_extension(EXTENSION_SAVE_IMAGE);
+			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = lp.xy.ind(i, j);
@@ -179,7 +179,7 @@ pub fn write_images_color(
 		//println!("{}", wg_str.wg20);
 		let file_path = color_img_dir
 			.join("biomes")
-			.with_extension(EXTENSION_SAVE_IMAGE);
+			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = lp.xy.ind(i, j);

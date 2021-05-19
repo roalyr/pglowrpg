@@ -1,6 +1,6 @@
 use crate::array_ops::noise_maps;
 use crate::layer_ops::river_mapping::RgParams;
-use constants::world::*;
+use constants::world as cw;
 use game_data_codec::LayerPack;
 use line_drawing::BresenhamCircle;
 use unit_systems::translate;
@@ -58,12 +58,12 @@ impl RgParams {
 					let temp = lp.climate.read(lp.climate.TEMPERATURE, index);
 					let temp_abs = translate::get_abs(
 						temp as f32,
-						255.0,
+						cw::VAL_255_F32,
 						lp.wi.abs_temp_min as f32,
 						lp.wi.abs_temp_max as f32,
 					) as isize;
 					if (wmask >= lp.wi.river_attr_pool_size_pow)
-						&& (temp_abs > TEMP_POLAR)
+						&& (temp_abs > cw::TEMP_POLAR)
 					{
 						self.dv.x1 = i;
 						self.dv.y1 = j;
@@ -76,7 +76,7 @@ impl RgParams {
 				self.dv.r += 1;
 			} else {
 				//reset stuff
-				self.dv.r = ONE_USIZE;
+				self.dv.r = cw::ONE_USIZE;
 				self.dv.hit = false;
 				break;
 			}

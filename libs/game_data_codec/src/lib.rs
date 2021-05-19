@@ -56,12 +56,12 @@ pub struct BitLayerBiomes {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BitLayerRiversID {
-	pub data: Vec<u16>,
+	pub data: Vec<u32>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BitLayerGeoregID {
-	pub data: Vec<u16>,
+	pub data: Vec<u32>,
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ METHODS ▒▒▒▒▒▒▒▒▒▒▒▒▒
@@ -228,8 +228,8 @@ impl_with_masks!(
 
 // Simple data layers without masks.
 impl_without_masks!(
-	BitLayerGeoregID, u16;
-	BitLayerRiversID, u16;
+	BitLayerGeoregID, u32;
+	BitLayerRiversID, u32;
 	BitLayerBiomes, u8;
 );
 

@@ -1,7 +1,8 @@
 use crate::array_ops;
 use crate::array_ops::noise_maps;
-use crate::array_ops::noise_maps::NoiseMode::*;
+use crate::array_ops::noise_maps::NoiseMode;
 use game_data_codec::LayerPack;
+//use constants::world as cw;
 
 pub fn get(lp: &mut LayerPack) {
 	let mut array = array_ops::diamond_square::get(
@@ -47,11 +48,20 @@ fn erode(
 	erosion_factor: f32,
 	seed: usize,
 ) {
-	let nm1 = noise_maps::get(size, elevation_noise_size, seed, Multi);
-	let nm2 =
-		noise_maps::get(size, elevation_noise_size * 0.7, seed + 100, Multi);
-	let nm3 =
-		noise_maps::get(size, elevation_noise_size * 0.3, seed + 1000, Multi);
+	//TODO: improve fine noise
+	let nm1 = noise_maps::get(size, elevation_noise_size, seed, NoiseMode::Multi);
+	let nm2 = noise_maps::get(
+		size,
+		elevation_noise_size * 0.7,
+		seed + 100,
+		NoiseMode::Multi,
+	);
+	let nm3 = noise_maps::get(
+		size,
+		elevation_noise_size * 0.3,
+		seed + 1000,
+		NoiseMode::Multi,
+	);
 	for index in 0..array.len() {
 		let noise = (0.2 * nm1[index] + 0.4 * nm2[index] + 0.6 * nm3[index])
 			* elevation_noise_weight

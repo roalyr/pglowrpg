@@ -1,4 +1,4 @@
-use constants::world::*;
+use constants::world as cw;
 use game_data_codec::LayerPack;
 use unit_systems::coords::Index;
 use unit_systems::translate;
@@ -7,7 +7,7 @@ pub fn get(lp: &mut LayerPack) {
 	let xy = Index {
 		map_size: lp.wi.map_size,
 	};
-	let blank = vec![NO_WATER; lp.layer_vec_len];
+	let blank = vec![cw::NO_WATER; lp.layer_vec_len];
 	let mut ff = floodfill::FloodFill::new(&blank, lp.wi.map_size);
 	//Write down an exclusion map for dry and icy regions.
 	for i in 0..lp.wi.map_size {
@@ -16,19 +16,19 @@ pub fn get(lp: &mut LayerPack) {
 			//Get elevation data.
 			let elev = translate::get_abs(
 				lp.topography.read(lp.topography.TERRAIN, index) as f32,
-				255.0,
+				cw::VAL_255_F32,
 				lp.wi.abs_elev_min as f32,
 				lp.wi.abs_elev_max as f32,
 			) as usize;
 			//Get temperature data.
 			let temp = translate::get_abs(
 				lp.climate.read(lp.climate.TEMPERATURE, index) as f32,
-				255.0,
+				cw::VAL_255_F32,
 				lp.wi.abs_temp_min as f32,
 				lp.wi.abs_temp_max as f32,
 			) as isize;
 			//Areas within permanent ice where no waterbodies can be.
-			if temp <= TEMP_PERM_ICE {
+			if temp <= cw::TEMP_PERM_ICE {
 				ff.exclusion_map[index] = true;
 			}
 			//Areas above global waterlevel.

@@ -1,15 +1,15 @@
 use crate::LayerPack;
-use constants::app::*;
+use constants::app as ca;
 use game_options::OPTIONS;
 use io_ops::create_dir;
-use io_ops::writepng::*;
+use io_ops::writepng::{simple_png, GradMode};
 
 pub fn write_images_raw(
 	lp: &mut LayerPack,
 	world_dir: &std::path::PathBuf,
 ) {
 	//Make a directory if none exists
-	let raw_img_dir = world_dir.join(PATH_SAVE_IMAGES_RAW);
+	let raw_img_dir = world_dir.join(ca::PATH_SAVE_IMAGES_RAW);
 	create_dir(&raw_img_dir);
 
 	//Clean proxy maps for rendering images
@@ -21,7 +21,7 @@ pub fn write_images_raw(
 		//println!("{}", wg_str.wg14);
 		let file_path = raw_img_dir
 			.join("terrain")
-			.with_extension(EXTENSION_SAVE_IMAGE);
+			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = lp.xy.ind(i, j);
@@ -33,7 +33,7 @@ pub fn write_images_raw(
 
 		let file_path = raw_img_dir
 			.join("watermask")
-			.with_extension(EXTENSION_SAVE_IMAGE);
+			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = lp.xy.ind(i, j);
@@ -49,7 +49,7 @@ pub fn write_images_raw(
 		//println!("{}", wg_str.wg10);
 		let file_path = raw_img_dir
 			.join("temperature")
-			.with_extension(EXTENSION_SAVE_IMAGE);
+			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = lp.xy.ind(i, j);
@@ -65,7 +65,7 @@ pub fn write_images_raw(
 		//println!("{}", wg_str.wg12);
 		let file_path = raw_img_dir
 			.join("rainfall")
-			.with_extension(EXTENSION_SAVE_IMAGE);
+			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = lp.xy.ind(i, j);
@@ -81,7 +81,7 @@ pub fn write_images_raw(
 		//println!("{}", wg_str.wg18);
 		let file_path = raw_img_dir
 			.join("rivers_elements")
-			.with_extension(EXTENSION_SAVE_IMAGE);
+			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = lp.xy.ind(i, j);
@@ -94,7 +94,7 @@ pub fn write_images_raw(
 		//Rivers widths
 		let file_path = raw_img_dir
 			.join("rivers_width")
-			.with_extension(EXTENSION_SAVE_IMAGE);
+			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = lp.xy.ind(i, j);
@@ -110,7 +110,7 @@ pub fn write_images_raw(
 		//println!("{}", wg_str.wg20);
 		let file_path = raw_img_dir
 			.join("biomes")
-			.with_extension(EXTENSION_SAVE_IMAGE);
+			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for i in 0..map_size {
 			for j in 0..map_size {
 				let index = lp.xy.ind(i, j);

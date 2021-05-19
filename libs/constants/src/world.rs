@@ -1,17 +1,26 @@
 use serde::{Deserialize, Serialize};
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ GENERIC ▒▒▒▒▒▒▒▒▒▒▒▒▒
-// TODO: move these to app constants and make it in order.
 pub const ONE_USIZE: usize = 1;
 pub const ONE_U16: u16 = 1;
+pub const ONE_U32: u32 = 1;
+pub const ONE_F32: f32 = 1.0;
+
 pub const ZERO_USIZE: usize = 0;
+pub const ZERO_U8: u8 = 0;
+pub const ZERO_U16: u16 = 0;
+pub const ZERO_F32: f32 = 0.0;
 
-pub const NO_VAL_U8: u8 = 0;
-pub const NO_VAL_U16: u16 = 0;
+pub const VAL_255_F32: f32 = 255.0;
+pub const VAL_127_F32: f32 = 127.0;
 
-//Zero is reserved for none
-pub const INIT_ID_U16: u16 = 1;
-pub const NONE_ID_U16: u16 = 0;
+//▒▒▒▒▒▒▒▒▒▒▒▒ IDs ▒▒▒▒▒▒▒▒▒▒▒▒▒
+// IDs that are written into BitLayer map.
+pub const ID_MAP_NO_U32: u32 = 0;
+pub const ID_MAP_MIN_U32: u32 = 1;
+
+// IDs that are written into tables.
+pub const UID_MIN_U32: u32 = 0;
 
 //▒▒▒▒▒▒▒▒▒ WORLDGEN PRESET ▒▒▒▒▒▒▒▒▒▒▒
 pub const DEFAULT_SEED: usize = 0;
@@ -74,7 +83,6 @@ pub const RIVER_SEGMENT_LENGTH_MIN: usize = 1;
 pub const RIVER_SEGMENT_DISPLACEMENT_MIN: f32 = 0.0;
 pub const RIVER_SEGMENT_DISPLACEMENT_MAX: f32 = 100.0;
 pub const RIVER_MIN_LENGTH: usize = 10;
-pub const RIVER_WIDTH_ORDER_MAX: u16 = 12;
 pub const RIVER_ATTR_POOL_SIZE_POW_MIN: u16 = 1;
 pub const RIVER_ATTR_POOL_SIZE_POW_MAX: u16 = 28;
 pub const RIVER_SINK_MIN_POOL_SIZE_POW_MIN: u16 = 1;
@@ -127,6 +135,8 @@ pub const NO_WATER: u16 = 0;
 //▒▒▒▒▒▒▒▒▒▒▒▒ RIVERS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub const RIVER_HEUR_INIT: usize = 1_000_000;
 pub const RIVER_MIN_WIDTH: u16 = 1;
+pub const RIVER_MAX_WIDTH: u16 = 12;
+pub const RIVER_SPAWN_TEMPERATURE_INFLUENCE: f32 = 0.25;
 
 //MASK
 //The values themselves are within u8 range.

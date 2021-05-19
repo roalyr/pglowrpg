@@ -4,10 +4,10 @@ pub mod layer_ops;
 pub mod misc_ops;
 
 use crate::file_ops::write_save;
-use crate::misc_ops::preset_validate;
+use crate::misc_ops::convert_preset_values;
 use crate::misc_ops::seed_generating;
-use constants::app::*;
-use constants::world::*;
+use constants::app as ca;
+use constants::world as cw;
 use game_data_codec::*;
 use game_options::OPTIONS;
 use io_ops::readron::presets;
@@ -23,12 +23,12 @@ pub fn start() {
 	
 	// Preset selection.
 	let preset_def = io_ops::dir_file_contents(
-		PATH_PRESETS_WORLD,
-		EXTENSION_PRESET_WORLD,
+		ca::PATH_PRESETS_WORLD,
+		ca::EXTENSION_PRESET_WORLD,
 	);
 	let preset_user = io_ops::dir_file_contents(
-		PATH_PRESETS_WORLD_USER,
-		EXTENSION_PRESET_WORLD,
+		ca::PATH_PRESETS_WORLD_USER,
+		ca::EXTENSION_PRESET_WORLD,
 	);
 	let presets = [preset_def, preset_user].concat();
 	let input_preset = prompt_input!( 
@@ -45,22 +45,23 @@ pub fn start() {
 	}
 	let mut wi: presets::presets_worldgen::Stuff = presets::presets_worldgen::get(&input_preset);
 	WS.print_preset_selected(&input_preset);
-	// TODO: make validator panic prompts.
-	preset_validate::all(&mut wi);
+	// Converts from user-friendly scales to mechanics-friendly.
+	// Also checks validity.
+	convert_preset_values::all(&mut wi);
 
 	// Seed selection.
 	let input_seed = prompt_input!(
 		"num";
 		{
 			UI.print_separator_thin(""); 
-			WS.print_seed_default(DEFAULT_SEED); 
+			WS.print_seed_default(cw::DEFAULT_SEED); 
 			WS.print_seed_menu(); 
 		} 
 	);
 	let mut world_seed = match input_seed.as_str(){
 		"1" => {
 			let seed_man = prompt_input!( "num"; { WS.print_seed_man(); });
-			seed_man.trim().parse::<usize>().unwrap_or(DEFAULT_SEED)
+			seed_man.trim().parse::<usize>().unwrap_or(cw::DEFAULT_SEED)
 		},
 		"2" => {
 			WS.print_seed_rand();
@@ -70,7 +71,7 @@ pub fn start() {
 			WS.print_seed_pres();
 			wi.seed
 		},
-		_ => {DEFAULT_SEED }
+		_ => {cw::DEFAULT_SEED}
 	};
 	WS.print_seed_base(world_seed);
 	
@@ -79,7 +80,7 @@ pub fn start() {
 		"num";
 		{
 			UI.print_separator_thin(""); 
-			WS.print_world_num_default(DEFAULT_WORLDS_NUM);
+			WS.print_world_num_default(cw::DEFAULT_WORLDS_NUM);
 			WS.print_prompt_world_num();
 		}
 	);
@@ -107,7 +108,7 @@ pub fn start() {
 		// Re-call this every loop iteration due to new seed.
 		let mut wi: presets::presets_worldgen::Stuff = 
 			presets::presets_worldgen::get(&input_preset);
-		preset_validate::all(&mut wi);
+		convert_preset_values::all(&mut wi);
 		wi.seed = world_seed;
 		
 		// Create a "LayerPack" struct which holds all the world data.

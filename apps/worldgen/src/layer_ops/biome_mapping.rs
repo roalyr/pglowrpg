@@ -16,14 +16,14 @@ fn match_biomes(
 	//Get the absolute values for the climate.
 	let temp = translate::get_abs(
 		lp.climate.read(lp.climate.TEMPERATURE, index) as f32,
-		255.0,
+		VAL_255_F32,
 		lp.wi.abs_temp_min as f32,
 		lp.wi.abs_temp_max as f32,
 	) as isize;
 
 	let rain = translate::get_abs(
 		lp.climate.read(lp.climate.RAINFALL, index) as f32,
-		255.0,
+		VAL_255_F32,
 		lp.wi.abs_rain_min as f32,
 		lp.wi.abs_rain_max as f32,
 	) as usize;
@@ -32,7 +32,7 @@ fn match_biomes(
 	//waterlevel is "zero", and everything below it is submerged.
 	let elev = (translate::get_abs(
 		lp.topography.read(lp.topography.TERRAIN, index) as f32,
-		255.0,
+		VAL_255_F32,
 		lp.wi.abs_elev_min as f32,
 		lp.wi.abs_elev_max as f32,
 	) as usize)
@@ -46,7 +46,7 @@ fn match_biomes(
 	} else {
 		translate::get_rel(
 			lp.wi.waterlevel as f32,
-			255.0,
+			VAL_255_F32,
 			lp.wi.abs_elev_min as f32,
 			lp.wi.abs_elev_max as f32,
 		) as u8

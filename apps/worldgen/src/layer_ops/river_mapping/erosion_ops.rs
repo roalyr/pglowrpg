@@ -1,5 +1,5 @@
 use crate::layer_ops::river_mapping::{ErosionEntry, RgParams, RiverEntry};
-use constants::world::*;
+use constants::world as cw;
 use game_data_codec::LayerPack;
 use unit_systems::translate;
 
@@ -43,7 +43,7 @@ impl RgParams {
 		for entry in to_do_queue.iter().rev() {
 			let river_id = entry.river_id_downstr;
 			let terrain_diff = entry.terrain_diff;
-			if river_id == NONE_ID_U16 {
+			if river_id == cw::ID_MAP_NO_U32 {
 				continue;
 			}
 			let river_entry = self
@@ -76,11 +76,11 @@ impl RgParams {
 		//Lower down the river if needed in order to avoid rivers flowing
 		//above each other
 		let erosion_floor = if lp.wi.waterlevel < lp.wi.abs_elev_min {
-			0u16
+			cw::ZERO_U16
 		} else {
 			translate::get_rel(
 				lp.wi.waterlevel as f32,
-				255.0,
+				cw::VAL_255_F32,
 				lp.wi.abs_elev_min as f32,
 				lp.wi.abs_elev_max as f32,
 			) as u16
@@ -104,7 +104,7 @@ impl RgParams {
 				lp.topography.read(lp.topography.TERRAIN, index_downstr);
 			let river_elem_downstr = lp.rivers.read(lp.rivers.ELEMENT, index_downstr);
 			//Cease if reached the end
-			if river_elem_downstr == NO_RIVER {
+			if river_elem_downstr == cw::NO_RIVER {
 				break;
 			}
 			//Make sure current doesn't go up
@@ -160,7 +160,7 @@ fn erosion(
 			let terrain_current = terrain_current as f32;
 			let terrain_to_erode =
 				lp.topography.read(lp.topography.TERRAIN, index) as f32;
-			let terrain_relative: f32 = terrain_to_erode / 255.0;
+			let terrain_relative: f32 = terrain_to_erode / cw::VAL_255_F32;
 			let value = (terrain_to_erode.powf((1.0 - terrain_relative).powf(
 				terrain_relative
 					/ ((erosion_width_iter as f32).powf(lp.wi.river_erosion_smooth)

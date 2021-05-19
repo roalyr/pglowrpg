@@ -1,5 +1,5 @@
 use crate::layer_ops::river_mapping::{RgParams, RiverEntry};
-use constants::world::*;
+use constants::world as cw;
 use game_data_codec::LayerPack;
 
 impl RgParams {
@@ -29,7 +29,7 @@ impl RgParams {
 			let river_id_downstr = entry.river_id_downstr;
 			let width_new = entry.width_new;
 			//Skip if there is a null ID in queue somehow
-			if river_id_downstr == NONE_ID_U16 {
+			if river_id_downstr == cw::ID_MAP_NO_U32 {
 				continue;
 			}
 			let river_entry = self
@@ -48,7 +48,7 @@ impl RgParams {
 				let river_element = lp.rivers.read(lp.rivers.ELEMENT, index);
 				let river_id = lp.rivers_id.read(index);
 				//Map width
-				if (river_element != NO_RIVER) && (river_id == river_id_downstr) {
+				if (river_element != cw::NO_RIVER) && (river_id == river_id_downstr) {
 					lp.rivers.write(width_new, lp.rivers.WIDTH, index);
 				}
 			}
@@ -90,7 +90,7 @@ impl RgParams {
 			let cell_width_downstr = lp.rivers.read(lp.rivers.WIDTH, index_downstr);
 			let cell_width_current = lp.rivers.read(lp.rivers.WIDTH, index_current);
 			//Skip blank ID
-			if cell_river_id_downstr == NONE_ID_U16 {
+			if cell_river_id_downstr == cw::ID_MAP_NO_U32 {
 				continue;
 			}
 			//Write data to list
@@ -103,7 +103,7 @@ impl RgParams {
 				.width = cell_width_downstr;
 			//Pick the last cell before crossing.
 			if (cell_river_id_current != cell_river_id_downstr)
-				&& (cell_element_current != NO_RIVER)
+				&& (cell_element_current != cw::NO_RIVER)
 				&& (cell_width_downstr < cell_width_current)
 			{
 				let cell_width_downstr = cell_width_current;
@@ -113,7 +113,7 @@ impl RgParams {
 					.iter()
 					.by_ref()
 					.find(|RiverEntry { river_id: x, .. }| *x == cell_river_id_downstr)
-					.expect("river entry downstream not found in width fix")
+					.expect("ERROR: river entry downstream not found in width fix")
 					.clone();
 				path_array_downstr = river_entry_downstr.path_array;
 				for pos in path_array_downstr.iter() {
@@ -123,7 +123,7 @@ impl RgParams {
 					let cell_element_next = lp.rivers.read(lp.rivers.ELEMENT, index);
 					let cell_id_next = lp.rivers_id.read(index);
 					//Map width
-					if (cell_element_next != NO_RIVER)
+					if (cell_element_next != cw::NO_RIVER)
 						&& (cell_id_next == cell_river_id_downstr)
 					{
 						lp.rivers.write(cell_width_downstr, lp.rivers.WIDTH, index);

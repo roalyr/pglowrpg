@@ -1,3 +1,5 @@
+use constants::world as cw;
+
 //FILTER
 //Set min and max values, thresholds.
 pub fn filter(
@@ -24,8 +26,8 @@ pub fn level(
 	let size = array.len();
 	for cell_v in array.iter_mut().take(size) {
 		*cell_v -= low_v as f32;
-		if *cell_v < 0.0 {
-			*cell_v = 0.0;
+		if *cell_v < cw::ZERO_F32 {
+			*cell_v = cw::ZERO_F32;
 		}
 	}
 }
@@ -34,13 +36,13 @@ pub fn level(
 //Stretch the map between the 0 and maximum value.
 pub fn normalize(array: &mut Vec<f32>) {
 	let size = array.len();
-	let mut max_v = 0.0;
+	let mut max_v = cw::ZERO_F32;
 	for cell_v in array.iter_mut().take(size) {
 		if *cell_v > max_v {
 			max_v = *cell_v;
 		}
 	}
-	let k = 255.0 / max_v;
+	let k = cw::VAL_255_F32 / max_v;
 	for cell_v in array.iter_mut().take(size) {
 		*cell_v *= k;
 	}

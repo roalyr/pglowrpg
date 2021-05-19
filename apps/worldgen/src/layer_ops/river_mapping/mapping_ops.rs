@@ -1,7 +1,7 @@
 use crate::layer_ops::river_mapping::{
 	ErosionEntry, RgParams, RiverEntry, WidthEntry,
 };
-use constants::world::*;
+use constants::world as cw;
 use game_data_codec::LayerPack;
 use std::cmp::Ordering;
 use unit_systems::translate;
@@ -27,7 +27,7 @@ impl RgParams {
 		self.river_end = river_entry.end;
 		let index_river_source = lp.xy.ind(self.river_source.0, self.river_source.1);
 		let index_end = lp.xy.ind(self.river_end.0, self.river_end.1);
-		let mut river_length = 0;
+		let mut river_length = cw::ZERO_USIZE;
 		//Cold run to figure out river lengths and truncate short ones
 		for n in path_array.windows(2) {
 			//Must be here
@@ -43,27 +43,27 @@ impl RgParams {
 			//Stop if the temperature is too low
 			let temp = translate::get_abs(
 				temp_current as f32,
-				255.0,
+				cw::VAL_255_F32,
 				lp.wi.abs_temp_min as f32,
 				lp.wi.abs_temp_max as f32,
 			) as isize;
-			if temp <= TEMP_POLAR {break;}
+			if temp <= cw::TEMP_POLAR {break;}
 			//Minimum sink size check and stop if sink is big enough
 			if wmask_current > lp.wi.river_sink_min_pool_size_pow {break;}
 			//Check if river spawns on an existing one
 			//also terminates rivers upon crossing
 			//but allows loops, which should be adressed below
 			//enabling makes rivers disappear sometimes
-			if (river_elem_current != NO_RIVER) && (river_length == 1) {break;}
+			if (river_elem_current != cw::NO_RIVER) && (river_length == 1) {break;}
 			match river_elem_downstr {
-				NO_RIVER => {}
-				RIVER_BODY => {if self.river_id != river_id_downstr {break;}}
-				RIVER_WATERFALL => {if self.river_id != river_id_downstr {break;}}
-				RIVER_WATERFALLS_MUL => {if self.river_id != river_id_downstr {break;}}
-				RIVER_SOURCE => {if self.river_id != river_id_downstr {break;}}
-				RIVER_END => {}
+				cw::NO_RIVER => {}
+				cw::RIVER_BODY => {if self.river_id != river_id_downstr {break;}}
+				cw::RIVER_WATERFALL => {if self.river_id != river_id_downstr {break;}}
+				cw::RIVER_WATERFALLS_MUL => {if self.river_id != river_id_downstr {break;}}
+				cw::RIVER_SOURCE => {if self.river_id != river_id_downstr {break;}}
+				cw::RIVER_END => {}
 				_ => {
-					println!("Elem downstream: {:?}", river_elem_downstr);
+					println!("ERROR: Elem downstream: {:?}", river_elem_downstr);
 					println!("{:?}", lp.rivers.expose(index_downstr));
 					panic!("Unexpected river element type value");
 				}
@@ -72,7 +72,7 @@ impl RgParams {
 		//Main run
 		if river_length >= lp.wi.river_min_length {
 			//Reset
-			let mut river_length = 0;
+			let mut river_length = cw::ZERO_USIZE;
 			//Push to the queue for future
 			self.erosion_initiate(self.river_id);
 			for n in path_array.windows(2) {
@@ -92,18 +92,18 @@ impl RgParams {
 				//Stop if the temperature is too low
 				let temp = translate::get_abs(
 					temp_current as f32,
-					255.0,
+					cw::VAL_255_F32,
 					lp.wi.abs_temp_min as f32,
 					lp.wi.abs_temp_max as f32,
 				) as isize;
-				if temp <= TEMP_POLAR {break;}
+				if temp <= cw::TEMP_POLAR {break;}
 				//Minimum sink size check and stop if sink is big enough
 				if wmask_current > lp.wi.river_sink_min_pool_size_pow {break;}
 				//Check if river spawns on an existing one
 				//also terminates rivers upon crossing
 				//but allows loops, which should be adressed below
 				//enabling makes rivers disappear sometimes
-				if (river_elem_current != NO_RIVER) && (river_length == 1) {break;}
+				if (river_elem_current != cw::NO_RIVER) && (river_length == 1) {break;}
 				//Mark upstream neighbor
 				//skip first cell, which is source
 				if river_length > 1 {
@@ -114,46 +114,46 @@ impl RgParams {
 				}
 				self.upstream_neighbor = (i0, j0); //Remember for next step
 				match river_elem_downstr {
-					NO_RIVER => {
+					cw::NO_RIVER => {
 						self.sort_uninterrupted(lp, index_current, index_river_source);
 						let downstream_neighbor = neighbor_flag(i0, j0, i1, j1);
 						lp.rivers.write(downstream_neighbor, lp.rivers.DOWNSTREAM, index_current,);
 						//If the end of the river is on land (map border) then make sure the last cell is marked
-						if (wmask_downstr == NO_WATER) && (index_downstr == index_end) {
-							lp.rivers.write(RIVER_BODY, lp.rivers.ELEMENT, index_downstr);
+						if (wmask_downstr == cw::NO_WATER) && (index_downstr == index_end) {
+							lp.rivers.write(cw::RIVER_BODY, lp.rivers.ELEMENT, index_downstr);
 						}
 					}
-					RIVER_BODY => {
+					cw::RIVER_BODY => {
 						self.sort_crossing(lp, index_current, index_river_source, index_downstr,);
 						//Make a waterfall if elevation differs
 						if terrain_downstr < terrain_current {
-							lp.rivers.write(RIVER_WATERFALL, lp.rivers.ELEMENT, index_downstr,);
+							lp.rivers.write(cw::RIVER_WATERFALL, lp.rivers.ELEMENT, index_downstr,);
 						}
 						if self.river_id != river_id_downstr {break;} //Break river if it is not a loop, let loops go on
 					}
-					RIVER_WATERFALL => {
+					cw::RIVER_WATERFALL => {
 						self.sort_crossing(lp, index_current, index_river_source, index_downstr,);
 						//Make a waterfalls if elevation diff & waterfall exist
 						if terrain_downstr < terrain_current {
-							lp.rivers.write(RIVER_WATERFALLS_MUL, lp.rivers.ELEMENT,index_downstr,);
+							lp.rivers.write(cw::RIVER_WATERFALLS_MUL, lp.rivers.ELEMENT,index_downstr,);
 						}
 						if self.river_id != river_id_downstr {break;} //Break river if it is not a loop, let loops go on
 					}
-					RIVER_WATERFALLS_MUL => {
+					cw::RIVER_WATERFALLS_MUL => {
 						self.sort_crossing(lp, index_current, index_river_source, index_downstr,);
 						if self.river_id != river_id_downstr {break;} //Break river if it is not a loop, let loops go on
 					}
-					RIVER_SOURCE => {
+					cw::RIVER_SOURCE => {
 						self.sort_crossing(lp, index_current, index_river_source, index_downstr,);
 						if self.river_id != river_id_downstr {break;} //Break river if it is not a loop, let loops go on
 					}
-					RIVER_END => {
+					cw::RIVER_END => {
 						self.sort_uninterrupted(lp, index_current, index_river_source);
 						let downstream_neighbor = neighbor_flag(i0, j0, i1, j1);
 						lp.rivers.write(downstream_neighbor, lp.rivers.DOWNSTREAM, index_current,);
 					}
 					_ => {
-						println!("Elem downstream: {:?}", river_elem_downstr);
+						println!("ERROR: Elem downstream: {:?}", river_elem_downstr);
 						println!("{:?}", lp.rivers.expose(index_downstr));
 						panic!("Unexpected river mask value");
 					}
@@ -168,8 +168,8 @@ impl RgParams {
 		index_current: usize,
 		index_river_source: usize,
 	) {
-		lp.rivers.write(RIVER_BODY, lp.rivers.ELEMENT, index_current);
-		lp.rivers.write(RIVER_SOURCE, lp.rivers.ELEMENT, index_river_source);
+		lp.rivers.write(cw::RIVER_BODY, lp.rivers.ELEMENT, index_current);
+		lp.rivers.write(cw::RIVER_SOURCE, lp.rivers.ELEMENT, index_river_source);
 		lp.rivers.write(self.river_width, lp.rivers.WIDTH, index_current);
 		lp.rivers_id.write(self.river_id, index_current);
 	}
@@ -181,8 +181,8 @@ impl RgParams {
 		index_river_source: usize,
 		index_downstr: usize,
 	) {
-		lp.rivers.write(RIVER_BODY, lp.rivers.ELEMENT, index_current);
-		lp.rivers.write(RIVER_SOURCE, lp.rivers.ELEMENT, index_river_source);
+		lp.rivers.write(cw::RIVER_BODY, lp.rivers.ELEMENT, index_current);
+		lp.rivers.write(cw::RIVER_SOURCE, lp.rivers.ELEMENT, index_river_source);
 		lp.rivers.write(self.river_width, lp.rivers.WIDTH, index_current);
 		lp.rivers_id.write(self.river_id, index_current);
 		//Modify river downstream
@@ -209,8 +209,8 @@ impl RgParams {
 		//Increment the width downstream
 		let mut width_downstr_new = width_downstr.saturating_add(1);
 		//Bound upper value by 12 order
-		if width_downstr_new > RIVER_WIDTH_ORDER_MAX {
-			width_downstr_new = RIVER_WIDTH_ORDER_MAX;
+		if width_downstr_new > cw::RIVER_MAX_WIDTH {
+			width_downstr_new = cw::RIVER_MAX_WIDTH;
 		}
 		//Store new value for future
 		self.rivers_paths.width_queue.push(WidthEntry {
@@ -243,7 +243,7 @@ impl RgParams {
 	
 	fn erosion_initiate(
 		&mut self,
-		river_id: u16,
+		river_id: u32,
 	) {
 		self.rivers_paths.erosion_queue.push(ErosionEntry {
 			river_id_downstr: river_id,
@@ -262,7 +262,7 @@ fn neighbor_flag(
 	let dj: isize = j1 as isize - j0 as isize;
 	let neighbor = match (di, dj) {
 		//Zero value is for none, at source and end
-		(0, 0) => panic!("river neighbor downstream matches current"),
+		(0, 0) => panic!("ERROR: river neighbor downstream matches current"),
 		(1, 0) => 1,   //N
 		(1, 1) => 2,   //NE
 		(0, 1) => 3,   //E
@@ -271,7 +271,7 @@ fn neighbor_flag(
 		(-1, -1) => 6, //SW
 		(0, -1) => 7,  //W
 		(1, -1) => 8,  //NW
-		(_, _) => panic!("unexpected neighbor {:?}", (di, dj)),
+		(_, _) => panic!("ERROR: unexpected neighbor {:?}", (di, dj)),
 	};
 	neighbor
 }
