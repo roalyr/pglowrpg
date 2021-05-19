@@ -15,24 +15,18 @@ pub fn get(lp: &mut LayerPack) {
 		wmask_map[index] = lp.topography.read(lp.topography.WATERMASK, index) as u8;
 		biome_map[index] = lp.biomes.read(index);
 	}
-	let mut greg_map = vec![cw::ID_MAP_MIN_U32; lp.layer_vec_len];
-	//biome regions
+	// Init.
+	let mut region_id: u32 = cw::ID_MAP_MIN_U32;
+	let mut greg_map = vec![cw::ID_MAP_NO_U32; lp.layer_vec_len];
+	// Floodfill on biomes and watermask.
 	let mut ff_bi = floodfill::FloodFill::new(&biome_map, lp.wi.map_size);
-	//water regions
 	let mut ff_wm = floodfill::FloodFill::new(&wmask_map, lp.wi.map_size);
-	// Init ID value as 0 and increment only prior to mapping.
-	let mut region_id: u32 = cw::ID_MAP_NO_U32;
+	// Land regions only.
 	for i in 0..lp.wi.map_size {
 		for j in 0..lp.wi.map_size {
-			//excluding water
 			if !ff_bi.exclusion_map[lp.xy.ind(i, j)] && (wmask_map[xy.ind(i, j)] == 0)
 			{
 				ff_bi.map(i, j);
-				region_id = match region_id.checked_add(1) {
-					Some(x) => x,
-					None => panic!("ERROR: Region ID overflow"),
-				};
-				//regions have centers
 				for x in ff_bi.x_min..=ff_bi.x_max {
 					for y in ff_bi.y_min..=ff_bi.y_max {
 						if ff_bi.region_map[xy.ind(x, y)] {
@@ -40,16 +34,16 @@ pub fn get(lp: &mut LayerPack) {
 						}
 					}
 				}
+				region_id =
+					region_id.checked_add(1).expect("ERROR: Region ID overflow");
 			}
 		}
 	}
+	// Waterbody regions only.
 	for i in 0..lp.wi.map_size {
 		for j in 0..lp.wi.map_size {
-			//only water regions
 			if !ff_wm.exclusion_map[xy.ind(i, j)] && (wmask_map[xy.ind(i, j)] != 0) {
 				ff_wm.map(i, j);
-				region_id.checked_add(1).expect("ERROR: Region ID overflow");
-				//regions have centers
 				for x in ff_wm.x_min..=ff_wm.x_max {
 					for y in ff_wm.y_min..=ff_wm.y_max {
 						if ff_wm.region_map[xy.ind(x, y)] {
@@ -57,6 +51,8 @@ pub fn get(lp: &mut LayerPack) {
 						}
 					}
 				}
+				region_id =
+					region_id.checked_add(1).expect("ERROR: Region ID overflow");
 			}
 		}
 	}

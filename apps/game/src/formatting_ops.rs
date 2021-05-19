@@ -19,6 +19,7 @@ pub fn get_strings_basic(
 	.concat();
 
 	gs.temp_str = [
+		"Temperature: ",
 		//&gs.gm_str.gm8,
 		&(gd.temp.to_string()),
 		" ℃",
@@ -27,6 +28,7 @@ pub fn get_strings_basic(
 
 	gs.biome_str = [
 		//&gs.gm_str.gm16,
+		"Biome: ",
 		&(gd.biome.to_string()),
 		"",
 	]
@@ -34,6 +36,7 @@ pub fn get_strings_basic(
 
 	gs.georeg_id_str = [
 		//&gs.gm_str.gm17,
+		"Region: ",
 		&(gd.georeg_id.to_string()),
 		"",
 	]
@@ -41,6 +44,7 @@ pub fn get_strings_basic(
 
 	gs.rain_str = [
 		//&gs.gm_str.gm9,
+		"Rainfall: ",
 		&(gd.rain.to_string()),
 		" mm",
 	]
@@ -51,12 +55,17 @@ pub fn get_strings_basic(
 		{
 			//Must be less or equal
 			if gd.elev <= gd.lp.wi.waterlevel {
-				gs.s = [&(gd.elev.to_string()), " m ", ""]
-					//&gs.gm_str.gm14]
-					.concat();
+				gs.s = [
+					"Elevation (underwater): ",
+					&(gd.elev.to_string()),
+					" m ",
+					"",
+				]
+				//&gs.gm_str.gm14]
+				.concat();
 				&gs.s
 			} else {
-				gs.s = [&(gd.elev.to_string()), " m ", ""]
+				gs.s = ["Elevation: ", &(gd.elev.to_string()), " m ", ""]
 					//&gs.gm_str.gm15]
 					.concat();
 				&gs.s
@@ -74,6 +83,7 @@ pub fn get_strings_basic(
 				_ => {
 					gs.s = [
 						//&gs.gm_str.gm13,
+						"Waterbody: ",
 						&(gd.water.to_string()),
 						"",
 					]
@@ -95,22 +105,27 @@ pub fn get_strings_basic(
 					gs.s = [
 						//id
 						//&gs.gm_str.gm20,
+						"River ID: ",
 						&(gd.river_id.to_string()),
 						"\n",
 						//width
 						//&gs.gm_str.gm21,
+						"River width: ",
 						&(gd.river_width.to_string()),
 						"\n",
 						//element
 						//&gs.gm_str.gm22,
+						"River type: ",
 						&(gd.river_element.to_string()),
 						"\n",
 						//upstream
 						//&gs.gm_str.gm23,
+						"River upstream: ",
 						&(gd.river_upstream.to_string()),
 						"\n",
 						//downstream
 						//&gs.gm_str.gm24,
+						"River downstream: ",
 						&(gd.river_downstream.to_string()),
 						"",
 					]
