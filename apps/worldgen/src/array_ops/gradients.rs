@@ -1,3 +1,4 @@
+use constants::generic as cg;
 use constants::world as cw;
 use std::f32::consts::PI;
 use unit_systems::coords::Index;
@@ -6,7 +7,7 @@ const HALF_SQUARE_255: f32 = 32512.5;
 
 fn gradient_both(size: usize) -> Vec<f32> {
 	let index = Index { map_size: size };
-	let mut array = vec![cw::ZERO_F32; size * size];
+	let mut array = vec![cg::ZERO_F32; size * size];
 	for y in 0..size {
 		for x in 0..size {
 			array[index.get(x, y)] = (HALF_SQUARE_255
@@ -18,12 +19,12 @@ fn gradient_both(size: usize) -> Vec<f32> {
 }
 
 fn grad_none(size: usize) -> Vec<f32> {
-	vec![cw::VAL_255_F32; size * size]
+	vec![cg::VAL_255_F32; size * size]
 }
 
 fn grad_south(size: usize) -> Vec<f32> {
 	let index = Index { map_size: size };
-	let mut array = vec![cw::ZERO_F32; size * size];
+	let mut array = vec![cg::ZERO_F32; size * size];
 	for y in 0..size {
 		for x in 0..size {
 			array[index.get(size - x - 1, y)] = (HALF_SQUARE_255
@@ -36,7 +37,7 @@ fn grad_south(size: usize) -> Vec<f32> {
 
 fn gradient_north(size: usize) -> Vec<f32> {
 	let index = Index { map_size: size };
-	let mut array = vec![cw::ZERO_F32; size * size];
+	let mut array = vec![cg::ZERO_F32; size * size];
 	for y in 0..size {
 		for x in 0..size {
 			array[index.get(x, y)] = (HALF_SQUARE_255

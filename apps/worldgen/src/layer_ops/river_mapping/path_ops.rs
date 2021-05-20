@@ -1,5 +1,6 @@
 use crate::array_ops::noise_maps::NoiseMode;
 use crate::layer_ops::river_mapping::{RgParams, RiverEntry};
+use constants::generic as cg;
 use constants::world as cw;
 use game_data_codec::LayerPack;
 use text_ops::WS;
@@ -51,7 +52,7 @@ impl RgParams {
 			if self.vector_within_len(lp.wi.river_min_length) {return;}
 			//Make pathfinding for nodes, get a queue,
 			//do "windows"  between nodes, iterate and fill them
-			let seg_len = lp.wi.river_segment_length;
+			let seg_len = cw::RIVER_PATHFINDING_SEGMENT_LENGTH;
 			let mut joined_path = Vec::new();
 			let mut segment_queue = Vec::new();
 			let mut diag_flag = true;
@@ -112,7 +113,7 @@ impl RgParams {
 fn get_random_map(lp: &mut LayerPack) -> Vec<u8> {
 	//Random noise map for river path meandering
 	//river segments would be using this
-	let mut random_map = vec![cw::ZERO_U8; lp.layer_vec_len];
+	let mut random_map = vec![cg::ZERO_U8; lp.layer_vec_len];
 	let array_noise1 = crate::array_ops::noise_maps::get(
 		lp.wi.map_size,
 		lp.wi.river_noise_size1,
@@ -128,8 +129,8 @@ fn get_random_map(lp: &mut LayerPack) -> Vec<u8> {
 	for (ind, cell_v) in random_map.iter_mut().enumerate().take(lp.layer_vec_len)
 	{
 		*cell_v =
-			(array_noise1[ind] * cw::VAL_255_F32 * (1.0 - lp.wi.river_noise_blend)
-				+ array_noise2[ind] * cw::VAL_255_F32 * lp.wi.river_noise_blend) as u8;
+			(array_noise1[ind] * cg::VAL_255_F32 * (1.0 - lp.wi.river_noise_blend)
+				+ array_noise2[ind] * cg::VAL_255_F32 * lp.wi.river_noise_blend) as u8;
 	}
 	random_map
 }
@@ -138,7 +139,7 @@ fn get_terrain_map(lp: &mut LayerPack) -> Vec<u8> {
 	//Write terrain map into a temporary array for future pathfinding
 	//river nodes would be done on this
 	let map_size = lp.wi.map_size;
-	let mut terrain_map = vec![cw::ZERO_U8; lp.layer_vec_len];
+	let mut terrain_map = vec![cg::ZERO_U8; lp.layer_vec_len];
 	for j in 0..map_size {
 		for i in 0..map_size {
 			let index = lp.index.get(i, j);

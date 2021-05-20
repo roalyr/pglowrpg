@@ -29,7 +29,7 @@ pub fn get(input: &str) -> Stuff {
 	let stuff: Stuff = match ron::from_str(&data) {
 		Ok(f) => f,
 		Err(e) => {
-			println!("{}: {}", e.to_string(), path.to_str().unwrap());
+			println!("{}: {}", e.to_string(), path.to_str().unwrap_or(""));
 			std::process::exit(0);
 		}
 	};

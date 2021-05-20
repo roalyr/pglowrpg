@@ -1,19 +1,19 @@
-use constants::world as cw;
+use constants::generic as cg;
 use game_data_codec::LayerPack;
 
 //This code is unfinished
 
 pub fn get(lp: &mut LayerPack) {
 	//Clean proxy maps for floodfill
-	let mut wmask_map = vec![cw::ZERO_U8; lp.layer_vec_len];
-	let mut biome_map = vec![cw::ZERO_U8; lp.layer_vec_len];
+	let mut wmask_map = vec![cg::ZERO_U8; lp.layer_vec_len];
+	let mut biome_map = vec![cg::ZERO_U8; lp.layer_vec_len];
 	for ind in 0..lp.layer_vec_len {
 		wmask_map[ind] = lp.topography.read(lp.topography.WATERMASK, ind) as u8;
 		biome_map[ind] = lp.biomes.read(ind);
 	}
 	// Init.
-	let mut region_id: u32 = cw::ID_MAP_MIN_U32;
-	let mut greg_map = vec![cw::ID_MAP_NO_U32; lp.layer_vec_len];
+	let mut region_id: u32 = cg::ID_MAP_MIN_U32;
+	let mut greg_map = vec![cg::ID_MAP_NO_U32; lp.layer_vec_len];
 	// Floodfill on biomes and watermask.
 	let mut ff_bi = floodfill::FloodFill::new(&biome_map, lp.wi.map_size);
 	let mut ff_wm = floodfill::FloodFill::new(&wmask_map, lp.wi.map_size);

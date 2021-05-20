@@ -1,27 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ GENERIC ▒▒▒▒▒▒▒▒▒▒▒▒▒
-pub const ONE_USIZE: usize = 1;
-pub const ONE_U16: u16 = 1;
-pub const ONE_U32: u32 = 1;
-pub const ONE_F32: f32 = 1.0;
-
-pub const ZERO_USIZE: usize = 0;
-pub const ZERO_U8: u8 = 0;
-pub const ZERO_U16: u16 = 0;
-pub const ZERO_F32: f32 = 0.0;
-
-pub const VAL_255_F32: f32 = 255.0;
-pub const VAL_127_F32: f32 = 127.0;
-
-//▒▒▒▒▒▒▒▒▒▒▒▒ IDs ▒▒▒▒▒▒▒▒▒▒▒▒▒
-// IDs that are written into BitLayer map.
-pub const ID_MAP_NO_U32: u32 = 0;
-pub const ID_MAP_MIN_U32: u32 = 1;
-
-// IDs that are written into tables.
-pub const UID_MIN_U32: u32 = 0;
-
 //▒▒▒▒▒▒▒▒▒ WORLDGEN PRESET ▒▒▒▒▒▒▒▒▒▒▒
 pub const DEFAULT_SEED: usize = 0;
 pub const DEFAULT_WORLDS_NUM: usize = 1;
@@ -133,9 +111,20 @@ pub const RAIN_MAX: usize = ABS_RAIN_MAX;
 pub const NO_WATER: u16 = 0;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ RIVERS ▒▒▒▒▒▒▒▒▒▒▒▒▒
+// This values just has to be large enough, it will be used for 1st
+// iteration and later on it will be adjusted on the 2nd run.
 pub const RIVER_HEUR_INIT: usize = 1_000_000;
+
+// This value should be around 5...50-ish in order for pathfinfing to be
+// fast. It is the distance between the nodes between which A* will
+// perform pathfinding, basically a key points to lead long paths.
+pub const RIVER_PATHFINDING_SEGMENT_LENGTH: usize = 15;
 pub const RIVER_MIN_WIDTH: u16 = 1;
 pub const RIVER_MAX_WIDTH: u16 = 12;
+
+// This is the weight factor for temperature to affect river spawning.
+// From 0.0 to 1.0, higher walues will make river spawning in hot
+// regions, reducing chances for cold regions.
 pub const RIVER_SPAWN_TEMPERATURE_INFLUENCE: f32 = 0.25;
 
 //MASK

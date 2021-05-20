@@ -1,6 +1,7 @@
 use crate::layer_ops::river_mapping::{
 	ErosionEntry, RgParams, RiverEntry, WidthEntry,
 };
+use constants::generic as cg;
 use constants::world as cw;
 use game_data_codec::LayerPack;
 use std::cmp::Ordering;
@@ -27,7 +28,7 @@ impl RgParams {
 		self.river_end = river_entry.end;
 		let index_river_source = lp.index.get(self.river_source.0, self.river_source.1);
 		let index_end = lp.index.get(self.river_end.0, self.river_end.1);
-		let mut river_length = cw::ZERO_USIZE;
+		let mut river_length = cg::ZERO_USIZE;
 		//Cold run to figure out river lengths and truncate short ones
 		for n in path_array.windows(2) {
 			//Must be here
@@ -43,7 +44,7 @@ impl RgParams {
 			//Stop if the temperature is too low
 			let temp = translate::get_abs(
 				temp_current as f32,
-				cw::VAL_255_F32,
+				cg::VAL_255_F32,
 				lp.wi.abs_temp_min as f32,
 				lp.wi.abs_temp_max as f32,
 			) as isize;
@@ -72,7 +73,7 @@ impl RgParams {
 		//Main run
 		if river_length >= lp.wi.river_min_length {
 			//Reset
-			let mut river_length = cw::ZERO_USIZE;
+			let mut river_length = cg::ZERO_USIZE;
 			//Push to the queue for future
 			self.erosion_initiate(self.river_id);
 			for n in path_array.windows(2) {
@@ -92,7 +93,7 @@ impl RgParams {
 				//Stop if the temperature is too low
 				let temp = translate::get_abs(
 					temp_current as f32,
-					cw::VAL_255_F32,
+					cg::VAL_255_F32,
 					lp.wi.abs_temp_min as f32,
 					lp.wi.abs_temp_max as f32,
 				) as isize;

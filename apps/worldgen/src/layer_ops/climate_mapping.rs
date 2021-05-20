@@ -1,6 +1,6 @@
 use crate::array_ops;
 use crate::array_ops::noise_maps::NoiseMode;
-use constants::world as cw;
+use constants::generic as cg;
 use game_data_codec::LayerPack;
 
 pub fn get(lp: &mut LayerPack) {
@@ -10,7 +10,7 @@ pub fn get(lp: &mut LayerPack) {
 
 //▒▒▒▒▒▒▒▒▒▒ TEMPERATURE ▒▒▒▒▒▒▒▒▒▒▒
 fn temperature(lp: &mut LayerPack) {
-	let mut array = vec![cw::ZERO_F32; lp.noisemap_vec_len];
+	let mut array = vec![cg::ZERO_F32; lp.noisemap_vec_len];
 	//Main gradient according to pole location.
 	let array_grad =
 		array_ops::gradients::get(lp.wi.noisemap_size, lp.wi.temp_mode);
@@ -38,12 +38,12 @@ fn temperature(lp: &mut LayerPack) {
 	//Combine all the maps.
 	for (index, cell_v) in array.iter_mut().enumerate().take(lp.noisemap_vec_len)
 	{
-		let grad_rel = array_grad[index] / cw::VAL_255_F32;
+		let grad_rel = array_grad[index] / cg::VAL_255_F32;
 		*cell_v = array_grad[index]
 			* (1.0 - lp.wi.temp_noise_weight)
 			* (grad_rel + array_noise_polar[index] * (1.0 - grad_rel))
 			+ (array_noise1[index] + array_noise2[index])
-				* cw::VAL_127_F32
+				* cg::VAL_127_F32
 				* lp.wi.temp_noise_weight
 				* grad_rel;
 		if *cell_v < 0.0 {
@@ -66,7 +66,7 @@ fn temperature(lp: &mut LayerPack) {
 
 //▒▒▒▒▒▒▒▒▒▒▒ RAINFALL ▒▒▒▒▒▒▒▒▒▒▒▒▒
 fn rainfall(lp: &mut LayerPack) {
-	let mut array = vec![cw::ZERO_F32; lp.noisemap_vec_len];
+	let mut array = vec![cg::ZERO_F32; lp.noisemap_vec_len];
 	//Gradient to account for polar regions being dryer.
 	let array_grad =
 		array_ops::gradients::get(lp.wi.noisemap_size, lp.wi.temp_mode);
@@ -97,11 +97,11 @@ fn rainfall(lp: &mut LayerPack) {
 	//Combining all the noise maps together.
 	for (index, cell_v) in array.iter_mut().enumerate().take(lp.noisemap_vec_len)
 	{
-		*cell_v = (cw::VAL_127_F32 - array_ds1[index] + array_ds2[index])
+		*cell_v = (cg::VAL_127_F32 - array_ds1[index] + array_ds2[index])
 			* array_grad[index]
-			/ cw::VAL_255_F32
+			/ cg::VAL_255_F32
 			* (1.0 - lp.wi.rain_noise_weight)
-			+ (array_noise[index] * cw::VAL_255_F32 * lp.wi.rain_noise_weight);
+			+ (array_noise[index] * cg::VAL_255_F32 * lp.wi.rain_noise_weight);
 		if *cell_v < 0.0 {
 			*cell_v = 0.0;
 		}

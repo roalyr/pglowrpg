@@ -13,7 +13,7 @@ macro_rules! get_strings_hashmaps {
 		let stuff: HashMap<String, String> = match ron::from_str(&data) {
 			Ok(f) => f,
 			Err(e) => {
-				println!("{}: {}", e.to_string(), path.to_str().unwrap());
+				println!("{}: {}", e.to_string(), path.to_str().unwrap_or(""));
 				std::process::exit(0);
 			}
 		};

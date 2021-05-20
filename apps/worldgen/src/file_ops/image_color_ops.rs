@@ -1,5 +1,6 @@
 use crate::LayerPack;
 use constants::app as ca;
+use constants::generic as cg;
 use game_options::OPTIONS;
 use io_ops::create_dir;
 use io_ops::writepng::{combined_png, simple_png, GradMode, Mode};
@@ -14,8 +15,8 @@ pub fn write_images_color(
 
 	//Clean proxy maps for rendering images
 	let map_size = lp.wi.map_size;
-	let mut array_bg = vec![0u8; lp.layer_vec_len];
-	let mut array_fg = vec![0u8; lp.layer_vec_len];
+	let mut array_bg = vec![cg::ZERO_U8; lp.layer_vec_len];
+	let mut array_fg = vec![cg::ZERO_U8; lp.layer_vec_len];
 
 	//Watermask over terraim
 	if OPTIONS.render_topography {

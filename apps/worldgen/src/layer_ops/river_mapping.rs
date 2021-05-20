@@ -6,6 +6,7 @@ pub mod vector_ops;
 pub mod waterbody_ops;
 pub mod width_ops;
 
+use constants::generic as cg;
 use constants::world as cw;
 use game_data_codec::LayerPack;
 
@@ -57,7 +58,7 @@ pub struct RgParams {
 //▒▒▒▒▒▒▒▒▒▒▒▒ MAIN ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn get(lp: &mut LayerPack) {
 	let mut rg = RgParams {
-		river_id: cw::ID_MAP_MIN_U32,
+		river_id: cg::ID_MAP_MIN_U32,
 		river_width: cw::RIVER_MIN_WIDTH,
 		river_source: (0, 0),
 		river_end: (0, 0),
@@ -69,7 +70,7 @@ pub fn get(lp: &mut LayerPack) {
 			y0: 0,
 			x1: lp.wi.map_size / 2, //end in the center
 			y1: lp.wi.map_size / 2, //end in the center
-			r: cw::ONE_USIZE,
+			r: cg::ONE_USIZE,
 			hit: false,
 			path_heuristic: cw::RIVER_HEUR_INIT,
 		},

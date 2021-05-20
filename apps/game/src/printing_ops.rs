@@ -204,7 +204,7 @@ pub fn map_render_land(
 				let random = pseudo_rng::get(0.0, 1.0, gd.lp.wi.seed, render_index);
 
 				if random < 0.5 {
-					//if x % 2 == 0 {
+					// Keep the unwraps for now.
 					let orig_colors_fg = element.fgcolor().unwrap();
 					let orig_colors_bg = element.bgcolor().unwrap();
 					let orig_style = element.style();

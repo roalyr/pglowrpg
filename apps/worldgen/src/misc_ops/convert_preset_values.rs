@@ -162,13 +162,6 @@ fn params(wi: &mut presets::presets_worldgen::Stuff) {
 		RIVER_SOURCE_DENSITY_MAX,
 	);
 
-	wi.river_segment_displacement = cap1(
-		"River segment displacement",
-		wi.river_segment_displacement,
-		RIVER_SEGMENT_DISPLACEMENT_MIN,
-		RIVER_SEGMENT_DISPLACEMENT_MAX,
-	);
-
 	wi.river_heuristic_factor = cap1(
 		"River heuristic factor",
 		wi.river_heuristic_factor,
@@ -202,13 +195,6 @@ fn params(wi: &mut presets::presets_worldgen::Stuff) {
 		wi.river_noise_weight,
 		RIVER_NOISE_WEIGHT_MIN,
 		RIVER_NOISE_WEIGHT_MAX,
-	);
-
-	wi.river_segment_length = cap1(
-		"River segment length",
-		wi.river_segment_length,
-		RIVER_SEGMENT_LENGTH_MIN,
-		wi.map_size as usize,
 	);
 
 	wi.river_min_length = cap1(
@@ -296,8 +282,6 @@ fn params(wi: &mut presets::presets_worldgen::Stuff) {
 	wi.river_noise_blend /= 100.0;
 	wi.river_noise_weight /= 100.0;
 	wi.river_source_density /= wi.map_size as f32 * 0.5;
-
-	wi.river_segment_displacement /= 100.0;
 
 	wi.river_heuristic_factor /= 100.0;
 	wi.river_noise_size1 = 1.0 / wi.river_noise_size1.powf(1.2);

@@ -1,5 +1,6 @@
 use crate::array_ops::noise_maps;
 use crate::layer_ops::river_mapping::RgParams;
+use constants::generic as cg;
 use constants::world as cw;
 use game_data_codec::LayerPack;
 use line_drawing::BresenhamCircle;
@@ -58,7 +59,7 @@ impl RgParams {
 					let temp = lp.climate.read(lp.climate.TEMPERATURE, index);
 					let temp_abs = translate::get_abs(
 						temp as f32,
-						cw::VAL_255_F32,
+						cg::VAL_255_F32,
 						lp.wi.abs_temp_min as f32,
 						lp.wi.abs_temp_max as f32,
 					) as isize;
@@ -76,7 +77,7 @@ impl RgParams {
 				self.dv.r += 1;
 			} else {
 				//reset stuff
-				self.dv.r = cw::ONE_USIZE;
+				self.dv.r = cg::ONE_USIZE;
 				self.dv.hit = false;
 				break;
 			}

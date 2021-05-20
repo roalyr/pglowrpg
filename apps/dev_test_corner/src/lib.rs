@@ -97,6 +97,7 @@ pub fn start() {
 			std::process::exit(0);
 		}
 	};
+	files.push(entity_from_file.clone());
 	files.push(entity_from_file);
 
 	// MAKING NON-SPATIAL GLOBAL TABLE.
@@ -125,7 +126,9 @@ pub fn start() {
 			}
 		}
 		// Make this capped at specific entity cap
-		uid.checked_add(1).expect("Overflow at  uid += 1");
+		uid = uid
+			.checked_add(1)
+			.expect("ERROR: overflow at  UID increment.");
 	}
 
 	// WORLD-RELATED DATA TABLES AND CACHES.
@@ -152,8 +155,14 @@ pub fn start() {
 	// Update coords in their headers.
 	// Make proper match for error
 	for entity_id in queue.iter() {
-		unique_creatures.get_mut(entity_id).unwrap().x = x as u32;
-		unique_creatures.get_mut(entity_id).unwrap().y = y as u32;
+		unique_creatures
+			.get_mut(entity_id)
+			.expect("ERROR: UID not found.")
+			.x = x as u32;
+		unique_creatures
+			.get_mut(entity_id)
+			.expect("ERROR: UID not found.")
+			.y = y as u32;
 	}
 
 	// MAKE DESTRUCTORS FOR SPEIFIC UNIQUE ENTITY TYPES.

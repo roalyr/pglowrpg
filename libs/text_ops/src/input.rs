@@ -29,7 +29,13 @@ fn new_line_input(prompt_symbol: &String) -> String {
 		}
 	}
 	let _ = io::stdout().flush();
-	io::stdin().read_line(&mut input).unwrap();
+	match io::stdin().read_line(&mut input) {
+		Ok(_) => {}
+		Err(e) => {
+			println!("ERROR: input failed: {}", e.to_string());
+			panic!();
+		}
+	}
 	println!(""); // Empty line after input.
 	input.trim().to_string()
 }

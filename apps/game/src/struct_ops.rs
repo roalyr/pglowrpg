@@ -54,10 +54,10 @@ pub fn init_gd(
 		Some(lp) => lp,
 		_ => return None,
 	};
-	let x = lp.wi.map_size/2;
+	let x = lp.wi.map_size / 2;
 	let y = x;
-	let index =  lp.index.get(x, y);
-	
+	let index = lp.index.get(x, y);
+
 	let gd = GameData {
 		//Move previously cloned structs here
 		lp,

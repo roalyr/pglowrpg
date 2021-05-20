@@ -50,6 +50,6 @@ pub fn get_pow_2_size(thing_size: usize) -> u8 {
 		33_554_433..=67_108_864 => 26,
 		67_108_865..=134_217_728 => 27,
 		134_217_729..=268_435_456 => 28,
-		_ => panic!("thing size is greater than 2^28"),
+		_ => panic!("ERROR: object size is greater than 2^28, not implemented."),
 	}
 }

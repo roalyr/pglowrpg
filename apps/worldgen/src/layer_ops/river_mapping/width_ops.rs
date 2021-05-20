@@ -1,4 +1,5 @@
 use crate::layer_ops::river_mapping::{RgParams, RiverEntry};
+use constants::generic as cg;
 use constants::world as cw;
 use game_data_codec::LayerPack;
 
@@ -29,7 +30,7 @@ impl RgParams {
 			let river_id_downstr = entry.river_id_downstr;
 			let width_new = entry.width_new;
 			//Skip if there is a null ID in queue somehow
-			if river_id_downstr == cw::ID_MAP_NO_U32 {
+			if river_id_downstr == cg::ID_MAP_NO_U32 {
 				continue;
 			}
 			let river_entry = self
@@ -90,7 +91,7 @@ impl RgParams {
 			let cell_width_downstr = lp.rivers.read(lp.rivers.WIDTH, index_downstr);
 			let cell_width_current = lp.rivers.read(lp.rivers.WIDTH, index_current);
 			//Skip blank ID
-			if cell_river_id_downstr == cw::ID_MAP_NO_U32 {
+			if cell_river_id_downstr == cg::ID_MAP_NO_U32 {
 				continue;
 			}
 			//Write data to list

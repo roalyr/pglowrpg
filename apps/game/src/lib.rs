@@ -21,7 +21,10 @@ pub fn start() {
 		_ => return,
 	};
 
-	//Copy all the commands to the vector for autocomplete
+	// Copy all the commands to the vector for autocomplete.
+	// Must use toml here in order for the struct fields to be parsed.
+	// Should be reworked when switching to hashmap.
+	// Leaving unwraps as is for now.
 	let temp_str = toml::to_string(&gd.commands).unwrap();
 	let parsed = temp_str.parse::<toml::Value>().unwrap();
 	for (_, v) in parsed.as_table().unwrap().iter() {
