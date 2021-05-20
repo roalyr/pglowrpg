@@ -11,7 +11,7 @@ fn gradient_both(size: usize) -> Vec<f32> {
 	for y in 0..size {
 		for x in 0..size {
 			array[index.get(x, y)] = (HALF_SQUARE_255
-				* ((PI * (2.0 / (size as f32) * (x as f32) - 1.0)).cos() + 1.0))
+				* ((PI * (2.0 / (size as f32) * (y as f32) - 1.0)).cos() + 1.0))
 				.sqrt();
 		}
 	}
@@ -27,8 +27,8 @@ fn grad_south(size: usize) -> Vec<f32> {
 	let mut array = vec![cg::ZERO_F32; size * size];
 	for y in 0..size {
 		for x in 0..size {
-			array[index.get(size - x - 1, y)] = (HALF_SQUARE_255
-				* ((PI * (1.3 / (size as f32) * (x as f32) - 1.0)).cos() + 1.0))
+			array[index.get(x, y)] = (HALF_SQUARE_255
+				* ((PI * (1.3 / (size as f32) * (y as f32) - 1.0)).cos() + 1.0))
 				.sqrt();
 		}
 	}
@@ -40,8 +40,8 @@ fn gradient_north(size: usize) -> Vec<f32> {
 	let mut array = vec![cg::ZERO_F32; size * size];
 	for y in 0..size {
 		for x in 0..size {
-			array[index.get(x, y)] = (HALF_SQUARE_255
-				* ((PI * (1.3 / (size as f32) * (x as f32) - 1.0)).cos() + 1.0))
+			array[index.get(x, size - y - 1)] = (HALF_SQUARE_255
+				* ((PI * (1.3 / (size as f32) * (y as f32) - 1.0)).cos() + 1.0))
 				.sqrt();
 		}
 	}

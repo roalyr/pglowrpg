@@ -6,18 +6,75 @@ pub struct Index {
 }
 
 impl Index {
-	#[inline]
 	pub fn get(
 		self,
 		x: usize,
 		y: usize,
 	) -> usize {
-		let result = (x * self.map_size).checked_add(y);
+		let result = (y * self.map_size).checked_add(x);
 		match result {
 			Some(x) => x,
 			None => {
-				let saturated = (x * self.map_size).saturating_add(y);
-				println!("ERROR: overflow at index {}", saturated);
+				let saturated = (y * self.map_size).saturating_add(x);
+				println!("ERROR: overflow at index {}.", saturated);
+				println!("x:{}, y:{}, map size: {}", x, y, self.map_size);
+				panic!();
+			}
+		}
+	}
+	pub fn get_mirrored_h(
+		self,
+		x: usize,
+		y: usize,
+	) -> usize {
+		let result = ((self.map_size - y - 1) * self.map_size).checked_add(x);
+		match result {
+			Some(x) => x,
+			None => {
+				let saturated =
+					((self.map_size - y - 1) * self.map_size).saturating_add(x);
+				println!(
+					"ERROR: overflow at index {} while reading mirrored horizontally.",
+					saturated
+				);
+				println!("x:{}, y:{}, map size: {}", x, y, self.map_size);
+				panic!();
+			}
+		}
+	}
+	pub fn get_mirrored_v(
+		self,
+		x: usize,
+		y: usize,
+	) -> usize {
+		let result = (y * self.map_size).checked_add(self.map_size - x - 1);
+		match result {
+			Some(x) => x,
+			None => {
+				let saturated =
+					(y * self.map_size).saturating_add(self.map_size - x - 1);
+				println!(
+					"ERROR: overflow at index {} while reading mirrored vertically.",
+					saturated
+				);
+				println!("x:{}, y:{}, map size: {}", x, y, self.map_size);
+				panic!();
+			}
+		}
+	}
+	pub fn get_mirrored_hv(
+		self,
+		x: usize,
+		y: usize,
+	) -> usize {
+		let result = ((self.map_size - y - 1) * self.map_size)
+			.checked_add(self.map_size - x - 1);
+		match result {
+			Some(x) => x,
+			None => {
+				let saturated = ((self.map_size - y - 1) * self.map_size)
+					.saturating_add(self.map_size - x - 1);
+				println!("ERROR: overflow at index {} while reading mirrored (horizontally and vertically).", saturated);
 				println!("x:{}, y:{}, map size: {}", x, y, self.map_size);
 				panic!();
 			}

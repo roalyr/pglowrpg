@@ -26,6 +26,7 @@ pub fn map_render_land(
 
 	for j in 0..gd.map_render_size * 2 {
 		let shift_y: isize = j as isize - gd.map_render_size as isize;
+		// The way it prints, this should be reversed.
 		for i in (0..gd.map_render_size * 2).rev() {
 			let shift_x: isize = i as isize - gd.map_render_size as isize;
 
@@ -37,7 +38,6 @@ pub fn map_render_land(
 				&& ((xx as usize) < gd.lp.wi.map_size)
 				&& ((yy as usize) < gd.lp.wi.map_size)
 			{
-				//Swapped in reverse to worldgen.
 				let render_index = gd.lp.index.get(xx as usize, yy as usize);
 				let elev = gd
 					.lp

@@ -23,11 +23,13 @@ pub fn write_images_raw(
 		let file_path = raw_img_dir
 			.join("terrain")
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
-		for i in 0..map_size {
-			for j in 0..map_size {
-				let index = lp.index.get(i, j);
+		for y in 0..map_size {
+			for x in 0..map_size {
+				let index = lp.index.get(x, y);
 				let bg = lp.topography.read(lp.topography.TERRAIN, index);
-				array_bg[index] = bg as u8;
+				// Proper rendering requires mirroring the map.
+				let index_mirrored = lp.index.get_mirrored_h(x, y);
+				array_bg[index_mirrored] = bg as u8;
 			}
 		}
 		simple_png(&array_bg, &file_path, GradMode::Raw, lp.wi.map_size);
@@ -39,7 +41,9 @@ pub fn write_images_raw(
 			for x in 0..map_size {
 				let index = lp.index.get(x, y);
 				let bg = lp.topography.read(lp.topography.WATERMASK, index);
-				array_bg[index] = bg as u8;
+				// Proper rendering requires mirroring the map.
+				let index_mirrored = lp.index.get_mirrored_h(x, y);
+				array_bg[index_mirrored] = bg as u8;
 			}
 		}
 		simple_png(&array_bg, &file_path, GradMode::Raw, lp.wi.map_size);
@@ -55,7 +59,9 @@ pub fn write_images_raw(
 			for x in 0..map_size {
 				let index = lp.index.get(x, y);
 				let bg = lp.climate.read(lp.climate.TEMPERATURE, index);
-				array_bg[index] = bg as u8;
+				// Proper rendering requires mirroring the map.
+				let index_mirrored = lp.index.get_mirrored_h(x, y);
+				array_bg[index_mirrored] = bg as u8;
 			}
 		}
 		simple_png(&array_bg, &file_path, GradMode::Raw, lp.wi.map_size);
@@ -71,7 +77,9 @@ pub fn write_images_raw(
 			for x in 0..map_size {
 				let index = lp.index.get(x, y);
 				let bg = lp.climate.read(lp.climate.RAINFALL, index);
-				array_bg[index] = bg as u8;
+				// Proper rendering requires mirroring the map.
+				let index_mirrored = lp.index.get_mirrored_h(x, y);
+				array_bg[index_mirrored] = bg as u8;
 			}
 		}
 		simple_png(&array_bg, &file_path, GradMode::Raw, lp.wi.map_size);
@@ -87,7 +95,9 @@ pub fn write_images_raw(
 			for x in 0..map_size {
 				let index = lp.index.get(x, y);
 				let bg = lp.rivers.read(lp.rivers.ELEMENT, index);
-				array_bg[index] = bg as u8;
+				// Proper rendering requires mirroring the map.
+				let index_mirrored = lp.index.get_mirrored_h(x, y);
+				array_bg[index_mirrored] = bg as u8;
 			}
 		}
 		simple_png(&array_bg, &file_path, GradMode::Raw, lp.wi.map_size);
@@ -100,7 +110,9 @@ pub fn write_images_raw(
 			for x in 0..map_size {
 				let index = lp.index.get(x, y);
 				let bg = lp.rivers.read(lp.rivers.WIDTH, index);
-				array_bg[index] = bg as u8;
+				// Proper rendering requires mirroring the map.
+				let index_mirrored = lp.index.get_mirrored_h(x, y);
+				array_bg[index_mirrored] = bg as u8;
 			}
 		}
 		simple_png(&array_bg, &file_path, GradMode::Raw, lp.wi.map_size);
@@ -116,7 +128,9 @@ pub fn write_images_raw(
 			for x in 0..map_size {
 				let index = lp.index.get(x, y);
 				let bg = lp.biomes.read(index);
-				array_bg[index] = bg as u8;
+				// Proper rendering requires mirroring the map.
+				let index_mirrored = lp.index.get_mirrored_h(x, y);
+				array_bg[index_mirrored] = bg as u8;
 			}
 		}
 		simple_png(&array_bg, &file_path, GradMode::Raw, lp.wi.map_size);

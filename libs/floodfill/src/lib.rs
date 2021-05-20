@@ -41,12 +41,12 @@ impl<T> FloodFill<'_, T> {
 		let mut queue = Vec::new();
 		let mut neighbors = Vec::with_capacity(4);
 		let target = self.template_data[index.get(i, j)];
-		// TODO: why u16 here?
-		let size = self.map_size as u16;
-		queue.push((i as u16, j as u16));
+		let size = self.map_size;
+		// Just in case, if memeory is overused here, go for u16.
+		queue.push((i, j));
 		while let Some(point) = queue.pop() {
-			let (i, j): (u16, u16) = point;
-			let ind = index.get(i as usize, j as usize);
+			let (i, j): (usize, usize) = point;
+			let ind = index.get(i, j);
 			if self.template_data[ind] != target {
 				continue;
 			}
@@ -66,7 +66,7 @@ impl<T> FloodFill<'_, T> {
 				neighbors.push((i, j - 1))
 			};
 			for (ni, nj) in neighbors.iter() {
-				if self.exclusion_map[index.get(*ni as usize, *nj as usize)] {
+				if self.exclusion_map[index.get(*ni, *nj)] {
 					continue;
 				};
 				queue.push((*ni, *nj));
@@ -77,16 +77,16 @@ impl<T> FloodFill<'_, T> {
 			self.region_size += 1;
 			// Bounds coordinates calculation.
 			if (i as usize) < self.x_min {
-				self.x_min = i as usize;
+				self.x_min = i;
 			}
 			if (i as usize) > self.x_max {
-				self.x_max = i as usize;
+				self.x_max = i;
 			}
 			if (j as usize) < self.y_min {
-				self.y_min = j as usize;
+				self.y_min = j;
 			}
 			if (j as usize) > self.y_max {
-				self.y_max = j as usize;
+				self.y_max = j;
 			}
 		}
 		// Centroid calculation.

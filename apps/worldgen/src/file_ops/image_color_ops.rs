@@ -29,8 +29,10 @@ pub fn write_images_color(
 				let index = lp.index.get(x, y);
 				let bg = lp.topography.read(lp.topography.TERRAIN, index);
 				let fg = lp.topography.read(lp.topography.WATERMASK, index);
-				array_bg[index] = bg as u8;
-				array_fg[index] = fg as u8;
+				// Proper rendering requires mirroring the map.
+				let index_mirrored = lp.index.get_mirrored_h(x, y);
+				array_bg[index_mirrored] = bg as u8;
+				array_fg[index_mirrored] = fg as u8;
 			}
 		}
 		combined_png(
@@ -54,7 +56,9 @@ pub fn write_images_color(
 			for x in 0..map_size {
 				let index = lp.index.get(x, y);
 				let bg = lp.climate.read(lp.climate.TEMPERATURE, index);
-				array_bg[index] = bg as u8;
+				// Proper rendering requires mirroring the map.
+				let index_mirrored = lp.index.get_mirrored_h(x, y);
+				array_bg[index_mirrored] = bg as u8;
 			}
 		}
 		simple_png(
@@ -75,7 +79,9 @@ pub fn write_images_color(
 			for x in 0..map_size {
 				let index = lp.index.get(x, y);
 				let bg = lp.climate.read(lp.climate.RAINFALL, index);
-				array_bg[index] = bg as u8;
+				// Proper rendering requires mirroring the map.
+				let index_mirrored = lp.index.get_mirrored_h(x, y);
+				array_bg[index_mirrored] = bg as u8;
 			}
 		}
 		simple_png(
@@ -96,7 +102,9 @@ pub fn write_images_color(
 			for x in 0..map_size {
 				let index = lp.index.get(x, y);
 				let bg = lp.georeg_id.read(index);
-				array_bg[index] = bg as u8;
+				// Proper rendering requires mirroring the map.
+				let index_mirrored = lp.index.get_mirrored_h(x, y);
+				array_bg[index_mirrored] = bg as u8;
 			}
 		}
 		simple_png(&array_bg, &file_path, GradMode::Random, lp.wi.map_size);
@@ -114,8 +122,10 @@ pub fn write_images_color(
 				let index = lp.index.get(x, y);
 				let bg = lp.topography.read(lp.topography.WATERMASK, index);
 				let fg = lp.rivers.read(lp.rivers.ELEMENT, index);
-				array_bg[index] = bg as u8;
-				array_fg[index] = fg as u8;
+				// Proper rendering requires mirroring the map.
+				let index_mirrored = lp.index.get_mirrored_h(x, y);
+				array_bg[index_mirrored] = bg as u8;
+				array_fg[index_mirrored] = fg as u8;
 			}
 		}
 		combined_png(
@@ -137,8 +147,10 @@ pub fn write_images_color(
 				let index = lp.index.get(x, y);
 				let bg = lp.topography.read(lp.topography.WATERMASK, index);
 				let fg = lp.rivers_id.read(index);
-				array_bg[index] = bg as u8;
-				array_fg[index] = fg as u8;
+				// Proper rendering requires mirroring the map.
+				let index_mirrored = lp.index.get_mirrored_h(x, y);
+				array_bg[index_mirrored] = bg as u8;
+				array_fg[index_mirrored] = fg as u8;
 			}
 		}
 		combined_png(
@@ -160,8 +172,10 @@ pub fn write_images_color(
 				let index = lp.index.get(x, y);
 				let bg = lp.topography.read(lp.topography.WATERMASK, index);
 				let fg = lp.rivers.read(lp.rivers.WIDTH, index);
-				array_bg[index] = bg as u8;
-				array_fg[index] = fg as u8;
+				// Proper rendering requires mirroring the map.
+				let index_mirrored = lp.index.get_mirrored_h(x, y);
+				array_bg[index_mirrored] = bg as u8;
+				array_fg[index_mirrored] = fg as u8;
 			}
 		}
 		combined_png(
@@ -186,8 +200,10 @@ pub fn write_images_color(
 				let index = lp.index.get(x, y);
 				let bg = lp.biomes.read(index);
 				let fg = lp.rivers.read(lp.rivers.WIDTH, index);
-				array_bg[index] = bg as u8;
-				array_fg[index] = fg as u8;
+				// Proper rendering requires mirroring the map.
+				let index_mirrored = lp.index.get_mirrored_h(x, y);
+				array_bg[index_mirrored] = bg as u8;
+				array_fg[index_mirrored] = fg as u8;
 			}
 		}
 		combined_png(
