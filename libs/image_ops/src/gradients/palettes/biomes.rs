@@ -1,6 +1,6 @@
-use crate::readron::palettes::biomes;
+use io_ops::readron::palettes::biomes;
 
-use crate::writepng::from_hex;
+use crate::from_hex;
 
 pub fn get(array: &Vec<u8>) -> Vec<u8> {
 	let size = array.len();
@@ -49,8 +49,12 @@ pub fn get(array: &Vec<u8>) -> Vec<u8> {
 			36 => from_hex(&bi.color_36),
 			37 => from_hex(&bi.color_37),
 
-			100 => from_hex(&bi.color_100),
-			_ => from_hex(&bi.color_100),
+			_ => {
+				println!(
+					"ERROR: couldn't write BIOMES colored image, unexpected value."
+				);
+				panic!();
+			}
 		};
 
 		let index = i * 4;

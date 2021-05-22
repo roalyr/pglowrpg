@@ -1,5 +1,4 @@
 pub mod readron;
-pub mod writepng;
 
 use lz4;
 use lz4::{Decoder, EncoderBuilder};
@@ -21,7 +20,7 @@ pub fn dir_file_contents(
 	let contents_iter = match fs::read_dir(path) {
 		Ok(f) => f,
 		Err(e) => {
-			println!("{}: {}", e.to_string(), path.to_str().unwrap());
+			println!("ERROR: {}: {}", e.to_string(), path.to_str().unwrap());
 			std::process::exit(0);
 		}
 	};
@@ -48,7 +47,7 @@ pub fn dir_dir_contents(path_str: &str) -> Vec<String> {
 	let contents_iter = match fs::read_dir(path) {
 		Ok(f) => f,
 		Err(e) => {
-			println!("{}: {}", e.to_string(), path.to_str().unwrap());
+			println!("ERROR: {}: {}", e.to_string(), path.to_str().unwrap());
 			std::process::exit(0);
 		}
 	};
@@ -74,7 +73,7 @@ pub fn file_to_string(path_vec: &Vec<std::path::PathBuf>) -> String {
 				match file.read_to_string(&mut data) {
 					Ok(f) => f,
 					Err(e) => {
-						println!("{}: {}", e.to_string(), path.to_str().unwrap());
+						println!("ERROR: {}: {}", e.to_string(), path.to_str().unwrap());
 						std::process::exit(0);
 					}
 				};
@@ -91,7 +90,7 @@ pub fn file_to_string(path_vec: &Vec<std::path::PathBuf>) -> String {
 			match File::open(&path) {
 				Ok(_) => {}
 				Err(e) => {
-					println!("{}: {}", e.to_string(), path.to_str().unwrap());
+					println!("ERROR: {}: {}", e.to_string(), path.to_str().unwrap());
 					std::process::exit(0);
 				}
 			};
@@ -107,7 +106,7 @@ pub fn create_dir(path: &std::path::PathBuf) {
 		Err(e) => match e.kind() {
 			std::io::ErrorKind::AlreadyExists => {}
 			_ => {
-				println!("{}: {}", e.to_string(), path.to_str().unwrap());
+				println!("ERROR: {}: {}", e.to_string(), path.to_str().unwrap());
 				std::process::exit(0);
 			}
 		},
@@ -119,7 +118,7 @@ pub fn create_file_overwrite(path: &std::path::PathBuf) -> File {
 	match File::create(path) {
 		Ok(f) => f,
 		Err(e) => {
-			println!("{}: {}", e.to_string(), path.to_str().unwrap());
+			println!("ERROR: {}: {}", e.to_string(), path.to_str().unwrap());
 			std::process::exit(0);
 		}
 	}
@@ -134,14 +133,14 @@ pub fn compress_to_storage(
 	let output_file = match File::create(path) {
 		Ok(f) => f,
 		Err(e) => {
-			println!("{}: {}", e.to_string(), path.to_str().unwrap());
+			println!("ERROR: {}: {}", e.to_string(), path.to_str().unwrap());
 			std::process::exit(0);
 		}
 	};
 	let mut encoder = match EncoderBuilder::new().level(4).build(output_file) {
 		Ok(f) => f,
 		Err(e) => {
-			println!("{}: {}", e.to_string(), path.to_str().unwrap());
+			println!("ERROR: {}: {}", e.to_string(), path.to_str().unwrap());
 			std::process::exit(0);
 		}
 	};
@@ -149,14 +148,14 @@ pub fn compress_to_storage(
 	match io::copy(&mut Cursor::new(data), &mut encoder) {
 		Ok(f) => f,
 		Err(e) => {
-			println!("{}: {}", e.to_string(), path.to_str().unwrap());
+			println!("ERROR: {}: {}", e.to_string(), path.to_str().unwrap());
 			std::process::exit(0);
 		}
 	};
 	match encoder.finish().1 {
 		Ok(()) => {}
 		Err(e) => {
-			println!("{}: {}", e.to_string(), path.to_str().unwrap());
+			println!("ERROR: {}: {}", e.to_string(), path.to_str().unwrap());
 			std::process::exit(0);
 		}
 	}
@@ -167,14 +166,14 @@ pub fn decompress_to_memory(path: &std::path::PathBuf) -> Vec<u8> {
 	let input_file = match File::open(path) {
 		Ok(f) => f,
 		Err(e) => {
-			println!("{}: {}", e.to_string(), path.to_str().unwrap());
+			println!("ERROR: {}: {}", e.to_string(), path.to_str().unwrap());
 			std::process::exit(0);
 		}
 	};
 	let mut decoder = match Decoder::new(input_file) {
 		Ok(f) => f,
 		Err(e) => {
-			println!("{}: {}", e.to_string(), path.to_str().unwrap());
+			println!("ERROR: {}: {}", e.to_string(), path.to_str().unwrap());
 			std::process::exit(0);
 		}
 	};
@@ -182,7 +181,7 @@ pub fn decompress_to_memory(path: &std::path::PathBuf) -> Vec<u8> {
 	match io::copy(&mut decoder, &mut output) {
 		Ok(f) => f,
 		Err(e) => {
-			println!("{}: {}", e.to_string(), path.to_str().unwrap());
+			println!("ERROR: {}: {}", e.to_string(), path.to_str().unwrap());
 			std::process::exit(0);
 		}
 	};

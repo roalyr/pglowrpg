@@ -1,5 +1,5 @@
 [package]
-name = "io_ops"
+name = "image_ops"
 version = "0.1.0"
 authors = ["roal_yr"]
 edition = "2018"
@@ -7,7 +7,8 @@ edition = "2018"
 
 [dependencies]
 constants = { path = "../../libs/constants" }
+pseudo_rng = { path = "../../libs/pseudo_rng" }
+io_ops = { path = "../../libs/io_ops" }
 
-serde = { version = "1.0", features = ["derive"]  }
-ron = "0.6"
-lz4 = "1.23"
+png = "0.16"
+hex = "0.4"

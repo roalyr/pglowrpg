@@ -6,13 +6,12 @@ pub mod printing_ops;
 pub mod struct_ops;
 
 use game_options::OPTIONS;
-use io_ops::readron::strings;
+use io_ops::readron::commands;
 use text_ops::GS;
 
 pub fn start() {
 	let input_locale = &OPTIONS.locale;
-	let commands: strings::commands::Stuff =
-		strings::commands::get(&input_locale);
+	let commands: commands::Stuff = commands::get(&input_locale);
 	//Init game structs
 	let mut gs = struct_ops::init_gs();
 	let mut gd = match struct_ops::init_gd(&gs, commands) {

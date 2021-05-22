@@ -1,13 +1,13 @@
 use crate::data_ops::get_layerpack;
 use game_data_codec::LayerPack;
-use io_ops::readron::strings;
+use io_ops::readron::commands;
 
 //Common shared data for all the functions
 pub struct GameData {
 	//World
 	pub lp: LayerPack,
 	//Commands
-	pub commands: strings::commands::Stuff,
+	pub commands: commands::Stuff,
 	pub commands_vec: Vec<String>,
 	//Coordinates
 	//+x is east, +y is north
@@ -48,7 +48,7 @@ pub struct GameStrings {
 //▒▒▒▒▒▒▒▒▒▒▒▒ INITS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn init_gd(
 	gs: &GameStrings,
-	commands: strings::commands::Stuff,
+	commands: commands::Stuff,
 ) -> Option<GameData> {
 	let lp = match get_layerpack(&gs) {
 		Some(lp) => lp,

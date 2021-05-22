@@ -49,7 +49,7 @@ pub fn combined_png(
 	png_size: usize,
 ) {
 	let size = array_bg.len();
-	let file = crate::create_file_overwrite(&path);
+	let file = io_ops::create_file_overwrite(&path);
 	let bufw = &mut BufWriter::new(file);
 	let mut encoder = png::Encoder::new(bufw, png_size as u32, png_size as u32);
 
@@ -93,7 +93,7 @@ pub fn simple_png(
 	grad_mode: GradMode,
 	png_size: usize,
 ) {
-	let file = crate::create_file_overwrite(&path);
+	let file = io_ops::create_file_overwrite(&path);
 	let bufw = &mut BufWriter::new(file);
 	let mut encoder = png::Encoder::new(bufw, png_size as u32, png_size as u32);
 

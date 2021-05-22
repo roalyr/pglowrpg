@@ -1,8 +1,8 @@
 use crate::struct_ops::{GameData, GameStrings};
 
 use colored::*;
+use image_ops::from_hex;
 use io_ops::readron::palettes::biomes;
-use io_ops::writepng::from_hex;
 
 pub fn print_strings_basic(gs: &GameStrings) {
 	println!("{}", gs.coord_str);
@@ -106,7 +106,10 @@ pub fn map_render_land(
 							36 => from_hex(&bi.color_36),
 							37 => from_hex(&bi.color_37),
 
-							_ => from_hex(&bi.color_100),
+							_ => {
+								println!("ERROR: couldn't print BIOMES colored symbol, unexpected value.");
+								panic!();
+							}
 						};
 
 						match biome {

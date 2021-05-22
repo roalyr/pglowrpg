@@ -2,8 +2,8 @@ use crate::LayerPack;
 use constants::app as ca;
 use constants::generic as cg;
 use game_options::OPTIONS;
+use image_ops::{combined_png, simple_png, GradMode, Mode};
 use io_ops::create_dir;
-use io_ops::writepng::{combined_png, simple_png, GradMode, Mode};
 
 pub fn write_images_color(
 	lp: &mut LayerPack,
@@ -22,7 +22,7 @@ pub fn write_images_color(
 	if OPTIONS.render_topography {
 		//println!("{}", wg_str.wg14);
 		let file_path = color_img_dir
-			.join("watermask_over_terrain")
+			.join(ca::NAME_IMAGE_COLOR_WATERMASK_OVER_TERRAIN)
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for y in 0..map_size {
 			for x in 0..map_size {
@@ -50,7 +50,7 @@ pub fn write_images_color(
 	if OPTIONS.render_temperature {
 		//println!("{}", wg_str.wg10);
 		let file_path = color_img_dir
-			.join("temperature")
+			.join(ca::NAME_IMAGE_COLOR_TERRAIN)
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for y in 0..map_size {
 			for x in 0..map_size {
@@ -73,7 +73,7 @@ pub fn write_images_color(
 	if OPTIONS.render_rainfall {
 		//println!("{}", wg_str.wg12);
 		let file_path = color_img_dir
-			.join("rainfall")
+			.join(ca::NAME_IMAGE_COLOR_RAINFALL)
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for y in 0..map_size {
 			for x in 0..map_size {
@@ -96,7 +96,7 @@ pub fn write_images_color(
 	if OPTIONS.render_georegions {
 		//println!("{}", wg_str.wg22);
 		let file_path = color_img_dir
-			.join("georegions")
+			.join(ca::NAME_IMAGE_COLOR_GEOREGIONS)
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for y in 0..map_size {
 			for x in 0..map_size {
@@ -115,7 +115,7 @@ pub fn write_images_color(
 		//Rivers and watermasks
 		//println!("{}", wg_str.wg18);
 		let file_path = color_img_dir
-			.join("rivers_elements")
+			.join(ca::NAME_IMAGE_COLOR_RIVER_ELEMENTS)
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for y in 0..map_size {
 			for x in 0..map_size {
@@ -140,7 +140,7 @@ pub fn write_images_color(
 
 		//Rivers ids
 		let file_path = color_img_dir
-			.join("rivers_id")
+			.join(ca::NAME_IMAGE_COLOR_RIVER_IDS)
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for y in 0..map_size {
 			for x in 0..map_size {
@@ -165,7 +165,7 @@ pub fn write_images_color(
 
 		//Rivers widths
 		let file_path = color_img_dir
-			.join("rivers_width")
+			.join(ca::NAME_IMAGE_COLOR_RIVER_WIDTH)
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for y in 0..map_size {
 			for x in 0..map_size {
@@ -193,7 +193,7 @@ pub fn write_images_color(
 	if OPTIONS.render_biomes {
 		//println!("{}", wg_str.wg20);
 		let file_path = color_img_dir
-			.join("biomes")
+			.join(ca::NAME_IMAGE_COLOR_BIOMES)
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for y in 0..map_size {
 			for x in 0..map_size {

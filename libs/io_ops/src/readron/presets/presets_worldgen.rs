@@ -68,7 +68,7 @@ pub fn get(input: &str) -> Stuff {
 	let stuff: Stuff = match ron::from_str(&data) {
 		Ok(f) => f,
 		Err(e) => {
-			println!("{}", e.to_string());
+			println!("ERROR: {}", e.to_string());
 			std::process::exit(0);
 		}
 	};

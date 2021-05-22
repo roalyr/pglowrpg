@@ -19,10 +19,12 @@ unit_systems = { path = "../../libs/unit_systems" }
 game_data_codec = { path = "../../libs/game_data_codec" }
 constants = { path = "../../libs/constants" }
 io_ops = { path = "../../libs/io_ops" }
+image_ops = { path = "../../libs/image_ops" }
 text_ops = { path = "../../libs/text_ops" }
 pseudo_rng = { path = "../../libs/pseudo_rng" }
 pathfinding = { path = "../../libs/pathfinding" }
 floodfill = { path = "../../libs/floodfill" }
+
 
 
 

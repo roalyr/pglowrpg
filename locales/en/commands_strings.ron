@@ -1,7 +1,7 @@
 // To implement new commands, don't forget to add them in 4 places:
-// pub struct Stuff - io_ops/toml/strings/commands
+// pub struct Stuff - io_ops/readron/commands
 // pub fn parse_input - game/input_ops
-// pub enum Reply - game/action_ops 
+// pub enum Command - game/action_ops 
 // pub fn process_input - game/action_ops
 
 //Strings MAY contain multiple commands (but better not?)

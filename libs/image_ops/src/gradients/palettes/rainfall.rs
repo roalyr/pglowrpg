@@ -1,6 +1,6 @@
-use crate::readron::palettes::rainfall;
+use io_ops::readron::palettes::rainfall;
 
-use crate::writepng::from_hex;
+use crate::from_hex;
 
 pub fn get(array: &Vec<u8>) -> Vec<u8> {
 	let size = array.len();

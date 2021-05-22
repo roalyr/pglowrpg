@@ -2,8 +2,8 @@ use crate::LayerPack;
 use constants::app as ca;
 use constants::generic as cg;
 use game_options::OPTIONS;
+use image_ops::{simple_png, GradMode};
 use io_ops::create_dir;
-use io_ops::writepng::{simple_png, GradMode};
 
 pub fn write_images_raw(
 	lp: &mut LayerPack,
@@ -21,7 +21,7 @@ pub fn write_images_raw(
 	if OPTIONS.render_topography {
 		//println!("{}", wg_str.wg14);
 		let file_path = raw_img_dir
-			.join("terrain")
+			.join(ca::NAME_IMAGE_RAW_TERRAIN)
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for y in 0..map_size {
 			for x in 0..map_size {
@@ -35,7 +35,7 @@ pub fn write_images_raw(
 		simple_png(&array_bg, &file_path, GradMode::Raw, lp.wi.map_size);
 
 		let file_path = raw_img_dir
-			.join("watermask")
+			.join(ca::NAME_IMAGE_RAW_WATERMASK)
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for y in 0..map_size {
 			for x in 0..map_size {
@@ -53,7 +53,7 @@ pub fn write_images_raw(
 	if OPTIONS.render_temperature {
 		//println!("{}", wg_str.wg10);
 		let file_path = raw_img_dir
-			.join("temperature")
+			.join(ca::NAME_IMAGE_RAW_TEMPERATURE)
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for y in 0..map_size {
 			for x in 0..map_size {
@@ -71,7 +71,7 @@ pub fn write_images_raw(
 	if OPTIONS.render_rainfall {
 		//println!("{}", wg_str.wg12);
 		let file_path = raw_img_dir
-			.join("rainfall")
+			.join(ca::NAME_IMAGE_RAW_RAINFALL)
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for y in 0..map_size {
 			for x in 0..map_size {
@@ -89,7 +89,7 @@ pub fn write_images_raw(
 	if OPTIONS.render_rivers {
 		//println!("{}", wg_str.wg18);
 		let file_path = raw_img_dir
-			.join("rivers_elements")
+			.join(ca::NAME_IMAGE_RAW_RIVER_ELEMENTS)
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for y in 0..map_size {
 			for x in 0..map_size {
@@ -104,7 +104,7 @@ pub fn write_images_raw(
 
 		//Rivers widths
 		let file_path = raw_img_dir
-			.join("rivers_width")
+			.join(ca::NAME_IMAGE_RAW_RIVER_WIDTH)
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for y in 0..map_size {
 			for x in 0..map_size {
@@ -122,7 +122,7 @@ pub fn write_images_raw(
 	if OPTIONS.render_biomes {
 		//println!("{}", wg_str.wg20);
 		let file_path = raw_img_dir
-			.join("biomes")
+			.join(ca::NAME_IMAGE_RAW_BIOMES)
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for y in 0..map_size {
 			for x in 0..map_size {

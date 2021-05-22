@@ -1,6 +1,6 @@
-use crate::readron::palettes::river_element;
+use io_ops::readron::palettes::river_element;
 
-use crate::writepng::from_hex;
+use crate::from_hex;
 
 pub fn get(array: &Vec<u8>) -> Vec<u8> {
 	let size = array.len();
@@ -18,7 +18,10 @@ pub fn get(array: &Vec<u8>) -> Vec<u8> {
 			4 => from_hex(&re.color_4),
 			5 => from_hex(&re.color_5),
 
-			_ => from_hex(&re.color_100),
+			_ => {
+				println!("ERROR: couldn't write RIVER ELEMENTS colored image, unexpected value.");
+				panic!();
+			}
 		};
 
 		let index = i * 4;
