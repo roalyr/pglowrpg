@@ -12,7 +12,7 @@ impl RgParams {
 		for j in 0..lp.wi.map_size {
 			for i in 0..lp.wi.map_size {
 				let index = lp.index.get(i, j);
-				let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed, index);
+				let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 20, index);
 				let total_prob = self.prob(i, j, lp);
 				if (random <= total_prob)
 					&& (lp.topography.read(lp.topography.WATERMASK, index)
@@ -23,6 +23,18 @@ impl RgParams {
 			}
 		}
 		//println!("{}{}", wg_str.rg1, rg.river_est_number);
+	}
+
+	pub fn estimate_water_bodies(
+		&mut self,
+		lp: &mut LayerPack,
+	) {
+		for ind in 0..lp.layer_vec_len {
+			let wmask = lp.topography.read(lp.topography.WATERMASK, ind);
+			if wmask >= lp.wi.river_attr_pool_size_pow {
+				self.water_bodies_present = true;
+			}
+		}
 	}
 
 	pub fn prob(

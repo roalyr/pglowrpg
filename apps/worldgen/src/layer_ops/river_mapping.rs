@@ -51,6 +51,7 @@ pub struct RgParams {
 	river_est_number: usize,
 	river_count_number: usize,
 	upstream_neighbor: (usize, usize),
+	water_bodies_present: bool,
 	dv: pathfinding::DirVector,
 	rivers_paths: RiversPaths,
 }
@@ -65,6 +66,7 @@ pub fn get(lp: &mut LayerPack) {
 		river_est_number: 0,
 		river_count_number: 0,
 		upstream_neighbor: (0, 0),
+		water_bodies_present: false,
 		dv: pathfinding::DirVector {
 			x0: 0,
 			y0: 0,
@@ -82,6 +84,7 @@ pub fn get(lp: &mut LayerPack) {
 	};
 
 	//Perform rivergen.
+	rg.estimate_water_bodies(lp);
 	rg.estimate_sources_number(lp);
 	rg.set_paths(lp);
 	rg.map_paths(lp);

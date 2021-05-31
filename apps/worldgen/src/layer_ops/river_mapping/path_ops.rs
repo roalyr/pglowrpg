@@ -31,7 +31,7 @@ impl RgParams {
 		let index = lp.index.get(i, j);
 		let wmask = lp.topography.read(lp.topography.WATERMASK, index);
 		//To spawn or not to spawn?
-		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed, index);
+		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 10, index);
 		let total_prob = self.prob(i, j, lp);
 		if (random <= total_prob) && (wmask == cw::NO_WATER) {
 			// Print the progress

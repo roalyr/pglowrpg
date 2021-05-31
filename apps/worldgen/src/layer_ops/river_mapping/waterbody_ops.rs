@@ -1,4 +1,3 @@
-use crate::array_ops::noise_maps;
 use crate::layer_ops::river_mapping::RgParams;
 use constants::generic as cg;
 use constants::world as cw;
@@ -6,44 +5,37 @@ use game_data_codec::LayerPack;
 use line_drawing::BresenhamCircle;
 use unit_systems::translate;
 
-// Has to be imprived, refactoring later
 impl RgParams {
-	pub fn with_water(
+	// If water bodies exist, make rivers fall into them, but
+	// also allow some to go randomly.
+	pub fn rivers_with_water_bodies(
 		&mut self,
 		lp: &mut LayerPack,
 	) {
-		let iter = self.dv.x0 + self.dv.y0;
-		let random =
-			pseudo_rng::get(0.0, 1.0, lp.wi.seed, self.dv.x0 * self.dv.y0 * iter);
+		let ind = lp.index.get(self.dv.x0, self.dv.y0);
+		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 1, ind);
+		// A fraction of rivers can go randomly.
 		if random < lp.wi.river_rand_vectors {
-			self.without_water(lp);
+			self.river_end_random(lp);
 		} else {
-			self.seek_waterbodies(lp);
+			self.river_end_seek_water_body(lp);
 		}
 	}
 
-	pub fn without_water(
+	// If no water bodies exist - all the rivers should go randomly.
+	pub fn rivers_without_water_bodies(
 		&mut self,
 		lp: &mut LayerPack,
 	) {
-		//if there is a pole - go for biased placement
-		self.without_water_no_pole(lp);
+		self.river_end_random(lp);
 	}
 
-	pub fn without_water_no_pole(
+	fn river_end_seek_water_body(
 		&mut self,
 		lp: &mut LayerPack,
 	) {
-		self.project_randomly(lp);
-	}
-
-	fn seek_waterbodies(
-		&mut self,
-		lp: &mut LayerPack,
-	) {
-		//Aliases
 		let size = lp.wi.map_size;
-		//take a bit more than sqrt(2)
+		// Take a bit more than sqrt(2).
 		let diag = size * 15 / 10;
 		loop {
 			for (i, j) in BresenhamCircle::new(
@@ -76,73 +68,63 @@ impl RgParams {
 			if !self.dv.hit {
 				self.dv.r += 1;
 			} else {
-				//reset stuff
+				// Reset.
 				self.dv.r = cg::ONE_USIZE;
 				self.dv.hit = false;
 				break;
 			}
-			//stop if no prev. check worked
+			// Stop, in case previous check failed.
 			if self.dv.r >= diag {
 				break;
 			}
 		}
 	}
 
-	fn project_randomly(
+	fn river_end_random(
 		&mut self,
 		lp: &mut LayerPack,
 	) {
-		//Aliases
-		let vec_angle = lp.wi.river_vect_angle;
-		let vec_deviation = lp.wi.river_vect_angle_max_deviation;
-		let noise_factor = lp.wi.river_vect_angle_noise;
-		let size = lp.wi.map_size as f32;
-		let radius = size * 1.5;
-		let random = pseudo_rng::get(
-			0.0,
-			1.0,
-			lp.wi.seed,
-			self.dv.x1 * self.dv.y0 + self.dv.y1 * self.dv.x0,
-		);
-		let mut shift = 2.0
-			* std::f32::consts::PI
-			* noise_maps::point_multi(
-				noise_factor,
-				lp.wi.seed,
-				self.dv.x0,
-				self.dv.y0,
-			);
+		let ind = lp.index.get(self.dv.x0, self.dv.y0);
+		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 2, ind);
+		// Decide which edge to put the end onto.
 		if random > 0.5 {
-			shift = -shift;
+			self.randomize_end_x(lp, ind);
+		} else {
+			self.randomize_end_y(lp, ind);
 		}
-		let mut vec_angle_mod: f32 = vec_angle + shift;
-		//limit the deviation of the river vector to keep it aligned
-		if vec_angle_mod > vec_angle + vec_deviation {
-			vec_angle_mod = vec_angle + vec_deviation;
-		}
-		if vec_angle_mod < vec_angle - vec_deviation {
-			vec_angle_mod = vec_angle - vec_deviation;
-		}
-		//println!("{:?}", vec_angle_mod);
-		let x0 = self.dv.x0 as f32;
-		let y0 = self.dv.y0 as f32;
-		let xr = radius * vec_angle_mod.cos();
-		let yr = radius * vec_angle_mod.sin();
-		let mut x1 = x0 + xr;
-		let mut y1 = y0 + yr;
-		if x1 >= size {
-			x1 = size - 1.0;
-		}
-		if y1 >= size {
-			y1 = size - 1.0;
-		}
-		if x1 < 0.0 {
-			x1 = 0.0;
-		}
-		if y1 < 0.0 {
-			y1 = 0.0;
-		}
-		self.dv.x1 = x1 as usize;
-		self.dv.y1 = y1 as usize;
 	}
-} //impl
+
+	fn randomize_end_x(
+		&mut self,
+		lp: &mut LayerPack,
+		ind: usize,
+	) {
+		// Put it on either of the edges.
+		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 5, ind);
+		if random > 0.5 {
+			self.dv.y1 = 0;
+		} else {
+			self.dv.y1 = lp.wi.map_size - 1;
+		}
+		// At a random coordinate.
+		self.dv.x1 =
+			pseudo_rng::get(0.0, lp.wi.map_size as f32, lp.wi.seed + 3, ind) as usize;
+	}
+
+	fn randomize_end_y(
+		&mut self,
+		lp: &mut LayerPack,
+		ind: usize,
+	) {
+		// Put it on either of the edges.
+		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 6, ind);
+		if random > 0.5 {
+			self.dv.x1 = 0;
+		} else {
+			self.dv.x1 = lp.wi.map_size - 1;
+		}
+		// At a random coordinate.
+		self.dv.y1 =
+			pseudo_rng::get(0.0, lp.wi.map_size as f32, lp.wi.seed + 4, ind) as usize;
+	}
+}

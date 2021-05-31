@@ -108,17 +108,26 @@ impl RgParams {
 				//Mark upstream neighbor
 				//skip first cell, which is source
 				if river_length > 1 {
-					let i0_prev = self.upstream_neighbor.0;
-					let j0_prev = self.upstream_neighbor.1;
-					let upstream_neighbor = neighbor_flag(i0, j0, i0_prev, j0_prev);
-					lp.rivers.write(upstream_neighbor, lp.rivers.UPSTREAM, index_current);
+					let i0_upstr = self.upstream_neighbor.0;
+					let j0_upstr = self.upstream_neighbor.1;
+					let index_upstr = lp.index.get(i0_upstr, j0_upstr);
+					let upstream_neighbor_flag = neighbor_flag(i0, j0, i0_upstr, j0_upstr);
+					let downstream_neighbor_flag = neighbor_flag(i0, j0, i1, j1);
+					if upstream_neighbor_flag != downstream_neighbor_flag {
+						lp.rivers.write(upstream_neighbor_flag, lp.rivers.UPSTREAM, index_current);
+					// Loop catcher.
+					} else { 
+						// Erase the river downstream data in the previous cell, because this is the end.
+						lp.rivers.write(cg::ZERO_U16, lp.rivers.DOWNSTREAM, index_upstr,);
+						break; 
+					}
 				}
 				self.upstream_neighbor = (i0, j0); //Remember for next step
 				match river_elem_downstr {
 					cw::NO_RIVER => {
 						self.sort_uninterrupted(lp, index_current, index_river_source);
-						let downstream_neighbor = neighbor_flag(i0, j0, i1, j1);
-						lp.rivers.write(downstream_neighbor, lp.rivers.DOWNSTREAM, index_current,);
+						let downstream_neighbor_flag = neighbor_flag(i0, j0, i1, j1);
+						lp.rivers.write(downstream_neighbor_flag, lp.rivers.DOWNSTREAM, index_current,);
 						//If the end of the river is on land (map border) then make sure the last cell is marked
 						if (wmask_downstr == cw::NO_WATER) && (index_downstr == index_end) {
 							lp.rivers.write(cw::RIVER_BODY, lp.rivers.ELEMENT, index_downstr);
@@ -150,8 +159,10 @@ impl RgParams {
 					}
 					cw::RIVER_END => {
 						self.sort_uninterrupted(lp, index_current, index_river_source);
-						let downstream_neighbor = neighbor_flag(i0, j0, i1, j1);
-						lp.rivers.write(downstream_neighbor, lp.rivers.DOWNSTREAM, index_current,);
+						// Disabled in order to make it so that the last cell of the river doesn't
+						// point you further (might lead you into a lake if followed).
+						//let downstream_neighbor_flag = neighbor_flag(i0, j0, i1, j1);
+						//lp.rivers.write(downstream_neighbor_flag, lp.rivers.DOWNSTREAM, index_current,);
 					}
 					_ => {
 						println!("ERROR: Elem downstream: {:?}", river_elem_downstr);
