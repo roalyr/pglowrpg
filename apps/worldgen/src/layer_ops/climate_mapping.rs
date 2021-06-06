@@ -18,13 +18,13 @@ fn temperature(lp: &mut LayerPack) {
 	let array_noise1 = array_ops::noise_maps::get(
 		lp.wi.noisemap_size,
 		lp.wi.temp_noise_size,
-		lp.wi.seed + 1,
+		lp.wi.seed + 8166254830,
 		NoiseMode::Multi,
 	);
 	let array_noise2 = array_ops::noise_maps::get(
 		lp.wi.noisemap_size,
 		lp.wi.temp_noise_size * 0.75,
-		lp.wi.seed + 10,
+		lp.wi.seed + 9785632541,
 		NoiseMode::Perlin,
 	);
 	//Additional noise to compensate for polar regions gradient
@@ -32,7 +32,7 @@ fn temperature(lp: &mut LayerPack) {
 	let array_noise_polar = array_ops::noise_maps::get(
 		lp.wi.noisemap_size,
 		lp.wi.temp_noise_size,
-		lp.wi.seed + 100,
+		lp.wi.seed + 6425784358,
 		NoiseMode::Multi,
 	);
 	//Combine all the maps.
@@ -78,20 +78,20 @@ fn rainfall(lp: &mut LayerPack) {
 		0.1,
 		lp.wi.topog_scope / 1.5,
 		0.5,
-		lp.wi.seed + 10,
+		lp.wi.seed + 9785246325,
 	);
 	let array_ds2 = array_ops::diamond_square::get(
 		lp.wi.noisemap_size,
 		0.0,
 		lp.wi.topog_scope / 1.5,
 		0.5,
-		lp.wi.seed + 100,
+		lp.wi.seed + 9784587544,
 	);
 	//Flat noise.
 	let array_noise = array_ops::noise_maps::get(
 		lp.wi.noisemap_size,
 		lp.wi.rain_noise_size,
-		lp.wi.seed + 1000,
+		lp.wi.seed + 36259486807,
 		NoiseMode::Multi,
 	);
 	//Combining all the noise maps together.

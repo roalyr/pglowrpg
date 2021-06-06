@@ -36,10 +36,6 @@ pub struct Stuff {
 	pub river_sink_min_pool_size_pow: u16,
 	pub river_erosion_width: usize,
 	pub river_erosion_smooth: f32,
-	pub river_rand_vectors: f32,
-	pub river_vect_angle: f32,
-	pub river_vect_angle_noise: f32,
-	pub river_vect_angle_max_deviation: f32,
 	pub map_size: usize,
 	pub noisemap_size: usize,
 

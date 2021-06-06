@@ -49,17 +49,22 @@ fn erode(
 	seed: usize,
 ) {
 	//TODO: improve fine noise
-	let nm1 = noise_maps::get(size, elevation_noise_size, seed, NoiseMode::Multi);
+	let nm1 = noise_maps::get(
+		size,
+		elevation_noise_size,
+		seed + 8465273584,
+		NoiseMode::Multi,
+	);
 	let nm2 = noise_maps::get(
 		size,
 		elevation_noise_size * 0.7,
-		seed + 100,
+		seed + 9854362578,
 		NoiseMode::Multi,
 	);
 	let nm3 = noise_maps::get(
 		size,
 		elevation_noise_size * 0.3,
-		seed + 1000,
+		seed + 3124596852,
 		NoiseMode::Multi,
 	);
 	for ind in 0..array.len() {

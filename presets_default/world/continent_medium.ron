@@ -176,17 +176,7 @@
 // terminated at water bodies whose size is greater than 2^pow.
 // Valid values are: 1...28 (integer).
 
-	river_sink_min_pool_size_pow : 11,
-
-// River directional vectors ranfomization and bias
-
-	river_rand_vectors : 0.1,
-	
-	river_vect_angle : 3.14,
-	
-	river_vect_angle_noise : 0.001,
-	
-	river_vect_angle_max_deviation : 0.2,
+	river_sink_min_pool_size_pow : 4,
 
 // Mysterious debug options for when I don't want to recompile
 // too much. Ignore these.

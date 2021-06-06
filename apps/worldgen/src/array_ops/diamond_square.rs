@@ -60,7 +60,7 @@ pub fn get(
 						+ land_continuity * half_size_f * (cg::ONE_F32 - land_concentrator),
 					half_size_f
 						+ land_continuity * half_size_f * (cg::ONE_F32 - land_concentrator),
-					p.seed,
+					p.seed + 53279953,
 					p.iter,
 				);
 				let avg = sum / 4.0
@@ -112,7 +112,7 @@ fn diamond_substep(
 			+ p.land_continuity * half_size_f * (cg::ONE_F32 - p.land_concentrator),
 		half_size_f
 			+ p.land_continuity * half_size_f * (cg::ONE_F32 - p.land_concentrator),
-		p.seed,
+		p.seed + 386540876,
 		p.iter,
 	);
 	let avg2 = (p.land_concentrator * sum2 / 4.0 * half_size_f

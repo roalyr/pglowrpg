@@ -5,16 +5,29 @@ use constants::world as cw;
 use game_data_codec::LayerPack;
 use text_ops::WS;
 
-#[rustfmt::skip]
+//#[rustfmt::skip]
 impl RgParams {
-	pub fn set_paths(&mut self, lp: &mut LayerPack,) {
+	pub fn set_paths(
+		&mut self,
+		lp: &mut LayerPack,
+	) {
 		//Maps for pathfinding must be copied into clean arrays from
 		//existing composite data structures
 		let terrain_map = get_terrain_map(lp);
-		let random_map = get_random_map(lp);
+		// Mutable because it will store existing paths as well.
+		let mut random_map = get_random_map(lp);
+		// Store a copy of the map in order to refresh it.
+		let random_map_clean = random_map.clone();
 		for j in 0..lp.wi.map_size {
 			for i in 0..lp.wi.map_size {
-				self.make_paths(i, j, lp, &terrain_map, &random_map);
+				self.make_paths(
+					i,
+					j,
+					lp,
+					&terrain_map,
+					&mut random_map,
+					&random_map_clean,
+				);
 			}
 		}
 	}
@@ -25,13 +38,14 @@ impl RgParams {
 		j: usize,
 		lp: &mut LayerPack,
 		terrain_map: &Vec<u8>,
-		random_map: &Vec<u8>,
+		random_map: &mut Vec<u8>,
+		random_map_clean: &Vec<u8>,
 	) {
 		//Aliases
 		let index = lp.index.get(i, j);
 		let wmask = lp.topography.read(lp.topography.WATERMASK, index);
 		//To spawn or not to spawn?
-		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 10, index);
+		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 7085263945, index);
 		let total_prob = self.prob(i, j, lp);
 		if (random <= total_prob) && (wmask == cw::NO_WATER) {
 			// Print the progress
@@ -39,7 +53,7 @@ impl RgParams {
 			WS.print_progress_rivers(
 				self.river_count_number,
 				self.river_est_number,
-				20
+				20,
 			);
 			//Set vector according to waterbodies presence
 			//and randomization.
@@ -49,7 +63,9 @@ impl RgParams {
 			self.river_source = (self.dv.x0, self.dv.y0);
 			self.river_end = (self.dv.x1, self.dv.y1);
 			//Return if river is too short
-			if self.vector_within_len(lp.wi.river_min_length) {return;}
+			if self.vector_within_len(lp.wi.river_min_length) {
+				return;
+			}
 			//Make pathfinding for nodes, get a queue,
 			//do "windows"  between nodes, iterate and fill them
 			let seg_len = cw::RIVER_PATHFINDING_SEGMENT_LENGTH;
@@ -66,12 +82,24 @@ impl RgParams {
 				self.dv.x1 = node_pair[1].0;
 				self.dv.y1 = node_pair[1].1;
 				//Fill paths between nodes
-				let path_array_seg = self.pathfinding_nodes(lp, 1, &random_map, diag_flag);
-				segment_queue.push(path_array_seg);
+				let path_array_seg =
+					self.pathfinding_nodes(lp, 1, &random_map, diag_flag);
+				segment_queue.push(path_array_seg.clone());
+				// Map the segment onto the noise map so as to trace
+				// existing path segments and prevent new path segments
+				// from looping.
+				for pos in path_array_seg {
+					let ind = lp.index.get(pos.0, pos.1);
+					random_map[ind] = 255;
+				}
 			}
+			// Refresh the noise map to its original state.
+			*random_map = random_map_clean.clone();
 			//Take segment queue and map the content into a single path
 			for entry in segment_queue.iter_mut() {
-				for pos in entry.iter() {joined_path.push(*pos);}
+				for pos in entry.iter() {
+					joined_path.push(*pos);
+				}
 			}
 			//Remove duplicated cells
 			joined_path.dedup();
@@ -100,12 +128,25 @@ impl RgParams {
 	) -> Vec<pathfinding::Pos> {
 		self.dv.path_heuristic = cw::RIVER_HEUR_INIT;
 		//iter 1
-		let result_init = pathfinding::make(&self.dv, &terrain_map, lp.wi.map_size, diag_flag, seg_len);
+		let result_init = pathfinding::make(
+			&self.dv,
+			&terrain_map,
+			lp.wi.map_size,
+			diag_flag,
+			seg_len,
+		);
 		let path_distance = self.distance();
-		let estimated_heuristic = ((result_init.1 / (path_distance + 1)) as f32 * lp.wi.river_heuristic_factor) as usize;
+		let estimated_heuristic = ((result_init.1 / (path_distance + 1)) as f32
+			* lp.wi.river_heuristic_factor) as usize;
 		self.dv.path_heuristic = estimated_heuristic;
 		//iter 2
-		let result = pathfinding::make(&self.dv, &terrain_map, lp.wi.map_size, diag_flag, seg_len);
+		let result = pathfinding::make(
+			&self.dv,
+			&terrain_map,
+			lp.wi.map_size,
+			diag_flag,
+			seg_len,
+		);
 		result.0
 	}
 } //impl
@@ -117,13 +158,13 @@ fn get_random_map(lp: &mut LayerPack) -> Vec<u8> {
 	let array_noise1 = crate::array_ops::noise_maps::get(
 		lp.wi.map_size,
 		lp.wi.river_noise_size1,
-		lp.wi.seed,
+		lp.wi.seed + 325461985,
 		NoiseMode::Multi,
 	);
 	let array_noise2 = crate::array_ops::noise_maps::get(
 		lp.wi.map_size,
 		lp.wi.river_noise_size2 * 2.0,
-		lp.wi.seed + 1000,
+		lp.wi.seed + 184562354,
 		NoiseMode::Perlin,
 	);
 	for (ind, cell_v) in random_map.iter_mut().enumerate().take(lp.layer_vec_len)

@@ -12,7 +12,7 @@ impl RgParams {
 		for j in 0..lp.wi.map_size {
 			for i in 0..lp.wi.map_size {
 				let index = lp.index.get(i, j);
-				let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 20, index);
+				let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 284573920, index);
 				let total_prob = self.prob(i, j, lp);
 				if (random <= total_prob)
 					&& (lp.topography.read(lp.topography.WATERMASK, index)

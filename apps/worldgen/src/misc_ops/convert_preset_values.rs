@@ -232,34 +232,6 @@ fn params(wi: &mut presets::presets_worldgen::Stuff) {
 		RIVER_EROSION_SMOOTH_MAX,
 	);
 
-	wi.river_rand_vectors = cap1(
-		"River random vectors amount",
-		wi.river_rand_vectors,
-		RIVER_RAND_VECTORS_MIN,
-		RIVER_RAND_VECTORS_MAX,
-	);
-
-	wi.river_vect_angle = cap1(
-		"River vector directional angle",
-		wi.river_vect_angle,
-		RIVER_VECT_ANGLE_MIN,
-		RIVER_VECT_ANGLE_MAX,
-	);
-
-	wi.river_vect_angle_noise = cap1(
-		"River vector directional angle noise",
-		wi.river_vect_angle_noise,
-		RIVER_VECT_ANGLE_NOISE_MIN,
-		RIVER_VECT_ANGLE_NOISE_MAX,
-	);
-
-	wi.river_vect_angle_max_deviation = cap1(
-		"River vector directional angle maximum deviation",
-		wi.river_vect_angle_max_deviation,
-		RIVER_VECT_ANGLE_MAX_DEVIATION_MIN,
-		RIVER_VECT_ANGLE_MAX_DEVIATION_MAX,
-	);
-
 	//▒▒▒▒▒▒▒▒▒▒▒▒ CONVERSION ▒▒▒▒▒▒▒▒▒▒▒▒▒
 	wi.topog_scope /= 72.5 * 100.0;
 	wi.topog_continuity /= 1.3 * 100.0;
@@ -289,8 +261,6 @@ fn params(wi: &mut presets::presets_worldgen::Stuff) {
 	wi.river_noise_size2 = 1.0 / wi.river_noise_size2.powf(1.2);
 
 	wi.river_erosion_smooth /= 5.0;
-	wi.river_vect_angle_noise =
-		diminishing_scale(wi.noisemap_size, wi.river_vect_angle_noise) / 2.0;
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ CAPPING FNS ▒▒▒▒▒▒▒▒▒▒▒▒▒

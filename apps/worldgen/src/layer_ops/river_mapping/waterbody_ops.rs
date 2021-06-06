@@ -12,28 +12,6 @@ impl RgParams {
 		&mut self,
 		lp: &mut LayerPack,
 	) {
-		let ind = lp.index.get(self.dv.x0, self.dv.y0);
-		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 1, ind);
-		// A fraction of rivers can go randomly.
-		if random < lp.wi.river_rand_vectors {
-			self.river_end_random(lp);
-		} else {
-			self.river_end_seek_water_body(lp);
-		}
-	}
-
-	// If no water bodies exist - all the rivers should go randomly.
-	pub fn rivers_without_water_bodies(
-		&mut self,
-		lp: &mut LayerPack,
-	) {
-		self.river_end_random(lp);
-	}
-
-	fn river_end_seek_water_body(
-		&mut self,
-		lp: &mut LayerPack,
-	) {
 		let size = lp.wi.map_size;
 		// Take a bit more than sqrt(2).
 		let diag = size * 15 / 10;
@@ -80,12 +58,13 @@ impl RgParams {
 		}
 	}
 
-	fn river_end_random(
+	// If no water bodies exist - all the rivers should go randomly.
+	pub fn rivers_without_water_bodies(
 		&mut self,
 		lp: &mut LayerPack,
 	) {
 		let ind = lp.index.get(self.dv.x0, self.dv.y0);
-		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 2, ind);
+		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 7546532541, ind);
 		// Decide which edge to put the end onto.
 		if random > 0.5 {
 			self.randomize_end_x(lp, ind);
@@ -100,7 +79,7 @@ impl RgParams {
 		ind: usize,
 	) {
 		// Put it on either of the edges.
-		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 5, ind);
+		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 5785241369, ind);
 		if random > 0.5 {
 			self.dv.y1 = 0;
 		} else {
@@ -117,7 +96,7 @@ impl RgParams {
 		ind: usize,
 	) {
 		// Put it on either of the edges.
-		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 6, ind);
+		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 6078421365, ind);
 		if random > 0.5 {
 			self.dv.x1 = 0;
 		} else {

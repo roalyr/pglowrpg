@@ -93,10 +93,7 @@ pub fn start() {
 	let noisemap_vec_len = wi.noisemap_size * wi.noisemap_size;
 	let map_size = wi.map_size;
 
-	for iter in 0..world_num {
-		// Increment seed for multiple worlds, must be before wi.
-		world_seed += iter;
-		
+	for _ in 0..world_num {
 		// Text block.
 		UI.print_separator_thick("");
 		WS.print_seed_used(world_seed);
@@ -165,6 +162,9 @@ pub fn start() {
 		// Write data.
 		write_save(&mut lp, &input_preset);
 		WS.print_done_worldgen();
+		
+		// Increment seed for multiple worlds
+		world_seed += 1;
 	}
 // TODO: Add an empty prompt "continue..."
 }

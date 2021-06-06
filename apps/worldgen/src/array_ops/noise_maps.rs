@@ -23,7 +23,7 @@ pub fn point_multi(
 	abs.get([
 		(i as f64) * f64::from(noise_size),
 		(j as f64) * f64::from(noise_size),
-		(seed as f64),
+		((seed + 376429876) as f64),
 	]) as f32
 }
 
@@ -46,7 +46,7 @@ fn multi(
 			array[index.get(x, y)] = abs.get([
 				(x as f64) * f64::from(noise_size),
 				(y as f64) * f64::from(noise_size),
-				(seed as f64),
+				((seed + 980966862) as f64),
 			]) as f32;
 		}
 	}
@@ -72,7 +72,7 @@ fn perlin(
 			array[index.get(x, y)] = abs.get([
 				(x as f64) * f64::from(noise_size),
 				(y as f64) * f64::from(noise_size),
-				(seed as f64),
+				((seed + 282645289) as f64),
 			]) as f32;
 		}
 	}
