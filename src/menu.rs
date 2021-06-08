@@ -20,9 +20,6 @@ pub fn start() {
 			UI.print_newline();
 			MS.print_menu();
 		});
-		if input.is_empty() {
-			continue;
-		}
 
 		match input.as_str() {
 			"1" => game::start(),
@@ -30,7 +27,7 @@ pub fn start() {
 			"3" => {} // Settings.
 			"4" => dev_test_corner::start(),
 			"5" => return,
-			_ => {}
+			_ => {continue}
 		}
 	}
 }

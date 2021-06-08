@@ -9,6 +9,7 @@ pub mod width_ops;
 use constants::generic as cg;
 use constants::world as cw;
 use game_data_codec::LayerPack;
+use text_ops::WS;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ STRUCTURES ▒▒▒▒▒▒▒▒▒▒▒▒▒
 //River entry stores all the relevant river data.
@@ -87,7 +88,10 @@ pub fn get(lp: &mut LayerPack) {
 	rg.estimate_water_bodies(lp);
 	rg.estimate_sources_number(lp);
 	rg.set_paths(lp);
+	WS.print_river_map_paths();
 	rg.map_paths(lp);
+	WS.print_river_adjust_widths();
 	rg.map_width(lp);
+	WS.print_river_erosion();
 	rg.map_erosion(lp);
 }

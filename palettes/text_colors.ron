@@ -5,11 +5,11 @@
 
 (
 normal : "",
-announcement : "green",
+announcement : "yellow",
 menu : "cyan",
-prompt : "purple",
-banner : "bright red",
-number : "red",
+prompt : "cyan",
+banner : "red",
+number : "purple",
 name : "green",
 list : "green",
 )

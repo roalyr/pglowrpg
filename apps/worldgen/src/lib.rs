@@ -51,7 +51,7 @@ pub fn start() {
 
 	// Seed selection.
 	let input_seed = prompt_input!(
-		"num";
+		"opt";
 		{
 			UI.print_separator_thin(""); 
 			WS.print_seed_default(cw::DEFAULT_SEED); 
@@ -80,8 +80,8 @@ pub fn start() {
 		"num";
 		{
 			UI.print_separator_thin(""); 
-			WS.print_world_num_default(cw::DEFAULT_WORLDS_NUM);
 			WS.print_prompt_world_num();
+			WS.print_world_num_default(cw::DEFAULT_WORLDS_NUM);
 		}
 	);
 	let world_num = input_world_num.trim().parse::<usize>().unwrap_or(1);
@@ -93,9 +93,10 @@ pub fn start() {
 	let noisemap_vec_len = wi.noisemap_size * wi.noisemap_size;
 	let map_size = wi.map_size;
 
-	for _ in 0..world_num {
+	for n in 0..world_num {
 		// Text block.
 		UI.print_separator_thick("");
+		WS.print_making_world(n+1);
 		WS.print_seed_used(world_seed);
 		UI.print_newline();
 		// After this will be the print-outs from the layer generation
@@ -160,7 +161,9 @@ pub fn start() {
 		WS.print_prep_georeg(); layer_ops::georegion_mapping::get(&mut lp);
 
 		// Write data.
+		UI.print_newline();
 		write_save(&mut lp, &input_preset);
+		UI.print_newline();
 		WS.print_done_worldgen();
 		
 		// Increment seed for multiple worlds

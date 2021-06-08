@@ -10,7 +10,7 @@ use constants::app as ca;
 use game_options::OPTIONS;
 use io_ops::create_dir;
 use std::path::Path;
-use text_ops::{UI, WS};
+use text_ops::WS;
 
 pub fn write_save(
 	lp: &mut LayerPack,
@@ -31,7 +31,6 @@ pub fn write_save(
 		|| OPTIONS.write_data_files
 		|| OPTIONS.write_data_files
 	{
-		UI.print_separator_thin("");
 		make_dirs = true;
 	}
 

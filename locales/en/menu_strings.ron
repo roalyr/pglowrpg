@@ -9,7 +9,7 @@
 
 "menu_prompt" : "Select an application to run:",
 "menu_entry_worldgen" : "worldgen",
-"menu_entry_game" : "game (currently the UI is wonky and being reworked)",
+"menu_entry_game" : "game",
 "menu_entry_quit" : "quit",
 "menu_entry_settings" : "settings (placeholder)",
 "menu_entry_dev_test_corner" : "dev testing corner",

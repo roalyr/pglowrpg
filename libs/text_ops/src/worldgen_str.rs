@@ -12,8 +12,6 @@ print_paragraph! {
 	WgStrings(
 	print_intro, "worldgen_intro";
 
-	print_no_input_preset, "preset_not_found";
-
 	print_seed_rand, "seed_rand";
 	print_seed_man, "seed_man";
 	print_seed_pres, "seed_pres";
@@ -24,11 +22,13 @@ print_paragraph! {
 	print_prep_climate, "prep_climate";
 	print_prep_wmask, "prep_wmask";
 	print_prep_rmap, "prep_rmap";
+	print_river_map_paths, "river_map_paths";
+	print_river_adjust_widths, "river_adjust_widths";
+	print_river_erosion, "river_erosion";
 	print_prep_biome, "prep_biome";
 	print_prep_georeg, "prep_georeg";
 
 	print_write_data, "write_data";
-	print_write_no_data, "write_no_data";
 	print_write_color, "write_img_col";
 	print_write_raw, "write_img_raw";
 	)
@@ -45,6 +45,8 @@ print_paragraph! {
 
 	print_world_num_default, "world_num_default";
 	print_world_num, "world_num";
+	
+	print_making_world, "making_world";
 	)
 }
 
@@ -84,6 +86,8 @@ print_menu! {
 print_paragraph! {
 	palettes::text_colors::get().announcement;
 	WgStrings(
+	print_no_input_preset, "preset_not_found";
+	print_write_no_data, "write_no_data";
 	print_done_worldgen, "worldgen_done";
 	)
 }
