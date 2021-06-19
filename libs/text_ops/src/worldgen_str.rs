@@ -45,7 +45,7 @@ print_paragraph! {
 
 	print_world_num_default, "world_num_default";
 	print_world_num, "world_num";
-	
+
 	print_making_world, "making_world";
 	)
 }

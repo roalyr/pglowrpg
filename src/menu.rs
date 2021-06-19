@@ -27,7 +27,7 @@ pub fn start() {
 			"3" => {} // Settings.
 			"4" => dev_test_corner::start(),
 			"5" => return,
-			_ => {continue}
+			_ => continue,
 		}
 	}
 }

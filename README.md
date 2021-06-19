@@ -2,11 +2,7 @@
 ![Banner][splash]
 
 ## Features
-![Biomes map of some medium continent][biomes]
-
-![Worldgen UI sample][ui_sample]
-
-![Some redundant rendering][animation]
+![Some progress][animation]
 
 * World generation with optional image maps output (colorized and raw).
 * World navigation (with redundant CLI rendering for debugging).
@@ -18,16 +14,7 @@ If the **worldgen** module is updated, the compatibility with saves might be bro
 until save data file version check is implemented.
 
 ## Requirements
-Main requirements:
 - rust (https://www.rust-lang.org/)
-
-Optional requirements (for the "common actions" wrapper):
-- python3
-- graphviz (to build the dependency tree visualization)
-- cargo-deps (to build the dependency tree visualization)
-- git
-- gitui
-- termux-api (if running on Android, for text-to-speech support)
 
 ## Getting started
 It is quite straightforward when working on a computer (rust must be installed), just do this:
@@ -38,6 +25,4 @@ You must run pGLOWrpg from the folder that contains "options", "presets", "local
 folders, so there is no need to do "cargo install".
 
 [splash]: doc/images/pglowrpg_banner.png "Banner"
-[ui_sample]: doc/images/pglowrpg_ui_sample.jpg "Ui sample"
-[biomes]: doc/images/biomes_example.png "Biomes map of some medium continent"
-[animation]: doc/images/pglowrpg.gif "Animation"
+[animation]: doc/images/pglowrpg_progress.gif "Animation"

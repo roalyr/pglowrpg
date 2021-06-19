@@ -107,9 +107,11 @@ def main_menu():
 		elif inp == "e": explain()
 		elif inp == "r": rustfmt()
 		elif inp == "u": cargo_update()
-		elif inp == "clear": clear_bk()
-		elif inp == "tree": target_tree()
-		elif inp == "cs": clear_save()
+		elif inp == "cl": clear_bk()
+		elif inp == "sp": spell_check()
+		elif inp == "t": target_tree()
+		elif inp == "g": grep_search()
+		elif inp == "csf": clear_save()
 		elif inp == "git": git_menu(); print_main_ops()
 		elif inp == "q": cl_divider(); quit()
 		
@@ -251,9 +253,11 @@ def print_main_ops():
 	print(tw_i.fill('(c) - sync and "cargo check" it'))
 	print(tw_i.fill('(p) - sync and "cargo clippy" it'))
 	print(tw_i.fill('(r) - do "rustfmt"'))
-	print(tw_i.fill('(clear) - clear ".bk" files'))
-	print(tw_i.fill('(tree) - "tree" the target folder'))
-	print(tw_i.fill('(cs) - clear target save folder'))
+	print(tw_i.fill('(g) - "grep" the source folder files'))
+	print(tw_i.fill('(t) - "tree" the target folder'))
+	print(tw_i.fill('(cl) - clear ".bk" files'))
+	print(tw_i.fill('(sp) - English spellcheck on "./locales/en"'))
+	print(tw_i.fill('(csf) - clear target save folder'))
 	print()
 	print(tw_i.fill('(d) - "cargo dep-graph" the project'))
 	print(tw_i.fill('(e) - "rustc --explain"'))
@@ -490,6 +494,16 @@ def clear_bk():
 def target_tree():
 	cl_divider();
 	os.system('tree -I target'+' '+path_target)
+
+def grep_search():
+	cl_divider();
+	comment = '# Enter the pattern to search in source files below\n'
+	pattern = write_not_empty(comment, flag=None, allow_exit=True)
+	os.system('grep --exclude-dir=".git" -rn --color=always'+' "'+pattern+'" '+' .')
+	
+def spell_check():
+	cl_divider();
+	os.system('hunspell -d en_US ./locales/en/*.ron')
 
 #Start
 os.system("mkdir -p"+" "+path_target) #make folders if none
