@@ -61,7 +61,7 @@ pub fn start() {
 	let mut world_seed = match input_seed.as_str(){
 		"1" => {
 			let seed_man = prompt_input!( "num"; { WS.print_seed_man(); });
-			seed_man.trim().parse::<usize>().unwrap_or(cw::DEFAULT_SEED)
+			seed_man.trim().parse::<u32>().unwrap_or(cw::DEFAULT_SEED)
 		},
 		"2" => {
 			WS.print_seed_rand();
@@ -121,21 +121,21 @@ pub fn start() {
 			// here insures there will be no mistake
 			// in using wrong offsets for them later on.
 			biomes: BitLayerBiomes {
-				data: vec![0; layer_vec_len],
+				data: vec![0; layer_vec_len as usize],
 			},
 			topography: BitLayerTopography {
-				data: vec![0; layer_vec_len],
+				data: vec![0; layer_vec_len as usize],
 				TERRAIN: 0b_0000_0000_1111_1111,
 				WATERMASK: 0b_0001_1111_0000_0000,
 				_placeholder: 0b_1110_0000_0000_0000,
 			},
 			climate: BitLayerClimate {
-				data: vec![0; layer_vec_len],
+				data: vec![0; layer_vec_len as usize],
 				TEMPERATURE: 0b_0000_0000_1111_1111,
 				RAINFALL: 0b_1111_1111_0000_0000,
 			},
 			rivers: BitLayerRivers {
-				data: vec![0; layer_vec_len],
+				data: vec![0; layer_vec_len as usize],
 				ELEMENT: 0b_0000_0000_0000_0111,
 				WIDTH: 0b_0000_0000_0111_1000,
 				UPSTREAM: 0b_0000_0111_1000_0000,
@@ -143,10 +143,10 @@ pub fn start() {
 				_placeholder: 0b_1000_0000_0000_0000,
 			},
 			rivers_id: BitLayerRiversID {
-				data: vec![0; layer_vec_len],
+				data: vec![0; layer_vec_len as usize],
 			},
 			georeg_id: BitLayerGeoregID {
-				data: vec![0; layer_vec_len],
+				data: vec![0; layer_vec_len as usize],
 			},
 		};
 		

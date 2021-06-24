@@ -28,7 +28,7 @@ impl RgParams {
 		self.river_end = river_entry.end;
 		let index_river_source = lp.index.get(self.river_source.0, self.river_source.1);
 		let index_end = lp.index.get(self.river_end.0, self.river_end.1);
-		let mut river_length = cg::ZERO_USIZE;
+		let mut river_length = cg::ZERO_U32;
 		//Cold run to figure out river lengths and truncate short ones
 		for n in path_array.windows(2) {
 			//Must be here
@@ -47,7 +47,7 @@ impl RgParams {
 				cg::VAL_255_F32,
 				lp.wi.abs_temp_min as f32,
 				lp.wi.abs_temp_max as f32,
-			) as isize;
+			) as i32;
 			if temp <= cw::TEMP_POLAR {break;}
 			//Minimum sink size check and stop if sink is big enough
 			if wmask_current > lp.wi.river_sink_min_pool_size_pow {break;}
@@ -73,7 +73,7 @@ impl RgParams {
 		//Main run
 		if river_length >= lp.wi.river_min_length {
 			//Reset
-			let mut river_length = cg::ZERO_USIZE;
+			let mut river_length = cg::ZERO_U32;
 			//Push to the queue for future
 			self.erosion_initiate(self.river_id);
 			for n in path_array.windows(2) {
@@ -96,7 +96,7 @@ impl RgParams {
 					cg::VAL_255_F32,
 					lp.wi.abs_temp_min as f32,
 					lp.wi.abs_temp_max as f32,
-				) as isize;
+				) as i32;
 				if temp <= cw::TEMP_POLAR {break;}
 				//Minimum sink size check and stop if sink is big enough
 				if wmask_current > lp.wi.river_sink_min_pool_size_pow {break;}
@@ -265,10 +265,10 @@ impl RgParams {
 } //impl
 
 fn neighbor_flag(
-	i0: usize,
-	j0: usize,
-	i1: usize,
-	j1: usize,
+	i0: u32,
+	j0: u32,
+	i1: u32,
+	j1: u32,
 ) -> u16 {
 	let di: isize = i1 as isize - i0 as isize;
 	let dj: isize = j1 as isize - j0 as isize;

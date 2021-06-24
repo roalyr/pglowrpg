@@ -5,9 +5,9 @@ use unit_systems::coords::Index;
 
 const HALF_SQUARE_255: f32 = 32512.5;
 
-fn gradient_both(size: usize) -> Vec<f32> {
+fn gradient_both(size: u32) -> Vec<f32> {
 	let index = Index { map_size: size };
-	let mut array = vec![cg::ZERO_F32; size * size];
+	let mut array = vec![cg::ZERO_F32; size as usize * size as usize];
 	for y in 0..size {
 		for x in 0..size {
 			array[index.get(x, y)] = (HALF_SQUARE_255
@@ -18,13 +18,13 @@ fn gradient_both(size: usize) -> Vec<f32> {
 	array
 }
 
-fn grad_none(size: usize) -> Vec<f32> {
-	vec![cg::VAL_255_F32; size * size]
+fn grad_none(size: u32) -> Vec<f32> {
+	vec![cg::VAL_255_F32; size as usize * size as usize]
 }
 
-fn grad_south(size: usize) -> Vec<f32> {
+fn grad_south(size: u32) -> Vec<f32> {
 	let index = Index { map_size: size };
-	let mut array = vec![cg::ZERO_F32; size * size];
+	let mut array = vec![cg::ZERO_F32; size as usize * size as usize];
 	for y in 0..size {
 		for x in 0..size {
 			array[index.get(x, y)] = (HALF_SQUARE_255
@@ -35,9 +35,9 @@ fn grad_south(size: usize) -> Vec<f32> {
 	array
 }
 
-fn gradient_north(size: usize) -> Vec<f32> {
+fn gradient_north(size: u32) -> Vec<f32> {
 	let index = Index { map_size: size };
-	let mut array = vec![cg::ZERO_F32; size * size];
+	let mut array = vec![cg::ZERO_F32; size as usize * size as usize];
 	for y in 0..size {
 		for x in 0..size {
 			array[index.get(x, size - y - 1)] = (HALF_SQUARE_255
@@ -50,7 +50,7 @@ fn gradient_north(size: usize) -> Vec<f32> {
 
 //WRAPPER
 pub fn get(
-	size: usize,
+	size: u32,
 	grad_type: cw::TempGrad,
 ) -> Vec<f32> {
 	match grad_type {

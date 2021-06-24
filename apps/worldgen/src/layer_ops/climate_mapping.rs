@@ -10,7 +10,7 @@ pub fn get(lp: &mut LayerPack) {
 
 //▒▒▒▒▒▒▒▒▒▒ TEMPERATURE ▒▒▒▒▒▒▒▒▒▒▒
 fn temperature(lp: &mut LayerPack) {
-	let mut array = vec![cg::ZERO_F32; lp.noisemap_vec_len];
+	let mut array = vec![cg::ZERO_F32; lp.noisemap_vec_len as usize];
 	//Main gradient according to pole location.
 	let array_grad =
 		array_ops::gradients::get(lp.wi.noisemap_size, lp.wi.temp_mode);
@@ -18,13 +18,13 @@ fn temperature(lp: &mut LayerPack) {
 	let array_noise1 = array_ops::noise_maps::get(
 		lp.wi.noisemap_size,
 		lp.wi.temp_noise_size,
-		lp.wi.seed + 8166254830,
+		lp.wi.seed + 816624830,
 		NoiseMode::Multi,
 	);
 	let array_noise2 = array_ops::noise_maps::get(
 		lp.wi.noisemap_size,
 		lp.wi.temp_noise_size * 0.75,
-		lp.wi.seed + 9785632541,
+		lp.wi.seed + 978563541,
 		NoiseMode::Perlin,
 	);
 	//Additional noise to compensate for polar regions gradient
@@ -32,11 +32,14 @@ fn temperature(lp: &mut LayerPack) {
 	let array_noise_polar = array_ops::noise_maps::get(
 		lp.wi.noisemap_size,
 		lp.wi.temp_noise_size,
-		lp.wi.seed + 6425784358,
+		lp.wi.seed + 642578358,
 		NoiseMode::Multi,
 	);
 	//Combine all the maps.
-	for (index, cell_v) in array.iter_mut().enumerate().take(lp.noisemap_vec_len)
+	for (index, cell_v) in array
+		.iter_mut()
+		.enumerate()
+		.take(lp.noisemap_vec_len as usize)
 	{
 		let grad_rel = array_grad[index] / cg::VAL_255_F32;
 		*cell_v = array_grad[index]
@@ -58,7 +61,7 @@ fn temperature(lp: &mut LayerPack) {
 		lp.wi.noisemap_size,
 		lp.wi.map_size,
 	);
-	for index in 0..lp.layer_vec_len {
+	for index in 0..lp.layer_vec_len as usize {
 		lp.climate
 			.write(temp_map[index] as u16, lp.climate.TEMPERATURE, index)
 	}
@@ -66,7 +69,7 @@ fn temperature(lp: &mut LayerPack) {
 
 //▒▒▒▒▒▒▒▒▒▒▒ RAINFALL ▒▒▒▒▒▒▒▒▒▒▒▒▒
 fn rainfall(lp: &mut LayerPack) {
-	let mut array = vec![cg::ZERO_F32; lp.noisemap_vec_len];
+	let mut array = vec![cg::ZERO_F32; lp.noisemap_vec_len as usize];
 	//Gradient to account for polar regions being dryer.
 	let array_grad =
 		array_ops::gradients::get(lp.wi.noisemap_size, lp.wi.temp_mode);
@@ -78,24 +81,27 @@ fn rainfall(lp: &mut LayerPack) {
 		0.1,
 		lp.wi.topog_scope / 1.5,
 		0.5,
-		lp.wi.seed + 9785246325,
+		lp.wi.seed + 978524325,
 	);
 	let array_ds2 = array_ops::diamond_square::get(
 		lp.wi.noisemap_size,
 		0.0,
 		lp.wi.topog_scope / 1.5,
 		0.5,
-		lp.wi.seed + 9784587544,
+		lp.wi.seed + 978457544,
 	);
 	//Flat noise.
 	let array_noise = array_ops::noise_maps::get(
 		lp.wi.noisemap_size,
 		lp.wi.rain_noise_size,
-		lp.wi.seed + 36259486807,
+		lp.wi.seed + 3625946807,
 		NoiseMode::Multi,
 	);
 	//Combining all the noise maps together.
-	for (index, cell_v) in array.iter_mut().enumerate().take(lp.noisemap_vec_len)
+	for (index, cell_v) in array
+		.iter_mut()
+		.enumerate()
+		.take(lp.noisemap_vec_len as usize)
 	{
 		*cell_v = (cg::VAL_127_F32 - array_ds1[index] + array_ds2[index])
 			* array_grad[index]
@@ -114,7 +120,7 @@ fn rainfall(lp: &mut LayerPack) {
 		lp.wi.noisemap_size,
 		lp.wi.map_size,
 	);
-	for index in 0..lp.layer_vec_len {
+	for index in 0..lp.layer_vec_len as usize {
 		lp.climate
 			.write(rain_map[index] as u16, lp.climate.RAINFALL, index)
 	}

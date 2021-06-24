@@ -4,7 +4,7 @@ use unit_systems::coords::Index;
 //HEXAGONIFY is not currently used.
 pub fn hexagonify<T>(
 	mut array: Vec<T>,
-	size: usize,
+	size: u32,
 ) -> Vec<T>
 where
 	T: PartialOrd + Clone + Copy + Ord + num::NumCast,
@@ -28,9 +28,9 @@ where
 #[allow(unused_assignments, unused_variables)]
 fn hexrow<T>(
 	mut array: Vec<T>,
-	size: usize,
-	off_i: isize,
-	off_j: isize,
+	size: u32,
+	off_i: i32,
+	off_j: i32,
 ) -> Vec<T>
 where
 	T: PartialOrd + Clone + Copy + Ord + num::NumCast,
@@ -49,7 +49,7 @@ where
 	];
 	let mut k = 0;
 	let mut l = 0;
-	for n in 0..(size / 8 + 1) as isize {
+	for n in 0..(size / 8 + 1) as i32 {
 		//Read mean value.
 		//int val = 0;
 		let mut cell_vals = Vec::new();
@@ -59,12 +59,12 @@ where
 		for j in 0..8 {
 			for i in 0..9 {
 				if hexagon[k][l] == 1 {
-					if ((i + off_i) >= 0 && (i + off_i) < size as isize)
-						&& ((j + off_j + 8 * n) >= 0 && (j + off_j + 8 * n) < size as isize)
+					if ((i + off_i) >= 0 && (i + off_i) < size as i32)
+						&& ((j + off_j + 8 * n) >= 0 && (j + off_j + 8 * n) < size as i32)
 					{
 						//println!("x {}, y {:?}", i + off_i, j + off_j + 8 * n);
 						let index =
-							index.get((i + off_i) as usize, (j + off_j + 8 * n) as usize);
+							index.get((i + off_i) as u32, (j + off_j + 8 * n) as u32);
 						cell_vals.push(array[index]);
 						sum_val += num::cast::<T, f32>(array[index]).unwrap();
 						num_vals += 1;
@@ -105,11 +105,11 @@ where
 		for j in 0..8 {
 			for i in 0..9 {
 				if hexagon[k][l] == 1 {
-					if ((i + off_i) >= 0 && (i + off_i) < size as isize)
-						&& ((j + off_j + 8 * n) >= 0 && (j + off_j + 8 * n) < size as isize)
+					if ((i + off_i) >= 0 && (i + off_i) < size as i32)
+						&& ((j + off_j + 8 * n) >= 0 && (j + off_j + 8 * n) < size as i32)
 					{
 						let index =
-							index.get((i + off_i) as usize, (j + off_j + 8 * n) as usize);
+							index.get((i + off_i) as u32, (j + off_j + 8 * n) as u32);
 						//Store either max value or mean value (todo).
 						array[index] = *max_val.0;
 					}

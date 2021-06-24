@@ -29,7 +29,7 @@ impl RgParams {
 		&mut self,
 		lp: &mut LayerPack,
 	) {
-		for ind in 0..lp.layer_vec_len {
+		for ind in 0..lp.layer_vec_len as usize {
 			let wmask = lp.topography.read(lp.topography.WATERMASK, ind);
 			if wmask >= lp.wi.river_attr_pool_size_pow {
 				self.water_bodies_present = true;
@@ -39,8 +39,8 @@ impl RgParams {
 
 	pub fn prob(
 		&self,
-		i: usize,
-		j: usize,
+		i: u32,
+		j: u32,
 		lp: &mut LayerPack,
 	) -> f32 {
 		//Aliases
@@ -56,7 +56,7 @@ impl RgParams {
 			cg::VAL_255_F32,
 			lp.wi.abs_temp_min as f32,
 			lp.wi.abs_temp_max as f32,
-		) as isize;
+		) as i32;
 		if temp_abs <= cw::TEMP_PERM_ICE {
 			cg::ZERO_F32
 		} else {

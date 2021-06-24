@@ -3,7 +3,7 @@ use oorandom::Rand32;
 pub fn get(
 	min: f32,
 	max: f32,
-	seed: usize,
+	seed: u32,
 	iter: usize,
 ) -> f32 {
 	let mut random = Rand32::new_inc(seed as u64, iter as u64);

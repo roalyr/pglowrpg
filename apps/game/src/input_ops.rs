@@ -56,8 +56,6 @@ pub fn parse_input(
 	seq
 }
 
-pub fn input_coord(
-	_gs: &GameStrings
-) -> Result<usize, std::num::ParseIntError> {
-	prompt_input!("num"; {}).trim().parse::<usize>()
+pub fn input_coord(_gs: &GameStrings) -> Result<u32, std::num::ParseIntError> {
+	prompt_input!("num"; {}).trim().parse::<u32>()
 }

@@ -1,15 +1,15 @@
 use serde::{Deserialize, Serialize};
 
 //▒▒▒▒▒▒▒▒▒ WORLDGEN PRESET ▒▒▒▒▒▒▒▒▒▒▒
-pub const DEFAULT_SEED: usize = 0;
-pub const DEFAULT_WORLDS_NUM: usize = 1;
+pub const DEFAULT_SEED: u32 = 0;
+pub const DEFAULT_WORLDS_NUM: u32 = 1;
 
-pub const ABS_ELEV_MIN: usize = 0;
-pub const ABS_ELEV_MAX: usize = 10000;
-pub const ABS_RAIN_MIN: usize = 0;
-pub const ABS_RAIN_MAX: usize = 4000;
-pub const ABS_TEMP_MIN: isize = -50;
-pub const ABS_TEMP_MAX: isize = 50;
+pub const ABS_ELEV_MIN: u32 = 0;
+pub const ABS_ELEV_MAX: u32 = 10000;
+pub const ABS_RAIN_MIN: u32 = 0;
+pub const ABS_RAIN_MAX: u32 = 4000;
+pub const ABS_TEMP_MIN: i32 = -50;
+pub const ABS_TEMP_MAX: i32 = 50;
 
 pub const TOPOG_SCOPE_MIN: f32 = 0.0;
 pub const TOPOG_SCOPE_MAX: f32 = 100.0;
@@ -17,8 +17,8 @@ pub const TOPOG_CONTINUITY_MIN: f32 = 0.0;
 pub const TOPOG_CONTINUITY_MAX: f32 = 100.0;
 pub const TOPOG_CONCENTRATOR_MIN: f32 = 0.0;
 pub const TOPOG_CONCENTRATOR_MAX: f32 = 100.0;
-pub const TOPOG_FILTER_MIN: usize = 0;
-pub const TOPOG_FILTER_MAX: usize = 255;
+pub const TOPOG_FILTER_MIN: u32 = 0;
+pub const TOPOG_FILTER_MAX: u32 = 255;
 
 pub const TOPOG_EROSION_FACTOR_MIN: f32 = 0.0;
 pub const TOPOG_EROSION_FACTOR_MAX: f32 = 100.0;
@@ -57,16 +57,16 @@ pub const RIVER_NOISE_BLEND_MIN: f32 = 0.0;
 pub const RIVER_NOISE_BLEND_MAX: f32 = 100.0;
 pub const RIVER_NOISE_WEIGHT_MIN: f32 = 0.0;
 pub const RIVER_NOISE_WEIGHT_MAX: f32 = 100.0;
-pub const RIVER_SEGMENT_LENGTH_MIN: usize = 1;
+pub const RIVER_SEGMENT_LENGTH_MIN: u32 = 1;
 pub const RIVER_SEGMENT_DISPLACEMENT_MIN: f32 = 0.0;
 pub const RIVER_SEGMENT_DISPLACEMENT_MAX: f32 = 100.0;
-pub const RIVER_MIN_LENGTH: usize = 10;
+pub const RIVER_MIN_LENGTH: u32 = 10;
 pub const RIVER_ATTR_POOL_SIZE_POW_MIN: u16 = 1;
 pub const RIVER_ATTR_POOL_SIZE_POW_MAX: u16 = 28;
 pub const RIVER_SINK_MIN_POOL_SIZE_POW_MIN: u16 = 1;
 pub const RIVER_SINK_MIN_POOL_SIZE_POW_MAX: u16 = 28;
-pub const RIVER_EROSION_WIDTH_MIN: usize = 0;
-pub const RIVER_EROSION_WIDTH_MAX: usize = 255;
+pub const RIVER_EROSION_WIDTH_MIN: u32 = 0;
+pub const RIVER_EROSION_WIDTH_MAX: u32 = 255;
 pub const RIVER_EROSION_SMOOTH_MIN: f32 = 0.0;
 pub const RIVER_EROSION_SMOOTH_MAX: f32 = 100.0;
 pub const RIVER_RAND_VECTORS_MIN: f32 = 0.0;
@@ -78,34 +78,34 @@ pub const RIVER_VECT_ANGLE_NOISE_MAX: f32 = 100.0;
 pub const RIVER_VECT_ANGLE_MAX_DEVIATION_MIN: f32 = 0.0;
 pub const RIVER_VECT_ANGLE_MAX_DEVIATION_MAX: f32 = 2.0 * std::f32::consts::PI;
 
-pub const MAP_SIZES: [usize; 7] = [256, 512, 1024, 2048, 4096, 8192, 16384];
+pub const MAP_SIZES: [u32; 7] = [256, 512, 1024, 2048, 4096, 8192, 16384];
 
-pub const NOISEMAP_SIZES: [usize; 6] = [256, 512, 1024, 2048, 4096, 8192];
+pub const NOISEMAP_SIZES: [u32; 6] = [256, 512, 1024, 2048, 4096, 8192];
 
 //▒▒▒▒▒▒▒▒▒▒ TEMPERATURE ▒▒▒▒▒▒▒▒▒▒▒▒
-pub const TEMP_MIN: isize = ABS_TEMP_MIN;
-pub const TEMP_PERM_ICE: isize = -20;
-pub const TEMP_POLAR: isize = -10;
-pub const TEMP_TUNDRA: isize = 0;
-pub const TEMP_BOREAL: isize = 15;
-pub const TEMP_TEMPERATE: isize = 30;
-pub const TEMP_MAX: isize = ABS_TEMP_MAX;
+pub const TEMP_MIN: i32 = ABS_TEMP_MIN;
+pub const TEMP_PERM_ICE: i32 = -20;
+pub const TEMP_POLAR: i32 = -10;
+pub const TEMP_TUNDRA: i32 = 0;
+pub const TEMP_BOREAL: i32 = 15;
+pub const TEMP_TEMPERATE: i32 = 30;
+pub const TEMP_MAX: i32 = ABS_TEMP_MAX;
 
 //▒▒▒▒▒▒▒▒▒▒▒ ELEVATION ▒▒▒▒▒▒▒▒▒▒▒▒▒
-pub const ELEV_MIN: usize = ABS_ELEV_MIN;
-pub const ELEV_WATERHOLD: usize = 100;
-pub const ELEV_LOWLANDS: usize = 900;
-pub const ELEV_HIGHLANDS: usize = 2000;
-pub const ELEV_ALPINE: usize = 4000;
-pub const ELEV_MAX: usize = ABS_ELEV_MAX;
+pub const ELEV_MIN: u32 = ABS_ELEV_MIN;
+pub const ELEV_WATERHOLD: u32 = 100;
+pub const ELEV_LOWLANDS: u32 = 900;
+pub const ELEV_HIGHLANDS: u32 = 2000;
+pub const ELEV_ALPINE: u32 = 4000;
+pub const ELEV_MAX: u32 = ABS_ELEV_MAX;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ RAINFALL ▒▒▒▒▒▒▒▒▒▒▒▒▒
-pub const RAIN_MIN: usize = ABS_RAIN_MIN;
-pub const RAIN_DESERT: usize = 160;
-pub const RAIN_GRASSLAND: usize = 640;
-pub const RAIN_WOODLAND: usize = 1400;
-pub const RAIN_FOREST: usize = 2200;
-pub const RAIN_MAX: usize = ABS_RAIN_MAX;
+pub const RAIN_MIN: u32 = ABS_RAIN_MIN;
+pub const RAIN_DESERT: u32 = 160;
+pub const RAIN_GRASSLAND: u32 = 640;
+pub const RAIN_WOODLAND: u32 = 1400;
+pub const RAIN_FOREST: u32 = 2200;
+pub const RAIN_MAX: u32 = ABS_RAIN_MAX;
 
 //▒▒▒▒▒▒▒▒▒▒▒ WATERMASK ▒▒▒▒▒▒▒▒▒▒▒▒
 pub const NO_WATER: u16 = 0;
@@ -113,12 +113,12 @@ pub const NO_WATER: u16 = 0;
 //▒▒▒▒▒▒▒▒▒▒▒▒ RIVERS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 // This values just has to be large enough, it will be used for 1st
 // iteration and later on it will be adjusted on the 2nd run.
-pub const RIVER_HEUR_INIT: usize = 1_000_000;
+pub const RIVER_HEUR_INIT: u32 = 1_000_000;
 
 // This value should be around 5...50-ish in order for pathfinfing to be
 // fast. It is the distance between the nodes between which A* will
 // perform pathfinding, basically a key points to lead long paths.
-pub const RIVER_PATHFINDING_SEGMENT_LENGTH: usize = 15;
+pub const RIVER_PATHFINDING_SEGMENT_LENGTH: u32 = 15;
 pub const RIVER_MIN_WIDTH: u16 = 1;
 pub const RIVER_MAX_WIDTH: u16 = 12;
 

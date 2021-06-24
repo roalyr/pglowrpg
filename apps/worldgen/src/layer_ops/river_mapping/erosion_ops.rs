@@ -132,11 +132,11 @@ impl RgParams {
 			for erosion_width in 1..erosion_width_max {
 				let double_width = erosion_width * 2;
 				for i in 0..double_width {
-					let shif_i: isize = i as isize - erosion_width as isize;
-					let erosion_i = (i0 as isize + shif_i) as usize;
+					let shif_i: i32 = i as i32 - erosion_width as i32;
+					let erosion_i = (i0 as i32 + shif_i) as u32;
 					for j in 0..double_width {
-						let shif_j: isize = j as isize - erosion_width as isize;
-						let erosion_j = (j0 as isize + shif_j) as usize;
+						let shif_j: i32 = j as i32 - erosion_width as i32;
+						let erosion_j = (j0 as i32 + shif_j) as u32;
 						erosion(lp, erosion_width, erosion_i, erosion_j, terrain_current);
 					}
 				}
@@ -147,9 +147,9 @@ impl RgParams {
 
 fn erosion(
 	lp: &mut LayerPack,
-	erosion_width_iter: usize,
-	erosion_i: usize,
-	erosion_j: usize,
+	erosion_width_iter: u32,
+	erosion_i: u32,
+	erosion_j: u32,
 	terrain_current: u16,
 ) {
 	//Aliases

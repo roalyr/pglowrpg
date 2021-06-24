@@ -3,30 +3,30 @@ use constants::generic as cg;
 use unit_systems::coords::Index;
 
 // A margin that is meant to crop the border artifacts in DS algorithm
-const DS_CROP: usize = 20;
+const DS_CROP: u32 = 20;
 
 struct Params {
-	size: usize,
+	size: u32,
 	array: Vec<f32>,
 	land_concentrator: f32,
 	land_scope: f32,
 	land_continuity: f32,
-	seed: usize,
+	seed: u32,
 	iter: usize,
-	step_len: usize,
-	step_increment: usize,
+	step_len: u32,
+	step_increment: u32,
 }
 
 pub fn get(
-	size: usize,
+	size: u32,
 	land_concentrator: f32,
 	land_scope: f32,
 	land_continuity: f32,
-	seed: usize,
+	seed: u32,
 ) -> Vec<f32> {
 	let index = Index { map_size: size };
 	//size+1 in both directions
-	let size_big = size * size + 2 * size + 1;
+	let size_big = (size * size + 2 * size + 1) as usize;
 	let mut p = Params {
 		size,
 		array: vec![cg::ONE_F32; size_big],
@@ -94,8 +94,8 @@ pub fn get(
 
 fn diamond_substep(
 	p: &mut Params,
-	center_x: usize,
-	center_y: usize,
+	center_x: u32,
+	center_y: u32,
 ) {
 	let index = Index { map_size: p.size };
 	p.iter += 1;
@@ -125,15 +125,16 @@ fn diamond_substep(
 
 fn normalize_crop(
 	mut array: Vec<f32>,
-	size: usize,
+	size: u32,
 ) -> Vec<f32> {
 	let index = Index { map_size: size };
 	let index_big = Index {
 		map_size: size + DS_CROP,
 	};
-	let mut array_final = vec![cg::ZERO_F32; size * size];
+	let length = (size * size) as usize;
+	let mut array_final = vec![cg::ZERO_F32; length];
 	//size+1 in both directions
-	let size_big = size * size + 2 * size + 1;
+	let size_big = (size * size + 2 * size + 1) as usize;
 	let mut max_v = cg::ZERO_F32;
 	for cell_v in array.iter_mut().take(size_big) {
 		*cell_v *= *cell_v;
@@ -142,7 +143,7 @@ fn normalize_crop(
 		}
 	}
 	let k = cg::VAL_255_F32 / max_v;
-	for (ind, cell_v) in array_final.iter_mut().enumerate().take(size * size) {
+	for (ind, cell_v) in array_final.iter_mut().enumerate().take(length) {
 		*cell_v = array[ind] * k;
 	}
 	let array_sized = mitchell(array_final.clone(), size, size + DS_CROP);

@@ -3,9 +3,11 @@ use resize::Type::Mitchell;
 
 pub fn mitchell(
 	array: Vec<f32>,
-	size: usize,
-	map_size: usize,
+	size: u32,
+	map_size: u32,
 ) -> Vec<u8> {
+	let size = size as usize;
+	let map_size = map_size as usize;
 	let mut src = vec![0; size * size];
 	let mut dst = vec![0; map_size * map_size];
 	for index in 0..size * size {

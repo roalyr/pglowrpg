@@ -18,27 +18,27 @@ pub fn print_strings_basic(gs: &GameStrings) {
 //▒▒▒▒▒▒▒▒▒▒▒▒ MESSY CODE AHEAD ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn map_render_land(
 	gd: &mut GameData,
-	center_y: usize,
-	center_x: usize,
+	center_y: u32,
+	center_x: u32,
 ) {
 	let mut render_line = Vec::new();
 	let bi: biomes::Stuff = biomes::get();
 
 	for j in 0..gd.map_render_size * 2 {
-		let shift_y: isize = j as isize - gd.map_render_size as isize;
+		let shift_y: i32 = j as i32 - gd.map_render_size as i32;
 		// The way it prints, this should be reversed.
 		for i in (0..gd.map_render_size * 2).rev() {
-			let shift_x: isize = i as isize - gd.map_render_size as isize;
+			let shift_x: i32 = i as i32 - gd.map_render_size as i32;
 
-			let xx = (center_x as isize - shift_x) as isize;
-			let yy = (center_y as isize - shift_y) as isize;
+			let xx = (center_x as i32 - shift_x) as i32;
+			let yy = (center_y as i32 - shift_y) as i32;
 
 			if (xx >= 0)
 				&& (yy >= 0)
-				&& ((xx as usize) < gd.lp.wi.map_size)
-				&& ((yy as usize) < gd.lp.wi.map_size)
+				&& ((xx as u32) < gd.lp.wi.map_size)
+				&& ((yy as u32) < gd.lp.wi.map_size)
 			{
-				let render_index = gd.lp.index.get(xx as usize, yy as usize);
+				let render_index = gd.lp.index.get(xx as u32, yy as u32);
 				let elev = gd
 					.lp
 					.topography
@@ -266,7 +266,7 @@ pub fn map_render_land(
 				}
 
 				//Highlight central tile to see current position
-				if ((yy as usize) == center_y) && ((xx as usize) == center_x) {
+				if ((yy as u32) == center_y) && ((xx as u32) == center_x) {
 					render_line.push(element.reversed());
 				} else {
 					render_line.push(element);

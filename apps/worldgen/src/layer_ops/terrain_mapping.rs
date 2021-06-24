@@ -32,7 +32,7 @@ pub fn get(lp: &mut LayerPack) {
 		lp.wi.map_size,
 	);
 	//Write the map.
-	for ind in 0..lp.layer_vec_len {
+	for ind in 0..lp.layer_vec_len as usize {
 		lp.topography
 			.write(topog_map[ind] as u16, lp.topography.TERRAIN, ind)
 	}
@@ -42,23 +42,23 @@ pub fn get(lp: &mut LayerPack) {
 //This "erode" function is yet to be improved for better hi-freq noise.
 fn erode(
 	array: &mut Vec<f32>,
-	size: usize,
+	size: u32,
 	elevation_noise_size: f32,
 	elevation_noise_weight: f32,
 	erosion_factor: f32,
-	seed: usize,
+	seed: u32,
 ) {
 	//TODO: improve fine noise
 	let nm1 = noise_maps::get(
 		size,
 		elevation_noise_size,
-		seed + 8465273584,
+		seed + 846527384,
 		NoiseMode::Multi,
 	);
 	let nm2 = noise_maps::get(
 		size,
 		elevation_noise_size * 0.7,
-		seed + 9854362578,
+		seed + 985436257,
 		NoiseMode::Multi,
 	);
 	let nm3 = noise_maps::get(

@@ -34,8 +34,8 @@ impl RgParams {
 
 	fn make_paths(
 		&mut self,
-		i: usize,
-		j: usize,
+		i: u32,
+		j: u32,
 		lp: &mut LayerPack,
 		terrain_map: &Vec<u8>,
 		random_map: &mut Vec<u8>,
@@ -45,14 +45,14 @@ impl RgParams {
 		let index = lp.index.get(i, j);
 		let wmask = lp.topography.read(lp.topography.WATERMASK, index);
 		//To spawn or not to spawn?
-		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 7085263945, index);
+		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 708563945, index);
 		let total_prob = self.prob(i, j, lp);
 		if (random <= total_prob) && (wmask == cw::NO_WATER) {
 			// Print the progress
 			self.river_count_number += 1;
 			WS.print_progress_rivers(
-				self.river_count_number,
-				self.river_est_number,
+				self.river_count_number as usize,
+				self.river_est_number as usize,
 				20,
 			);
 			//Set vector according to waterbodies presence
@@ -122,7 +122,7 @@ impl RgParams {
 	fn pathfinding_nodes(
 		&mut self,
 		lp: &mut LayerPack,
-		seg_len: usize,
+		seg_len: u32,
 		terrain_map: &Vec<u8>,
 		diag_flag: bool,
 	) -> Vec<pathfinding::Pos> {
@@ -137,7 +137,7 @@ impl RgParams {
 		);
 		let path_distance = self.distance();
 		let estimated_heuristic = ((result_init.1 / (path_distance + 1)) as f32
-			* lp.wi.river_heuristic_factor) as usize;
+			* lp.wi.river_heuristic_factor) as u32;
 		self.dv.path_heuristic = estimated_heuristic;
 		//iter 2
 		let result = pathfinding::make(
@@ -154,7 +154,7 @@ impl RgParams {
 fn get_random_map(lp: &mut LayerPack) -> Vec<u8> {
 	//Random noise map for river path meandering
 	//river segments would be using this
-	let mut random_map = vec![cg::ZERO_U8; lp.layer_vec_len];
+	let mut random_map = vec![cg::ZERO_U8; lp.layer_vec_len as usize];
 	let array_noise1 = crate::array_ops::noise_maps::get(
 		lp.wi.map_size,
 		lp.wi.river_noise_size1,
@@ -167,7 +167,10 @@ fn get_random_map(lp: &mut LayerPack) -> Vec<u8> {
 		lp.wi.seed + 184562354,
 		NoiseMode::Perlin,
 	);
-	for (ind, cell_v) in random_map.iter_mut().enumerate().take(lp.layer_vec_len)
+	for (ind, cell_v) in random_map
+		.iter_mut()
+		.enumerate()
+		.take(lp.layer_vec_len as usize)
 	{
 		*cell_v =
 			(array_noise1[ind] * cg::VAL_255_F32 * (1.0 - lp.wi.river_noise_blend)
@@ -180,7 +183,7 @@ fn get_terrain_map(lp: &mut LayerPack) -> Vec<u8> {
 	//Write terrain map into a temporary array for future pathfinding
 	//river nodes would be done on this
 	let map_size = lp.wi.map_size;
-	let mut terrain_map = vec![cg::ZERO_U8; lp.layer_vec_len];
+	let mut terrain_map = vec![cg::ZERO_U8; lp.layer_vec_len as usize];
 	for j in 0..map_size {
 		for i in 0..map_size {
 			let index = lp.index.get(i, j);

@@ -21,8 +21,8 @@ impl RgParams {
 				self.dv.y0 as i32,
 				self.dv.r as i32,
 			) {
-				let i = i as usize;
-				let j = j as usize;
+				let i = i as u32;
+				let j = j as u32;
 				if (i < size) && (j < size) {
 					let index = lp.index.get(i, j);
 					let wmask = lp.topography.read(lp.topography.WATERMASK, index);
@@ -32,7 +32,7 @@ impl RgParams {
 						cg::VAL_255_F32,
 						lp.wi.abs_temp_min as f32,
 						lp.wi.abs_temp_max as f32,
-					) as isize;
+					) as i32;
 					if (wmask >= lp.wi.river_attr_pool_size_pow)
 						&& (temp_abs > cw::TEMP_POLAR)
 					{
@@ -47,7 +47,7 @@ impl RgParams {
 				self.dv.r += 1;
 			} else {
 				// Reset.
-				self.dv.r = cg::ONE_USIZE;
+				self.dv.r = cg::ONE_U32;
 				self.dv.hit = false;
 				break;
 			}
@@ -64,7 +64,7 @@ impl RgParams {
 		lp: &mut LayerPack,
 	) {
 		let ind = lp.index.get(self.dv.x0, self.dv.y0);
-		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 7546532541, ind);
+		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 754532541, ind);
 		// Decide which edge to put the end onto.
 		if random > 0.5 {
 			self.randomize_end_x(lp, ind);
@@ -79,7 +79,7 @@ impl RgParams {
 		ind: usize,
 	) {
 		// Put it on either of the edges.
-		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 5785241369, ind);
+		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 578241369, ind);
 		if random > 0.5 {
 			self.dv.y1 = 0;
 		} else {
@@ -87,7 +87,7 @@ impl RgParams {
 		}
 		// At a random coordinate.
 		self.dv.x1 =
-			pseudo_rng::get(0.0, lp.wi.map_size as f32, lp.wi.seed + 3, ind) as usize;
+			pseudo_rng::get(0.0, lp.wi.map_size as f32, lp.wi.seed + 3, ind) as u32;
 	}
 
 	fn randomize_end_y(
@@ -96,7 +96,7 @@ impl RgParams {
 		ind: usize,
 	) {
 		// Put it on either of the edges.
-		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 6078421365, ind);
+		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 607421365, ind);
 		if random > 0.5 {
 			self.dv.x1 = 0;
 		} else {
@@ -104,6 +104,6 @@ impl RgParams {
 		}
 		// At a random coordinate.
 		self.dv.y1 =
-			pseudo_rng::get(0.0, lp.wi.map_size as f32, lp.wi.seed + 4, ind) as usize;
+			pseudo_rng::get(0.0, lp.wi.map_size as f32, lp.wi.seed + 4, ind) as u32;
 	}
 }

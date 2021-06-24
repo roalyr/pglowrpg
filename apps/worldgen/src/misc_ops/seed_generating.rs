@@ -1,8 +1,8 @@
 use std::time::SystemTime;
 
-pub fn get() -> usize {
+pub fn get() -> u32 {
 	SystemTime::now()
 		.duration_since(SystemTime::UNIX_EPOCH)
 		.unwrap()
-		.as_secs() as usize
+		.as_secs() as u32
 }

@@ -9,8 +9,8 @@ pub struct LayerPack {
 	pub index: Index,
 	pub wi: presets::presets_worldgen::Stuff,
 
-	pub layer_vec_len: usize,
-	pub noisemap_vec_len: usize,
+	pub layer_vec_len: u32,
+	pub noisemap_vec_len: u32,
 
 	pub biomes: BitLayerBiomes,
 	pub rivers_id: BitLayerRiversID,

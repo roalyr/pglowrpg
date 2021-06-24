@@ -20,7 +20,7 @@ pub fn get_rel(
 
 // A table that returns a value of power x from y = 2^x.
 // Used in storing region size as u8.
-pub fn get_pow_2_size(thing_size: usize) -> u8 {
+pub fn get_pow_2_size(thing_size: u32) -> u8 {
 	match thing_size {
 		0..=2 => 1,
 		3..=4 => 2,

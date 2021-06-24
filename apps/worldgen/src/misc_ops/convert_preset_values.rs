@@ -45,7 +45,7 @@ fn noisemap_size(wi: &presets::presets_worldgen::Stuff) {
 fn params(wi: &mut presets::presets_worldgen::Stuff) {
 	wi.waterlevel = cap1("Waterlevel", wi.waterlevel, ABS_ELEV_MIN, ABS_ELEV_MAX);
 
-	let abs_elev: Cap2<usize> = cap2(
+	let abs_elev: Cap2<u32> = cap2(
 		"Elevation",
 		wi.abs_elev_min,
 		wi.abs_elev_max,
@@ -56,7 +56,7 @@ fn params(wi: &mut presets::presets_worldgen::Stuff) {
 	wi.abs_elev_min = abs_elev.min;
 	wi.abs_elev_max = abs_elev.max;
 
-	let abs_rain: Cap2<usize> = cap2(
+	let abs_rain: Cap2<u32> = cap2(
 		"Rainfall",
 		wi.abs_rain_min,
 		wi.abs_rain_max,
@@ -67,7 +67,7 @@ fn params(wi: &mut presets::presets_worldgen::Stuff) {
 	wi.abs_rain_min = abs_rain.min;
 	wi.abs_rain_max = abs_rain.max;
 
-	let abs_temp: Cap2<isize> = cap2(
+	let abs_temp: Cap2<i32> = cap2(
 		"Temperature",
 		wi.abs_temp_min,
 		wi.abs_temp_max,
@@ -201,7 +201,7 @@ fn params(wi: &mut presets::presets_worldgen::Stuff) {
 		"River minimum length",
 		wi.river_min_length,
 		RIVER_MIN_LENGTH,
-		wi.map_size as usize,
+		wi.map_size,
 	);
 
 	wi.river_attr_pool_size_pow = cap1(
@@ -328,7 +328,7 @@ where
 //▒▒▒▒▒▒▒▒▒▒▒ SCALES ▒▒▒▒▒▒▒▒▒▒▒▒▒
 //0-100 scale
 fn diminishing_scale(
-	scale_max: usize,
+	scale_max: u32,
 	input: f32,
 ) -> f32 {
 	100.0 / (input * scale_max as f32)

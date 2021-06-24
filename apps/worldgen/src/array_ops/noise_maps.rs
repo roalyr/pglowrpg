@@ -10,7 +10,7 @@ pub enum NoiseMode {
 //Returns a single point, not a map.
 pub fn point_multi(
 	noise_size: f32,
-	seed: usize,
+	seed: u32,
 	i: usize,
 	j: usize,
 ) -> f32 {
@@ -29,9 +29,9 @@ pub fn point_multi(
 
 //Returns a map.
 fn multi(
-	size: usize,
+	size: u32,
 	noise_size: f32,
-	seed: usize,
+	seed: u32,
 ) -> Vec<f32> {
 	let index = Index { map_size: size };
 	let noise = BasicMulti::new();
@@ -40,7 +40,7 @@ fn multi(
 		.set_y_angle(22.0)
 		.set_z_angle(45.0);
 	let abs = Abs::new(&rotate);
-	let mut array = vec![0.0; size * size];
+	let mut array = vec![0.0; size as usize * size as usize];
 	for y in 0..size {
 		for x in 0..size {
 			array[index.get(x, y)] = abs.get([
@@ -55,9 +55,9 @@ fn multi(
 
 //Returns a map.
 fn perlin(
-	size: usize,
+	size: u32,
 	noise_size: f32,
-	seed: usize,
+	seed: u32,
 ) -> Vec<f32> {
 	let index = Index { map_size: size };
 	let noise = Perlin::new();
@@ -66,7 +66,7 @@ fn perlin(
 		.set_y_angle(22.0)
 		.set_z_angle(45.0);
 	let abs = Abs::new(&rotate);
-	let mut array = vec![0.0; size * size];
+	let mut array = vec![0.0; size as usize * size as usize];
 	for y in 0..size {
 		for x in 0..size {
 			array[index.get(x, y)] = abs.get([
@@ -81,9 +81,9 @@ fn perlin(
 
 //WRAPPER
 pub fn get(
-	size: usize,
+	size: u32,
 	noise_size: f32,
-	seed: usize,
+	seed: u32,
 	noise_type: NoiseMode,
 ) -> Vec<f32> {
 	match noise_type {

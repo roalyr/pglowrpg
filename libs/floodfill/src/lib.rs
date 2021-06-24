@@ -2,23 +2,23 @@ use unit_systems::coords::Index;
 
 pub struct FloodFill<'a, T> {
 	template_data: &'a Vec<T>, // input to determine adjacent cells
-	map_size: usize,
+	map_size: u32,
 	pub exclusion_map: Vec<bool>, // stuff that was filled
 	pub region_map: Vec<bool>,    // to-be filled area
-	pub region_size: usize,       // number of cells
-	pub region_ox: usize,         // centroid x
-	pub region_oy: usize,         // centroid y
-	pub x_min: usize,             // region bound
-	pub x_max: usize,
-	pub y_min: usize,
-	pub y_max: usize,
+	pub region_size: u32,         // number of cells
+	pub region_ox: u32,           // centroid x
+	pub region_oy: u32,           // centroid y
+	pub x_min: u32,               // region bound
+	pub x_max: u32,
+	pub y_min: u32,
+	pub y_max: u32,
 }
 
 impl<T> FloodFill<'_, T> {
 	pub fn map(
 		&mut self,
-		i: usize,
-		j: usize,
+		i: u32,
+		j: u32,
 	) where
 		T: PartialEq + Copy + Clone,
 	{
@@ -45,7 +45,7 @@ impl<T> FloodFill<'_, T> {
 		// Just in case, if memeory is overused here, go for u16.
 		queue.push((i, j));
 		while let Some(point) = queue.pop() {
-			let (i, j): (usize, usize) = point;
+			let (i, j): (u32, u32) = point;
 			let ind = index.get(i, j);
 			if self.template_data[ind] != target {
 				continue;
@@ -76,16 +76,16 @@ impl<T> FloodFill<'_, T> {
 			self.region_map[ind] = true;
 			self.region_size += 1;
 			// Bounds coordinates calculation.
-			if (i as usize) < self.x_min {
+			if (i as u32) < self.x_min {
 				self.x_min = i;
 			}
-			if (i as usize) > self.x_max {
+			if (i as u32) > self.x_max {
 				self.x_max = i;
 			}
-			if (j as usize) < self.y_min {
+			if (j as u32) < self.y_min {
 				self.y_min = j;
 			}
-			if (j as usize) > self.y_max {
+			if (j as u32) > self.y_max {
 				self.y_max = j;
 			}
 		}
@@ -97,7 +97,7 @@ impl<T> FloodFill<'_, T> {
 	#[allow(clippy::ptr_arg)]
 	pub fn new(
 		template_data: &Vec<T>,
-		map_size: usize,
+		map_size: u32,
 	) -> FloodFill<T> {
 		let exclusion_map = vec![false; template_data.len()];
 		let region_map = vec![false; template_data.len()];

@@ -21,7 +21,7 @@ pub fn filter(
 //Decrease every cell by given amount, threshold is 0.
 pub fn level(
 	array: &mut Vec<f32>,
-	low_v: usize,
+	low_v: u32,
 ) {
 	let size = array.len();
 	for cell_v in array.iter_mut().take(size) {

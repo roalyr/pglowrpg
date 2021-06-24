@@ -46,7 +46,7 @@ pub fn combined_png(
 	grad_bg_mode: GradMode,
 	grad_fg_mode: GradMode,
 	mode: Mode,
-	png_size: usize,
+	png_size: u32,
 ) {
 	let size = array_bg.len();
 	let file = io_ops::create_file_overwrite(&path);
@@ -91,7 +91,7 @@ pub fn simple_png(
 	array: &Vec<u8>,
 	path: &std::path::PathBuf,
 	grad_mode: GradMode,
-	png_size: usize,
+	png_size: u32,
 ) {
 	let file = io_ops::create_file_overwrite(&path);
 	let bufw = &mut BufWriter::new(file);

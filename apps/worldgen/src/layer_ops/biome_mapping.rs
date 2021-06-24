@@ -4,9 +4,9 @@ use game_data_codec::LayerPack;
 use unit_systems::translate;
 
 pub fn get(lp: &mut LayerPack) {
-	for index in 0..lp.layer_vec_len {
-		let biome_type = match_biomes(lp, index);
-		lp.biomes.write(biome_type, index);
+	for ind in 0..lp.layer_vec_len as usize {
+		let biome_type = match_biomes(lp, ind);
+		lp.biomes.write(biome_type, ind);
 	}
 }
 
@@ -20,14 +20,14 @@ fn match_biomes(
 		cg::VAL_255_F32,
 		lp.wi.abs_temp_min as f32,
 		lp.wi.abs_temp_max as f32,
-	) as isize;
+	) as i32;
 
 	let rain = translate::get_abs(
 		lp.climate.read(lp.climate.RAINFALL, index) as f32,
 		cg::VAL_255_F32,
 		lp.wi.abs_rain_min as f32,
 		lp.wi.abs_rain_max as f32,
-	) as usize;
+	) as u32;
 
 	//Take anything on land that is above waterlevel,
 	//waterlevel is "zero", and everything below it is submerged.
@@ -36,7 +36,7 @@ fn match_biomes(
 		cg::VAL_255_F32,
 		lp.wi.abs_elev_min as f32,
 		lp.wi.abs_elev_max as f32,
-	) as usize)
+	) as u32)
 		.saturating_sub(lp.wi.waterlevel);
 
 	//Relative value (map value from 0 to 256) for waterlevel.

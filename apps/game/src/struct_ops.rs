@@ -11,14 +11,14 @@ pub struct GameData {
 	pub commands_vec: Vec<String>,
 	//Coordinates
 	//+x is east, +y is north
-	pub x: usize,
-	pub y: usize,
+	pub x: u32,
+	pub y: u32,
 	pub index: usize,
 	//Temporary working variables
 	//World data abs values
-	pub temp: isize,
-	pub rain: usize,
-	pub elev: usize,
+	pub temp: i32,
+	pub rain: u32,
+	pub elev: u32,
 	pub water: u16,
 	pub biome: u8,
 	pub georeg_id: u32,

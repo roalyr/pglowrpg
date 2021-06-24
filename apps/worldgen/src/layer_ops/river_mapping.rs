@@ -18,8 +18,8 @@ pub struct RiverEntry {
 	river_id: u32,
 	path_array: Vec<pathfinding::Pos>,
 	width: u16,
-	source: (usize, usize),
-	end: (usize, usize),
+	source: (u32, u32),
+	end: (u32, u32),
 }
 
 //For river width generation only.
@@ -47,11 +47,11 @@ pub struct RiversPaths {
 pub struct RgParams {
 	river_id: u32,
 	river_width: u16,
-	river_source: (usize, usize),
-	river_end: (usize, usize),
-	river_est_number: usize,
-	river_count_number: usize,
-	upstream_neighbor: (usize, usize),
+	river_source: (u32, u32),
+	river_end: (u32, u32),
+	river_est_number: u32,
+	river_count_number: u32,
+	upstream_neighbor: (u32, u32),
 	water_bodies_present: bool,
 	dv: pathfinding::DirVector,
 	rivers_paths: RiversPaths,
@@ -73,7 +73,7 @@ pub fn get(lp: &mut LayerPack) {
 			y0: 0,
 			x1: lp.wi.map_size / 2, //end in the center
 			y1: lp.wi.map_size / 2, //end in the center
-			r: cg::ONE_USIZE,
+			r: cg::ONE_U32,
 			hit: false,
 			path_heuristic: cw::RIVER_HEUR_INIT,
 		},

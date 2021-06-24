@@ -15,8 +15,8 @@ pub fn write_images_color(
 
 	//Clean proxy maps for rendering images
 	let map_size = lp.wi.map_size;
-	let mut array_bg = vec![cg::ZERO_U8; lp.layer_vec_len];
-	let mut array_fg = vec![cg::ZERO_U8; lp.layer_vec_len];
+	let mut array_bg = vec![cg::ZERO_U8; lp.layer_vec_len as usize];
+	let mut array_fg = vec![cg::ZERO_U8; lp.layer_vec_len as usize];
 
 	//Watermask over terraim
 	if OPTIONS.render_topography {

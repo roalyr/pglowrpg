@@ -4,7 +4,7 @@ use game_data_codec::LayerPack;
 use unit_systems::translate;
 
 pub fn get(lp: &mut LayerPack) {
-	let blank = vec![cw::NO_WATER; lp.layer_vec_len];
+	let blank = vec![cw::NO_WATER; lp.layer_vec_len as usize];
 	let mut ff = floodfill::FloodFill::new(&blank, lp.wi.map_size);
 	//Write down an exclusion map for dry and icy regions.
 	for j in 0..lp.wi.map_size {
@@ -16,14 +16,14 @@ pub fn get(lp: &mut LayerPack) {
 				cg::VAL_255_F32,
 				lp.wi.abs_elev_min as f32,
 				lp.wi.abs_elev_max as f32,
-			) as usize;
+			) as u32;
 			//Get temperature data.
 			let temp = translate::get_abs(
 				lp.climate.read(lp.climate.TEMPERATURE, index) as f32,
 				cg::VAL_255_F32,
 				lp.wi.abs_temp_min as f32,
 				lp.wi.abs_temp_max as f32,
-			) as isize;
+			) as i32;
 			//Areas within permanent ice where no waterbodies can be.
 			if temp <= cw::TEMP_PERM_ICE {
 				ff.exclusion_map[index] = true;
@@ -59,7 +59,7 @@ fn write_map(
 				lp.topography.write(
 					val as u16,
 					lp.topography.WATERMASK,
-					lp.index.get(x as usize, y as usize),
+					lp.index.get(x as u32, y as u32),
 				)
 			}
 		}

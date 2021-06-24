@@ -56,19 +56,19 @@ pub fn get_world_current(gd: &mut GameData) {
 		cg::VAL_255_F32,
 		gd.lp.wi.abs_temp_min as f32,
 		gd.lp.wi.abs_temp_max as f32,
-	) as isize;
+	) as i32;
 	gd.rain = translate::get_abs(
 		gd.lp.climate.read(gd.lp.climate.RAINFALL, gd.index) as f32,
 		cg::VAL_255_F32,
 		gd.lp.wi.abs_rain_min as f32,
 		gd.lp.wi.abs_rain_max as f32,
-	) as usize;
+	) as u32;
 	gd.elev = translate::get_abs(
 		gd.lp.topography.read(gd.lp.topography.TERRAIN, gd.index) as f32,
 		cg::VAL_255_F32,
 		gd.lp.wi.abs_elev_min as f32,
 		gd.lp.wi.abs_elev_max as f32,
-	) as usize;
+	) as u32;
 
 	gd.water = gd.lp.topography.read(gd.lp.topography.WATERMASK, gd.index);
 	gd.biome = gd.lp.biomes.read(gd.index);

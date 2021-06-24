@@ -15,7 +15,7 @@ pub fn write_images_raw(
 
 	//Clean proxy maps for rendering images
 	let map_size = lp.wi.map_size;
-	let mut array_bg = vec![cg::ZERO_U8; lp.layer_vec_len];
+	let mut array_bg = vec![cg::ZERO_U8; lp.layer_vec_len as usize];
 
 	//Watermask and terraim
 	if OPTIONS.render_topography {
