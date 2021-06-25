@@ -1,11 +1,11 @@
 use crate::LayerPack;
-use bincode;
 use constants::app as ca;
 use io_ops::{compress_to_storage, create_dir};
+use std::path::Path;
 
 pub fn write_data(
 	lp: &mut LayerPack,
-	world_dir: &std::path::PathBuf,
+	world_dir: &Path,
 ) {
 	//Make a directory if none exists
 	let data_dir = world_dir.join(ca::PATH_SAVE_DATA);

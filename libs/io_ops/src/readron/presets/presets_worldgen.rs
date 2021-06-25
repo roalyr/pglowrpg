@@ -55,9 +55,7 @@ pub fn get(input: &str) -> Stuff {
 		.join(&input)
 		.with_extension(EXTENSION_PRESET_PALETTE);
 
-	let mut path_vec = Vec::new();
-	path_vec.push(path_def);
-	path_vec.push(path_usr);
+	let path_vec = vec![path_def, path_usr];
 
 	let data = crate::file_to_string(&path_vec);
 

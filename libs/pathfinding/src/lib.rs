@@ -33,7 +33,6 @@ impl Pos {
 	}
 
 	// Returns a queue of neighbors adjacent, weighted.
-	#[allow(clippy::ptr_arg)]
 	#[inline] // Is it necessary?
 	fn neighbors<T>(
 		&self,
@@ -135,7 +134,6 @@ fn within_bounds(
 	(i < size) && (j < size)
 }
 
-#[allow(clippy::ptr_arg)]
 pub fn make<T>(
 	v: &DirVector, // Directional vector (see above).
 	map: &Vec<T>,

@@ -4,10 +4,11 @@ use constants::generic as cg;
 use game_options::OPTIONS;
 use image_ops::{simple_png, GradMode};
 use io_ops::create_dir;
+use std::path::Path;
 
 pub fn write_images_raw(
 	lp: &mut LayerPack,
-	world_dir: &std::path::PathBuf,
+	world_dir: &Path,
 ) {
 	//Make a directory if none exists
 	let raw_img_dir = world_dir.join(ca::PATH_SAVE_IMAGES_RAW);

@@ -18,6 +18,7 @@ path_output = "/data/data/com.termux/files/home/storage/shared/project_output/"
 main_command = 'busybox time -f "%E %M"  cargo run'
 main_command_tts_termux = main_command+" "+"| tee /dev/stderr | termux-tts-speak -r 1.2"
 
+clippy_args = '-- -A clippy::ptr_arg'
 #▒▒▒▒▒▒▒▒▒▒▒▒ WRITING OPS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 def write_num_not_empty(type, prompt_str):
 	while True:
@@ -472,7 +473,7 @@ def sync(): sync_files(); result_sync()
 def sync_tts_termux(): sync_files(); result_sync_tts_termux()
 def sync_all(): clear_target(); sync_files()
 def check(): sync_files(); os.system('cd'+' '+path_target+' && '+'cargo check')
-def clippy_check(): sync_files(); os.system('cd'+' '+path_target+' && '+'cargo clippy')
+def clippy_check(): sync_files(); os.system('cd'+' '+path_target+' && '+'cargo clippy '+clippy_args)
 def deps(): sync_files(); cargo_deps()
 def cargo_update(): cl_divider(); os.system('cd'+' '+path_target+' && '+'cargo update')
 

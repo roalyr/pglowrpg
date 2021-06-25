@@ -4,10 +4,11 @@ use constants::generic as cg;
 use game_options::OPTIONS;
 use image_ops::{combined_png, simple_png, GradMode, Mode};
 use io_ops::create_dir;
+use std::path::Path;
 
 pub fn write_images_color(
 	lp: &mut LayerPack,
-	world_dir: &std::path::PathBuf,
+	world_dir: &Path,
 ) {
 	//Make a directory if none exists
 	let color_img_dir = world_dir.join(ca::PATH_SAVE_IMAGES_COLOR);

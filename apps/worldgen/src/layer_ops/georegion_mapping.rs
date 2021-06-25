@@ -55,7 +55,7 @@ pub fn get(lp: &mut LayerPack) {
 			}
 		}
 	}
-	for ind in 0..lp.layer_vec_len as usize {
-		lp.georeg_id.write(greg_map[ind], ind)
+	for (ind, cell_v) in greg_map.iter().enumerate() {
+		lp.georeg_id.write(*cell_v, ind)
 	}
 }

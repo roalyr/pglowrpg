@@ -58,17 +58,15 @@ where
 		let mut mean_val = 0.0;
 		for j in 0..8 {
 			for i in 0..9 {
-				if hexagon[k][l] == 1 {
-					if ((i + off_i) >= 0 && (i + off_i) < size as i32)
-						&& ((j + off_j + 8 * n) >= 0 && (j + off_j + 8 * n) < size as i32)
-					{
-						//println!("x {}, y {:?}", i + off_i, j + off_j + 8 * n);
-						let index =
-							index.get((i + off_i) as u32, (j + off_j + 8 * n) as u32);
-						cell_vals.push(array[index]);
-						sum_val += num::cast::<T, f32>(array[index]).unwrap();
-						num_vals += 1;
-					}
+				if (hexagon[k][l] == 1)
+					&& ((i + off_i) >= 0 && (i + off_i) < size as i32)
+					&& ((j + off_j + 8 * n) >= 0 && (j + off_j + 8 * n) < size as i32)
+				{
+					//println!("x {}, y {:?}", i + off_i, j + off_j + 8 * n);
+					let index = index.get((i + off_i) as u32, (j + off_j + 8 * n) as u32);
+					cell_vals.push(array[index]);
+					sum_val += num::cast::<T, f32>(array[index]).unwrap();
+					num_vals += 1;
 				}
 				l += 1;
 				if l == 8 {
@@ -104,15 +102,13 @@ where
 		//Put data in hexagons.
 		for j in 0..8 {
 			for i in 0..9 {
-				if hexagon[k][l] == 1 {
-					if ((i + off_i) >= 0 && (i + off_i) < size as i32)
-						&& ((j + off_j + 8 * n) >= 0 && (j + off_j + 8 * n) < size as i32)
-					{
-						let index =
-							index.get((i + off_i) as u32, (j + off_j + 8 * n) as u32);
-						//Store either max value or mean value (todo).
-						array[index] = *max_val.0;
-					}
+				if (hexagon[k][l] == 1)
+					&& ((i + off_i) >= 0 && (i + off_i) < size as i32)
+					&& ((j + off_j + 8 * n) >= 0 && (j + off_j + 8 * n) < size as i32)
+				{
+					let index = index.get((i + off_i) as u32, (j + off_j + 8 * n) as u32);
+					//Store either max value or mean value (todo).
+					array[index] = *max_val.0;
 				}
 				l += 1;
 				if l == 8 {

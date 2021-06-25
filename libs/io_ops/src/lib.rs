@@ -1,6 +1,5 @@
 pub mod readron;
 
-use lz4;
 use lz4::{Decoder, EncoderBuilder};
 use std::fs;
 use std::fs::File;
@@ -68,20 +67,17 @@ pub fn file_to_string(path_vec: &Vec<std::path::PathBuf>) -> String {
 	let mut data = String::new();
 	for path in path_vec.iter() {
 		// Find the file (try to).
-		match File::open(&path) {
-			Ok(mut file) => {
-				match file.read_to_string(&mut data) {
-					Ok(f) => f,
-					Err(e) => {
-						println!("ERROR: {}: {}", e.to_string(), path.to_str().unwrap());
-						std::process::exit(0);
-					}
-				};
-				// Since we have found the first matching file name, it means
-				// that we can break the loop.
-				break;
-			}
-			Err(_) => {}
+		if let Ok(mut file) = File::open(&path) {
+			match file.read_to_string(&mut data) {
+				Ok(f) => f,
+				Err(e) => {
+					println!("ERROR: {}: {}", e.to_string(), path.to_str().unwrap());
+					std::process::exit(0);
+				}
+			};
+			// Since we have found the first matching file name, it means
+			// that we can break the loop.
+			break;
 		};
 	}
 	// Throw an error if no file was opened at all.
@@ -100,7 +96,7 @@ pub fn file_to_string(path_vec: &Vec<std::path::PathBuf>) -> String {
 }
 
 // Make a directory.
-pub fn create_dir(path: &std::path::PathBuf) {
+pub fn create_dir(path: &Path) {
 	match std::fs::create_dir(path) {
 		Ok(()) => {}
 		Err(e) => match e.kind() {
@@ -114,7 +110,7 @@ pub fn create_dir(path: &std::path::PathBuf) {
 }
 
 // Make a new file and overwrite if it exists.
-pub fn create_file_overwrite(path: &std::path::PathBuf) -> File {
+pub fn create_file_overwrite(path: &Path) -> File {
 	match File::create(path) {
 		Ok(f) => f,
 		Err(e) => {
@@ -128,7 +124,7 @@ pub fn create_file_overwrite(path: &std::path::PathBuf) -> File {
 // Read the data and write it down to storage in a .lz4
 pub fn compress_to_storage(
 	data: Vec<u8>,
-	path: &std::path::PathBuf,
+	path: &Path,
 ) {
 	let output_file = match File::create(path) {
 		Ok(f) => f,
@@ -162,7 +158,7 @@ pub fn compress_to_storage(
 }
 
 // Read from storage the .lz4 data and return raw to memory as bytes.
-pub fn decompress_to_memory(path: &std::path::PathBuf) -> Vec<u8> {
+pub fn decompress_to_memory(path: &Path) -> Vec<u8> {
 	let input_file = match File::open(path) {
 		Ok(f) => f,
 		Err(e) => {

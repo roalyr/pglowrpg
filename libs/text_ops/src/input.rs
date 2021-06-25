@@ -6,19 +6,14 @@ use std::io;
 use std::io::Write;
 
 // Prompts start after empty newline.
-fn new_line_input(prompt_symbol: &String) -> String {
+fn new_line_input(prompt_symbol: &str) -> String {
 	let mut input = String::new();
 	// Chek if color from preset can be parsed, or fallback.
 	let text_col = palettes::text_colors::get().prompt;
 	let color_res: Result<Color, ()> = text_col.parse();
 	let mut color_good = false;
-	match color_res {
-		Ok(_) => {
-			if OPTIONS.use_text_colors {
-				color_good = true;
-			}
-		}
-		Err(_) => {}
+	if color_res.is_ok() && OPTIONS.use_text_colors {
+		color_good = true;
 	}
 	match color_good {
 		true => {
@@ -36,7 +31,7 @@ fn new_line_input(prompt_symbol: &String) -> String {
 			panic!();
 		}
 	}
-	println!(""); // Empty line after input.
+	println!(); // Empty line after input.
 	input.trim().to_string()
 }
 
@@ -71,7 +66,8 @@ pub fn prompt_word(allowed_words: &Vec<String>) -> String {
 	//Priority is decided by character appearance in word
 	//The earlier - the higher the priority
 	for entry in selected_queue.iter().by_ref() {
-		let offset = entry.find(&input).unwrap_or(entry.len());
+		let word_len = entry.len();
+		let offset = entry.find(&input).unwrap_or(word_len);
 		let priority = entry.clone().drain(..offset).count();
 		priority_queue.push(priority);
 		//println!("{} {:?}", entry, priority);
@@ -80,7 +76,7 @@ pub fn prompt_word(allowed_words: &Vec<String>) -> String {
 	let min = priority_queue.iter().min().unwrap_or(&0);
 	let index = priority_queue.iter().position(|x| x == min).unwrap_or(0);
 	if selected_queue.is_empty() {
-		return String::new();
+		String::new()
 	} else {
 		selected_queue[index].clone()
 	}

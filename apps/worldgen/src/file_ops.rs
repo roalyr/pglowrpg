@@ -28,8 +28,8 @@ pub fn write_save(
 	let mut world_dir = Path::new("").to_path_buf();
 
 	if OPTIONS.write_data_files
-		|| OPTIONS.write_data_files
-		|| OPTIONS.write_data_files
+		|| OPTIONS.render_colorized_maps
+		|| OPTIONS.render_raw_maps
 	{
 		make_dirs = true;
 	}

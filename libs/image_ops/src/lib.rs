@@ -2,6 +2,7 @@ pub mod combine;
 pub mod gradients;
 
 use std::io::BufWriter;
+use std::path::Path;
 
 #[derive(Copy, Clone)]
 pub enum Mode {
@@ -42,7 +43,7 @@ pub enum GradMode {
 pub fn combined_png(
 	array_bg: &Vec<u8>,
 	array_fg: &Vec<u8>,
-	path: &std::path::PathBuf,
+	path: &Path,
 	grad_bg_mode: GradMode,
 	grad_fg_mode: GradMode,
 	mode: Mode,
@@ -89,7 +90,7 @@ pub fn combined_png(
 
 pub fn simple_png(
 	array: &Vec<u8>,
-	path: &std::path::PathBuf,
+	path: &Path,
 	grad_mode: GradMode,
 	png_size: u32,
 ) {

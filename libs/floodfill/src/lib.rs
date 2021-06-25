@@ -94,7 +94,6 @@ impl<T> FloodFill<'_, T> {
 		self.region_oy = (self.y_max - self.y_min) / 2 + self.y_min;
 	}
 	// The main function.
-	#[allow(clippy::ptr_arg)]
 	pub fn new(
 		template_data: &Vec<T>,
 		map_size: u32,

@@ -61,9 +61,9 @@ fn temperature(lp: &mut LayerPack) {
 		lp.wi.noisemap_size,
 		lp.wi.map_size,
 	);
-	for index in 0..lp.layer_vec_len as usize {
+	for (ind, cell_v) in temp_map.iter().enumerate() {
 		lp.climate
-			.write(temp_map[index] as u16, lp.climate.TEMPERATURE, index)
+			.write(*cell_v as u16, lp.climate.TEMPERATURE, ind)
 	}
 }
 
@@ -120,8 +120,8 @@ fn rainfall(lp: &mut LayerPack) {
 		lp.wi.noisemap_size,
 		lp.wi.map_size,
 	);
-	for index in 0..lp.layer_vec_len as usize {
-		lp.climate
-			.write(rain_map[index] as u16, lp.climate.RAINFALL, index)
+
+	for (ind, cell_v) in rain_map.iter().enumerate() {
+		lp.climate.write(*cell_v as u16, lp.climate.RAINFALL, ind)
 	}
 }

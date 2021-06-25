@@ -111,9 +111,9 @@ pub fn start() {
 	// MAKING NON-SPATIAL GLOBAL TABLE.
 	// Make init cap and total cap. Defines hasmap size.
 	// Must be less than max ID values which will be U32 max.
-	let creatures_cap = 1_000_00;
+	let creatures_cap = 1_000_000;
 	let test_creatures_num = 3;
-	//let items_cap = 1_000_00;
+	//let items_cap = 1_000_000;
 	//...
 	let mut unique_creatures: HashMap<u32, UniqueEntity> =
 		HashMap::with_capacity(creatures_cap);
@@ -150,7 +150,7 @@ pub fn start() {
 	// The specific string will correspond to whatever is required from list.
 	for _ in 0..test_creatures_num {
 		uids_creatures_local.push(uid_creature);
-		for creature_type in creature_types
+		if let Some(creature_type) = creature_types
 			.iter()
 			.find(|EntityData { entity_name: x, .. }| *x == "rabbit")
 		{
@@ -172,7 +172,7 @@ pub fn start() {
 	println!("Total number of creatures: {}", unique_creatures.len());
 
 	// Put an entity into the cache immediately.
-	creatures_cache.insert(ind, uids_creatures_local.clone());
+	creatures_cache.insert(ind, uids_creatures_local);
 
 	// MAKE DESTRUCTORS FOR SPEIFIC UNIQUE ENTITY TYPES.
 

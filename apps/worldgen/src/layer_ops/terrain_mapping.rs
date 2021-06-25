@@ -32,9 +32,9 @@ pub fn get(lp: &mut LayerPack) {
 		lp.wi.map_size,
 	);
 	//Write the map.
-	for ind in 0..lp.layer_vec_len as usize {
+	for (ind, cell_v) in topog_map.iter().enumerate() {
 		lp.topography
-			.write(topog_map[ind] as u16, lp.topography.TERRAIN, ind)
+			.write(*cell_v as u16, lp.topography.TERRAIN, ind)
 	}
 }
 
