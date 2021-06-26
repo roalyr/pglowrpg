@@ -26,6 +26,7 @@ print_paragraph! {
 	print_river_adjust_widths, "river_adjust_widths";
 	print_river_erosion, "river_erosion";
 	print_prep_biome, "prep_biome";
+	print_prep_bioreg, "prep_bioreg";
 	print_prep_georeg, "prep_georeg";
 
 	print_write_data, "write_data";

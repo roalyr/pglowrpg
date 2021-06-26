@@ -1,4 +1,5 @@
 pub mod biome_mapping;
+pub mod bioregion_mapping;
 pub mod climate_mapping;
 pub mod georegion_mapping;
 pub mod river_mapping;

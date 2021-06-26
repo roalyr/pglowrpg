@@ -11,6 +11,7 @@ pub fn print_strings_basic(gs: &GameStrings) {
 	println!("{}", gs.temp_str);
 	println!("{}", gs.rain_str);
 	println!("{}", gs.biome_str);
+	println!("{}", gs.bioreg_id_str);
 	println!("{}", gs.georeg_id_str);
 	println!("{}", gs.river_str);
 }

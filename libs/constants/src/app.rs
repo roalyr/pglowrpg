@@ -48,6 +48,7 @@ pub const NAME_IMAGE_COLOR_WATERMASK_OVER_TERRAIN: &str =
 	"color_watermask_over_terrain";
 pub const NAME_IMAGE_COLOR_TERRAIN: &str = "color_terrain";
 pub const NAME_IMAGE_COLOR_RAINFALL: &str = "color_rainfall";
+pub const NAME_IMAGE_COLOR_BIOREGIONS: &str = "color_bioregion";
 pub const NAME_IMAGE_COLOR_GEOREGIONS: &str = "color_georegion";
 pub const NAME_IMAGE_COLOR_BIOMES: &str = "color_biomes";
 pub const NAME_IMAGE_COLOR_RIVER_ELEMENTS: &str = "color_river_elements";

@@ -145,6 +145,9 @@ pub fn start() {
 			rivers_id: BitLayerRiversID {
 				data: vec![0; layer_vec_len as usize],
 			},
+			bioreg_id: BitLayerBioregID {
+				data: vec![0; layer_vec_len as usize],
+			},
 			georeg_id: BitLayerGeoregID {
 				data: vec![0; layer_vec_len as usize],
 			},
@@ -156,8 +159,10 @@ pub fn start() {
 		WS.print_prep_topog(); layer_ops::terrain_mapping::get(&mut lp);
 		WS.print_prep_climate(); layer_ops::climate_mapping::get(&mut lp);
 		WS.print_prep_wmask(); layer_ops::watermask_mapping::get(&mut lp);
-		WS.print_prep_rmap(); layer_ops::river_mapping::get(&mut lp);
 		WS.print_prep_biome(); layer_ops::biome_mapping::get(&mut lp);
+		// Must be after biomes.
+		WS.print_prep_rmap(); layer_ops::river_mapping::get(&mut lp);
+		WS.print_prep_bioreg(); layer_ops::bioregion_mapping::get(&mut lp);
 		WS.print_prep_georeg(); layer_ops::georegion_mapping::get(&mut lp);
 
 		// Write data.

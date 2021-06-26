@@ -34,6 +34,7 @@
 	render_temperature : true,
 	render_rainfall : true,
 	render_biomes : true,
+	render_bioregions : true,
 	render_georegions : true,
 	render_rivers : true,
 	

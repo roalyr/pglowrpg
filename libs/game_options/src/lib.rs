@@ -25,6 +25,7 @@ pub struct Stuff {
 	pub render_rainfall: bool,
 	pub render_rivers: bool,
 	pub render_biomes: bool,
+	pub render_bioregions: bool,
 	pub render_georegions: bool,
 
 	pub render_colorized_maps: bool,

@@ -36,6 +36,7 @@
 "river_erosion" : " Performing river erosion...",
 
 "prep_biome" : "Preparing biome map...",
+"prep_bioreg" : "Preparing bioregion map...",
 "prep_georeg" : "Preparing georegion map...",
 
 "write_data" : "Preparing data files... ",

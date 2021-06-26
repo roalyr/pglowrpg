@@ -93,6 +93,23 @@ pub fn write_images_color(
 		);
 	}
 
+	//Bioregion
+	if OPTIONS.render_bioregions {
+		let file_path = color_img_dir
+			.join(ca::NAME_IMAGE_COLOR_BIOREGIONS)
+			.with_extension(ca::EXTENSION_SAVE_IMAGE);
+		for y in 0..map_size {
+			for x in 0..map_size {
+				let index = lp.index.get(x, y);
+				let bg = lp.bioreg_id.read(index);
+				// Proper rendering requires mirroring the map.
+				let index_mirrored = lp.index.get_mirrored_h(x, y);
+				array_bg[index_mirrored] = bg as u8;
+			}
+		}
+		simple_png(&array_bg, &file_path, GradMode::Random, lp.wi.map_size);
+	}
+
 	//Georegion
 	if OPTIONS.render_georegions {
 		//println!("{}", wg_str.wg22);

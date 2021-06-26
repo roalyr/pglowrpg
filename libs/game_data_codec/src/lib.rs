@@ -15,6 +15,7 @@ pub struct LayerPack {
 	pub biomes: BitLayerBiomes,
 	pub rivers_id: BitLayerRiversID,
 	pub georeg_id: BitLayerGeoregID,
+	pub bioreg_id: BitLayerBioregID,
 	pub topography: BitLayerTopography,
 	pub climate: BitLayerClimate,
 	pub rivers: BitLayerRivers,
@@ -56,6 +57,11 @@ pub struct BitLayerBiomes {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BitLayerRiversID {
+	pub data: Vec<u32>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct BitLayerBioregID {
 	pub data: Vec<u32>,
 }
 
@@ -228,6 +234,7 @@ impl_with_masks!(
 
 // Simple data layers without masks.
 impl_without_masks!(
+	BitLayerBioregID, u32;
 	BitLayerGeoregID, u32;
 	BitLayerRiversID, u32;
 	BitLayerBiomes, u8;

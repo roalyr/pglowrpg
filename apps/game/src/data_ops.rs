@@ -72,6 +72,7 @@ pub fn get_world_current(gd: &mut GameData) {
 
 	gd.water = gd.lp.topography.read(gd.lp.topography.WATERMASK, gd.index);
 	gd.biome = gd.lp.biomes.read(gd.index);
+	gd.bioreg_id = gd.lp.bioreg_id.read(gd.index);
 	gd.georeg_id = gd.lp.georeg_id.read(gd.index);
 	gd.river_id = gd.lp.rivers_id.read(gd.index);
 	gd.river_width = gd.lp.rivers.read(gd.lp.rivers.WIDTH, gd.index);

@@ -34,9 +34,17 @@ pub fn get_strings_basic(
 	]
 	.concat();
 
+	gs.bioreg_id_str = [
+		//&gs.gm_str.gm17,
+		"Region (biome): ",
+		&(gd.bioreg_id.to_string()),
+		"",
+	]
+	.concat();
+
 	gs.georeg_id_str = [
 		//&gs.gm_str.gm17,
-		"Region: ",
+		"Region (geological): ",
 		&(gd.georeg_id.to_string()),
 		"",
 	]
