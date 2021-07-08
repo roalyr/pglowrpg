@@ -113,6 +113,7 @@ def main_menu():
 		elif inp == "t": target_tree()
 		elif inp == "g": grep_search()
 		elif inp == "csf": clear_save()
+		elif inp == "todo": todo()
 		elif inp == "git": git_menu(); print_main_ops()
 		elif inp == "q": cl_divider(); quit()
 		
@@ -259,6 +260,7 @@ def print_main_ops():
 	print(tw_i.fill('(cl) - clear ".bk" files'))
 	print(tw_i.fill('(sp) - English spellcheck on "./locales/en"'))
 	print(tw_i.fill('(csf) - clear target save folder'))
+	print(tw_i.fill('(todo) - find all "todo" comments'))
 	print()
 	print(tw_i.fill('(d) - "cargo dep-graph" the project'))
 	print(tw_i.fill('(e) - "rustc --explain"'))
@@ -501,6 +503,10 @@ def grep_search():
 	comment = '# Enter the pattern to search in source files below\n'
 	pattern = write_not_empty(comment, flag=None, allow_exit=True)
 	os.system('grep --exclude-dir=".git" -rn --color=always'+' "'+pattern+'" '+' .')
+	
+def todo():
+	cl_divider();
+	os.system('grep --exclude="*.py" --exclude-dir=".git" -rni --color=always "todo" .')
 	
 def spell_check():
 	cl_divider();
