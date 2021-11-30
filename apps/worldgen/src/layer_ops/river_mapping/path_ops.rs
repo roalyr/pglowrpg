@@ -3,7 +3,7 @@ use crate::layer_ops::river_mapping::{RgParams, RiverEntry};
 use lib_constants::generic as cg;
 use lib_constants::world as cw;
 use lib_game_data_codec::LayerPack;
-use lib_text_ops::WS;
+use lib_text_ops::worldgen_strings as WS;
 
 //#[rustfmt::skip]
 impl RgParams {

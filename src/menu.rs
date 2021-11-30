@@ -1,5 +1,7 @@
 use lib_game_options::OPTIONS;
-use lib_text_ops::{prompt_input, MS, UI};
+use lib_text_ops::prompt_input;
+use lib_text_ops::menu_strings as MS;
+use lib_text_ops::interface_strings as UI;
 
 pub fn start() {
 	UI.print_newline();

@@ -7,7 +7,7 @@ pub mod struct_ops;
 
 use lib_game_options::OPTIONS;
 use lib_io_ops::readron::commands;
-use lib_text_ops::GS;
+use lib_text_ops::game_strings as GS;
 
 pub fn start() {
 	let input_locale = &OPTIONS.locale;

@@ -11,7 +11,9 @@ use lib_constants::world as cw;
 use lib_game_data_codec::*;
 use lib_game_options::OPTIONS;
 use lib_io_ops::readron::presets;
-use lib_text_ops::{prompt_input, UI, WS};
+use lib_text_ops::prompt_input;
+use lib_text_ops::worldgen_strings as WS;
+use lib_text_ops::interface_strings as UI;
 use lib_unit_systems::coords::Index;
 
 #[rustfmt::skip]

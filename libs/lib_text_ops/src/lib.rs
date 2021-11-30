@@ -26,22 +26,22 @@ pub struct UiStrings {
 	s: HashMap<String, String>,
 }
 lazy_static! {
-	pub static ref WS: WgStrings = {
+	pub static ref worldgen_strings: WgStrings = {
 		WgStrings {
 			s: get_strings_hashmaps!(OPTIONS.locale, NAME_STRINGS_WORLDGEN),
 		}
 	};
-	pub static ref GS: GmStrings = {
+	pub static ref game_strings: GmStrings = {
 		GmStrings {
 			s: get_strings_hashmaps!(OPTIONS.locale, NAME_STRINGS_GAME),
 		}
 	};
-	pub static ref MS: MnStrings = {
+	pub static ref menu_strings: MnStrings = {
 		MnStrings {
 			s: get_strings_hashmaps!(OPTIONS.locale, NAME_STRINGS_MENU),
 		}
 	};
-	pub static ref UI: UiStrings = {
+	pub static ref interface_strings: UiStrings = {
 		UiStrings {
 			s: get_strings_hashmaps!(OPTIONS.locale, NAME_STRINGS_UI),
 		}
