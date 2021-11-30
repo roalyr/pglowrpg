@@ -9,7 +9,7 @@ pub mod width_ops;
 use lib_constants::generic as cg;
 use lib_constants::world as cw;
 use lib_game_data_codec::LayerPack;
-use lib_text_ops::worldgen_strings as WS;
+use lib_text_ops::WORLDGEN_STRINGS as WS;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ STRUCTURES ▒▒▒▒▒▒▒▒▒▒▒▒▒
 //River entry stores all the relevant river data.

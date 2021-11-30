@@ -1,33 +1,17 @@
-use crate::input_ops::{input_coord, parse_input};
+use crate::commands_ops::commands_from_input::{input_coord, parse_input};
+use crate::commands_ops::commands_registry::Commands;
 use crate::printing_ops::map_render_land;
 use crate::struct_ops::{GameData, GameStrings};
 
 use lib_game_options::OPTIONS;
 use lib_text_ops::prompt_input;
 
-//▒▒▒▒▒▒ ADD NEW COMMANDS, STEP 3/4 ▒▒▒▒▒▒▒▒
-#[derive(Clone)]
-pub enum Command {
-	NoInput,
-	MapRenderLand,
-	PrintHelp,
-	Quit,
-	Test,
-	North,
-	East,
-	South,
-	West,
-	CoordX,
-	CoordY,
-}
-
-//▒▒▒▒▒▒ ADD NEW COMMANDS, STEP 4/4 ▒▒▒▒▒▒▒▒
 pub fn process_input(
 	gd: &mut GameData,
 	gs: &GameStrings,
 ) -> bool {
 	//This will determine if we should stop the main loop
-	//which is the caller to this function
+	//which is the caller to this function (i.e. close the game).
 	let mut continue_loop = true;
 
 	//let commands sequences translate into a state/action vector
@@ -45,7 +29,7 @@ pub fn process_input(
 	//A pattern matching fuction then could be called recursively depending
 	//on the action, thus is must have a well-defined interface.
 
-	//Commands could then have an embedded attribute (Action, Object,
+	//Commandss could then have an embedded attribute (Action, Object,
 	// Direction or Option) for extra matching.
 
 	//Vec of tuple of enum
@@ -53,8 +37,8 @@ pub fn process_input(
 	for t in input.iter() {
 		match t {
 			//Default
-			Command::NoInput => {}
-			Command::MapRenderLand => {
+			Commands::NoInput => {}
+			Commands::MapRenderLand => {
 				gd.map_render_size = prompt_input!("num"; {})
 					//&gs.gm_str.gm25, &gs.ui_el.prompt2)
 					.trim()
@@ -66,7 +50,7 @@ pub fn process_input(
 				map_render_land(gd, cy, cx);
 				//println!("{}", &gs.ui_el.separator2);
 			}
-			Command::PrintHelp => {
+			Commands::PrintHelp => {
 				//println!("{}", &gs.gm_str.gm2);
 				//Make this better
 				//println!("Registered commands are:\n{:?}", &gd.commands_vec);
@@ -74,36 +58,36 @@ pub fn process_input(
 				//to hold the loop or browse topics (planned feature)
 				//prompt_input!("word"; &gd.commands_vec; {});
 			}
-			Command::Quit => {
+			Commands::Quit => {
 				continue_loop = false;
 			}
-			Command::Test => {}
+			Commands::Test => {}
 
-			Command::North => {
+			Commands::North => {
 				gd.y = gd.y.saturating_add(1);
 				if gd.y >= gd.lp.wi.map_size {
 					gd.y = gd.lp.wi.map_size - 1;
 				}
 			}
-			Command::East => {
+			Commands::East => {
 				gd.x = gd.x.saturating_add(1);
 				if gd.x >= gd.lp.wi.map_size {
 					gd.x = gd.lp.wi.map_size - 1;
 				}
 			}
-			Command::South => {
+			Commands::South => {
 				gd.y = gd.y.saturating_sub(1);
 			}
-			Command::West => {
+			Commands::West => {
 				gd.x = gd.x.saturating_sub(1);
 			}
-			Command::CoordY => {
+			Commands::CoordY => {
 				gd.y = input_coord(gs).unwrap_or(gd.y);
 				if gd.y >= gd.lp.wi.map_size {
 					gd.y = gd.lp.wi.map_size - 1;
 				};
 			}
-			Command::CoordX => {
+			Commands::CoordX => {
 				gd.x = input_coord(gs).unwrap_or(gd.x);
 				if gd.x >= gd.lp.wi.map_size {
 					gd.x = gd.lp.wi.map_size - 1;

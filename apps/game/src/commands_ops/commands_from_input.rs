@@ -1,56 +1,54 @@
-use crate::action_ops::Command;
+use crate::commands_ops::commands_registry::Commands;
 use crate::struct_ops::{GameData, GameStrings};
 
 use lib_game_options::OPTIONS;
 use lib_text_ops::prompt_input;
 
-//▒▒▒▒▒▒▒▒▒▒ INPUT HANDLING ▒▒▒▒▒▒▒▒▒▒▒
 pub fn parse_input(
 	gd: &mut GameData,
 	_gs: &GameStrings,
-) -> Vec<Command> {
+) -> Vec<Commands> {
 	//Init the input reply sequence which will be returned to the game
 	let mut seq = Vec::new();
 	let input = prompt_input!("word"; &gd.commands_vec; {});
 
-	//▒▒▒▒▒▒ ADD NEW COMMANDS, STEP 2/4 ▒▒▒▒▒▒▒▒
 	match input.as_str() {
 		//Move
 		i if i == gd.commands.move_west => {
-			seq.push(Command::West);
+			seq.push(Commands::West);
 		}
 		i if i == gd.commands.move_north => {
-			seq.push(Command::North);
+			seq.push(Commands::North);
 		}
 		i if i == gd.commands.move_east => {
-			seq.push(Command::East);
+			seq.push(Commands::East);
 		}
 		i if i == gd.commands.move_south => {
-			seq.push(Command::South);
+			seq.push(Commands::South);
 		}
 		//Teleport
 		i if i == gd.commands.teleport_x => {
-			seq.push(Command::CoordX);
+			seq.push(Commands::CoordX);
 		}
 		i if i == gd.commands.teleport_y => {
-			seq.push(Command::CoordY);
+			seq.push(Commands::CoordY);
 		}
 		//General
 		i if i == gd.commands.quit => {
-			seq.push(Command::Quit);
+			seq.push(Commands::Quit);
 		}
 		i if i == gd.commands.map_render_land => {
-			seq.push(Command::MapRenderLand);
+			seq.push(Commands::MapRenderLand);
 		}
 		i if i == gd.commands.print_help => {
-			seq.push(Command::PrintHelp);
+			seq.push(Commands::PrintHelp);
 		}
 		i if i == gd.commands.test => {
-			seq.push(Command::Test);
+			seq.push(Commands::Test);
 		}
 
 		&_ => {
-			seq.push(Command::NoInput);
+			seq.push(Commands::NoInput);
 		}
 	}
 	seq

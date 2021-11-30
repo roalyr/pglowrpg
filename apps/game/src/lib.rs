@@ -1,17 +1,18 @@
-pub mod action_ops;
+pub mod commands_ops;
 pub mod data_ops;
 pub mod formatting_ops;
-pub mod input_ops;
 pub mod printing_ops;
 pub mod struct_ops;
 
+use crate::commands_ops::commands_processing;
+use crate::commands_ops::commands_strings;
 use lib_game_options::OPTIONS;
-use lib_io_ops::readron::commands;
-use lib_text_ops::game_strings as GS;
+use lib_text_ops::GAME_STRINGS as GS;
 
 pub fn start() {
 	let input_locale = &OPTIONS.locale;
-	let commands: commands::Stuff = commands::get(&input_locale);
+	let commands: commands_strings::CommandsStrings =
+		commands_strings::get(&input_locale);
 	//Init game structs
 	let mut gs = struct_ops::init_gs();
 	let mut gd = match struct_ops::init_gd(&gs, commands) {
@@ -51,7 +52,7 @@ pub fn start() {
 		println!("Registered commands are:\n{:?}", &gd.commands_vec);
 
 		//Input and actions
-		match action_ops::process_input(&mut gd, &gs) {
+		match commands_processing::process_input(&mut gd, &gs) {
 			true => continue,
 			false => return,
 		}

@@ -1,4 +1,4 @@
-use crate::interface_strings as UI;
+use crate::INTERFACE_STRINGS as UI;
 use colored::{Color, Colorize};
 use lib_game_options::OPTIONS;
 use lib_io_ops::readron::palettes;

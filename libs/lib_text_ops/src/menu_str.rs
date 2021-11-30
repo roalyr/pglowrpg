@@ -1,6 +1,6 @@
-use crate::{print_menu, return_string};
 use crate::MnStrings;
-use crate::interface_strings as UI;
+use crate::INTERFACE_STRINGS as UI;
+use crate::{print_menu, return_string};
 use lib_game_options::OPTIONS;
 use lib_io_ops::readron::palettes;
 use textwrap::{fill, termwidth, Options};

@@ -9,7 +9,7 @@ use crate::LayerPack;
 use lib_constants::app as ca;
 use lib_game_options::OPTIONS;
 use lib_io_ops::create_dir;
-use lib_text_ops::worldgen_strings as WS;
+use lib_text_ops::WORLDGEN_STRINGS as WS;
 use std::path::Path;
 
 pub fn write_save(

@@ -1,8 +1,8 @@
+use crate::WgStrings;
+use crate::INTERFACE_STRINGS as UI;
 use crate::{
 	print_list, print_menu, print_paragraph, print_progress, return_string,
 };
-use crate::WgStrings;
-use crate::interface_strings as UI;
 use lib_game_options::OPTIONS;
 use lib_io_ops::readron::palettes;
 use textwrap::{fill, termwidth, Options};
