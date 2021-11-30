@@ -15,15 +15,15 @@ deepsize = "0.2"
 ron = "0.6"
 
 
-unit_systems = { path = "../../libs/unit_systems" }
-game_data_codec = { path = "../../libs/game_data_codec" }
-constants = { path = "../../libs/constants" }
-io_ops = { path = "../../libs/io_ops" }
-text_ops = { path = "../../libs/text_ops" }
-pseudo_rng = { path = "../../libs/pseudo_rng" }
-pathfinding = { path = "../../libs/pathfinding" }
-game_options = { path = "../../libs/game_options" }
-floodfill = { path = "../../libs/floodfill" }
+lib_unit_systems = { path = "../../libs/lib_unit_systems" }
+lib_game_data_codec = { path = "../../libs/lib_game_data_codec" }
+lib_constants = { path = "../../libs/lib_constants" }
+lib_io_ops = { path = "../../libs/lib_io_ops" }
+lib_text_ops = { path = "../../libs/lib_text_ops" }
+lib_pseudo_rng = { path = "../../libs/lib_pseudo_rng" }
+lib_pathfinding = { path = "../../libs/lib_pathfinding" }
+lib_game_options = { path = "../../libs/lib_game_options" }
+lib_floodfill = { path = "../../libs/lib_floodfill" }
 
 
 

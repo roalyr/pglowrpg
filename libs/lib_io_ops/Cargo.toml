@@ -1,0 +1,13 @@
+[package]
+name = "lib_io_ops"
+version = "0.1.0"
+authors = ["roal_yr"]
+edition = "2018"
+
+
+[dependencies]
+lib_constants = { path = "../../libs/lib_constants" }
+
+serde = { version = "1.0", features = ["derive"]  }
+ron = "0.6"
+lz4 = "1.23"

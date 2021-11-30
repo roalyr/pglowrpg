@@ -1,5 +1,6 @@
-use constants::generic as cg;
-use game_data_codec::LayerPack;
+use lib_constants::generic as cg;
+use lib_floodfill::FloodFill;
+use lib_game_data_codec::LayerPack;
 
 //This code is unfinished
 
@@ -13,7 +14,7 @@ pub fn get(lp: &mut LayerPack) {
 	let mut region_id: u32 = cg::ID_MAP_MIN_U32;
 	let mut greg_map = vec![cg::ID_MAP_NO_U32; lp.layer_vec_len as usize];
 	// Floodfill on watermask.
-	let mut ff_wm = floodfill::FloodFill::new(&wmask_map, lp.wi.map_size);
+	let mut ff_wm = FloodFill::new(&wmask_map, lp.wi.map_size);
 	for j in 0..lp.wi.map_size {
 		for i in 0..lp.wi.map_size {
 			if !ff_wm.exclusion_map[lp.index.get(i, j)]

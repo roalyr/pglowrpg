@@ -1,5 +1,5 @@
+use lib_unit_systems::coords::Index;
 use std::collections::BTreeMap;
-use unit_systems::coords::Index;
 
 //HEXAGONIFY is not currently used.
 pub fn hexagonify<T>(

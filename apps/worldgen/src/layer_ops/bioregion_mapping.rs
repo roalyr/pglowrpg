@@ -1,7 +1,8 @@
-use constants::generic as cg;
-use constants::world as cw;
-use game_data_codec::LayerPack;
-use unit_systems::translate;
+use lib_constants::generic as cg;
+use lib_constants::world as cw;
+use lib_floodfill::FloodFill;
+use lib_game_data_codec::LayerPack;
+use lib_unit_systems::translate;
 
 //TODO: improve georegions based on elevation too.
 //TODO: gather region data (size, location, cetroid, etc.).
@@ -31,9 +32,9 @@ pub fn get(lp: &mut LayerPack) {
 	let mut region_id: u32 = cg::ID_MAP_MIN_U32;
 	let mut bioreg_map = vec![cg::ID_MAP_NO_U32; lp.layer_vec_len as usize];
 	// Floodfill on biomes, watermask and elevation mask.
-	let mut ff_bi = floodfill::FloodFill::new(&biome_map, lp.wi.map_size);
-	let mut ff_wm = floodfill::FloodFill::new(&wmask_map, lp.wi.map_size);
-	let mut ff_el = floodfill::FloodFill::new(&elev_map_mask, lp.wi.map_size);
+	let mut ff_bi = FloodFill::new(&biome_map, lp.wi.map_size);
+	let mut ff_wm = FloodFill::new(&wmask_map, lp.wi.map_size);
+	let mut ff_el = FloodFill::new(&elev_map_mask, lp.wi.map_size);
 	// Land regions only.
 	for j in 0..lp.wi.map_size {
 		for i in 0..lp.wi.map_size {

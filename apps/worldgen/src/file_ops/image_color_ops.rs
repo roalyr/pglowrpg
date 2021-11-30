@@ -1,9 +1,9 @@
 use crate::LayerPack;
-use constants::app as ca;
-use constants::generic as cg;
-use game_options::OPTIONS;
-use image_ops::{combined_png, simple_png, GradMode, Mode};
-use io_ops::create_dir;
+use lib_constants::app as ca;
+use lib_constants::generic as cg;
+use lib_game_options::OPTIONS;
+use lib_image_ops::{combined_png, simple_png, GradMode, Mode};
+use lib_io_ops::create_dir;
 use std::path::Path;
 
 pub fn write_images_color(
@@ -51,7 +51,7 @@ pub fn write_images_color(
 	if OPTIONS.render_temperature {
 		//println!("{}", wg_str.wg10);
 		let file_path = color_img_dir
-			.join(ca::NAME_IMAGE_COLOR_TERRAIN)
+			.join(ca::NAME_IMAGE_COLOR_TEMPERATURE)
 			.with_extension(ca::EXTENSION_SAVE_IMAGE);
 		for y in 0..map_size {
 			for x in 0..map_size {

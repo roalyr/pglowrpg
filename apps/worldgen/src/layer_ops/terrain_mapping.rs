@@ -1,7 +1,7 @@
 use crate::array_ops;
 use crate::array_ops::noise_maps;
 use crate::array_ops::noise_maps::NoiseMode;
-use game_data_codec::LayerPack;
+use lib_game_data_codec::LayerPack;
 //use constants::world as cw;
 
 pub fn get(lp: &mut LayerPack) {

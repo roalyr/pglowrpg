@@ -6,13 +6,13 @@ pub mod misc_ops;
 use crate::file_ops::write_save;
 use crate::misc_ops::convert_preset_values;
 use crate::misc_ops::seed_generating;
-use constants::app as ca;
-use constants::world as cw;
-use game_data_codec::*;
-use game_options::OPTIONS;
-use io_ops::readron::presets;
-use text_ops::{prompt_input, UI, WS};
-use unit_systems::coords::Index;
+use lib_constants::app as ca;
+use lib_constants::world as cw;
+use lib_game_data_codec::*;
+use lib_game_options::OPTIONS;
+use lib_io_ops::readron::presets;
+use lib_text_ops::{prompt_input, UI, WS};
+use lib_unit_systems::coords::Index;
 
 #[rustfmt::skip]
 pub fn start() {
@@ -22,11 +22,11 @@ pub fn start() {
 	WS.print_intro();
 	
 	// Preset selection.
-	let preset_def = io_ops::dir_file_contents(
+	let preset_def = lib_io_ops::dir_file_contents(
 		ca::PATH_PRESETS_WORLD,
 		ca::EXTENSION_PRESET_WORLD,
 	);
-	let preset_user = io_ops::dir_file_contents(
+	let preset_user = lib_io_ops::dir_file_contents(
 		ca::PATH_PRESETS_WORLD_USER,
 		ca::EXTENSION_PRESET_WORLD,
 	);

@@ -1,9 +1,9 @@
 use crate::array_ops::noise_maps::NoiseMode;
 use crate::layer_ops::river_mapping::{RgParams, RiverEntry};
-use constants::generic as cg;
-use constants::world as cw;
-use game_data_codec::LayerPack;
-use text_ops::WS;
+use lib_constants::generic as cg;
+use lib_constants::world as cw;
+use lib_game_data_codec::LayerPack;
+use lib_text_ops::WS;
 
 //#[rustfmt::skip]
 impl RgParams {
@@ -45,7 +45,7 @@ impl RgParams {
 		let index = lp.index.get(i, j);
 		let wmask = lp.topography.read(lp.topography.WATERMASK, index);
 		//To spawn or not to spawn?
-		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 708563945, index);
+		let random = lib_pseudo_rng::get(0.0, 1.0, lp.wi.seed + 708563945, index);
 		let total_prob = self.prob(i, j, lp);
 		if (random <= total_prob) && (wmask == cw::NO_WATER) {
 			// Print the progress
@@ -125,10 +125,10 @@ impl RgParams {
 		seg_len: u32,
 		terrain_map: &Vec<u8>,
 		diag_flag: bool,
-	) -> Vec<pathfinding::Pos> {
+	) -> Vec<lib_pathfinding::Pos> {
 		self.dv.path_heuristic = cw::RIVER_HEUR_INIT;
 		//iter 1
-		let result_init = pathfinding::make(
+		let result_init = lib_pathfinding::make(
 			&self.dv,
 			&terrain_map,
 			lp.wi.map_size,
@@ -140,7 +140,7 @@ impl RgParams {
 			* lp.wi.river_heuristic_factor) as u32;
 		self.dv.path_heuristic = estimated_heuristic;
 		//iter 2
-		let result = pathfinding::make(
+		let result = lib_pathfinding::make(
 			&self.dv,
 			&terrain_map,
 			lp.wi.map_size,

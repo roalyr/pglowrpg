@@ -1,9 +1,9 @@
 use crate::layer_ops::river_mapping::RgParams;
-use constants::generic as cg;
-use constants::world as cw;
-use game_data_codec::LayerPack;
+use lib_constants::generic as cg;
+use lib_constants::world as cw;
+use lib_game_data_codec::LayerPack;
+use lib_unit_systems::translate;
 use line_drawing::BresenhamCircle;
-use unit_systems::translate;
 
 impl RgParams {
 	// If water bodies exist, make rivers fall into them, but
@@ -64,7 +64,7 @@ impl RgParams {
 		lp: &mut LayerPack,
 	) {
 		let ind = lp.index.get(self.dv.x0, self.dv.y0);
-		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 754532541, ind);
+		let random = lib_pseudo_rng::get(0.0, 1.0, lp.wi.seed + 754532541, ind);
 		// Decide which edge to put the end onto.
 		if random > 0.5 {
 			self.randomize_end_x(lp, ind);
@@ -79,7 +79,7 @@ impl RgParams {
 		ind: usize,
 	) {
 		// Put it on either of the edges.
-		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 578241369, ind);
+		let random = lib_pseudo_rng::get(0.0, 1.0, lp.wi.seed + 578241369, ind);
 		if random > 0.5 {
 			self.dv.y1 = 0;
 		} else {
@@ -87,7 +87,8 @@ impl RgParams {
 		}
 		// At a random coordinate.
 		self.dv.x1 =
-			pseudo_rng::get(0.0, lp.wi.map_size as f32, lp.wi.seed + 3, ind) as u32;
+			lib_pseudo_rng::get(0.0, lp.wi.map_size as f32, lp.wi.seed + 3, ind)
+				as u32;
 	}
 
 	fn randomize_end_y(
@@ -96,7 +97,7 @@ impl RgParams {
 		ind: usize,
 	) {
 		// Put it on either of the edges.
-		let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 607421365, ind);
+		let random = lib_pseudo_rng::get(0.0, 1.0, lp.wi.seed + 607421365, ind);
 		if random > 0.5 {
 			self.dv.x1 = 0;
 		} else {
@@ -104,6 +105,7 @@ impl RgParams {
 		}
 		// At a random coordinate.
 		self.dv.y1 =
-			pseudo_rng::get(0.0, lp.wi.map_size as f32, lp.wi.seed + 4, ind) as u32;
+			lib_pseudo_rng::get(0.0, lp.wi.map_size as f32, lp.wi.seed + 4, ind)
+				as u32;
 	}
 }

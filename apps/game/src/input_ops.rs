@@ -1,8 +1,8 @@
 use crate::action_ops::Command;
 use crate::struct_ops::{GameData, GameStrings};
 
-use game_options::OPTIONS;
-use text_ops::prompt_input;
+use lib_game_options::OPTIONS;
+use lib_text_ops::prompt_input;
 
 //▒▒▒▒▒▒▒▒▒▒ INPUT HANDLING ▒▒▒▒▒▒▒▒▒▒▒
 pub fn parse_input(

@@ -1,8 +1,8 @@
 use crate::layer_ops::river_mapping::{ErosionEntry, RgParams, RiverEntry};
-use constants::generic as cg;
-use constants::world as cw;
-use game_data_codec::LayerPack;
-use unit_systems::translate;
+use lib_constants::generic as cg;
+use lib_constants::world as cw;
+use lib_game_data_codec::LayerPack;
+use lib_unit_systems::translate;
 
 impl RgParams {
 	pub fn map_erosion(
@@ -63,7 +63,7 @@ impl RgParams {
 	fn erode_path(
 		&mut self,
 		lp: &mut LayerPack,
-		path_array: Vec<pathfinding::Pos>,
+		path_array: Vec<lib_pathfinding::Pos>,
 		terrain_diff: u16,
 	) {
 		//Aliases

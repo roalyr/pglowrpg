@@ -1,0 +1,9 @@
+[package]
+name = "lib_floodfill"
+version = "0.1.0"
+authors = ["roal_yr"]
+edition = "2018"
+
+
+[dependencies]
+lib_unit_systems = { path = "../../libs/lib_unit_systems" }

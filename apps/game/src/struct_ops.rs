@@ -1,6 +1,6 @@
 use crate::data_ops::get_layerpack;
-use game_data_codec::LayerPack;
-use io_ops::readron::commands;
+use lib_game_data_codec::LayerPack;
+use lib_io_ops::readron::commands;
 
 //Common shared data for all the functions
 pub struct GameData {

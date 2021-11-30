@@ -6,11 +6,11 @@ use crate::file_ops::data_ops::write_data;
 use crate::file_ops::image_color_ops::write_images_color;
 use crate::file_ops::image_raw_ops::write_images_raw;
 use crate::LayerPack;
-use constants::app as ca;
-use game_options::OPTIONS;
-use io_ops::create_dir;
+use lib_constants::app as ca;
+use lib_game_options::OPTIONS;
+use lib_io_ops::create_dir;
+use lib_text_ops::WS;
 use std::path::Path;
-use text_ops::WS;
 
 pub fn write_save(
 	lp: &mut LayerPack,

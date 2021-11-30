@@ -1,0 +1,14 @@
+[package]
+name = "lib_game_options"
+version = "0.1.0"
+authors = ["roal_yr"]
+edition = "2018"
+
+
+[dependencies]
+lib_io_ops = { path = "../../libs/lib_io_ops" }
+lib_constants = { path = "../../libs/lib_constants" }
+
+serde = { version = "1.0", features = ["derive"]  }
+ron = "0.6"
+lazy_static = "1.4"

@@ -1,0 +1,14 @@
+[package]
+name = "lib_image_ops"
+version = "0.1.0"
+authors = ["roal_yr"]
+edition = "2018"
+
+
+[dependencies]
+lib_constants = { path = "../../libs/lib_constants" }
+lib_pseudo_rng = { path = "../../libs/lib_pseudo_rng" }
+lib_io_ops = { path = "../../libs/lib_io_ops" }
+
+png = "0.16"
+hex = "0.4"

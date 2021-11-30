@@ -1,8 +1,8 @@
 use crate::layer_ops::river_mapping::RgParams;
-use constants::generic as cg;
-use constants::world as cw;
-use game_data_codec::LayerPack;
-use unit_systems::translate;
+use lib_constants::generic as cg;
+use lib_constants::world as cw;
+use lib_game_data_codec::LayerPack;
+use lib_unit_systems::translate;
 
 impl RgParams {
 	pub fn estimate_sources_number(
@@ -12,7 +12,8 @@ impl RgParams {
 		for j in 0..lp.wi.map_size {
 			for i in 0..lp.wi.map_size {
 				let index = lp.index.get(i, j);
-				let random = pseudo_rng::get(0.0, 1.0, lp.wi.seed + 284573920, index);
+				let random =
+					lib_pseudo_rng::get(0.0, 1.0, lp.wi.seed + 284573920, index);
 				let total_prob = self.prob(i, j, lp);
 				if (random <= total_prob)
 					&& (lp.topography.read(lp.topography.WATERMASK, index)

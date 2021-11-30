@@ -1,11 +1,12 @@
-use constants::generic as cg;
-use constants::world as cw;
-use game_data_codec::LayerPack;
-use unit_systems::translate;
+use lib_constants::generic as cg;
+use lib_constants::world as cw;
+use lib_floodfill::FloodFill;
+use lib_game_data_codec::LayerPack;
+use lib_unit_systems::translate;
 
 pub fn get(lp: &mut LayerPack) {
 	let blank = vec![cw::NO_WATER; lp.layer_vec_len as usize];
-	let mut ff = floodfill::FloodFill::new(&blank, lp.wi.map_size);
+	let mut ff = FloodFill::new(&blank, lp.wi.map_size);
 	//Write down an exclusion map for dry and icy regions.
 	for j in 0..lp.wi.map_size {
 		for i in 0..lp.wi.map_size {
@@ -47,7 +48,7 @@ pub fn get(lp: &mut LayerPack) {
 
 fn write_map(
 	lp: &mut LayerPack,
-	ff: &mut floodfill::FloodFill<u16>,
+	ff: &mut FloodFill<u16>,
 ) {
 	for y in ff.y_min..=ff.y_max {
 		for x in ff.x_min..=ff.x_max {

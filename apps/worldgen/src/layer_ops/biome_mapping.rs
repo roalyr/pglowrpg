@@ -1,7 +1,7 @@
-use constants::generic as cg;
-use constants::world::*;
-use game_data_codec::LayerPack;
-use unit_systems::translate;
+use lib_constants::generic as cg;
+use lib_constants::world::*;
+use lib_game_data_codec::LayerPack;
+use lib_unit_systems::translate;
 
 pub fn get(lp: &mut LayerPack) {
 	for ind in 0..lp.layer_vec_len as usize {

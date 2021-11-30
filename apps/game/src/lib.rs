@@ -5,9 +5,9 @@ pub mod input_ops;
 pub mod printing_ops;
 pub mod struct_ops;
 
-use game_options::OPTIONS;
-use io_ops::readron::commands;
-use text_ops::GS;
+use lib_game_options::OPTIONS;
+use lib_io_ops::readron::commands;
+use lib_text_ops::GS;
 
 pub fn start() {
 	let input_locale = &OPTIONS.locale;

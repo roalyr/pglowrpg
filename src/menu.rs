@@ -1,5 +1,5 @@
-use game_options::OPTIONS;
-use text_ops::{prompt_input, MS, UI};
+use lib_game_options::OPTIONS;
+use lib_text_ops::{prompt_input, MS, UI};
 
 pub fn start() {
 	UI.print_newline();

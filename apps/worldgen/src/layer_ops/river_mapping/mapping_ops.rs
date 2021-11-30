@@ -1,11 +1,11 @@
 use crate::layer_ops::river_mapping::{
 	ErosionEntry, RgParams, RiverEntry, WidthEntry,
 };
-use constants::generic as cg;
-use constants::world as cw;
-use game_data_codec::LayerPack;
+use lib_constants::generic as cg;
+use lib_constants::world as cw;
+use lib_game_data_codec::LayerPack;
+use lib_unit_systems::translate;
 use std::cmp::Ordering;
-use unit_systems::translate;
 
 #[rustfmt::skip]
 impl RgParams {

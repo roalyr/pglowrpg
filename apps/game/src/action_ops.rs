@@ -2,8 +2,8 @@ use crate::input_ops::{input_coord, parse_input};
 use crate::printing_ops::map_render_land;
 use crate::struct_ops::{GameData, GameStrings};
 
-use game_options::OPTIONS;
-use text_ops::prompt_input;
+use lib_game_options::OPTIONS;
+use lib_text_ops::prompt_input;
 
 //▒▒▒▒▒▒ ADD NEW COMMANDS, STEP 3/4 ▒▒▒▒▒▒▒▒
 #[derive(Clone)]

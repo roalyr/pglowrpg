@@ -1,5 +1,5 @@
-use constants::world::*;
-use io_ops::readron::presets;
+use lib_constants::world::*;
+use lib_io_ops::readron::presets;
 
 struct Cap2<T> {
 	min: T,

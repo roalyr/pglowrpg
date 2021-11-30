@@ -1,0 +1,13 @@
+[package]
+name = "lib_pathfinding"
+version = "0.1.0"
+authors = ["roal_yr"]
+edition = "2018"
+
+
+[dependencies]
+lib_unit_systems = { path = "../../libs/lib_unit_systems" }
+lib_pseudo_rng = { path = "../../libs/lib_pseudo_rng" }
+
+noise = { version = "0.6", default-features = false }
+pathfinding = "2.0"

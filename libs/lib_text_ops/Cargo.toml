@@ -1,0 +1,19 @@
+[package]
+name = "lib_text_ops"
+version = "0.1.0"
+authors = ["roal_yr"]
+edition = "2018"
+
+
+[dependencies]
+lib_io_ops = { path = "../../libs/lib_io_ops" }
+lib_constants = { path = "../../libs/lib_constants" }
+lib_game_options = { path = "../../libs/lib_game_options" }
+
+
+substring = "1.4"
+terminal_size = "0.1"
+colored = "2.0"
+ron = "0.6"
+lazy_static = "1.4"
+textwrap = { version = "0.13", features = ["terminal_size"] }

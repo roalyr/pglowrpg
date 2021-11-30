@@ -1,5 +1,5 @@
 use crate::layer_ops::river_mapping::RgParams;
-use game_data_codec::LayerPack;
+use lib_game_data_codec::LayerPack;
 
 #[rustfmt::skip]
 impl RgParams {

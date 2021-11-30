@@ -1,0 +1,12 @@
+[package]
+name = "lib_game_data_codec"
+version = "0.1.0"
+authors = ["roal_yr"]
+edition = "2018"
+
+
+[dependencies]
+lib_unit_systems = { path = "../../libs/lib_unit_systems" }
+lib_io_ops = { path = "../../libs/lib_io_ops" }
+
+serde = { version = "1.0", features = ["derive"]  }

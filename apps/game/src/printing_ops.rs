@@ -1,8 +1,8 @@
 use crate::struct_ops::{GameData, GameStrings};
 
 use colored::*;
-use image_ops::from_hex;
-use io_ops::readron::palettes::biomes;
+use lib_image_ops::from_hex;
+use lib_io_ops::readron::palettes::biomes;
 
 pub fn print_strings_basic(gs: &GameStrings) {
 	println!("{}", gs.coord_str);
@@ -205,7 +205,7 @@ pub fn map_render_land(
 
 				//Swap characters every other row for better visuals
 				//Or do it randomly
-				let random = pseudo_rng::get(0.0, 1.0, gd.lp.wi.seed, render_index);
+				let random = lib_pseudo_rng::get(0.0, 1.0, gd.lp.wi.seed, render_index);
 
 				if random < 0.5 {
 					// Keep the unwraps for now.

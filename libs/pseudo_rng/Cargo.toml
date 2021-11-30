@@ -1,9 +1,0 @@
-[package]
-name = "pseudo_rng"
-version = "0.1.0"
-authors = ["roal_yr"]
-edition = "2018"
-
-
-[dependencies]
-oorandom = "11.1"
