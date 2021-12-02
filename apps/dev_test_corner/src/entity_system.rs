@@ -5,13 +5,19 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 pub fn start() {
-	// DEFINING OBJECTS
-	// This is a standard set of parameters for a type.
+	// MATERIALS GENERAL
+	// Properties of a material, that define it.
 	#[derive(Debug, Clone, Serialize, Deserialize, DeepSizeOf)]
 	struct MaterialProperties {
-		property: String, // Standard stuff such as material density, strength, etc.
+		property: String, 
+		// density
+		// strength
+		// color
 	}
-	// This is all possible variations of the Material type.
+	
+	// INDIVIDUAL MATERIALS
+	// All existing individual materials.
+	// TODO: keep materials hardcoded?
 	#[derive(Debug, Clone, Serialize, Deserialize, DeepSizeOf)]
 	enum Material {
 		Bone(MaterialProperties),
@@ -20,40 +26,67 @@ pub fn start() {
 		Hair(MaterialProperties),
 	}
 
-	// Another pair of definitions.
+	// ENTITY KIND GENERAL
+	// Commin for all creatures.
 	#[derive(Debug, Clone, Serialize, Deserialize, DeepSizeOf)]
 	struct CreatureProperties {
 		materials: Vec<Material>,
-		// Behavior, size, structure, etc.
+		// behavior
+		// size
+		// structure
+		// etc.
 	}
+	// Commin for all plants.
+	//#[derive(Debug, Clone, Serialize, Deserialize, DeepSizeOf)]
+	//struct PlantProperties {
+		//materials: Vec<Material>,
+		// size
+		// structure
+		// etc.
+	}
+	
+	// UNIQUE ENTITY TYPES.
+	// All possible entities.
 	#[derive(Debug, Clone, Serialize, Deserialize, DeepSizeOf)]
 	enum EntityType {
-		//Plant(PlantProperties),
 		Creature(CreatureProperties),
+		// Plant(PlantProperties),
+		// Item(ItemProperties),
 	}
+	
+	// UNIQUE ENTITY DATA PACKAGE.
+	// This is a container for all the data attached to an entity in 
+	// game space.
 	#[derive(Debug, Clone, Serialize, Deserialize, DeepSizeOf)]
 	struct EntityData {
-		// Everything that must be written in .ron
-		entity_name: String,
+		// Codename is an internal name to match against respective
+		// langauge strings with display name and descriptions.
+		entity_codename: String,
 		entity_type: EntityType,
 	}
-	// Keep generic data in the header of the struct for ease of access.
+	
+	// UNIQUE ENTITY ITSELF.
 	#[derive(Debug, Clone, Serialize, Deserialize, DeepSizeOf)]
 	struct UniqueEntity {
 		uid: u32,
 		x: u32,
 		y: u32,
+		// Unique values for given entity.
+		// room or location
+		// state
+		// age
+		// etc.
 		data: EntityData,
+		// Unique attached data links for given entity.
 		// Associated items (inventory cache ID), etc.
 		// Thoughts.
 	}
 
-	// RON stuff. Basically a string from the preset file.
-	// Should match the EntityType enum above.
+	// ENTITY PRESET FILE.
 	// One entity per file.
 	let data = r#"
 			EntityData(
-				entity_name : "rabbit",
+				entity_codename : "rabbit",
 				entity_type : Creature(
 					CreatureProperties(
 						materials: [
@@ -83,8 +116,12 @@ pub fn start() {
 			)
 		"#;
 
+
+	// LOAD AND PARSE ON STARTUP.
 	// Parse presets and store data in type vectors.
 	// Loop through all presets and preset folders.
+	// This data is loaded once on worldgen, and then it should be
+	// saved to the game data package.
 	let entity_from_file: EntityData = match ron::from_str(&data) {
 		Ok(f) => f,
 		Err(e) => {
@@ -92,19 +129,23 @@ pub fn start() {
 			std::process::exit(0);
 		}
 	};
+	// Those are types not unique entities.
 	let mut creature_types = Vec::new();
+	//let mut plant_types = Vec::new();
 	//let mut item_types = Vec::new();
 	//...
 	// Sort entities into respective type vectors.
 	match &entity_from_file.entity_type {
 		EntityType::Creature(_) => {
 			creature_types.push(entity_from_file);
-		} //EntityType::Item...
+		} 
+		//EntityType::Plant...
+		//EntityType::Item...
 	}
 
 	// MAKING NON-SPATIAL GLOBAL TABLE.
-	// Make init cap and total cap. Defines hasmap size.
-	// Must be less than max ID values which will be U32 max.
+	// Make total number cap. Defines hasmap size.
+	// Must be less than max ID value which will be U32 max.
 	let creatures_cap = 1_000_000;
 	let test_creatures_num = 3;
 	//let items_cap = 1_000_000;
@@ -114,31 +155,51 @@ pub fn start() {
 	//let mut unique_items....
 
 	// GENERATING UNIQUE ENTITIES.
-	// Map - Vec<Cache_ID>,
-	// Entities cache table - HashMap<Cache_ID, Vec<Entity_UID>,
-	// Entities table - HashMap<Entity_UID, Entity>,
+	//This is done one worldgen stage.
+	// -------------------------------------------------------------
+	// The relations and data embedding is like this:
+	//
+	// Blob of entities on map:
+	// Map cell (x, y) -> [Cache_ID]
+	//
+	// What entities are in what blob:
+	// Entities cache table -> <Cache_ID, Vec<Entity_UID>>
+	//
+	// Which entiry is of what kind and has which data.
+	// Entities table - HashMap<Entity_UID, UniqueEntity>,
+	// -------------------------------------------------------------
 
+	// TEST
 	// Making a non-spatial cache table to put specific creatures
 	// onto the map in specific locations.
 	// Cache table is related to map size.
 	let map_size: u32 = 4096;
 	let cache_table_size = (map_size * map_size) as usize;
-	// CACHE MAP
+	
+	// CACHE TABLE.
+	// Created at worldgen.
 	let mut creatures_cache: HashMap<u32, Vec<u32>> =
 		HashMap::with_capacity(cache_table_size);
+		
+	// let mut plants_cache...
+	// let mut items_cache...
 
-	// UID is personal ID, not a type ID.
+
+	// UID here is personal ID, not a type ID.
+	// Starting value.
 	let mut uid_creature: u32 = 1;
+	
+	// This is the record of UIDs of creatures in the local coords.
+	// Temporary value, stores entities at given location.
+	let mut uids_creatures_local = Vec::new();
+	
+	// Location (within entity generator loop)
 	let x: u32 = 10;
 	let y: u32 = 110;
 	let index = Index { map_size };
 	let ind = index.get(x, y) as u32;
-	// This is the record of UIDs of creatures in the local coords.
-	let mut uids_creatures_local = Vec::new();
 
-	//let mut uid_item: u32 = 1;
-	//...
-
+	// LOADING AND WRITING ENTITIES.
 	// Use find to locate the required entity type and load its data.
 	// This will be called by "creatures" layer generator.
 	// The specific string will correspond to whatever is required from list.
@@ -146,7 +207,7 @@ pub fn start() {
 		uids_creatures_local.push(uid_creature);
 		if let Some(creature_type) = creature_types
 			.iter()
-			.find(|EntityData { entity_name: x, .. }| *x == "rabbit")
+			.find(|EntityData { entity_codename: x, .. }| *x == "rabbit")
 		{
 			unique_creatures.insert(
 				uid_creature,
@@ -165,11 +226,12 @@ pub fn start() {
 	}
 	println!("Total number of creatures: {}", unique_creatures.len());
 
-	// Put an entity into the cache immediately.
+	// PUTTING A BATCH OF ENTITIES ON MAP.
 	creatures_cache.insert(ind, uids_creatures_local);
 
 	// MAKE DESTRUCTORS FOR SPEIFIC UNIQUE ENTITY TYPES.
 
+	// TEST. READING AND PARSING.
 	// Now access the creatures in the given location:
 	let local_entities = &creatures_cache[&ind];
 	println!("{}", "\nCHECKING ENTRIES IN THE LOCATION".green());
@@ -183,7 +245,7 @@ pub fn start() {
 				match &entity.data.entity_type {
 					// Have different destructors for different types.
 					EntityType::Creature(properties) => {
-						println!("Type: {:?}", &entity.data.entity_name);
+						println!("Type: {:?}", &entity.data.entity_codename);
 						// Move it into creature destructor.
 						for material in properties.materials.iter() {
 							// Move into material destructor.
