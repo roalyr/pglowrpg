@@ -43,7 +43,7 @@ pub fn start() {
 		// size
 		// structure
 		// etc.
-	}
+	//}
 	
 	// UNIQUE ENTITY TYPES.
 	// All possible entities.
