@@ -38,11 +38,14 @@ pub fn start() {
 
 	//Main loop
 	loop {
-		//Game mechanics
-		data_ops::get_world_current(&mut gd);
+		// GAME MECHANICS
+		// Take data at given coords (player pos in this case).
+		let x = gd.x;
+		let y = gd.y;
+		let wd = data_ops::get_world_data_at(&mut gd, x, y);
 
-		//UI printing and rendering
-		formatting_ops::get_strings_basic(&gd, &mut gs);
+		//UI PRINTING AND RENDERING.
+		formatting_ops::get_strings_basic(&gd, &wd, &mut gs);
 		printing_ops::print_strings_basic(&gs);
 
 		//temporary here, for debug
@@ -51,10 +54,10 @@ pub fn start() {
 		printing_ops::map_render_land(&mut gd, cy, cx);
 		println!("Registered commands are:\n{:?}", &gd.commands_vec);
 
-		//Input and actions
+		//INPUT AND ACTIONS.
 		match commands_processing::process_input(&mut gd, &gs) {
 			true => continue,
-			false => return,
+			false => return, // a quit flag.
 		}
 	}
 }

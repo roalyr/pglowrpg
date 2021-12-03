@@ -9,8 +9,16 @@ pub struct GameData {
 	//Commands
 	pub commands: commands_strings::CommandsStrings,
 	pub commands_vec: Vec<String>,
-	//Coordinates
-	//+x is east, +y is north
+	//Coordinates (current)
+	pub x: u32,
+	pub y: u32,
+	pub index: usize,
+	//Other in-game variables
+	pub map_render_size: usize,
+}
+
+pub struct WorldData {
+	//Coordinates (where data is taken)
 	pub x: u32,
 	pub y: u32,
 	pub index: usize,
@@ -28,8 +36,6 @@ pub struct GameData {
 	pub river_element: u16,
 	pub river_upstream: u16,
 	pub river_downstream: u16,
-	//Other in-game variables
-	pub map_render_size: usize,
 }
 
 pub struct GameStrings {
@@ -70,7 +76,17 @@ pub fn init_gd(
 		x,
 		y,
 		index,
-		//Temporary working variables
+		//Other in-game variables
+		map_render_size: 13,
+	};
+	Some(gd)
+}
+
+pub fn init_wd() -> WorldData {
+	WorldData {
+		x: 0,
+		y: 0,
+		index: 0,
 		//World data abs values
 		temp: 0,
 		rain: 0,
@@ -84,11 +100,9 @@ pub fn init_gd(
 		river_element: 0,
 		river_upstream: 0,
 		river_downstream: 0,
-		//Other in-game variables
-		map_render_size: 13,
-	};
-	Some(gd)
+	}
 }
+
 //Strings for printing
 pub fn init_gs() -> GameStrings {
 	GameStrings {

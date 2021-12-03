@@ -1,4 +1,4 @@
-use crate::struct_ops::{GameData, GameStrings};
+use crate::struct_ops::{GameData, GameStrings, WorldData};
 
 use lib_constants::app as ca;
 use lib_constants::generic as cg;
@@ -46,37 +46,48 @@ pub fn get_layerpack(_gs: &GameStrings) -> Option<LayerPack> {
 	}
 }
 
-pub fn get_world_current(gd: &mut GameData) {
-	//Coordinates 1D,  2D, height
-	//Swapping x and y, in reverse to worldgen.
-	gd.index = gd.lp.index.get(gd.x, gd.y);
-	//Into data ops
-	gd.temp = translate::get_abs(
-		gd.lp.climate.read(gd.lp.climate.TEMPERATURE, gd.index) as f32,
+// This function should return a hasmap?
+pub fn get_world_data_at(
+	gd: &mut GameData,
+	x: u32,
+	y: u32,
+) -> WorldData {
+	//Swapping x and y, in reverse to worldgen?
+	let index = gd.lp.index.get(x, y);
+	let temp = translate::get_abs(
+		gd.lp.climate.read(gd.lp.climate.TEMPERATURE, index) as f32,
 		cg::VAL_255_F32,
 		gd.lp.wi.abs_temp_min as f32,
 		gd.lp.wi.abs_temp_max as f32,
 	) as i32;
-	gd.rain = translate::get_abs(
-		gd.lp.climate.read(gd.lp.climate.RAINFALL, gd.index) as f32,
+	let rain = translate::get_abs(
+		gd.lp.climate.read(gd.lp.climate.RAINFALL, index) as f32,
 		cg::VAL_255_F32,
 		gd.lp.wi.abs_rain_min as f32,
 		gd.lp.wi.abs_rain_max as f32,
 	) as u32;
-	gd.elev = translate::get_abs(
-		gd.lp.topography.read(gd.lp.topography.TERRAIN, gd.index) as f32,
+	let elev = translate::get_abs(
+		gd.lp.topography.read(gd.lp.topography.TERRAIN, index) as f32,
 		cg::VAL_255_F32,
 		gd.lp.wi.abs_elev_min as f32,
 		gd.lp.wi.abs_elev_max as f32,
 	) as u32;
 
-	gd.water = gd.lp.topography.read(gd.lp.topography.WATERMASK, gd.index);
-	gd.biome = gd.lp.biomes.read(gd.index);
-	gd.bioreg_id = gd.lp.bioreg_id.read(gd.index);
-	gd.georeg_id = gd.lp.georeg_id.read(gd.index);
-	gd.river_id = gd.lp.rivers_id.read(gd.index);
-	gd.river_width = gd.lp.rivers.read(gd.lp.rivers.WIDTH, gd.index);
-	gd.river_element = gd.lp.rivers.read(gd.lp.rivers.ELEMENT, gd.index);
-	gd.river_upstream = gd.lp.rivers.read(gd.lp.rivers.UPSTREAM, gd.index);
-	gd.river_downstream = gd.lp.rivers.read(gd.lp.rivers.DOWNSTREAM, gd.index);
+	WorldData {
+		x,
+		y,
+		index,
+		temp,
+		rain,
+		elev,
+		water: gd.lp.topography.read(gd.lp.topography.WATERMASK, index),
+		biome: gd.lp.biomes.read(index),
+		bioreg_id: gd.lp.bioreg_id.read(index),
+		georeg_id: gd.lp.georeg_id.read(index),
+		river_id: gd.lp.rivers_id.read(index),
+		river_width: gd.lp.rivers.read(gd.lp.rivers.WIDTH, index),
+		river_element: gd.lp.rivers.read(gd.lp.rivers.ELEMENT, index),
+		river_upstream: gd.lp.rivers.read(gd.lp.rivers.UPSTREAM, index),
+		river_downstream: gd.lp.rivers.read(gd.lp.rivers.DOWNSTREAM, index),
+	}
 }
