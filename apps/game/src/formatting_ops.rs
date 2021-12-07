@@ -1,5 +1,7 @@
 use crate::struct_ops::{GameData, GameStrings, WorldData};
 
+// This all is temporrary and will be left as such until proper entity
+// system is up and running.
 pub fn get_strings_basic(
 	gd: &GameData,
 	wd: &WorldData,

@@ -16,6 +16,7 @@ pub fn print_strings_basic(gs: &GameStrings) {
 	println!("{}", gs.river_str);
 }
 
+// This is all temporary and a low priority until entity system is done.
 //▒▒▒▒▒▒▒▒▒▒▒▒ MESSY CODE AHEAD ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn map_render_land(
 	gd: &mut GameData,

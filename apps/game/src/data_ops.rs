@@ -46,7 +46,7 @@ pub fn get_layerpack(_gs: &GameStrings) -> Option<LayerPack> {
 	}
 }
 
-// This function should return a hasmap?
+// Probes and returns world data at x, y.
 pub fn get_world_data_at(
 	gd: &mut GameData,
 	x: u32,

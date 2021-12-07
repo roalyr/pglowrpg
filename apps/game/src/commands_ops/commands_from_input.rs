@@ -10,40 +10,40 @@ pub fn parse_input(
 ) -> Vec<Commands> {
 	//Init the input reply sequence which will be returned to the game
 	let mut seq = Vec::new();
-	let input = prompt_input!("word"; &gd.commands_vec; {});
+	let input = prompt_input!("word"; &gd.commands_list; {});
 
 	match input.as_str() {
 		//Move
-		i if i == gd.commands.move_west => {
+		i if i == gd.commands_struct.move_west => {
 			seq.push(Commands::West);
 		}
-		i if i == gd.commands.move_north => {
+		i if i == gd.commands_struct.move_north => {
 			seq.push(Commands::North);
 		}
-		i if i == gd.commands.move_east => {
+		i if i == gd.commands_struct.move_east => {
 			seq.push(Commands::East);
 		}
-		i if i == gd.commands.move_south => {
+		i if i == gd.commands_struct.move_south => {
 			seq.push(Commands::South);
 		}
 		//Teleport
-		i if i == gd.commands.teleport_x => {
+		i if i == gd.commands_struct.teleport_x => {
 			seq.push(Commands::CoordX);
 		}
-		i if i == gd.commands.teleport_y => {
+		i if i == gd.commands_struct.teleport_y => {
 			seq.push(Commands::CoordY);
 		}
 		//General
-		i if i == gd.commands.quit => {
+		i if i == gd.commands_struct.quit => {
 			seq.push(Commands::Quit);
 		}
-		i if i == gd.commands.map_render_land => {
+		i if i == gd.commands_struct.map_render_land => {
 			seq.push(Commands::MapRenderLand);
 		}
-		i if i == gd.commands.print_help => {
+		i if i == gd.commands_struct.print_help => {
 			seq.push(Commands::PrintHelp);
 		}
-		i if i == gd.commands.test => {
+		i if i == gd.commands_struct.test => {
 			seq.push(Commands::Test);
 		}
 

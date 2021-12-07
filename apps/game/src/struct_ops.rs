@@ -1,29 +1,21 @@
-use crate::commands_ops::commands_strings;
+use crate::commands_ops::commands_init;
 use crate::data_ops::get_layerpack;
 use lib_game_data_codec::LayerPack;
 
-//Common shared data for all the functions
 pub struct GameData {
-	//World
 	pub lp: LayerPack,
-	//Commands
-	pub commands: commands_strings::CommandsStrings,
-	pub commands_vec: Vec<String>,
-	//Coordinates (current)
+	pub commands_struct: commands_init::CommandsStrings,
+	pub commands_list: Vec<String>,
 	pub x: u32,
 	pub y: u32,
 	pub index: usize,
-	//Other in-game variables
 	pub map_render_size: usize,
 }
 
 pub struct WorldData {
-	//Coordinates (where data is taken)
 	pub x: u32,
 	pub y: u32,
 	pub index: usize,
-	//Temporary working variables
-	//World data abs values
 	pub temp: i32,
 	pub rain: u32,
 	pub elev: u32,
@@ -39,9 +31,9 @@ pub struct WorldData {
 }
 
 pub struct GameStrings {
-	//Temporary value
+	// Temporary string to be used as a placeholder.
 	pub s: String,
-	//Basic strings
+	// Basic strings from world data.
 	pub coord_str: String,
 	pub temp_str: String,
 	pub biome_str: String,
@@ -56,38 +48,36 @@ pub struct GameStrings {
 //▒▒▒▒▒▒▒▒▒▒▒▒ INITS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub fn init_gd(
 	gs: &GameStrings,
-	commands: commands_strings::CommandsStrings,
+	commands_struct: commands_init::CommandsStrings,
 ) -> Option<GameData> {
+	// Initializing some data.
 	let lp = match get_layerpack(&gs) {
 		Some(lp) => lp,
 		_ => return None,
 	};
+	// Temporary values for player starting pos.
 	let x = lp.wi.map_size / 2;
 	let y = x;
 	let index = lp.index.get(x, y);
 
 	let gd = GameData {
-		//Move previously cloned structs here
 		lp,
-		//Commands
-		commands,
-		commands_vec: Vec::new(),
-		//Coordinates
+		commands_struct,
+		commands_list: Vec::new(),
 		x,
 		y,
 		index,
-		//Other in-game variables
 		map_render_size: 13,
 	};
 	Some(gd)
 }
 
+// World data abs values.
 pub fn init_wd() -> WorldData {
 	WorldData {
 		x: 0,
 		y: 0,
 		index: 0,
-		//World data abs values
 		temp: 0,
 		rain: 0,
 		elev: 0,
@@ -103,12 +93,12 @@ pub fn init_wd() -> WorldData {
 	}
 }
 
-//Strings for printing
+// Strings for printing.
 pub fn init_gs() -> GameStrings {
 	GameStrings {
-		//Temporary string
+		// Temporary string
 		s: String::new(),
-		//Basic strings
+		// Basic strings (generated from world data)
 		coord_str: String::new(),
 		temp_str: String::new(),
 		biome_str: String::new(),
