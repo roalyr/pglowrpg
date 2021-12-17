@@ -67,7 +67,7 @@ pub fn init_gd(
 		x,
 		y,
 		index,
-		map_render_size: 13,
+		map_render_size: 6,
 	};
 	Some(gd)
 }
