@@ -1,4 +1,6 @@
+use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 //▒▒▒▒▒▒▒▒▒ WORLDGEN PRESET ▒▒▒▒▒▒▒▒▒▒▒
 pub const DEFAULT_SEED: u32 = 0;
@@ -137,6 +139,7 @@ pub const RIVER_WATERFALL: u16 = 4;
 pub const RIVER_WATERFALLS_MUL: u16 = 5;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ BIOMES ▒▒▒▒▒▒▒▒▒▒▒▒▒
+// ID values for each biome (type ID).
 pub const BIOME_WATER_ICECAP: u8 = 0;
 pub const BIOME_ICY_WATERS: u8 = 1;
 pub const BIOME_COLD_WATERS: u8 = 2;
@@ -185,3 +188,20 @@ pub const BIOME_TROPICAL_SHRUBLAND: u8 = 34;
 pub const BIOME_BOREAL_ALPINE_GRASSLAND: u8 = 35;
 pub const BIOME_TEMPERATE_ALPINE_GRASSLAND: u8 = 36;
 pub const BIOME_TROPICAL_ALPINE_GRASSLAND: u8 = 37;
+
+// Biomes codenames for presets parsing. From lazy static doc.
+// This will be used when parsing flora / fauna preset ron files.
+// Each entity will contain biome(s) it is native to as codenames.
+// Match codenames against this hashmap to get IDs when doing
+// worldgen.
+lazy_static! {
+	pub static ref BIOMES_CODENAMES: HashMap<String, u8> = {
+		let mut m = HashMap::new();
+		m.insert("biome_water_icecap".to_string(), BIOME_WATER_ICECAP);
+		m.insert("biome_icy_waters".to_string(), BIOME_ICY_WATERS);
+		m.insert("biome_cold_waters".to_string(), BIOME_COLD_WATERS);
+		m.insert("biome_temperate_waters".to_string(), BIOME_TEMPERATE_WATERS);
+		m.insert("biome_tropical_waters".to_string(), BIOME_TROPICAL_WATERS);
+		m
+	};
+}

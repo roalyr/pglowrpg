@@ -1,5 +1,6 @@
 use colored::*;
 use deepsize::DeepSizeOf;
+use lib_constants::world as cw;
 use lib_unit_systems::coords::Index;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -31,6 +32,7 @@ pub fn start() {
 		materials: Vec<Material>,
 		max_quantity: u8,
 		origin_region_id: u32,
+		native_biomes: Vec<String>,
 	}
 
 	#[derive(Debug, Clone, Serialize, Deserialize, DeepSizeOf)]
@@ -66,7 +68,12 @@ pub fn start() {
 								)
 							)
 						],
-						max_quantity: 255,
+						native_biomes: [
+							"biome_tropical_waters",
+							"biome_temperate_waters",
+							"some_biome",
+						],
+						max_quantity: 1,
 						origin_region_id: 0,
 					)
 				)
@@ -79,6 +86,7 @@ pub fn start() {
 		Ok(f) => f,
 		Err(e) => {
 			println!("ERROR: {}", e.to_string());
+			println!("Check missing commas.");
 			std::process::exit(0);
 		}
 	};
@@ -148,6 +156,7 @@ pub fn start() {
 	// The specific string will correspond to whatever is required from list.
 	for _ in 0..test_plant_patches_num {
 		uids_plant_patches_local.push(uid_plant_patch);
+		// Can be search or just iterate over all loaded entities (worldgen).
 		if let Some(plant_type) = plant_types.iter().find(
 			|EntityData {
 			   entity_codename: x, ..
@@ -207,6 +216,19 @@ pub fn start() {
 							"Originates from region ID {:?}",
 							properties.origin_region_id
 						);
+						println!(
+							"Native to biomes (by codename) {:?}",
+							properties.native_biomes
+						);
+						for b in &properties.native_biomes {
+							if cw::BIOMES_CODENAMES.contains_key(&b.clone()) {
+								let id = cw::BIOMES_CODENAMES[&b.clone()];
+								println!("Native to biome (id) {:?}", id);
+							} else {
+								// Make a proper warning prompt later on.
+								println!("WARNING: unknown native biome assigned: {}", b);
+							}
+						}
 					}
 				}
 			}
