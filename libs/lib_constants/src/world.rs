@@ -194,6 +194,7 @@ pub const BIOME_TROPICAL_ALPINE_GRASSLAND: u8 = 37;
 // Each entity will contain biome(s) it is native to as codenames.
 // Match codenames against this hashmap to get IDs when doing
 // worldgen.
+#[rustfmt::skip]
 lazy_static! {
 	pub static ref BIOMES_CODENAMES: HashMap<String, u8> = {
 		let mut m = HashMap::new();
@@ -202,6 +203,49 @@ lazy_static! {
 		m.insert("biome_cold_waters".to_string(), BIOME_COLD_WATERS);
 		m.insert("biome_temperate_waters".to_string(), BIOME_TEMPERATE_WATERS);
 		m.insert("biome_tropical_waters".to_string(), BIOME_TROPICAL_WATERS);
+
+		m.insert("biome_polar_ice_desert".to_string(), BIOME_POLAR_ICE_DESERT);
+		m.insert("biome_cold_desert".to_string(), BIOME_COLD_DESERT);
+		m.insert("biome_temperate_desert".to_string(), BIOME_TEMPERATE_DESERT);
+		m.insert("biome_tropical_desert".to_string(), BIOME_TROPICAL_DESERT);
+
+		m.insert("biome_ploar_snowy_glacier".to_string(), BIOME_POLAR_SNOWY_GLACIER);
+		m.insert("biome_barren_tundra".to_string(), BIOME_BARREN_TUNDRA);
+
+		m.insert("biome_polar_mountain_top".to_string(), BIOME_POLAR_MOUNTAIN_TOP);
+		m.insert("biome_tundra_mountain_top".to_string(), BIOME_TUNDRA_MOUNTAIN_TOP);
+		m.insert("biome_boreal_mountain_top".to_string(), BIOME_BOREAL_MOUNTAIN_TOP);
+		m.insert("biome_temperate_mountain_top".to_string(), BIOME_TEMPERATE_MOUNTAIN_TOP);
+		m.insert("biome_tropical_mountain_top".to_string(), BIOME_TROPICAL_MOUNTAIN_TOP);
+
+		m.insert("biome_tundra_grassland".to_string(), BIOME_TUNDRA_GRASSLAND);
+		m.insert("biome_boreal_grassland".to_string(), BIOME_BOREAL_GRASSLAND);
+		m.insert("biome_temperate_grassland".to_string(), BIOME_TEMPERATE_GRASSLAND);
+		m.insert("biome_tropical_grassland".to_string(), BIOME_TROPICAL_GRASSLAND);
+
+		m.insert("biome_boreal_woodland".to_string(), BIOME_BOREAL_WOODLAND);
+		m.insert("biome_temperate_woodland".to_string(), BIOME_TEMPERATE_WOODLAND);
+		m.insert("biome_tropical_woodland".to_string(), BIOME_TROPICAL_WOODLAND);
+
+		m.insert("biome_boreal_forest".to_string(), BIOME_BOREAL_FOREST);
+		m.insert("biome_temperate_forest".to_string(), BIOME_TEMPERATE_FOREST);
+		m.insert("biome_tropical_forest".to_string(), BIOME_TROPICAL_FOREST);
+
+		m.insert("biome_boreal_swamp".to_string(), BIOME_BOREAL_SWAMP);
+		m.insert("biome_temperate_swamp".to_string(), BIOME_TEMPERATE_SWAMP);
+		m.insert("biome_tropical_swamp".to_string(), BIOME_TROPICAL_SWAMP);
+
+		m.insert("biome_boreal_rainforest".to_string(), BIOME_BOREAL_RAINFOREST);
+		m.insert("biome_temperate_rainforest".to_string(), BIOME_TEMPERATE_RAINFOREST);
+		m.insert("biome_tropical_rainforest".to_string(), BIOME_TROPICAL_RAINFOREST);
+
+		m.insert("biome_boreal_shrubland".to_string(), BIOME_BOREAL_SHRUBLAND);
+		m.insert("biome_temperate_shrubland".to_string(), BIOME_TEMPERATE_SHRUBLAND);
+		m.insert("biome_tropical_shrubland".to_string(), BIOME_TROPICAL_SHRUBLAND);
+
+		m.insert("biome_boreal_alpine_grassland".to_string(), BIOME_BOREAL_ALPINE_GRASSLAND);
+		m.insert("biome_temperate_alpine_grassland".to_string(), BIOME_TEMPERATE_ALPINE_GRASSLAND);
+		m.insert("biome_tropical_alpine_grassland".to_string(), BIOME_TROPICAL_ALPINE_GRASSLAND);
 		m
 	};
 }

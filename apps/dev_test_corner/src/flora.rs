@@ -28,10 +28,22 @@ pub fn start() {
 	}
 
 	#[derive(Debug, Clone, Serialize, Deserialize, DeepSizeOf)]
+	// From the forest structure by height, from highest to lowest.
+	// Simplified names for uniformity.
+	enum PlantLevel {
+		TallCanopy,
+		MediumCanopy,
+		ShortCanopy,
+		Shrub,
+		Grass,
+		Root,
+	}
+
+	#[derive(Debug, Clone, Serialize, Deserialize, DeepSizeOf)]
 	struct PlantProperties {
+		plant_level: PlantLevel,
+		local_max_quantity: u32,
 		materials: Vec<Material>,
-		max_quantity: u8,
-		origin_region_id: u32,
 		native_biomes: Vec<String>,
 	}
 
@@ -54,13 +66,24 @@ pub fn start() {
 		data: EntityData,
 	}
 
+	println!("{}", "READING DATA FILE\n".green());
+
 	// ENTITY PRESET FILE.
 	// All presets data are used in worldgen and are stored in save.
 	let data = r#"
+		[ // Start from vector that contains entities.
 			EntityData(
-				entity_codename : "grass_foxtail_patch",
+				entity_codename : "grass_foxtail",
 				entity_type : Plant(
 					PlantProperties(
+						// Plants be described as "patches" or "groups"
+						// of population individuals at given place, so
+						// a quantity parameter is given.
+						// For instance, if there are 10 grass sprouts per 1 sq.m
+						// Then for a place (300x300 m) the quantity will be like
+						// 900000, thus taking u32 init.
+						plant_level: Grass,
+						local_max_quantity: 1000000,
 						materials: [
 							Plant(
 								MaterialProperties(
@@ -69,37 +92,125 @@ pub fn start() {
 							)
 						],
 						native_biomes: [
-							"biome_tropical_waters",
-							"biome_temperate_waters",
-							"some_biome",
+							"test_invalid_biome",
+							"biome_boreal_grassland",
+							"biome_temperate_grassland",
+							"biome_tropical_grassland",
+							"biome_boreal_woodland",
+							"biome_temperate_woodland",
+							"biome_tropical_woodland",
+							"biome_boreal_forest",
+							"biome_temperate_forest",
+							"biome_tropical_forest",
 						],
-						max_quantity: 1,
-						origin_region_id: 0,
 					)
 				)
-			)
+			),
+			EntityData(
+				entity_codename : "grass_barley",
+				entity_type : Plant(
+					PlantProperties(
+						plant_level: Grass,
+						local_max_quantity: 1000000,
+						materials: [
+							Plant(
+								MaterialProperties(
+									property: "Green fiber"
+								)
+							)
+						],
+						native_biomes: [
+							"biome_temperate_grassland",
+							"biome_tropical_grassland",
+							"biome_boreal_woodland",
+							"biome_temperate_woodland",
+							"biome_tropical_woodland",
+							"biome_boreal_shrubland",
+							"biome_temperate_shrubland",
+							"biome_tropical_shrubland",
+						],
+					)
+				)
+			),
+			EntityData(
+				entity_codename : "grass_foxtail",
+				entity_type : Plant(
+					PlantProperties(
+						plant_level: Grass,
+						local_max_quantity: 1000000,
+						materials: [
+							Plant(
+								MaterialProperties(
+									property: "Green fiber"
+								)
+							)
+						],
+						native_biomes: [
+							"biome_boreal_grassland",
+							"biome_temperate_grassland",
+							"biome_tropical_grassland",
+							"biome_boreal_woodland",
+							"biome_temperate_woodland",
+							"biome_tropical_woodland",
+							"biome_boreal_forest",
+							"biome_temperate_forest",
+							"biome_tropical_forest",
+							"biome_boreal_swamp",
+							"biome_temperate_swamp",
+							"biome_tropical_swamp",
+							"biome_boreal_shrubland",
+							"biome_temperate_shrubland",
+							"biome_tropical_shrubland",
+							"biome_boreal_alpine_grassland",
+							"biome_temperate_alpine_grassland",
+							"biome_tropical_alpine_grassland",
+						],
+					)
+				)
+			),
+		]
 		"#;
 
 	// LOAD AND PARSE ON STARTUP.
 	// In worldgen.
-	let entity_from_file: EntityData = match ron::from_str(&data) {
+	let path_placeholder = "./preset/some_preset...";
+	let entities_from_file: Vec<EntityData> = match ron::from_str(&data) {
 		Ok(f) => f,
 		Err(e) => {
-			println!("ERROR: {}", e.to_string());
-			println!("Check missing commas.");
+			println!("{}: {}", "ERROR: ".red(), e.to_string().red());
+			println!("Flie: {}", path_placeholder);
+			println!("Check missing commas in preset.");
+			println!("Check if all option names are valid.");
 			std::process::exit(0);
 		}
 	};
 
 	let mut plant_types = Vec::new();
-	match &entity_from_file.entity_type {
-		EntityType::Plant(_) => {
-			plant_types.push(entity_from_file);
+	let mut plant_types_codenames = Vec::new();
+	for entity_from_file in entities_from_file {
+		if !plant_types_codenames.contains(&entity_from_file.entity_codename) {
+			match &entity_from_file.entity_type {
+				EntityType::Plant(_) => {
+					plant_types_codenames.push(entity_from_file.entity_codename.clone());
+					println!(
+						"Plant type loaded: {}",
+						entity_from_file.entity_codename.clone()
+					);
+					plant_types.push(entity_from_file);
+				}
+			}
+		} else {
+			println!(
+				"{} : {}",
+				"WARNING: same entity already loaded".yellow(),
+				entity_from_file.entity_codename.yellow()
+			);
 		}
 	}
 
+	println!("Loaded plant types: {:?}", plant_types_codenames);
+
 	let plant_patches_cap = 1_000_000;
-	let test_plant_patches_num = 3;
 	//let items_cap = 1_000_000;
 	//...
 	let mut unique_plant_patches: HashMap<u32, UniqueEntity> =
@@ -125,6 +236,7 @@ pub fn start() {
 	// Making a non-spatial cache table to put specific creatures
 	// onto the map in specific locations.
 	// Cache table is related to map size.
+	println!("{}", "CREATING ENTRIES IN THE LOCATION\n".green());
 	let map_size: u32 = 4096;
 	let cache_table_size = (map_size * map_size) as usize;
 
@@ -151,52 +263,44 @@ pub fn start() {
 	let ind = index.get(x, y) as u32;
 
 	// LOADING AND WRITING ENTITIES.
-	// Use find to locate the required entity type and load its data.
-	// This will be called by "creatures" layer generator.
-	// The specific string will correspond to whatever is required from list.
-	for _ in 0..test_plant_patches_num {
+	// Just put everything out from plant tyoes.
+	for plant_type in plant_types {
 		uids_plant_patches_local.push(uid_plant_patch);
-		// Can be search or just iterate over all loaded entities (worldgen).
-		if let Some(plant_type) = plant_types.iter().find(
-			|EntityData {
-			   entity_codename: x, ..
-			 }| *x == "grass_foxtail_patch",
-		) {
-			unique_plant_patches.insert(
-				uid_plant_patch,
-				UniqueEntity {
-					uid: uid_plant_patch,
-					x,
-					y,
-					data: plant_type.clone(),
-				},
-			);
-		}
+		unique_plant_patches.insert(
+			uid_plant_patch,
+			UniqueEntity {
+				uid: uid_plant_patch,
+				x,
+				y,
+				data: plant_type.clone(), // EntityData
+			},
+		);
+
 		// Increment UID every call.
 		uid_plant_patch = uid_plant_patch
 			.checked_add(1)
 			.expect("ERROR: overflow at  UID increment.");
 	}
-	println!(
-		"Total number of plant patches: {}",
-		unique_plant_patches.len()
-	);
 
 	// PUTTING A BATCH OF ENTITIES ON MAP.
 	plant_patch_cache.insert(ind, uids_plant_patches_local);
-
+	println!(
+		"Total number of plant patches in the world: {}",
+		unique_plant_patches.len()
+	);
 	// MAKE DESTRUCTORS FOR SPEIFIC UNIQUE ENTITY TYPES.
 
 	// TEST. READING AND PARSING.
 	// Now access the creatures in the given location:
 	let local_entities = &plant_patch_cache[&ind];
-	println!("{}", "\nCHECKING ENTRIES IN THE LOCATION".green());
-	println!("Putting entities: {:?}", local_entities);
+	println!("{}", "CHECKING ENTRIES IN THE LOCATION\n".green());
 	println!("At x: {}, y: {}, index: {}\n", x, y, ind);
 	for entity_id in local_entities.iter() {
 		// Destruct the entity. What should this return? How and when?
+		// Check if entity exists.
 		match unique_plant_patches.get_mut(entity_id) {
 			Some(entity) => {
+				println!("---------------------");
 				println!("UID: {}", entity.uid);
 				match &entity.data.entity_type {
 					// Have different destructors for different types.
@@ -211,22 +315,39 @@ pub fn start() {
 								}
 							}
 						}
-						println!("Max quantity {:?}", properties.max_quantity);
-						println!(
-							"Originates from region ID {:?}",
-							properties.origin_region_id
-						);
-						println!(
-							"Native to biomes (by codename) {:?}",
-							properties.native_biomes
-						);
+						match properties.plant_level {
+							PlantLevel::TallCanopy => {
+								println!("TALL PLANT CANOPY LEVEL")
+							}
+							PlantLevel::MediumCanopy => {
+								println!("MEDIUM PLANT CANOPY LEVEL")
+							}
+							PlantLevel::ShortCanopy => {
+								println!("SHORT PLANT CANOPY LEVEL")
+							}
+							PlantLevel::Shrub => {
+								println!("SRUB LEVEL")
+							}
+							PlantLevel::Grass => {
+								println!("GRASS LEVEL")
+							}
+							PlantLevel::Root => {
+								println!("ROOT LEVEL")
+							}
+						}
+						println!("Max local quantity {}", properties.local_max_quantity);
+						// Store biome data into some vec. Sort out duplicates.
 						for b in &properties.native_biomes {
 							if cw::BIOMES_CODENAMES.contains_key(&b.clone()) {
 								let id = cw::BIOMES_CODENAMES[&b.clone()];
-								println!("Native to biome (id) {:?}", id);
+								println!("Native biome (id) {}: {}", id, &b.clone());
 							} else {
 								// Make a proper warning prompt later on.
-								println!("WARNING: unknown native biome assigned: {}", b);
+								println!(
+									"{}: {}",
+									"WARNING: unknown native biome assigned".yellow(),
+									b.yellow()
+								);
 							}
 						}
 					}
