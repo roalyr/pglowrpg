@@ -2,8 +2,10 @@
 use lib_io_ops::readron::presets;
 use lib_unit_systems::coords::Index;
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ LAYER PACK ▒▒▒▒▒▒▒▒▒▒▒▒▒
+//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+// WORLD DATA STRUCTURE
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LayerPack {
 	pub index: Index,
@@ -12,6 +14,8 @@ pub struct LayerPack {
 	pub layer_vec_len: u32,
 	pub noisemap_vec_len: u32,
 
+	// Layers. Multi-value data storages in primitive types.
+	// ID values occupy whole primitive, so no masks.
 	pub biomes: BitLayerBiomes,
 	pub rivers_id: BitLayerRiversID,
 	pub georeg_id: BitLayerGeoregID,
@@ -19,13 +23,21 @@ pub struct LayerPack {
 	pub topography: BitLayerTopography,
 	pub climate: BitLayerClimate,
 	pub rivers: BitLayerRivers,
+
+	// Cachemaps. Basically, data is stored in HashMaps instead
+	// of vectors. Naturally, indexed by "ind" position respective to x, y.
+	// TODO: add methods (read, write)? Should methods be unique?
+	// implementation can be done at the bottom section.
+	pub flora: CacheLayerFlora,
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ Layers ▒▒▒▒▒▒▒▒▒▒▒▒▒
+//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+// LAYER TYPES
+// Bit layers.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BitLayerTopography {
 	pub data: Vec<u16>,
-	//Masks
+	// Masks.
 	pub TERRAIN: u16,
 	pub WATERMASK: u16,
 	pub _placeholder: u16,
@@ -34,7 +46,7 @@ pub struct BitLayerTopography {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BitLayerClimate {
 	pub data: Vec<u16>,
-	//Masks
+	// Masks.
 	pub TEMPERATURE: u16,
 	pub RAINFALL: u16,
 }
@@ -42,7 +54,7 @@ pub struct BitLayerClimate {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BitLayerRivers {
 	pub data: Vec<u16>,
-	//Masks
+	// Masks.
 	pub ELEMENT: u16,
 	pub WIDTH: u16,
 	pub UPSTREAM: u16,
@@ -70,7 +82,21 @@ pub struct BitLayerGeoregID {
 	pub data: Vec<u32>,
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ METHODS ▒▒▒▒▒▒▒▒▒▒▒▒▒
+// Cachemaps
+// TODD: make a separate file for types.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PlantGroup {
+	type_uid: u16, // links to EntityData directly.
+	quantity: u16, // Can be u16 due to rounding (u8 = 1 byte -> 1 +2)
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct CacheLayerFlora {
+	pub data: HashMap<u32, Vec<PlantGroup>>,
+}
+
+//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+// METHODS
 // Those macros implement write and read methods for the
 // bit layer structs.
 macro_rules! impl_with_masks {
@@ -133,7 +159,8 @@ macro_rules! impl_without_masks {
     }
 }
 
-//▒▒▒▒▒▒▒▒ BIT LAYER STORAGE ▒▒▒▒▒▒▒▒▒▒▒▒
+//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+// METHODS MACROS
 // Credits to ZippyMagician from "One Lone Coder" community
 // for initial draft of this macro.
 // This macro initiates a bit layer structure.
@@ -224,7 +251,8 @@ macro_rules! bit_layer {
 	};
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ INIT ▒▒▒▒▒▒▒▒▒▒▒▒▒
+//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+// INITIALIZE BITLAYERS WITH MACROS
 // Set up laysers which have the masks to i/o different kinds of data.
 impl_with_masks!(
 	BitLayerRivers, u16;

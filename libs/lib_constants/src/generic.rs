@@ -20,6 +20,7 @@ pub const ID_MAP_MIN_U32: u32 = 1;
 
 // IDs that are written into tables.
 pub const UID_MIN_U32: u32 = 1;
+pub const UID_MIN_U16: u16 = 1;
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ PATHFINDING ▒▒▒▒▒▒▒▒▒▒▒▒▒
 // This values just has to be large enough, it will be used for 1st

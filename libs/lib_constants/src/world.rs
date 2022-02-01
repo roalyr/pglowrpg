@@ -258,6 +258,6 @@ lazy_static! {
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
-//
+// FLORA
 // How many different types of plants can be on each level.
 pub const PLANT_LEVEL_TYPES_NUMBER_MAX: u8 = 5;

@@ -1,4 +1,5 @@
 use colored::*;
+use lib_constants::generic as cg;
 use lib_constants::world as cw;
 use lib_unit_systems::coords::Index;
 use serde::{Deserialize, Serialize};
@@ -59,16 +60,7 @@ pub fn start() {
 		entity_type: EntityType,
 	}
 
-	// Not needed for plants and groups here because it copies too much
-	// non-unique data.
-	#[derive(Debug, Clone, Serialize, Deserialize)]
-	struct UniqueEntity {
-		uid: u32,
-		x: u32,
-		y: u32,
-		data: EntityData,
-	}
-
+	// Copied to codec.
 	#[derive(Debug, Clone, Serialize, Deserialize)]
 	struct PlantGroup {
 		type_uid: u16, // links to EntityData directly.
@@ -118,7 +110,6 @@ pub fn start() {
 	// Just out of loop vals.
 	let map_size = 4096;
 	let world_size = map_size * map_size;
-	let plant_groups_cap = 100000;
 
 	println!("{}", "\nREADING DATA FILE\n".green());
 
@@ -247,7 +238,7 @@ pub fn start() {
 	let mut plant_types: HashMap<u16, EntityData> = HashMap::with_capacity(1000); // some plant type cap.
 																																							// Codenames list needed to check for duplicates only.
 	let mut plant_types_codenames = Vec::new();
-	let mut uid_plant_type: u16 = 1;
+	let mut uid_plant_type: u16 = cg::UID_MIN_U16;
 
 	for entity_from_file in entities_from_file {
 		if !plant_types_codenames.contains(&entity_from_file.entity_codename) {
@@ -277,57 +268,20 @@ pub fn start() {
 
 	println!("Loaded plant types: {:?}", plant_types_codenames);
 
-	// This stores unique entities..
-	// This approach is wrong for flora - it stores too much non-unique data
-	// Which can be just linked by type ID.
-	//let mut unique_plant_groups: HashMap<u32, UniqueEntity> =
-	//	HashMap::with_capacity(plant_groups_cap);
-
-	// This approach is better.
-	// UID, [type UID, quantity].
-	// UID can be a lot, because of world size.
-	// Type UID can be u16 at most.
-	// Quantity u8.
-	// One cell is 8 bytes.
-	// List of all groups of plants in world, with their quantity.
-	let mut unique_plant_groups: HashMap<u32, PlantGroup> =
-		HashMap::with_capacity(plant_groups_cap as usize);
-
-	// GENERATING UNIQUE ENTITIES.
-	//This is done one worldgen stage.
-	// -------------------------------------------------------------
-	// The relations and data embedding is like this:
-	//
-	// Blob of entities on map:
-	// Map cell (x, y) -> [Cache_ID]
-	//
-	// What entities are in what blob:
-	// Entities cache table -> <Cache_ID, Vec<Entity_UID>>
-	//
-	// Which entiry is of what kind and has which data.
-	// Entities table - HashMap<Entity_UID, UniqueEntity>,
-	// -------------------------------------------------------------
-
 	// TEST
 	// Making a non-spatial cache table to put specific creatures
 	// onto the map in specific locations.
 	// Cache table is related to map size.
 	println!("{}", "CREATING ENTRIES IN THE LOCATION\n".green());
-	let cache_table_size = (world_size) as usize;
+	let cachemap_size = (world_size * 5) as usize;
 
-	// CACHE TABLE.
-	// Created at worldgen.
-	// ~ 70 MB at 4k world
-	// Index, [UIDs].
-	let mut plants_cache: HashMap<u32, Vec<u32>> =
-		HashMap::with_capacity(cache_table_size);
+	// U32 is Ind (position) and this way by it we can index the respective
+	// vector, containing plant groups.
+	let mut data_from_cachemap: HashMap<u32, Vec<PlantGroup>> =
+		HashMap::with_capacity(cachemap_size);
 
-	// let mut plants_cache...
+	// let mut data_from_cachemap...
 	// let mut items_cache...
-
-	// This is the record of UIDs of creatures in the local coords.
-	// Temporary value, stores entities at given location.
-	let mut uids_plant_groups_local = Vec::new();
 
 	// Location (within entity generator loop)
 	let x: u32 = 10;
@@ -337,104 +291,93 @@ pub fn start() {
 
 	// LOADING AND WRITING ENTITIES.
 	// Creating instances.
-	uids_plant_groups_local.push(1);
-	unique_plant_groups.insert(
-		1, // u32 UID
-		PlantGroup {
-			type_uid: 1,   //u16
-			quantity: 255, //u8
-		},
+	data_from_cachemap.insert(
+		ind,
+		vec![
+			PlantGroup {
+				type_uid: 1,
+				quantity: 25,
+			},
+			PlantGroup {
+				type_uid: 1,
+				quantity: 255,
+			},
+			PlantGroup {
+				type_uid: 2,
+				quantity: 2550,
+			},
+		],
 	);
 
-	uids_plant_groups_local.push(2);
-	unique_plant_groups.insert(
-		2, // u32 UID
-		PlantGroup {
-			type_uid: 2,
-			quantity: 255,
-		},
-	);
-
-	// PUTTING A BATCH OF ENTITIES ON MAP.
-	plants_cache.insert(ind, uids_plant_groups_local);
 	println!(
-		"Total number of plant patches in the world: {}",
-		unique_plant_groups.len()
+		"Total number of plant groups in the world: {}",
+		data_from_cachemap.len()
 	);
-	// MAKE DESTRUCTORS FOR SPEIFIC UNIQUE ENTITY TYPES.
 
 	// TEST. READING AND PARSING.
 	// Now access the creatures in the given location:
-	let local_entities = &plants_cache[&ind];
 	println!("{}", "CHECKING ENTRIES IN THE LOCATION\n".green());
 	println!("At x: {}, y: {}, index: {}\n", x, y, ind);
-	for entity_id in local_entities.iter() {
+	let plant_groups = &data_from_cachemap[&ind];
+	for group in plant_groups.iter() {
 		// Destruct the entity. What should this return? How and when?
-		// Check if entity exists.
-		match unique_plant_groups.get_mut(entity_id) {
-			Some(entity) => {
-				// Entity is a PlantGroup.
-				println!("---------------------");
-				println!("type UID: {}", entity.type_uid);
-				// Use type_uid to get type data from types.
-				let plant_type_data = &plant_types[&entity.type_uid];
-				// This is the link to actual data that is later destructed.
-				match &plant_type_data.entity_type {
-					// Have different destructors for different types.
-					EntityType::Plant(properties) => {
-						println!("Type: {:?}", &plant_type_data.entity_codename);
-						// Move it into plant destructor.
-						for material in properties.materials.iter() {
-							// Move into material destructor.
-							match material {
-								Material::Plant(properties) => {
-									println!("{:?}", properties);
-								}
-							}
-						}
-						match properties.plant_level {
-							PlantLevel::TallCanopy => {
-								println!("TALL PLANT CANOPY LEVEL")
-							}
-							PlantLevel::MediumCanopy => {
-								println!("MEDIUM PLANT CANOPY LEVEL")
-							}
-							PlantLevel::ShortCanopy => {
-								println!("SHORT PLANT CANOPY LEVEL")
-							}
-							PlantLevel::Shrub => {
-								println!("SRUB LEVEL")
-							}
-							PlantLevel::Ground => {
-								println!("GROUND LEVEL")
-							}
-							PlantLevel::Underground => {
-								println!("UNDERGROUND LEVEL")
-							}
-							PlantLevel::Underwater => {
-								println!("UNDERWATER LEVEL")
-							}
-						}
-						println!("Max local quantity {}", properties.local_max_quantity);
-						// Store biome data into some vec. Sort out duplicates.
-						for b in &properties.native_biomes {
-							if cw::BIOMES_CODENAMES.contains_key(&b.clone()) {
-								let id = cw::BIOMES_CODENAMES[&b.clone()];
-								println!("Native biome (id) {}: {}", id, &b.clone());
-							} else {
-								// Make a proper warning prompt later on.
-								println!(
-									"{}: {}",
-									"WARNING: unknown native biome assigned".yellow(),
-									b.yellow()
-								);
-							}
+		// Entity is a PlantGroup.
+		println!("---------------------");
+		println!("type UID: {}", group.type_uid);
+		println!("quantity: {}", group.quantity);
+		// Use type_uid to get type data from types.
+		let plant_type_data = &plant_types[&group.type_uid];
+		match &plant_type_data.entity_type {
+			// Have different destructors for different types.
+			EntityType::Plant(properties) => {
+				println!("Type: {:?}", &plant_type_data.entity_codename);
+				// Move it into plant destructor.
+				for material in properties.materials.iter() {
+					// Move into material destructor.
+					match material {
+						Material::Plant(properties) => {
+							println!("{:?}", properties);
 						}
 					}
 				}
-			}
-			None => {
-				println!("ERROR: No entity by uid: {}", entity_id);
+				match properties.plant_level {
+					PlantLevel::TallCanopy => {
+						println!("TALL PLANT CANOPY LEVEL")
+					}
+					PlantLevel::MediumCanopy => {
+						println!("MEDIUM PLANT CANOPY LEVEL")
+					}
+					PlantLevel::ShortCanopy => {
+						println!("SHORT PLANT CANOPY LEVEL")
+					}
+					PlantLevel::Shrub => {
+						println!("SRUB LEVEL")
+					}
+					PlantLevel::Ground => {
+						println!("GROUND LEVEL")
+					}
+					PlantLevel::Underground => {
+						println!("UNDERGROUND LEVEL")
+					}
+					PlantLevel::Underwater => {
+						println!("UNDERWATER LEVEL")
+					}
+				}
+				println!("Max local quantity {}", properties.local_max_quantity);
+				// Store biome data into some vec. Sort out duplicates.
+				for b in &properties.native_biomes {
+					if cw::BIOMES_CODENAMES.contains_key(&b.clone()) {
+						let id = cw::BIOMES_CODENAMES[&b.clone()];
+						println!("Native biome (id) {}: {}", id, &b.clone());
+					} else {
+						// Make a proper warning prompt later on.
+						println!(
+							"{}: {}",
+							"WARNING: unknown native biome assigned".yellow(),
+							b.yellow()
+						);
+					}
+				}
 			}
 		}
 	}

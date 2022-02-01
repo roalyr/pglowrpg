@@ -15,6 +15,7 @@ use lib_text_ops::prompt_input;
 use lib_text_ops::INTERFACE_STRINGS as UI;
 use lib_text_ops::WORLDGEN_STRINGS as WS;
 use lib_unit_systems::coords::Index;
+use std::collections::HashMap;
 
 #[rustfmt::skip]
 pub fn start() {
@@ -153,6 +154,11 @@ pub fn start() {
 			georeg_id: BitLayerGeoregID {
 				data: vec![0; layer_vec_len as usize],
 			},
+			
+			// TODO: find a good way to estimate flora entities number.
+			flora: CacheLayerFlora {
+				data: HashMap::with_capacity(layer_vec_len as usize*5),
+			}
 		};
 		
 		// Perform generation.
