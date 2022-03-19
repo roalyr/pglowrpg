@@ -1,8 +1,9 @@
 use colored::*;
 use lib_constants::generic as cg;
 use lib_constants::world as cw;
+use lib_game_data_codec as gdc;
+use lib_io_ops::readron::presets::presets_flora;
 use lib_unit_systems::coords::Index;
-use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 // Plants should be described in patches or groups, that have
@@ -17,61 +18,11 @@ pub fn start() {
 	// Entity part of the system. Things solely related to individual
 	// objects, later used by the DISTRIBUTION system.
 
-	// Where to store all these enums and structs?
-	#[derive(Debug, Clone, Serialize, Deserialize)]
-	struct MaterialProperties {
-		property: String,
-	}
-
-	#[derive(Debug, Clone, Serialize, Deserialize)]
-	enum Material {
-		Plant(MaterialProperties),
-	}
-
-	#[derive(Debug, Clone, Serialize, Deserialize)]
-	// From the forest structure by height, from highest to lowest.
-	// Simplified names for uniformity.
-	enum PlantLevel {
-		TallCanopy,
-		MediumCanopy,
-		ShortCanopy,
-		Shrub,
-		Ground,
-		Underground,
-		Underwater,
-	}
-
-	#[derive(Debug, Clone, Serialize, Deserialize)]
-	struct PlantProperties {
-		plant_level: PlantLevel,
-		local_max_quantity: u32,
-		materials: Vec<Material>,
-		native_biomes: Vec<String>,
-	}
-
-	#[derive(Debug, Clone, Serialize, Deserialize)]
-	enum EntityType {
-		Plant(PlantProperties),
-	}
-
-	#[derive(Debug, Clone, Serialize, Deserialize)]
-	struct EntityData {
-		entity_codename: String,
-		entity_type: EntityType,
-	}
-
-	// Copied to codec.
-	#[derive(Debug, Clone, Serialize, Deserialize)]
-	struct PlantGroup {
-		type_uid: u16, // links to EntityData directly.
-		quantity: u16, // Can be u16 due to rounding (u8 = 1 byte -> 1 +2)
-	}
-
 	//Check sizes of structures.
 	println!("----------------------");
 	println!(
 		"PlantGroup size (bytes): {:?}",
-		std::mem::size_of::<PlantGroup>()
+		std::mem::size_of::<gdc::entities::PlantGroup>()
 	);
 
 	// Total number of entities in world.
@@ -89,8 +40,9 @@ pub fn start() {
 		let num_sparse = world_size / 10 * 4 * plant_types_on_level as u32 * 3;
 
 		let plant_groups_cap = num_sparse + num_all_levels + num_water;
-		let plant_layer_mem =
-			std::mem::size_of::<PlantGroup>() as u32 * plant_groups_cap / 1_000_000;
+		let plant_layer_mem = std::mem::size_of::<gdc::entities::PlantGroup>()
+			as u32 * plant_groups_cap
+			/ 1_000_000;
 		println!("\nMap size (one side): {:?}", map_size);
 		println!("World size (cells): {:?}", world_size);
 		println!(
@@ -113,137 +65,20 @@ pub fn start() {
 
 	println!("{}", "\nREADING DATA FILE\n".green());
 
-	// ENTITY PRESET FILE.
-	// All presets data are used in worldgen and are stored in save.
-	let data = r#"
-		[ // Start from vector that contains entities.
-			EntityData(
-				entity_codename : "grass_foxtail",
-				entity_type : Plant(
-					PlantProperties(
-						// Plants be described as "patches" or "groups"
-						// of population individuals at given place, so
-						// a quantity parameter is given.
-						// For instance, if there are 10 grass sprouts per 1 sq.m
-						// Then for a place (300x300 m) the quantity will be like
-						// 900000, thus taking u32 init.
-						// Plant level along with world constant and scarcity
-						// will define the "mix" of plants in given location at
-						// given plant level.
-						plant_level: Ground,
-						local_max_quantity: 1000000,
-						materials: [
-							Plant(
-								MaterialProperties(
-									property: "Green fiber"
-								)
-							)
-						],
-						native_biomes: [
-							"test_invalid_biome",
-							"biome_boreal_grassland",
-							"biome_temperate_grassland",
-							"biome_tropical_grassland",
-							"biome_boreal_woodland",
-							"biome_temperate_woodland",
-							"biome_tropical_woodland",
-							"biome_boreal_forest",
-							"biome_temperate_forest",
-							"biome_tropical_forest",
-						],
-					)
-				)
-			),
-			EntityData(
-				entity_codename : "grass_barley",
-				entity_type : Plant(
-					PlantProperties(
-						plant_level: Ground,
-						local_max_quantity: 1000000,
-						materials: [
-							Plant(
-								MaterialProperties(
-									property: "Green fiber"
-								)
-							)
-						],
-						native_biomes: [
-							"biome_temperate_grassland",
-							"biome_tropical_grassland",
-							"biome_boreal_woodland",
-							"biome_temperate_woodland",
-							"biome_tropical_woodland",
-							"biome_boreal_shrubland",
-							"biome_temperate_shrubland",
-							"biome_tropical_shrubland",
-						],
-					)
-				)
-			),
-			EntityData(
-				entity_codename : "grass_foxtail",
-				entity_type : Plant(
-					PlantProperties(
-						plant_level: Ground,
-						local_max_quantity: 1000000,
-						materials: [
-							Plant(
-								MaterialProperties(
-									property: "Green fiber"
-								)
-							)
-						],
-						native_biomes: [
-							"biome_boreal_grassland",
-							"biome_temperate_grassland",
-							"biome_tropical_grassland",
-							"biome_boreal_woodland",
-							"biome_temperate_woodland",
-							"biome_tropical_woodland",
-							"biome_boreal_forest",
-							"biome_temperate_forest",
-							"biome_tropical_forest",
-							"biome_boreal_swamp",
-							"biome_temperate_swamp",
-							"biome_tropical_swamp",
-							"biome_boreal_shrubland",
-							"biome_temperate_shrubland",
-							"biome_tropical_shrubland",
-							"biome_boreal_alpine_grassland",
-							"biome_temperate_alpine_grassland",
-							"biome_tropical_alpine_grassland",
-						],
-					)
-				)
-			),
-		]
-		"#;
-
-	// LOAD AND PARSE ON STARTUP.
-	// In worldgen.
-	let path_placeholder = "./preset/some_preset...";
-	let entities_from_file: Vec<EntityData> = match ron::from_str(&data) {
-		Ok(f) => f,
-		Err(e) => {
-			println!("{}: {}", "ERROR: ".red(), e.to_string().red());
-			println!("Flie: {}", path_placeholder);
-			println!("Check missing commas in preset.");
-			println!("Check if all option names are valid.");
-			std::process::exit(0);
-		}
-	};
+	let entities_from_file = presets_flora::get();
 
 	// This should be a hashmap that connects type_UIDs with type data.
 	// Type UIDs u16 is enough.
-	let mut plant_types: HashMap<u16, EntityData> = HashMap::with_capacity(1000); // some plant type cap.
-																																							// Codenames list needed to check for duplicates only.
+	let mut plant_types: HashMap<u16, gdc::entities::EntityData> =
+		HashMap::with_capacity(1000); // some plant type cap.
+															// Codenames list needed to check for duplicates only.
 	let mut plant_types_codenames = Vec::new();
 	let mut uid_plant_type: u16 = cg::UID_MIN_U16;
 
 	for entity_from_file in entities_from_file {
 		if !plant_types_codenames.contains(&entity_from_file.entity_codename) {
 			match &entity_from_file.entity_type {
-				EntityType::Plant(_) => {
+				gdc::entities::EntityType::Plant(_) => {
 					plant_types_codenames.push(entity_from_file.entity_codename.clone());
 					println!(
 						"Plant type loaded: {}",
@@ -277,7 +112,7 @@ pub fn start() {
 
 	// U32 is Ind (position) and this way by it we can index the respective
 	// vector, containing plant groups.
-	let mut data_from_cachemap: HashMap<u32, Vec<PlantGroup>> =
+	let mut data_from_cachemap: HashMap<u32, Vec<gdc::entities::PlantGroup>> =
 		HashMap::with_capacity(cachemap_size);
 
 	// let mut data_from_cachemap...
@@ -294,15 +129,15 @@ pub fn start() {
 	data_from_cachemap.insert(
 		ind,
 		vec![
-			PlantGroup {
+			gdc::entities::PlantGroup {
 				type_uid: 1,
 				quantity: 25,
 			},
-			PlantGroup {
+			gdc::entities::PlantGroup {
 				type_uid: 1,
 				quantity: 255,
 			},
-			PlantGroup {
+			gdc::entities::PlantGroup {
 				type_uid: 2,
 				quantity: 2550,
 			},
@@ -329,37 +164,37 @@ pub fn start() {
 		let plant_type_data = &plant_types[&group.type_uid];
 		match &plant_type_data.entity_type {
 			// Have different destructors for different types.
-			EntityType::Plant(properties) => {
+			gdc::entities::EntityType::Plant(properties) => {
 				println!("Type: {:?}", &plant_type_data.entity_codename);
 				// Move it into plant destructor.
 				for material in properties.materials.iter() {
 					// Move into material destructor.
 					match material {
-						Material::Plant(properties) => {
+						gdc::entities::Material::Plant(properties) => {
 							println!("{:?}", properties);
 						}
 					}
 				}
 				match properties.plant_level {
-					PlantLevel::TallCanopy => {
+					gdc::entities::PlantLevel::TallCanopy => {
 						println!("TALL PLANT CANOPY LEVEL")
 					}
-					PlantLevel::MediumCanopy => {
+					gdc::entities::PlantLevel::MediumCanopy => {
 						println!("MEDIUM PLANT CANOPY LEVEL")
 					}
-					PlantLevel::ShortCanopy => {
+					gdc::entities::PlantLevel::ShortCanopy => {
 						println!("SHORT PLANT CANOPY LEVEL")
 					}
-					PlantLevel::Shrub => {
+					gdc::entities::PlantLevel::Shrub => {
 						println!("SRUB LEVEL")
 					}
-					PlantLevel::Ground => {
+					gdc::entities::PlantLevel::Ground => {
 						println!("GROUND LEVEL")
 					}
-					PlantLevel::Underground => {
+					gdc::entities::PlantLevel::Underground => {
 						println!("UNDERGROUND LEVEL")
 					}
-					PlantLevel::Underwater => {
+					gdc::entities::PlantLevel::Underwater => {
 						println!("UNDERWATER LEVEL")
 					}
 				}

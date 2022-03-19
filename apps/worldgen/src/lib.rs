@@ -46,7 +46,7 @@ pub fn start() {
 		WS.print_no_input_preset();
 		return;
 	}
-	let mut wi: presets::presets_worldgen::Stuff = presets::presets_worldgen::get(&input_preset);
+	let mut wi: WorldgenPreset = presets::presets_worldgen::get(&input_preset);
 	WS.print_preset_selected(&input_preset);
 	// Converts from user-friendly scales to mechanics-friendly.
 	// Also checks validity.
@@ -107,7 +107,7 @@ pub fn start() {
 		
 		// Create a "WorldInit" struct that holds all the preset data.
 		// Re-call this every loop iteration due to new seed.
-		let mut wi: presets::presets_worldgen::Stuff = 
+		let mut wi: WorldgenPreset = 
 			presets::presets_worldgen::get(&input_preset);
 		convert_preset_values::all(&mut wi);
 		wi.seed = world_seed;

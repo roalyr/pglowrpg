@@ -1,4 +1,5 @@
 use lib_constants::world::*;
+use lib_game_data_codec as gdc;
 use lib_io_ops::readron::presets;
 
 struct Cap2<T> {
@@ -6,14 +7,14 @@ struct Cap2<T> {
 	max: T,
 }
 
-pub fn all(wi: &mut presets::presets_worldgen::Stuff) {
+pub fn all(wi: &mut gdc::WorldgenPreset) {
 	map_size(wi);
 	noisemap_size(wi);
 	params(wi);
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ CHECK SIZES ▒▒▒▒▒▒▒▒▒▒▒▒▒
-fn map_size(wi: &presets::presets_worldgen::Stuff) {
+fn map_size(wi: &gdc::WorldgenPreset) {
 	let size = MAP_SIZES.iter().find(|&&s| s == wi.map_size);
 	if size == None {
 		let msg = "ERROR: map size value is wrong: ";
@@ -24,7 +25,7 @@ fn map_size(wi: &presets::presets_worldgen::Stuff) {
 	}
 }
 
-fn noisemap_size(wi: &presets::presets_worldgen::Stuff) {
+fn noisemap_size(wi: &gdc::WorldgenPreset) {
 	let size = NOISEMAP_SIZES.iter().find(|&&s| s == wi.noisemap_size);
 	if size == None {
 		let msg = "ERROR: noisemap size value is wrong: ";
@@ -42,7 +43,7 @@ fn noisemap_size(wi: &presets::presets_worldgen::Stuff) {
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ CHECK VALUES ▒▒▒▒▒▒▒▒▒▒▒▒▒
-fn params(wi: &mut presets::presets_worldgen::Stuff) {
+fn params(wi: &mut gdc::WorldgenPreset) {
 	wi.waterlevel = cap1("Waterlevel", wi.waterlevel, ABS_ELEV_MIN, ABS_ELEV_MAX);
 
 	let abs_elev: Cap2<u32> = cap2(

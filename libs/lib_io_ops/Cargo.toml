@@ -7,7 +7,8 @@ edition = "2018"
 
 [dependencies]
 lib_constants = { path = "../../libs/lib_constants" }
+lib_game_data_codec = { path = "../../libs/lib_game_data_codec" }
 
 serde = { version = "1.0", features = ["derive"]  }
-ron = "0.6"
+ron = "0.7"
 lz4 = "1.23"

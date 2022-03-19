@@ -1,15 +1,61 @@
 #![allow(non_snake_case)]
-use lib_io_ops::readron::presets;
+pub mod entities;
+use lib_constants::world as cw;
 use lib_unit_systems::coords::Index;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+
+// TODO: move all "Stuff" data structs that correspond to .ron
+// presets into this lib?
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct WorldgenPreset {
+	pub seed: u32,
+	pub abs_elev_min: u32,
+	pub abs_elev_max: u32,
+	pub abs_rain_min: u32,
+	pub abs_rain_max: u32,
+	pub abs_temp_min: i32,
+	pub abs_temp_max: i32,
+	pub waterlevel: u32,
+	pub topog_scope: f32,
+	pub topog_continuity: f32,
+	pub topog_concentrator: f32,
+	pub topog_filter: u32,
+	pub topog_erosion_factor: f32,
+	pub topog_noise_size: f32,
+	pub topog_noise_weight: f32,
+	pub temp_mode: cw::TempGrad,
+	pub temp_noise_size: f32,
+	pub temp_noise_weight: f32,
+	pub rain_noise_size: f32,
+	pub rain_noise_weight: f32,
+	pub river_source_density: f32,
+	pub river_heuristic_factor: f32,
+	pub river_noise_size1: f32,
+	pub river_noise_size2: f32,
+	pub river_noise_blend: f32,
+	pub river_noise_weight: f32,
+	pub river_min_length: u32,
+	pub river_attr_pool_size_pow: u16,
+	pub river_sink_min_pool_size_pow: u16,
+	pub river_erosion_width: u32,
+	pub river_erosion_smooth: f32,
+	pub map_size: u32,
+	pub noisemap_size: u32,
+
+	pub magic: f32,
+	pub magic1: f32,
+	pub magic2: f32,
+	pub magic3: f32,
+}
 
 //▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 // WORLD DATA STRUCTURE
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LayerPack {
 	pub index: Index,
-	pub wi: presets::presets_worldgen::Stuff,
+	pub wi: WorldgenPreset,
 
 	pub layer_vec_len: u32,
 	pub noisemap_vec_len: u32,
@@ -83,16 +129,9 @@ pub struct BitLayerGeoregID {
 }
 
 // Cachemaps
-// TODD: make a separate file for types.
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct PlantGroup {
-	type_uid: u16, // links to EntityData directly.
-	quantity: u16, // Can be u16 due to rounding (u8 = 1 byte -> 1 +2)
-}
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CacheLayerFlora {
-	pub data: HashMap<u32, Vec<PlantGroup>>,
+	pub data: HashMap<u32, Vec<entities::PlantGroup>>,
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
@@ -157,98 +196,6 @@ macro_rules! impl_without_masks {
 			}
         })*
     }
-}
-
-//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
-// METHODS MACROS
-// Credits to ZippyMagician from "One Lone Coder" community
-// for initial draft of this macro.
-// This macro initiates a bit layer structure.
-#[macro_export]
-macro_rules! bit_layer {
-	//general case with masks
-	($layer_val_type: ty, $length: expr,
-	[$($mask_name: ident : $mask_val: expr), *]) => {
-	{
-		#[derive(Debug)]
-		struct Masks {
-			$($mask_name : $layer_val_type), *
-		}
-		#[derive(Debug)]
-		struct BitLayer {
-			data: Vec<$layer_val_type>,
-			masks: Masks,
-		}
-		impl BitLayer {
-			fn new(
-				length: usize
-			) -> Self {
-				Self {
-					data: vec![0; length],
-					masks: Masks{ $($mask_name : $mask_val), * },
-				}
-			}
-			pub fn write(
-				&mut self,
-				val: $layer_val_type,
-				mask: $layer_val_type,
-				index: usize,
-			) {
-				let zeros = mask.trailing_zeros();
-				//overflow guard
-				if val > (mask >> zeros) {
-					panic!("bit layer value overflow for mask {:#0b}", mask)
-				}
-				self.data[index] |= ((mask >> zeros) & val) << zeros;
-			}
-			pub fn read(
-				&self,
-				mask: $layer_val_type,
-				index: usize,
-			) -> $layer_val_type {
-				(self.data[index] & mask) >> mask.trailing_zeros()
-			}
-		}
-		BitLayer::new($length)
-		}
-	};
-	//whole-value case
-	($layer_val_type: ty, $length: expr) => {
-	{
-		#[derive(Debug)]
-		struct BitLayer {
-			data: Vec<$layer_val_type>,
-		}
-		impl BitLayer {
-			fn new(
-				length: usize
-			) -> Self {
-				Self {
-					data: vec![0; length],
-				}
-			}
-			pub fn write(
-				&mut self,
-				val: $layer_val_type,
-				index: usize,
-			) {
-				//overflow guard
-				let max_val = <$layer_val_type>::MAX;
-				if val > max_val {
-					panic!("bit layer value overflow for type max value {}", max_val)
-				}
-				self.data[index] = val;
-			}
-			pub fn read(
-				&self,
-				index: usize,
-			) -> $layer_val_type {
-				self.data[index]
-			}
-		}
-		BitLayer::new($length)
-		}
-	};
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒

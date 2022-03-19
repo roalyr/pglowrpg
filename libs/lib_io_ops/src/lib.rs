@@ -6,7 +6,7 @@ use std::fs::File;
 use std::io;
 use std::io::Cursor;
 use std::io::Read;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 // TODO: merge those two functions?
 // Return the file contents of the directory.
@@ -39,6 +39,36 @@ pub fn dir_file_contents(
 	contents
 }
 
+// Return the file contents of the directory.
+pub fn dir_file_contents_full_paths(
+	path_str: &str,
+	seek_extension: &str,
+) -> Vec<PathBuf> {
+	let path = Path::new(path_str);
+	// Get directory contents.
+	let contents_iter = match fs::read_dir(path) {
+		Ok(f) => f,
+		Err(e) => {
+			println!("ERROR: {}: {}", e.to_string(), path.to_str().unwrap());
+			std::process::exit(0);
+		}
+	};
+	// Make a vector for paths.
+	let mut contents = Vec::new();
+	for entry in contents_iter {
+		// TODO: make unwrap_or here?
+		let entry_unwrapped = entry.unwrap().path();
+		//let entry_name = &entry_unwrapped.file_stem().unwrap().to_str().unwrap();
+		let entry_extension =
+			&entry_unwrapped.extension().unwrap().to_str().unwrap();
+		// Gather the files by extension.
+		if *entry_extension == seek_extension {
+			contents.push(entry_unwrapped);
+		}
+	}
+	contents
+}
+
 // Returns the directories within a directory.
 pub fn dir_dir_contents(path_str: &str) -> Vec<String> {
 	let path = Path::new(path_str);
@@ -60,6 +90,21 @@ pub fn dir_dir_contents(path_str: &str) -> Vec<String> {
 		contents.push(entry_name.to_string());
 	}
 	contents
+}
+
+// Reads one file to string.
+pub fn single_file_to_string(path: std::path::PathBuf) -> String {
+	let mut data = String::new();
+	if let Ok(mut file) = File::open(&path) {
+		match file.read_to_string(&mut data) {
+			Ok(f) => f,
+			Err(e) => {
+				println!("ERROR: {}: {}", e.to_string(), path.to_str().unwrap());
+				std::process::exit(0);
+			}
+		};
+	};
+	data
 }
 
 // Reads file to string.

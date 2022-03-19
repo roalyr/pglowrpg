@@ -1,6 +1,8 @@
 //▒▒▒▒▒▒▒▒▒▒▒▒ PATHS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 pub const PATH_PRESETS_WORLD: &str = "./presets_default/world/";
 pub const PATH_PRESETS_WORLD_USER: &str = "./presets_user/world/";
+pub const PATH_PRESETS_FLORA: &str = "./presets_default/entities/flora/";
+pub const PATH_PRESETS_FLORA_USER: &str = "./presets_user/entities/flora/";
 
 pub const PATH_PRESETS_PALETTES: &str = "./palettes/";
 pub const PATH_OPTIONS: &str = "./options/";
@@ -12,10 +14,12 @@ pub const PATH_SAVE_IMAGES_RAW: &str = "images_raw/";
 pub const PATH_SAVE_DATA: &str = "data/";
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ EXTENSIONS ▒▒▒▒▒▒▒▒▒▒▒▒▒
+// TODO: merge the extensions.
 pub const EXTENSION_PRESET_WORLD: &str = "ron";
 pub const EXTENSION_PRESET_PALETTE: &str = "ron";
 pub const EXTENSION_OPTION: &str = "ron";
 pub const EXTENSION_LOCALE: &str = "ron";
+pub const EXTENSION_PRESET: &str = "ron";
 
 pub const EXTENSION_SAVE_IMAGE: &str = "png";
 pub const EXTENSION_SAVE_DATA: &str = "lz4";
