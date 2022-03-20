@@ -1,31 +1,25 @@
-use colored::*;
 use lib_constants::generic as cg;
 use lib_constants::world as cw;
 use lib_game_data_codec as gdc;
+use lib_game_data_codec::LayerPack;
 use lib_io_ops::readron::presets::presets_flora;
-use lib_unit_systems::coords::Index;
 use std::collections::HashMap;
 
 // Plants should be described in patches or groups, that have
 // UIDs, and region of origin (assigned at worldgen).
 // This allows for unified entity system to be applied.
 
-pub fn start() {
-	// Initial values which are required.
-	let map_size = 4096;
-	let world_size = map_size * map_size;
-
+pub fn get(lp: &mut LayerPack) {
 	// Read presets from files.
 	let entities_from_file = presets_flora::get();
 	let plant_types_num = entities_from_file.len();
-	
-	// Create an UID- type hasmap.
-	let mut plant_types: HashMap<u16, gdc::entities::EntityData> =
-		HashMap::with_capacity(plant_types_num);
+
+	// Create an UID-type hasmap.
+	lp.flora.types = HashMap::with_capacity(plant_types_num);
 
 	// Codenames list needed to check for duplicates upon loading.
 	let mut plant_types_codenames = Vec::new();
-	
+
 	// Initiate UID.
 	let mut uid_plant_type: u16 = cg::UID_MIN_U16;
 
@@ -39,7 +33,7 @@ pub fn start() {
 						"Plant type loaded: {}",
 						entity_from_file.entity_codename.clone()
 					);
-					plant_types.insert(uid_plant_type, entity_from_file);
+					lp.flora.types.insert(uid_plant_type, entity_from_file);
 
 					// Increment UID every successfull load.
 					uid_plant_type = uid_plant_type
@@ -50,8 +44,7 @@ pub fn start() {
 		} else {
 			println!(
 				"{} : {}",
-				"WARNING: same entity already loaded",
-				entity_from_file.entity_codename
+				"WARNING: same entity already loaded", entity_from_file.entity_codename
 			);
 		}
 	}
@@ -59,23 +52,21 @@ pub fn start() {
 	// WORLDGEN
 	// Making a non-spatial cache table to put specific entities in the world.
 	// Approximate number of entities per location.
-	let groups_per_loc = 5; 
+	let groups_per_loc = 5;
 	// Cache table is related to map size.
-	let cachemap_size = (world_size * groups_per_loc) as usize;
+	let cachemap_size = (lp.layer_vec_len * groups_per_loc) as usize;
 
 	// U32 is Ind (position), allows to index the respective entity vector.
-	let mut flora_cachemap: HashMap<u32, Vec<gdc::entities::PlantGroup>> =
-		HashMap::with_capacity(cachemap_size);
+	lp.flora.data = HashMap::with_capacity(cachemap_size);
 
 	// Loop through the map, match by biomes, randomly drop in plants.
-	let x: u32 = 10;
-	let y: u32 = 110;
-	let index = Index { map_size };
-	let ind = index.get(x, y) as u32;
+	let x: u32 = 128;
+	let y: u32 = 128;
+	let ind = lp.index.get(x, y) as u32;
 
 	// LOADING AND WRITING ENTITIES.
 	// Creating instances.
-	flora_cachemap.insert(
+	lp.flora.data.insert(
 		ind,
 		vec![
 			gdc::entities::PlantGroup {
@@ -95,14 +86,14 @@ pub fn start() {
 
 	println!(
 		"Total number of plant groups in the world: {}",
-		flora_cachemap.len()
+		lp.flora.data.len()
 	);
 
 	// TEST. READING AND PARSING.
 	// Now access the creatures in the given location:
-	println!("{}", "CHECKING ENTRIES IN THE LOCATION\n".green());
+
 	println!("At x: {}, y: {}, index: {}\n", x, y, ind);
-	let plant_groups = &flora_cachemap[&ind];
+	let plant_groups = &lp.flora.data[&ind];
 	for group in plant_groups.iter() {
 		// Destruct the entity. What should this return? How and when?
 		// Entity is a PlantGroup.
@@ -110,7 +101,7 @@ pub fn start() {
 		println!("type UID: {}", group.type_uid);
 		println!("quantity: {}", group.quantity);
 		// Use type_uid to get type data from types.
-		let plant_type_data = &plant_types[&group.type_uid];
+		let plant_type_data = &lp.flora.types[&group.type_uid];
 		match &plant_type_data.entity_type {
 			// Have different destructors for different types.
 			gdc::entities::EntityType::Plant(properties) => {
@@ -155,11 +146,7 @@ pub fn start() {
 						println!("Native biome (id) {}: {}", id, &b.clone());
 					} else {
 						// Make a proper warning prompt later on.
-						println!(
-							"{}: {}",
-							"WARNING: unknown native biome assigned".yellow(),
-							b.yellow()
-						);
+						println!("{}: {}", "WARNING: unknown native biome assigned", b);
 					}
 				}
 			}

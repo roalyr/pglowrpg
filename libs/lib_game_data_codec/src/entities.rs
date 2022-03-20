@@ -1,7 +1,20 @@
 use serde::{Deserialize, Serialize};
 
 //▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
-// GENERIC
+// GENERIC ENTITIES
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum EntityType {
+	Plant(PlantProperties),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct EntityData {
+	pub entity_codename: String,
+	pub entity_type: EntityType,
+}
+
+//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+// MATERIALS
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MaterialProperties {
 	pub property: String,
@@ -12,6 +25,8 @@ pub enum Material {
 	Plant(MaterialProperties),
 }
 
+//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+// FLORA
 #[derive(Debug, Clone, Serialize, Deserialize)]
 // From the forest structure by height, from highest to lowest.
 // Simplified names for uniformity.
@@ -33,19 +48,6 @@ pub struct PlantProperties {
 	pub native_biomes: Vec<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub enum EntityType {
-	Plant(PlantProperties),
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct EntityData {
-	pub entity_codename: String,
-	pub entity_type: EntityType,
-}
-
-//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
-// FLORA
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlantGroup {
 	// Rounding to 4 bytes.

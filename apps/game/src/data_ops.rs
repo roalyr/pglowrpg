@@ -89,5 +89,12 @@ pub fn get_world_data_at(
 		river_element: gd.lp.rivers.read(gd.lp.rivers.ELEMENT, index),
 		river_upstream: gd.lp.rivers.read(gd.lp.rivers.UPSTREAM, index),
 		river_downstream: gd.lp.rivers.read(gd.lp.rivers.DOWNSTREAM, index),
+		flora: gd
+			.lp
+			.flora
+			.data
+			.get(&(index as u32))
+			.unwrap_or(&Vec::new())
+			.clone(),
 	}
 }

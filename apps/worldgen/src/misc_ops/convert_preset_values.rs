@@ -1,6 +1,5 @@
 use lib_constants::world::*;
 use lib_game_data_codec as gdc;
-use lib_io_ops::readron::presets;
 
 struct Cap2<T> {
 	min: T,

@@ -27,11 +27,11 @@ pub fn start() {
 	// Preset selection.
 	let preset_def = lib_io_ops::dir_file_contents(
 		ca::PATH_PRESETS_WORLD,
-		ca::EXTENSION_PRESET_WORLD,
+		ca::EXTENSION_PRESET,
 	);
 	let preset_user = lib_io_ops::dir_file_contents(
 		ca::PATH_PRESETS_WORLD_USER,
-		ca::EXTENSION_PRESET_WORLD,
+		ca::EXTENSION_PRESET,
 	);
 	let presets = [preset_def, preset_user].concat();
 	let input_preset = prompt_input!( 
@@ -157,7 +157,8 @@ pub fn start() {
 			
 			// TODO: find a good way to estimate flora entities number.
 			flora: CacheLayerFlora {
-				data: HashMap::with_capacity(layer_vec_len as usize*5),
+				data: HashMap::new(),
+				types: HashMap::new(),
 			}
 		};
 		
@@ -172,7 +173,9 @@ pub fn start() {
 		WS.print_prep_rmap(); layer_ops::river_mapping::get(&mut lp);
 		WS.print_prep_bioreg(); layer_ops::bioregion_mapping::get(&mut lp);
 		WS.print_prep_georeg(); layer_ops::georegion_mapping::get(&mut lp);
-
+		// Entities.
+		layer_ops::flora_mapping::get(&mut lp);
+		
 		// Write data.
 		UI.print_newline();
 		write_save(&mut lp, &input_preset);

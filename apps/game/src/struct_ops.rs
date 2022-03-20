@@ -1,5 +1,6 @@
 use crate::commands_ops::commands_init;
 use crate::data_ops::get_layerpack;
+use lib_game_data_codec as gdc;
 use lib_game_data_codec::LayerPack;
 
 pub struct GameData {
@@ -28,6 +29,7 @@ pub struct WorldData {
 	pub river_element: u16,
 	pub river_upstream: u16,
 	pub river_downstream: u16,
+	pub flora: Vec<gdc::entities::PlantGroup>,
 }
 
 pub struct GameStrings {
@@ -43,6 +45,7 @@ pub struct GameStrings {
 	pub elev_str: String,
 	pub water_str: String,
 	pub river_str: String,
+	pub flora_str: String,
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒ INITS ▒▒▒▒▒▒▒▒▒▒▒▒▒
@@ -90,6 +93,7 @@ pub fn init_wd() -> WorldData {
 		river_element: 0,
 		river_upstream: 0,
 		river_downstream: 0,
+		flora: Vec::new(),
 	}
 }
 
@@ -108,5 +112,6 @@ pub fn init_gs() -> GameStrings {
 		elev_str: String::new(),
 		water_str: String::new(),
 		river_str: String::new(),
+		flora_str: String::new(),
 	}
 }

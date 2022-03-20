@@ -8,6 +8,8 @@ use std::collections::HashMap;
 // TODO: move all "Stuff" data structs that correspond to .ron
 // presets into this lib?
 
+//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+// WORLD PRESET
 #[derive(Serialize, Deserialize, Debug)]
 pub struct WorldgenPreset {
 	pub seed: u32,
@@ -132,6 +134,7 @@ pub struct BitLayerGeoregID {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CacheLayerFlora {
 	pub data: HashMap<u32, Vec<entities::PlantGroup>>,
+	pub types: HashMap<u16, entities::EntityData>,
 }
 
 //▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒

@@ -48,7 +48,7 @@ pub fn start() {
 
 		// UI PRINTING AND RENDERING.
 		formatting_ops::get_strings_basic(&gd, &wd, &mut gs);
-		printing_ops::print_strings_basic(&gs);
+		printing_ops::print_strings_basic(&gs, &wd);
 
 		// temporary here, for debug
 		let cx = gd.x;

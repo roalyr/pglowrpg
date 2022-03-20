@@ -1,10 +1,13 @@
-use crate::struct_ops::{GameData, GameStrings};
+use crate::struct_ops::{GameData, GameStrings, WorldData};
 
 use colored::*;
 use lib_image_ops::from_hex;
 use lib_io_ops::readron::palettes::biomes;
 
-pub fn print_strings_basic(gs: &GameStrings) {
+pub fn print_strings_basic(
+	gs: &GameStrings,
+	wd: &WorldData,
+) {
 	println!("{}", gs.coord_str);
 	println!("{}", gs.elev_str);
 	println!("{}", gs.water_str);
@@ -14,6 +17,7 @@ pub fn print_strings_basic(gs: &GameStrings) {
 	println!("{}", gs.bioreg_id_str);
 	println!("{}", gs.georeg_id_str);
 	println!("{}", gs.river_str);
+	println!("{:?}", wd.flora);
 }
 
 // This is all temporary and a low priority until entity system is done.

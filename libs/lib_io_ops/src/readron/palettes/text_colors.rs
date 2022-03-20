@@ -17,7 +17,7 @@ pub struct Stuff {
 pub fn get() -> Stuff {
 	let path = Path::new(PATH_PRESETS_PALETTES)
 		.join(NAME_PALETTE_TEXT_COLORS)
-		.with_extension(EXTENSION_PRESET_PALETTE);
+		.with_extension(EXTENSION_PRESET);
 
 	let data = crate::file_to_string(&vec![path.clone()]);
 

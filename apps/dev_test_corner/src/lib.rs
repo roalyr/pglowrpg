@@ -14,14 +14,12 @@
 use colored::*;
 
 pub mod entity_system;
-pub mod flora;
 
 pub fn start() {
 	println!("{}", "DEV TESTING CORNER".red());
 	println!("{}", "START\n".blue());
 
 	//entity_system::start();
-	flora::start();
 
 	println!("{}", "\nEND".blue());
 }
