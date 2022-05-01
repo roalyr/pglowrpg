@@ -30,6 +30,8 @@ pub enum Material {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 // From the forest structure by height, from highest to lowest.
 // Simplified names for uniformity.
+
+// TODO: move to constants?
 pub enum PlantLevel {
 	TallCanopy,
 	MediumCanopy,
@@ -43,7 +45,7 @@ pub enum PlantLevel {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlantProperties {
 	pub plant_level: PlantLevel,
-	pub local_max_quantity: u32,
+	pub local_max_quantity: u16, // u16 should be enough.
 	pub materials: Vec<Material>,
 	pub native_biomes: Vec<String>,
 }

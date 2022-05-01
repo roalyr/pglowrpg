@@ -91,6 +91,9 @@ pub fn get(lp: &mut LayerPack) {
 
 	// TEST. READING AND PARSING.
 	// Now access the creatures in the given location:
+	
+	// TODO: make a look-up for strings descripiti, name) in
+	// locales and if there are none: give an error.
 
 	println!("At x: {}, y: {}, index: {}\n", x, y, ind);
 	let plant_groups = &lp.flora.data[&ind];

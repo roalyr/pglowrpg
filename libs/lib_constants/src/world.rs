@@ -202,6 +202,9 @@ pub const BIOME_TROPICAL_ALPINE_GRASSLAND: u8 = 37;
 // Match codenames against this hashmap to get IDs when doing
 // worldgen.
 #[rustfmt::skip]
+
+
+// TODO: try enum instead of string.
 lazy_static! {
 	pub static ref BIOMES_CODENAMES: HashMap<String, u8> = {
 		let mut m = HashMap::new();
