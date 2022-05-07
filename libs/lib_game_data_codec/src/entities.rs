@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
 // GENERIC ENTITIES
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum EntityType {
@@ -13,7 +13,7 @@ pub struct EntityData {
 	pub entity_type: EntityType,
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
 // MATERIALS
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MaterialProperties {
@@ -25,7 +25,7 @@ pub enum Material {
 	Plant(MaterialProperties),
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
 // FLORA
 #[derive(Debug, Clone, Serialize, Deserialize)]
 // From the forest structure by height, from highest to lowest.

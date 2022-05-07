@@ -56,7 +56,7 @@ fn match_biomes(
 
 	#[allow(overlapping_range_endpoints, clippy::match_overlapping_arm)]
 	match temp {
-		//▒▒▒▒▒▒▒▒▒▒ PERM ICE ▒▒▒▒▒▒▒▒▒▒
+		// PERM ICE
 		TEMP_MIN..=TEMP_PERM_ICE => {
 			if lp.topography.read(lp.topography.TERRAIN, index)
 				< waterlevel_rel as u16
@@ -67,7 +67,7 @@ fn match_biomes(
 			}
 			BIOME_POLAR_ICE_DESERT
 		}
-		//▒▒▒▒▒▒▒▒▒▒ POLAR ▒▒▒▒▒▒▒▒▒▒▒
+		// POLAR
 		TEMP_PERM_ICE..=TEMP_POLAR => match elev {
 			ELEV_MIN => {
 				if watermask != NO_WATER {
@@ -89,7 +89,7 @@ fn match_biomes(
 			ELEV_ALPINE..=ELEV_MAX => BIOME_POLAR_MOUNTAIN_TOP,
 			_ => unreachable!(),
 		},
-		//▒▒▒▒▒▒▒▒▒ TUNDRA ▒▒▒▒▒▒▒▒▒▒▒
+		// TUNDRA
 		TEMP_POLAR..=TEMP_TUNDRA => match elev {
 			ELEV_MIN => {
 				if watermask != NO_WATER {
@@ -110,7 +110,7 @@ fn match_biomes(
 			ELEV_ALPINE..=ELEV_MAX => BIOME_TUNDRA_MOUNTAIN_TOP,
 			_ => unreachable!(),
 		},
-		//▒▒▒▒▒▒▒▒▒▒ BOREAL ▒▒▒▒▒▒▒▒▒▒▒
+		// BOREAL
 		TEMP_TUNDRA..=TEMP_BOREAL => match elev {
 			ELEV_MIN => {
 				if watermask != NO_WATER {
@@ -157,7 +157,7 @@ fn match_biomes(
 			ELEV_ALPINE..=ELEV_MAX => BIOME_BOREAL_MOUNTAIN_TOP,
 			_ => unreachable!(),
 		},
-		//▒▒▒▒▒▒▒▒▒ TEMPERATE ▒▒▒▒▒▒▒▒▒▒
+		// TEMPERATE
 		TEMP_BOREAL..=TEMP_TEMPERATE => match elev {
 			ELEV_MIN => {
 				if watermask != NO_WATER {
@@ -204,7 +204,7 @@ fn match_biomes(
 			ELEV_ALPINE..=ELEV_MAX => BIOME_TEMPERATE_MOUNTAIN_TOP,
 			_ => unreachable!(),
 		},
-		//▒▒▒▒▒▒▒▒▒ TROPICAL ▒▒▒▒▒▒▒▒▒▒▒
+		// TROPICAL
 		TEMP_TEMPERATE..=TEMP_MAX => match elev {
 			ELEV_MIN => {
 				if watermask != NO_WATER {

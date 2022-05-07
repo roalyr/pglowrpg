@@ -1,4 +1,5 @@
-//▒▒▒▒▒▒▒▒▒▒▒▒ PATHS ▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
+// PATHS
 pub const PATH_PRESETS_WORLD: &str = "./presets_default/world/";
 pub const PATH_PRESETS_WORLD_USER: &str = "./presets_user/world/";
 pub const PATH_PRESETS_FLORA: &str = "./presets_default/entities/flora/";
@@ -13,7 +14,8 @@ pub const PATH_SAVE_IMAGES_COLOR: &str = "images_color/";
 pub const PATH_SAVE_IMAGES_RAW: &str = "images_raw/";
 pub const PATH_SAVE_DATA: &str = "data/";
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ EXTENSIONS ▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
+// EXTENSIONS
 pub const EXTENSION_LOCALE: &str = "ron";
 pub const EXTENSION_PRESET: &str = "ron";
 pub const EXTENSION_OPTION: &str = "ron";
@@ -21,11 +23,13 @@ pub const EXTENSION_OPTION: &str = "ron";
 pub const EXTENSION_SAVE_IMAGE: &str = "png";
 pub const EXTENSION_SAVE_DATA: &str = "lz4";
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ NAMES ▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
+// NAMES
 pub const NAME_DATA_WORLD: &str = "world_data";
 pub const NAME_OPTIONS: &str = "options";
 
-// Strings.
+////////////////////////////////////////////////////////////////////////////////
+// STRINGS
 pub const NAME_STRINGS_WORLDGEN: &str = "worldgen_strings";
 pub const NAME_STRINGS_GAME: &str = "game_strings";
 pub const NAME_STRINGS_MENU: &str = "menu_strings";
@@ -33,7 +37,8 @@ pub const NAME_STRINGS_UI: &str = "ui_strings";
 
 pub const NAME_STRINGS_COMMANDS: &str = "commands_strings";
 
-// Palettes.
+////////////////////////////////////////////////////////////////////////////////
+// PALETTES
 pub const NAME_PALETTE_BIOMES: &str = "biomes";
 pub const NAME_PALETTE_RAINFALL: &str = "rainfall";
 pub const NAME_PALETTE_REGION_SIZE: &str = "region_size";
@@ -41,10 +46,13 @@ pub const NAME_PALETTE_RIVER_ELEMENTS: &str = "river_elements";
 pub const NAME_PALETTE_RIVER_WIDTH: &str = "river_width";
 pub const NAME_PALETTE_TEMPERATURE: &str = "temperature";
 pub const NAME_PALETTE_TERRAIN: &str = "terrain";
-// Text colors (printing).
+
+////////////////////////////////////////////////////////////////////////////////
+// TEXT COLORS (printing)
 pub const NAME_PALETTE_TEXT_COLORS: &str = "text_colors";
 
-// Image names.
+////////////////////////////////////////////////////////////////////////////////
+// IMAGE NAMES
 pub const NAME_IMAGE_COLOR_WATERMASK_OVER_TERRAIN: &str =
 	"color_watermask_over_terrain";
 pub const NAME_IMAGE_COLOR_TEMPERATURE: &str = "color_temperature";

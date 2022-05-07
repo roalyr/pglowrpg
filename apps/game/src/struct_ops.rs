@@ -48,7 +48,8 @@ pub struct GameStrings {
 	pub flora_str: String,
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ INITS ▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
+// INIT
 pub fn init_gd(
 	gs: &GameStrings,
 	commands_struct: commands_init::CommandsStrings,

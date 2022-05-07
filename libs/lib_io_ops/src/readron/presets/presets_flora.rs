@@ -28,7 +28,9 @@ pub fn get() -> Vec<gdc::entities::EntityData> {
 				println!("{}: {}", "ERROR: ", e.to_string());
 				println!("Check missing commas in preset.");
 				println!("Check if all option names are valid.");
-				println!("Check if all values are within their limits (u8, u16, etc.).");
+				println!(
+					"Check if all values are within their limits (u8, u16, etc.)."
+				);
 				std::process::exit(0);
 			}
 		};

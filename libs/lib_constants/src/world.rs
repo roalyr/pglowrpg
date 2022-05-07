@@ -2,7 +2,7 @@ use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
 // WORLDGEN PRESET
 pub const DEFAULT_SEED: u32 = 0;
 pub const DEFAULT_WORLDS_NUM: u32 = 1;
@@ -85,7 +85,7 @@ pub const MAP_SIZES: [u32; 7] = [256, 512, 1024, 2048, 4096, 8192, 16384];
 
 pub const NOISEMAP_SIZES: [u32; 6] = [256, 512, 1024, 2048, 4096, 8192];
 
-//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
 // TEMPERATURE
 pub const TEMP_MIN: i32 = ABS_TEMP_MIN;
 pub const TEMP_PERM_ICE: i32 = -20;
@@ -95,7 +95,7 @@ pub const TEMP_BOREAL: i32 = 15;
 pub const TEMP_TEMPERATE: i32 = 30;
 pub const TEMP_MAX: i32 = ABS_TEMP_MAX;
 
-//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
 // ELEVATION
 pub const ELEV_MIN: u32 = ABS_ELEV_MIN;
 pub const ELEV_WATERHOLD: u32 = 100;
@@ -104,7 +104,7 @@ pub const ELEV_HIGHLANDS: u32 = 2000;
 pub const ELEV_ALPINE: u32 = 4000;
 pub const ELEV_MAX: u32 = ABS_ELEV_MAX;
 
-//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
 // RAINFALL
 pub const RAIN_MIN: u32 = ABS_RAIN_MIN;
 pub const RAIN_DESERT: u32 = 160;
@@ -113,11 +113,11 @@ pub const RAIN_WOODLAND: u32 = 1400;
 pub const RAIN_FOREST: u32 = 2200;
 pub const RAIN_MAX: u32 = ABS_RAIN_MAX;
 
-//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
 // WATERMASK
 pub const NO_WATER: u16 = 0;
 
-//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
 // RIVERS
 // This values just has to be large enough, it will be used for 1st
 // iteration and later on it will be adjusted on the 2nd run.
@@ -144,7 +144,7 @@ pub const RIVER_END: u16 = 3;
 pub const RIVER_WATERFALL: u16 = 4;
 pub const RIVER_WATERFALLS_MUL: u16 = 5;
 
-//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
 // BIOMES
 // ID values for each biome (type ID).
 pub const BIOME_WATER_ICECAP: u8 = 0;
@@ -260,7 +260,7 @@ lazy_static! {
 	};
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
 // FLORA
 // How many different types of plants can be on each level.
 pub const PLANT_LEVEL_TYPES_NUMBER_MAX: u8 = 5;

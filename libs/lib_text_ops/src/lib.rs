@@ -12,7 +12,8 @@ use lib_io_ops::get_strings_hashmaps;
 use std::collections::HashMap;
 use std::path::Path;
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ LOCALE ▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
+// LOCALE
 pub struct WgStrings {
 	s: HashMap<String, String>,
 }

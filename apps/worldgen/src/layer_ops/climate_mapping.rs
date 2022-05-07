@@ -8,7 +8,8 @@ pub fn get(lp: &mut LayerPack) {
 	rainfall(lp);
 }
 
-//▒▒▒▒▒▒▒▒▒▒ TEMPERATURE ▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
+// TEMPERATURE
 fn temperature(lp: &mut LayerPack) {
 	let mut array = vec![cg::ZERO_F32; lp.noisemap_vec_len as usize];
 	//Main gradient according to pole location.
@@ -67,7 +68,8 @@ fn temperature(lp: &mut LayerPack) {
 	}
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒ RAINFALL ▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
+// RAINFALL
 fn rainfall(lp: &mut LayerPack) {
 	let mut array = vec![cg::ZERO_F32; lp.noisemap_vec_len as usize];
 	//Gradient to account for polar regions being dryer.

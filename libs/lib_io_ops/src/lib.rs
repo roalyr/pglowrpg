@@ -165,7 +165,8 @@ pub fn create_file_overwrite(path: &Path) -> File {
 	}
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ COMPRESSION ▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
+// COMPRESSION
 // Read the data and write it down to storage in a .lz4
 pub fn compress_to_storage(
 	data: Vec<u8>,

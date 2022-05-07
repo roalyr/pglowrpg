@@ -91,7 +91,7 @@ pub fn start() {
 	UI.print_separator_thin("");
 	WS.print_world_num(world_num);
 	
-	//▒▒▒▒▒▒▒▒▒▒ GENERATION ▒▒▒▒▒▒▒▒▒▒▒
+	// GENERATION
 	let layer_vec_len = wi.map_size * wi.map_size;
 	let noisemap_vec_len = wi.noisemap_size * wi.noisemap_size;
 	let map_size = wi.map_size;

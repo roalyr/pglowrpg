@@ -12,7 +12,8 @@ pub fn all(wi: &mut gdc::WorldgenPreset) {
 	params(wi);
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ CHECK SIZES ▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
+// CHECK SIZES
 fn map_size(wi: &gdc::WorldgenPreset) {
 	let size = MAP_SIZES.iter().find(|&&s| s == wi.map_size);
 	if size == None {
@@ -41,7 +42,8 @@ fn noisemap_size(wi: &gdc::WorldgenPreset) {
 	}
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ CHECK VALUES ▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
+// CHECK VALUES
 fn params(wi: &mut gdc::WorldgenPreset) {
 	wi.waterlevel = cap1("Waterlevel", wi.waterlevel, ABS_ELEV_MIN, ABS_ELEV_MAX);
 
@@ -232,7 +234,7 @@ fn params(wi: &mut gdc::WorldgenPreset) {
 		RIVER_EROSION_SMOOTH_MAX,
 	);
 
-	//▒▒▒▒▒▒▒▒▒▒▒▒ CONVERSION ▒▒▒▒▒▒▒▒▒▒▒▒▒
+	// CONVERSION
 	wi.topog_scope /= 72.5 * 100.0;
 	wi.topog_continuity /= 1.3 * 100.0;
 	wi.topog_concentrator /= 26.5 * 100.0;
@@ -263,7 +265,8 @@ fn params(wi: &mut gdc::WorldgenPreset) {
 	wi.river_erosion_smooth /= 5.0;
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ CAPPING FNS ▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
+// CAPPING FNS
 fn cap1<T>(
 	name: &str,
 	val: T,
@@ -325,7 +328,8 @@ where
 	c
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒ SCALES ▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
+// SCALES
 //0-100 scale
 fn diminishing_scale(
 	scale_max: u32,

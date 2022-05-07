@@ -8,7 +8,7 @@ use std::collections::HashMap;
 // TODO: move all "Stuff" data structs that correspond to .ron
 // presets into this lib?
 
-//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
 // WORLD PRESET
 #[derive(Serialize, Deserialize, Debug)]
 pub struct WorldgenPreset {
@@ -52,7 +52,7 @@ pub struct WorldgenPreset {
 	pub magic3: f32,
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
 // WORLD DATA STRUCTURE
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LayerPack {
@@ -79,7 +79,7 @@ pub struct LayerPack {
 	pub flora: CacheLayerFlora,
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
 // LAYER TYPES
 // Bit layers.
 #[derive(Serialize, Deserialize, Debug)]
@@ -137,7 +137,7 @@ pub struct CacheLayerFlora {
 	pub types: HashMap<u16, entities::EntityData>,
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
 // METHODS
 // Those macros implement write and read methods for the
 // bit layer structs.
@@ -201,7 +201,7 @@ macro_rules! impl_without_masks {
     }
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
 // INITIALIZE BITLAYERS WITH MACROS
 // Set up laysers which have the masks to i/o different kinds of data.
 impl_with_masks!(

@@ -11,7 +11,7 @@ use lib_constants::world as cw;
 use lib_game_data_codec::LayerPack;
 use lib_text_ops::WORLDGEN_STRINGS as WS;
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ STRUCTURES ▒▒▒▒▒▒▒▒▒▒▒▒▒
+// STRUCTURES
 //River entry stores all the relevant river data.
 #[derive(Clone)]
 pub struct RiverEntry {
@@ -57,7 +57,7 @@ pub struct RgParams {
 	rivers_paths: RiversPaths,
 }
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ MAIN ▒▒▒▒▒▒▒▒▒▒▒▒▒
+// MAIN
 pub fn get(lp: &mut LayerPack) {
 	let mut rg = RgParams {
 		river_id: cg::ID_MAP_MIN_U32,

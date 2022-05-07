@@ -1,4 +1,5 @@
-//▒▒▒▒▒▒▒▒▒▒▒▒ GENERIC ▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
+// GENERIC
 pub const ONE_USIZE: usize = 1;
 pub const ONE_U16: u16 = 1;
 pub const ONE_U32: u32 = 1;
@@ -13,16 +14,19 @@ pub const ZERO_F32: f32 = 0.0;
 pub const VAL_255_F32: f32 = 255.0;
 pub const VAL_127_F32: f32 = 127.0;
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ IDs ▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
+// IDs
 // IDs that are written into BitLayer map.
 pub const ID_MAP_NO_U32: u32 = 0;
 pub const ID_MAP_MIN_U32: u32 = 1;
 
+////////////////////////////////////////////////////////////////////////////////
 // IDs that are written into tables.
 pub const UID_MIN_U32: u32 = 1;
 pub const UID_MIN_U16: u16 = 1;
 
-//▒▒▒▒▒▒▒▒▒▒▒▒ PATHFINDING ▒▒▒▒▒▒▒▒▒▒▒▒▒
+////////////////////////////////////////////////////////////////////////////////
+// PATHFINDING
 // This values just has to be large enough, it will be used for 1st
 // iteration and later on it will be adjusted on the 2nd run.
 //pub const PATHFINDING_HEUR_INIT: usize = 1_000_000;
