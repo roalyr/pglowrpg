@@ -109,35 +109,27 @@ pub fn get(lp: &mut LayerPack) {
 			// Have different destructors for different types.
 			gdc::entities::EntityType::Plant(properties) => {
 				println!("Type: {:?}", &plant_type_data.entity_codename);
-				// Move it into plant destructor.
-				for material in properties.materials.iter() {
-					// Move into material destructor.
-					match material {
-						gdc::entities::Material::Plant(properties) => {
-							println!("{:?}", properties);
-						}
-					}
-				}
+				println!("Structure: {:?}", &properties.plant_components);
 				match properties.plant_level {
-					gdc::entities::PlantLevel::TallCanopy => {
+					cw::PlantLevel::TallCanopy => {
 						println!("TALL PLANT CANOPY LEVEL")
 					}
-					gdc::entities::PlantLevel::MediumCanopy => {
+					cw::PlantLevel::MediumCanopy => {
 						println!("MEDIUM PLANT CANOPY LEVEL")
 					}
-					gdc::entities::PlantLevel::ShortCanopy => {
+					cw::PlantLevel::ShortCanopy => {
 						println!("SHORT PLANT CANOPY LEVEL")
 					}
-					gdc::entities::PlantLevel::Shrub => {
+					cw::PlantLevel::Shrub => {
 						println!("SRUB LEVEL")
 					}
-					gdc::entities::PlantLevel::Ground => {
+					cw::PlantLevel::Ground => {
 						println!("GROUND LEVEL")
 					}
-					gdc::entities::PlantLevel::Underground => {
+					cw::PlantLevel::Underground => {
 						println!("UNDERGROUND LEVEL")
 					}
-					gdc::entities::PlantLevel::Underwater => {
+					cw::PlantLevel::Underwater => {
 						println!("UNDERWATER LEVEL")
 					}
 				}

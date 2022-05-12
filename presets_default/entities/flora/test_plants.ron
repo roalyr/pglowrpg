@@ -3,10 +3,8 @@
 		// TODO: move comments to doc, and link a reference here.
 		//// Codename is also used to match for locale strings.
 		//// Name, descriptions - it all goes into locales.
-		entity_codename : "grass_foxtail",
+		entity_codename : "grass_dandelion",
 		entity_type : Plant(
-		// TODO: check if "PlantProperties" can be removed.
-		// store everything within entity_type.
 			PlantProperties(
 				//// Plant level defines the location of the plant.
 				//// Valid options are: TallCanopy, MediumCanopy,
@@ -17,31 +15,44 @@
 				//// of population individuals at given place, so
 				//// a quantity parameter is given.
 				local_max_quantity: 20,
-				// TODO: define a plant structure first, and assign materials to
-				// elements later on.
-				// TODO: make this a list of materials, nothing else.
-				materials: [
-					// TODO: MOVE MATERIAL PROPERTIES ASIDE, ONLY LEAVE
-					// SELECTION HERE, DO NOT DEFINE MATERIAL PROPERTIES
-					// HERE, BECAUSE YOU WON'T BE ABLE TO REFERENCE THEM
-					// FROM ANOTHER ENTITY!
-					Plant(
-						// It can be an enum, that gives a link to material and its level
-						// or depth, or layer, or position (inner, outer, etc.) of this material
-						// within the structural object of the entity.
-						MaterialProperties(
-							// material_codename: "....."
-							property: "Green fiber"
-							// Let materials store data about nutrition, smell,
-							// poison, value, etc.
-						)
-					)
-				],
 				//// Native biomes is a list which contains biomes codenames
 				//// in which given plant appears.
 				// TODO: link the list to docs.
 				// TODO: make a tuple that also stores scarcity aside from codename.
-				// TODO: try enum instead of strings.
+				
+				plant_components: 
+					PlantComponent(
+						component: Root,
+						quantity: Single,
+						material: Fiber,
+						child_components: Components(
+							[ // On root.
+								PlantComponent(
+									component: Stem,
+									quantity: Few,
+									material: Fiber,
+									child_components: Components(
+										[ // On stem.
+											PlantComponent(
+												component: Flower,
+												quantity: Single,
+												material: Fiber,
+												child_components: None,
+											),
+										]
+									),
+								),
+								// On root.
+								PlantComponent(
+									component: Leaf,
+									quantity: Many,
+									material: Fiber,
+									child_components: None,
+								),
+							]
+						),
+					),
+					
 				native_biomes: [
 					"test_invalid_biome", // Made to raise a warning.
 					"biome_boreal_grassland",
@@ -57,19 +68,37 @@
 			)
 		)
 	),
+	
 	EntityData(
 		entity_codename : "grass_barley",
 		entity_type : Plant(
 			PlantProperties(
 				plant_level: Ground,
 				local_max_quantity: 10000,
-				materials: [
-					Plant(
-						MaterialProperties(
-							property: "Green fiber"
-						)
-					)
-				],
+				
+				plant_components: 
+					PlantComponent(
+						component: Root,
+						quantity: Single,
+						material: Fiber,
+						child_components: Components(
+							[ /////////////////////////
+								PlantComponent(
+									component: Stem,
+									quantity: Single,
+									material: Fiber,
+									child_components: None,
+								),
+								PlantComponent(
+									component: Leaf,
+									quantity: Few,
+									material: Fiber,
+									child_components: None,
+								),
+							] /////////////////////////
+						),
+					),
+
 				native_biomes: [
 					"biome_temperate_grassland",
 					"biome_tropical_grassland",
@@ -90,13 +119,30 @@
 			PlantProperties(
 				plant_level: Ground,
 				local_max_quantity: 1000,
-				materials: [
-					Plant(
-						MaterialProperties(
-							property: "Green fiber"
-						)
-					)
-				],
+				
+				plant_components: 
+					PlantComponent(
+						component: Root,
+						quantity: Single,
+						material: Fiber,
+						child_components: Components(
+							[ /////////////////////////
+								PlantComponent(
+									component: Stem,
+									quantity: Single,
+									material: Fiber,
+									child_components: None,
+								),
+								PlantComponent(
+									component: Leaf,
+									quantity: Few,
+									material: Fiber,
+									child_components: None,
+								),
+							] /////////////////////////
+						),
+					),
+					
 				native_biomes: [
 					"biome_boreal_grassland",
 					"biome_temperate_grassland",

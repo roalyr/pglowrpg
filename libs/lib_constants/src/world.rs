@@ -203,8 +203,6 @@ pub const BIOME_TROPICAL_ALPINE_GRASSLAND: u8 = 37;
 // worldgen.
 #[rustfmt::skip]
 
-
-// TODO: try enum instead of string.
 lazy_static! {
 	pub static ref BIOMES_CODENAMES: HashMap<String, u8> = {
 		let mut m = HashMap::new();
@@ -262,5 +260,18 @@ lazy_static! {
 
 ////////////////////////////////////////////////////////////////////////////////
 // FLORA
+// From the forest structure by height, from highest to lowest.
+// Simplified names for uniformity.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum PlantLevel {
+	TallCanopy,
+	MediumCanopy,
+	ShortCanopy,
+	Shrub,
+	Ground,
+	Underground,
+	Underwater,
+}
+
 // How many different types of plants can be on each level.
 pub const PLANT_LEVEL_TYPES_NUMBER_MAX: u8 = 5;

@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use lib_constants::world as cw;
 
 ////////////////////////////////////////////////////////////////////////////////
 // GENERIC ENTITIES
@@ -15,6 +16,7 @@ pub struct EntityData {
 
 ////////////////////////////////////////////////////////////////////////////////
 // MATERIALS
+// TODO: generalize materials and define them via preset too.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MaterialProperties {
 	pub property: String,
@@ -22,31 +24,52 @@ pub struct MaterialProperties {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum Material {
-	Plant(MaterialProperties),
+	Wood,
+	Fiber,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // FLORA
 #[derive(Debug, Clone, Serialize, Deserialize)]
-// From the forest structure by height, from highest to lowest.
-// Simplified names for uniformity.
+pub enum PlantComponentType {
+	Root,
+	Trunk,
+	Stem,
+	Branch,
+	Leaf,
+	Flower
+}
 
-// TODO: move to constants?
-pub enum PlantLevel {
-	TallCanopy,
-	MediumCanopy,
-	ShortCanopy,
-	Shrub,
-	Ground,
-	Underground,
-	Underwater,
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum PlantChildComponent {
+	Components(Vec<Box<PlantComponent>>),
+	None,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum PlantComponentQuantity {
+	Single,
+	Few,
+	Many,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PlantComponent {
+	pub component: PlantComponentType,
+	pub quantity: PlantComponentQuantity,
+	pub material: Material,
+	pub child_components: PlantChildComponent,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlantProperties {
-	pub plant_level: PlantLevel,
+	pub plant_level: cw::PlantLevel,
 	pub local_max_quantity: u16, // u16 should be enough.
-	pub materials: Vec<Material>,
+	//days to grow
+	//dimensions when fully grown (heights, width)
+	//dimension variation
+	//volume
+	pub plant_components: PlantComponent,
 	pub native_biomes: Vec<String>,
 }
 
