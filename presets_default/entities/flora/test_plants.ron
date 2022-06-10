@@ -20,6 +20,11 @@
 				// TODO: link the list to docs.
 				// TODO: make a tuple that also stores scarcity aside from codename.
 				
+				// young_plants_ratio - number of local plants reserved for
+				// saplings. This will smooth out the lack of age property of
+				// plants, and so with increase in quantity after this threshold
+				// we can treat that ampunt of plants as mature.
+				
 				plant_components: 
 					PlantComponent(
 						component: Root,
