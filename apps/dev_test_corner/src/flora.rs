@@ -1,4 +1,4 @@
-use colored::*;
+use dep::colored::*;
 use lib_constants::generic as cg;
 use lib_constants::world as cw;
 use lib_game_data_codec as gdc;

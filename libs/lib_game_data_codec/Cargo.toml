@@ -6,7 +6,12 @@ edition = "2018"
 
 
 [dependencies]
+
+# Depending on macros so not including in `dep`.
+serde = { version = "1.0", features = ["derive"]  }
+
+# Internal components.
 lib_unit_systems = { path = "../../libs/lib_unit_systems" }
 lib_constants = { path = "../../libs/lib_constants" }
 
-serde = { version = "1.0", features = ["derive"]  }
+

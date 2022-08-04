@@ -7,7 +7,7 @@ macro_rules! print_paragraph {
 	{
 		$(impl $struct_name {
 			pub fn $fn_name(&self,) {
-				use colored::{Colorize, Color};
+				use dep::colored::{Colorize, Color};
 				let term_width = termwidth();
 				// Chek if color from preset can be parsed, or fallback.
 				let color_res : Result<Color, ()> = $text_col.parse();
@@ -48,7 +48,7 @@ macro_rules! print_paragraph {
 					T : std::fmt::Display,
 					T : std::string::ToString,
 			{
-				use colored::{Colorize, Color};
+				use dep::colored::{Colorize, Color};
 				let term_width = termwidth();
 				let x = x_gen.to_string();
 				// Chek if color from preset can be parsed, or fallback.
@@ -107,7 +107,7 @@ macro_rules! print_list {
 	{
 		$(impl $struct_name {
 			pub fn $fn_name(&self, str_list: &Vec<String>){
-				use colored::{Colorize, Color};
+				use dep::colored::{Colorize, Color};
 				let term_width = termwidth();
 				// Chek if color from preset can be parsed, or fallback.
 				let color_res : Result<Color, ()> = $text_col.parse();
@@ -160,7 +160,7 @@ macro_rules! print_menu {
 	{
 		$(impl $struct_name {
 			pub fn $fn_name(&self){
-				use colored::{Colorize, Color};
+				use dep::colored::{Colorize, Color};
 				let term_width = termwidth();
 				// Chek if color from preset can be parsed, or fallback.
 				let color_res : Result<Color, ()> = $text_col.parse();
@@ -233,8 +233,8 @@ macro_rules! print_banner {
 					T : std::fmt::Display,
 					T : std::string::ToString,
 			{
-				use colored::{Colorize, Color};
-				use substring::Substring;
+				use dep::colored::{Colorize, Color};
+				use dep::substring::Substring;
 				let title = title_gen.to_string();
 				let term_width = termwidth();
 				let width = (term_width as usize).saturating_sub(title.len());
@@ -360,7 +360,7 @@ macro_rules! print_progress {
 					T : Into<usize>,
 					T : Copy
 			{
-				use colored::{Colorize, Color};
+				use dep::colored::{Colorize, Color};
 				let term_width = termwidth();
 				// Chek if color from preset can be parsed, or fallback.
 				let color_res1 : Result<Color, ()> = $text_col.parse();

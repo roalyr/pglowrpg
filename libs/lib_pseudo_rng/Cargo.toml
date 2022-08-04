@@ -6,4 +6,6 @@ edition = "2018"
 
 
 [dependencies]
-oorandom = "11.1"
+
+# Crates.
+dep = { path = "../../dep" }

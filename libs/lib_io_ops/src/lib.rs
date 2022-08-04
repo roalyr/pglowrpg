@@ -1,6 +1,6 @@
 pub mod readron;
 
-use lz4::{Decoder, EncoderBuilder};
+use dep::lz4::{Decoder, EncoderBuilder};
 use std::fs;
 use std::fs::File;
 use std::io;

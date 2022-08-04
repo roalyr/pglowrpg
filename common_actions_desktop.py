@@ -108,6 +108,7 @@ def main_menu():
 		elif inp == "cl": clear_bk()
 		elif inp == "sp": spell_check()
 		elif inp == "t": target_tree()
+		elif inp == "ct": cargo_tree_d()
 		elif inp == "g": grep_search()
 		elif inp == "csf": clear_save()
 		elif inp == "todo": todo()
@@ -252,6 +253,8 @@ def print_main_ops():
 	print(tw_i.fill('(r) - do "rustfmt"'))
 	print(tw_i.fill('(g) - "grep" the source folder files'))
 	print(tw_i.fill('(t) - "tree" the target folder'))
+	print(tw_i.fill('(ct) - "cargo tree -d" to see dupl. deps'))
+	print()
 	print(tw_i.fill('(cl) - clear ".bk" files'))
 	print(tw_i.fill('(sp) - English spellcheck on "./locales/en"'))
 	print(tw_i.fill('(csf) - clear target save folder'))
@@ -355,6 +358,7 @@ def git_reset_hard_f():
 #▒▒▒▒▒▒▒▒▒▒▒▒ RUST OPS ▒▒▒▒▒▒▒▒▒▒▒▒▒
 
 def dir_remove(folder_name, path):
+	cl_divider();
 	shutil.rmtree(path+folder_name, ignore_errors=True)
 	
 def clear_save():
@@ -372,15 +376,34 @@ def cargo_deps():
 	os.system('cp'+' '+path_source+'dep_graph.png'+' '+path_source+'dep_graph/dep_graph_$(date "+%Y%m%d-%H%M%S").png')
 	print('dependency graph executed')
 
+def cargo_tree_d():
+	cl_divider();
+	os.system('cd'+' '+path_source+' && '+'cargo tree -d')
+
 def result_sync():
+	cl_divider();
 	os.system('mkdir -p'+' '+path_source+'save')
 	os.system('cd'+' '+path_source+' && '+main_command)
 	
-def sync(): result_sync()
-def check(): os.system('cd'+' '+path_source+' && '+'cargo check')
-def clippy_check(): os.system('cd'+' '+path_source+' && '+'cargo clippy '+clippy_args)
-def deps(): cargo_deps()
-def cargo_update(): cl_divider(); os.system('cd'+' '+path_source+' && '+'cargo update')
+def sync(): 
+	cl_divider();
+	result_sync()
+
+def check(): 
+	cl_divider();
+	os.system('cd'+' '+path_source+' && '+'cargo check')
+
+def clippy_check(): 
+	cl_divider();
+	os.system('cd'+' '+path_source+' && '+'cargo clippy '+clippy_args)
+
+def deps(): 
+	cl_divider();
+	cargo_deps()
+
+def cargo_update(): 
+	cl_divider(); 
+	os.system('cd'+' '+path_source+' && '+'cargo update')
 
 def explain():
 	cl_divider();

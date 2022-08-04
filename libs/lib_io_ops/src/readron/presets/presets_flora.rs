@@ -1,3 +1,4 @@
+use dep::ron;
 use lib_constants::app::*;
 use lib_game_data_codec as gdc;
 use std::path::PathBuf;
@@ -25,13 +26,19 @@ pub fn get() -> Vec<gdc::entities::EntityData> {
 		match ron::from_str(&data) {
 			Ok(f) => entries_from_preset.push(f),
 			Err(e) => {
-				println!("ERROR when parsing flora preset: {}, {}", preset_path.as_path().display().to_string(), e.to_string());
+				println!(
+					"ERROR when parsing flora preset: {}, {}",
+					preset_path.as_path().display().to_string(),
+					e.to_string()
+				);
 				println!("Check missing commas in preset.");
 				println!("Check if all option names are valid.");
 				println!(
 					"Check if all values are within their limits (u8, u16, etc.)."
 				);
-				println!("Check if structure ends with 'End' element, if the number is set.");
+				println!(
+					"Check if structure ends with 'End' element, if the number is set."
+				);
 				std::process::exit(0);
 			}
 		};

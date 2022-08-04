@@ -1,9 +1,9 @@
 use crate::layer_ops::river_mapping::RgParams;
+use dep::line_drawing::BresenhamCircle;
 use lib_constants::generic as cg;
 use lib_constants::world as cw;
 use lib_game_data_codec::LayerPack;
 use lib_unit_systems::translate;
-use line_drawing::BresenhamCircle;
 
 impl RgParams {
 	// If water bodies exist, make rivers fall into them, but

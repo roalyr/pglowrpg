@@ -1,7 +1,7 @@
 use crate::print_paragraph;
 use crate::GmStrings;
+use dep::textwrap::{fill, termwidth, Options};
 use lib_game_options::OPTIONS;
-use textwrap::{fill, termwidth, Options};
 
 print_paragraph! {
 	"color";

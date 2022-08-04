@@ -1,5 +1,6 @@
-use resize::Pixel::Gray8;
-use resize::Type::Mitchell;
+use dep::resize;
+use dep::resize::Pixel::Gray8;
+use dep::resize::Type::Mitchell;
 
 pub fn mitchell(
 	array: Vec<f32>,

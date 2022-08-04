@@ -1,4 +1,5 @@
 use crate::LayerPack;
+use dep::bincode::serialize;
 use lib_constants::app as ca;
 use lib_io_ops::{compress_to_storage, create_dir};
 use std::path::Path;
@@ -16,6 +17,6 @@ pub fn write_data(
 		.with_extension(ca::EXTENSION_SAVE_DATA);
 
 	//println!("{}", wg_str.wg27);
-	let encoded: Vec<u8> = bincode::serialize(&lp).unwrap();
+	let encoded: Vec<u8> = serialize(&lp).unwrap();
 	compress_to_storage(encoded, &file_path);
 }

@@ -1,6 +1,6 @@
 use crate::struct_ops::{GameData, GameStrings, WorldData};
 
-use colored::*;
+use dep::colored::*;
 use lib_image_ops::from_hex;
 use lib_io_ops::readron::palettes::biomes;
 

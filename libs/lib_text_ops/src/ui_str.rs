@@ -1,8 +1,8 @@
 use crate::UiStrings;
 use crate::{print_banner, print_paragraph, return_string};
+use dep::textwrap::{fill, termwidth, Options};
 use lib_game_options::OPTIONS;
 use lib_io_ops::readron::palettes;
-use textwrap::{fill, termwidth, Options};
 
 // Special characters
 print_paragraph! {

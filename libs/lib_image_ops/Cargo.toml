@@ -6,9 +6,11 @@ edition = "2018"
 
 
 [dependencies]
+
+# Crates.
+dep = { path = "../../dep" }
+
+# Internal components.
 lib_constants = { path = "../../libs/lib_constants" }
 lib_pseudo_rng = { path = "../../libs/lib_pseudo_rng" }
 lib_io_ops = { path = "../../libs/lib_io_ops" }
-
-png = "0.16"
-hex = "0.4"

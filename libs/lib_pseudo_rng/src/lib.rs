@@ -1,4 +1,4 @@
-use oorandom::Rand32;
+use dep::oorandom::Rand32;
 
 pub fn get(
 	min: f32,

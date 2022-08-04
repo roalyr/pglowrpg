@@ -33,15 +33,15 @@ pub fn get(lp: &mut LayerPack) {
 						"Plant type loaded: {}",
 						entity_from_file.entity_codename.clone()
 					);
-					
+
 					// This is a read-only table, not meant to be changed.
 					lp.flora.types.insert(uid_plant_type, entity_from_file);
 					//lp.flora.types.insert(uid_plant_type, entity_from_file);
-					
+
 					// TODO: Make additional hashmap "keyword" -> "uid"
 					// this way one can either search by uid or keyword
 					// without going for the search.
-					
+
 					// Increment UID every successfull load.
 					uid_plant_type = uid_plant_type
 						.checked_add(1)

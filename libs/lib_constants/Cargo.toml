@@ -6,5 +6,9 @@ edition = "2018"
 
 
 [dependencies]
+
+# Crates.
+dep = { path = "../../dep" }
+
+# Depending on macros so not including in `dep`.
 serde = { version = "1.0", features = ["derive"]  }
-lazy_static = "1.4"

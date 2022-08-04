@@ -6,4 +6,6 @@ edition = "2018"
 
 
 [dependencies]
+
+# Depending on macros so not including in `dep`.
 serde = { version = "1.0", features = ["derive"]  }

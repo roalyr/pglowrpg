@@ -1,5 +1,6 @@
 use crate::struct_ops::{GameData, GameStrings, WorldData};
 
+use dep::bincode;
 use lib_constants::app as ca;
 use lib_constants::generic as cg;
 use lib_game_data_codec::LayerPack;

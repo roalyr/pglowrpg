@@ -1,9 +1,9 @@
 use crate::MnStrings;
 use crate::INTERFACE_STRINGS as UI;
 use crate::{print_menu, return_string};
+use dep::textwrap::{fill, termwidth, Options};
 use lib_game_options::OPTIONS;
 use lib_io_ops::readron::palettes;
-use textwrap::{fill, termwidth, Options};
 
 // Menu
 print_menu! {

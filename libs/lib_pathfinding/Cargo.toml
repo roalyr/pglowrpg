@@ -6,8 +6,13 @@ edition = "2018"
 
 
 [dependencies]
+
+# Crates.
+dep = { path = "../../dep" }
+
+# Depending on macros so not including in `dep`.
+serde = { version = "1.0", features = ["derive"]  }
+
+# Internal components.
 lib_unit_systems = { path = "../../libs/lib_unit_systems" }
 lib_pseudo_rng = { path = "../../libs/lib_pseudo_rng" }
-
-noise = { version = "0.6", default-features = false }
-pathfinding = "2.0"

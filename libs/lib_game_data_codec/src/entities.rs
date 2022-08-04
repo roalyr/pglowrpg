@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use lib_constants::world as cw;
+use serde::{Deserialize, Serialize};
 
 ////////////////////////////////////////////////////////////////////////////////
 // GENERIC ENTITIES
@@ -37,7 +37,7 @@ pub enum PlantComponentType {
 	Stem,
 	Branch,
 	Leaf,
-	Flower
+	Flower,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

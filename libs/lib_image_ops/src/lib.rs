@@ -1,6 +1,8 @@
 pub mod combine;
 pub mod gradients;
 
+use dep::hex;
+use dep::png;
 use std::io::BufWriter;
 use std::path::Path;
 

@@ -11,7 +11,7 @@
 //use text_ops::{prompt_input, GS};
 //use unit_systems::translate;
 
-use colored::*;
+use dep::colored::*;
 
 pub mod entity_system;
 

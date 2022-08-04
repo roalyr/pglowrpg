@@ -111,6 +111,7 @@ def main_menu():
 		elif inp == "cl": clear_bk()
 		elif inp == "sp": spell_check()
 		elif inp == "t": target_tree()
+		elif inp == "ct": cargo_tree_d()
 		elif inp == "g": grep_search()
 		elif inp == "csf": clear_save()
 		elif inp == "todo": todo()
@@ -258,6 +259,8 @@ def print_main_ops():
 	print(tw_i.fill('(g) - "grep" the source folder files'))
 	print(tw_i.fill('(t) - "tree" the target folder'))
 	print(tw_i.fill('(cl) - clear ".bk" files'))
+	print(tw_i.fill('(ct) - "cargo tree -d" to see dupl. deps'))
+	print()
 	print(tw_i.fill('(sp) - English spellcheck on "./locales/en"'))
 	print(tw_i.fill('(csf) - clear target save folder'))
 	print(tw_i.fill('(todo) - find all "todo" comments'))
@@ -449,7 +452,12 @@ def cargo_deps():
 	os.system('cp'+' '+path_target+'dep_graph.png'+' '+path_output+'dep_graph/dep_graph_$(date "+%Y%m%d-%H%M%S").png')
 	print('dependency graph executed')
 
+def cargo_tree_d():
+	cl_divider();
+	os.system('cd'+' '+path_source+' && '+'cargo tree -d')
+
 def result_sync():
+	cl_divider();
 	#os.system('rm -r'+' '+path_output+'save || echo "Shell: nothing to remove"')
 	#os.system('rm -r'+' '+path_target+'save || echo "Shell: nothing to remove"')
 	os.system('mkdir -p'+' '+path_output+'save')
@@ -461,6 +469,7 @@ def result_sync():
 	os.system('ls'+' '+path_target+'save')
 	
 def result_sync_tts_termux():
+	cl_divider();
 	#os.system('rm -r'+' '+path_output+'save || echo "Shell: nothing to remove"')
 	#os.system('rm -r'+' '+path_target+'save || echo "Shell: nothing to remove"')
 	os.system('mkdir -p'+' '+path_output+'save')
@@ -471,13 +480,39 @@ def result_sync_tts_termux():
 	os.system('touch'+' '+path_output+'.nomedia')
 	os.system('ls'+' '+path_target+'save')
 	
-def sync(): sync_files(); result_sync()
-def sync_tts_termux(): sync_files(); result_sync_tts_termux()
-def sync_all(): clear_target(); sync_files()
-def check(): sync_files(); os.system('cd'+' '+path_target+' && '+'cargo check')
-def clippy_check(): sync_files(); os.system('cd'+' '+path_target+' && '+'cargo clippy '+clippy_args)
-def deps(): sync_files(); cargo_deps()
-def cargo_update(): cl_divider(); os.system('cd'+' '+path_target+' && '+'cargo update')
+def sync(): 
+	cl_divider();
+	sync_files(); 
+	result_sync()
+
+def sync_tts_termux(): 
+	cl_divider();
+	sync_files(); 
+	result_sync_tts_termux()
+
+def sync_all(): 
+	cl_divider();
+	clear_target(); 
+	sync_files()
+
+def check(): 
+	cl_divider();
+	sync_files(); 
+	os.system('cd'+' '+path_target+' && '+'cargo check')
+
+def clippy_check(): 
+	cl_divider();
+	sync_files(); 
+	os.system('cd'+' '+path_target+' && '+'cargo clippy '+clippy_args)
+
+def deps(): 
+	cl_divider();
+	sync_files(); 
+	cargo_deps()
+
+def cargo_update(): 
+	cl_divider(); 
+	os.system('cd'+' '+path_target+' && '+'cargo update')
 
 def explain():
 	cl_divider();

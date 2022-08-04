@@ -6,6 +6,7 @@ pub mod struct_ops;
 
 use crate::commands_ops::commands_init;
 use crate::commands_ops::commands_processing;
+use dep::toml;
 use lib_game_options::OPTIONS;
 use lib_text_ops::GAME_STRINGS as GS;
 
