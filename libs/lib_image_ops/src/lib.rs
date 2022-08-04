@@ -59,7 +59,7 @@ pub fn combined_png(
 	let mut idat = vec![0; size * 4];
 	//let mut idat = Vec::new();
 
-	encoder.set_color(png::ColorType::RGBA);
+	encoder.set_color(png::ColorType::Rgba);
 	encoder.set_depth(png::BitDepth::Eight);
 
 	let mut writer = encoder.write_header().unwrap();
@@ -100,7 +100,7 @@ pub fn simple_png(
 	let bufw = &mut BufWriter::new(file);
 	let mut encoder = png::Encoder::new(bufw, png_size as u32, png_size as u32);
 
-	encoder.set_color(png::ColorType::RGBA);
+	encoder.set_color(png::ColorType::Rgba);
 	encoder.set_depth(png::BitDepth::Eight);
 
 	let mut writer = encoder.write_header().unwrap();

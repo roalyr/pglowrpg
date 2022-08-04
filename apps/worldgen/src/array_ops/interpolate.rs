@@ -15,7 +15,7 @@ pub fn mitchell(
 		src[index] = array[index] as u8;
 	}
 	let mut resizer =
-		resize::new(size, size, map_size, map_size, Gray8, Mitchell);
-	resizer.resize(&src, &mut dst);
+		resize::new(size, size, map_size, map_size, Gray8, Mitchell).unwrap();
+	let _res = resizer.resize(&src, &mut dst);
 	dst
 }
