@@ -134,7 +134,9 @@ pub struct BitLayerGeoregID {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CacheLayerFlora {
 	pub data: HashMap<u32, Vec<entities::PlantGroup>>,
-	pub types: HashMap<u16, entities::EntityData>,
+	pub flora_types: HashMap<u16, entities::EntityData>,
+	pub flora_codenames: HashMap<u16, String>,
+	pub flora_native_to_biomes: HashMap<String, Vec<String>>,
 }
 
 ////////////////////////////////////////////////////////////////////////////////

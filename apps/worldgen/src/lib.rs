@@ -158,7 +158,9 @@ pub fn start() {
 			// TODO: find a good way to estimate flora entities number.
 			flora: CacheLayerFlora {
 				data: HashMap::new(),
-				types: HashMap::new(),
+				flora_types: HashMap::new(),
+				flora_codenames: HashMap::new(),
+				flora_native_to_biomes: HashMap::new(),
 			}
 		};
 		
