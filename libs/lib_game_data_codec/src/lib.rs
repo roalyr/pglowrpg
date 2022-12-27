@@ -136,7 +136,8 @@ pub struct CacheLayerFlora {
 	pub data: HashMap<u32, Vec<entities::PlantGroup>>,
 	pub flora_types: HashMap<u16, entities::EntityData>,
 	pub flora_codenames: HashMap<u16, String>,
-	pub flora_native_to_biomes: HashMap<String, Vec<String>>,
+	// This field contains generalized and sorted data used by worldgen.
+	pub flora_sorted: HashMap<String, Vec<entities::FloraBatch>>,
 }
 
 ////////////////////////////////////////////////////////////////////////////////

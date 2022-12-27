@@ -334,4 +334,6 @@ pub enum PlantLevel {
 }
 
 // How many different types of plants can be on each level.
+// TODO: Obsolete?
 pub const PLANT_LEVEL_TYPES_NUMBER_MAX: u8 = 5;
+pub const PLANT_SPAWNING_ITERATIONS: usize = 5;

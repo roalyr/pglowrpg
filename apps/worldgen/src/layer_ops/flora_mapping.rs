@@ -3,6 +3,7 @@ use lib_constants::world as cw;
 use lib_game_data_codec as gdc;
 use lib_game_data_codec::LayerPack;
 use lib_io_ops::readron::presets::presets_flora;
+use lib_unit_systems::translate;
 use std::collections::HashMap;
 
 // Plants should be described in patches or groups, that have
@@ -62,8 +63,9 @@ pub fn get(lp: &mut LayerPack) {
 	for (_, biome_codename) in cw::BIOMES_CODENAMES.iter() {
 		//println!("{:?}", codename)
 
-		// Gather all flora that is native to this specific biome.
-		let mut native_flora = Vec::new();
+		// Init
+		let mut flora_batch = Vec::new();
+
 		for (flora_type_uid, flora_type_data) in lp.flora.flora_types.iter() {
 			// Get flora type codename from UID.
 			let flora_codename = &lp.flora.flora_codenames[flora_type_uid];
@@ -73,16 +75,30 @@ pub fn get(lp: &mut LayerPack) {
 				gdc::entities::EntityType::Plant(properties) => {
 					// Destruct data.
 					if properties.native_biomes.contains(&biome_codename) {
-						native_flora.push(flora_codename.to_string());
+						// This vector of structures is used for conventience.
+						// It has all the data needed for worldgen and will be sorted.
+						flora_batch.push(gdc::entities::FloraBatch {
+							entity_codename: flora_codename.to_string(),
+							type_uid: flora_type_uid.clone(),
+							scarcity: properties.scarcity,
+							local_max_quantity: properties.local_max_quantity,
+						});
 					}
 				}
 			}
 		}
 
+		// Sort the flora list by scarcity.
+		flora_batch.sort_by_key(|entry| entry.scarcity);
+
+		//println!("{}", biome_codename );
+		//println!("{:?}", flora_batch);
+		//println!("-----", );
+
 		// Put up a hashmap of biome : flora list kind.
 		lp.flora
-			.flora_native_to_biomes
-			.insert(biome_codename.to_string(), native_flora);
+			.flora_sorted
+			.insert(biome_codename.to_string(), flora_batch);
 	}
 
 	//for (k, v) in lp.flora.flora_native_to_biomes.iter() {
@@ -99,6 +115,12 @@ pub fn get(lp: &mut LayerPack) {
 	// U32 is Ind (position), allows to index the respective entity vector.
 	// Loop through the map, match by biomes, randomly drop in plants.
 	for ind in 0..lp.layer_vec_len as usize {
+		let rain_rel = translate::get_rel(
+			lp.climate.read(lp.climate.RAINFALL, ind) as f32,
+			cg::ONE_F32,
+			cg::ZERO_F32,
+			cg::VAL_255_F32,
+		);
 		let biome_id = lp.biomes.read(ind);
 		// Retrieve biome codename from the ID.
 		// TODO: make it a method for 'biomes' layer?
@@ -109,86 +131,65 @@ pub fn get(lp: &mut LayerPack) {
 			println!("{}: {}", "ERROR: unknown biome parsed", biome_id);
 			panic!()
 		}
+		// Get the list of flora codenames suitable for this biome.
+		// Vector of structs.
+		let flora_sorted_this_biome =
+			lp.flora.flora_sorted.get(&biome_codename).unwrap();
 
+		// Flora generation happens here.
 		// Now for each world cell we have a respective biome codename.
 		// We also know what plants are allowed to be spawned there.
 		// Now it boils down to populating the 'data' field of the cachemap.
 		let mut local_flora_batch = Vec::new();
+		let mut local_flora_batch_uids = Vec::new();
+		let mut iteration: usize = 0;
 
-		// TODO: flora generation happens here.
-		local_flora_batch.push(gdc::entities::PlantGroup {
-			type_uid: 1, // Find the proper uid from the lp.flora.types
-			quantity: 25,
-		});
+		while iteration < cw::PLANT_SPAWNING_ITERATIONS {
+			iteration += 1;
+
+			for entry in flora_sorted_this_biome {
+				let flora_codename = entry.entity_codename.clone();
+				let flora_type_uid = entry.type_uid.clone();
+				let flora_scarcity = (entry.scarcity.clone() as f32) / 100.0;
+				let flora_max_quantity = entry.local_max_quantity.clone();
+				let random = lib_pseudo_rng::get(
+					0.0,
+					1.0,
+					lp.wi.seed + (flora_type_uid as u32),
+					iteration + (ind as usize),
+				);
+				let quantity_variation = lib_pseudo_rng::get(
+					0.7,
+					1.3,
+					lp.wi.seed + (flora_type_uid as u32) + 1,
+					iteration + (ind as usize) + 1,
+				) * rain_rel;
+				// println!("{:?}", rain_rel);
+				// Filter out duplicates.
+				if !local_flora_batch_uids.contains(&flora_type_uid)
+					&& random < flora_scarcity
+				{
+					local_flora_batch.push(gdc::entities::PlantGroup {
+						type_uid: flora_type_uid, // Find the proper uid from the lp.flora.types
+						quantity: ((flora_max_quantity as f32) * quantity_variation) as u16,
+					});
+					local_flora_batch_uids.push(flora_type_uid);
+				}
+			}
+		}
+
+		//println!("{:?}", local_flora_batch);
 
 		// Write down generated cell data.
-		lp.flora.data.insert(ind as u32, local_flora_batch);
+		if !local_flora_batch.is_empty() {
+			lp.flora.data.insert(ind as u32, local_flora_batch);
+		}
 	}
 
 	println!(
 		"Total number of plant groups in the world: {}",
 		lp.flora.data.len()
 	);
-
-	// TEST. READING AND PARSING.
-	// Now access the creatures in the given location:
-
-	// TODO: make a look-up for strings descripiti, name) in
-	// locales and if there are none: give an error.
-
-	//println!("At x: {}, y: {}, index: {}\n", x, y, ind);
-	let ind = 1000;
-	let plant_groups = &lp.flora.data[&(ind as u32)];
-	for group in plant_groups.iter() {
-		// Destruct the entity. What should this return? How and when?
-		// Entity is a PlantGroup.
-		println!("---------------------");
-		println!("type UID: {}", group.type_uid);
-		println!("quantity: {}", group.quantity);
-		// Use type_uid to get type data from types.
-		let plant_type_data = &lp.flora.flora_types[&group.type_uid];
-		match &plant_type_data.entity_type {
-			// Have different destructors for different types.
-			gdc::entities::EntityType::Plant(properties) => {
-				println!("Type: {:?}", &plant_type_data.entity_codename);
-				println!("Structure: {:?}", &properties.plant_components);
-				match properties.plant_level {
-					cw::PlantLevel::TallCanopy => {
-						println!("TALL PLANT CANOPY LEVEL")
-					}
-					cw::PlantLevel::MediumCanopy => {
-						println!("MEDIUM PLANT CANOPY LEVEL")
-					}
-					cw::PlantLevel::ShortCanopy => {
-						println!("SHORT PLANT CANOPY LEVEL")
-					}
-					cw::PlantLevel::Shrub => {
-						println!("SRUB LEVEL")
-					}
-					cw::PlantLevel::Ground => {
-						println!("GROUND LEVEL")
-					}
-					cw::PlantLevel::Underground => {
-						println!("UNDERGROUND LEVEL")
-					}
-					cw::PlantLevel::Underwater => {
-						println!("UNDERWATER LEVEL")
-					}
-				}
-				println!("Max local quantity {}", properties.local_max_quantity);
-				// Store biome data into some vec. Sort out duplicates.
-				for b in &properties.native_biomes {
-					if cw::BIOMES_IDS.contains_key(&b.clone()) {
-						let id = cw::BIOMES_IDS[&b.clone()];
-						println!("Native biome (id) {}: {}", id, &b.clone());
-					} else {
-						// Make a proper warning prompt later on.
-						println!("{}: {}", "WARNING: unknown native biome assigned", b);
-					}
-				}
-			}
-		}
-	}
 
 	// Implement I/O functions for the cache map.
 }

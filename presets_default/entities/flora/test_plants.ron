@@ -14,11 +14,16 @@
 				//// Plants be described as "patches" or "groups"
 				//// of population individuals at given place, so
 				//// a quantity parameter is given.
-				local_max_quantity: 20,
+				//u16
+				local_max_quantity: 200,
 				//// Native biomes is a list which contains biomes codenames
 				//// in which given plant appears.
 				// TODO: link the list to docs.
-				// TODO: make a tuple that also stores scarcity aside from codename.
+				// The rarity or scarcity of the plant (group, patch) affects its
+				// chance to be generated. From 0 to 100
+				// u8
+				// TODO: make a sanity check here?
+				scarcity: 50,
 				
 				// young_plants_ratio - number of local plants reserved for
 				// saplings. This will smooth out the lack of age property of
@@ -69,6 +74,15 @@
 					"biome_boreal_forest",
 					"biome_temperate_forest",
 					"biome_tropical_forest",
+					"biome_boreal_swamp",
+					"biome_temperate_swamp",
+					"biome_tropical_swamp",
+					"biome_boreal_shrubland",
+					"biome_temperate_shrubland",
+					"biome_tropical_shrubland",
+					"biome_boreal_alpine_grassland",
+					"biome_temperate_alpine_grassland",
+					"biome_tropical_alpine_grassland",
 				],
 			)
 		)
@@ -80,6 +94,7 @@
 			PlantProperties(
 				plant_level: Ground,
 				local_max_quantity: 10000,
+				scarcity: 10,
 				
 				plant_components: 
 					PlantComponent(
@@ -123,7 +138,8 @@
 		entity_type : Plant(
 			PlantProperties(
 				plant_level: Ground,
-				local_max_quantity: 1000,
+				local_max_quantity: 10000,
+				scarcity: 80,
 				
 				plant_components: 
 					PlantComponent(

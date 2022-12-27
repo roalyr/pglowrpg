@@ -160,7 +160,7 @@ pub fn start() {
 				data: HashMap::new(),
 				flora_types: HashMap::new(),
 				flora_codenames: HashMap::new(),
-				flora_native_to_biomes: HashMap::new(),
+				flora_sorted: HashMap::new(),
 			}
 		};
 		

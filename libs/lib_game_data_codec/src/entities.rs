@@ -65,12 +65,21 @@ pub struct PlantComponent {
 pub struct PlantProperties {
 	pub plant_level: cw::PlantLevel,
 	pub local_max_quantity: u16, // u16 should be enough.
+	pub scarcity: u8,
 	//days to grow
 	//dimensions when fully grown (heights, width)
 	//dimension variation
 	//volume
 	pub plant_components: PlantComponent,
 	pub native_biomes: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct FloraBatch {
+	pub entity_codename: String,
+	pub type_uid: u16,
+	pub scarcity: u8,
+	pub local_max_quantity: u16,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
