@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/lib.rs] [Date: 2025-12-13]
+// Description: World generation main entry point and flow control
+
 pub mod array_ops;
 pub mod file_ops;
 pub mod layer_ops;
@@ -155,7 +158,7 @@ pub fn start() {
 				data: vec![0; layer_vec_len as usize],
 			},
 			
-			// TODO: find a good way to estimate flora entities number.
+			// Cache layer for flora entities.
 			flora: CacheLayerFlora {
 				data: HashMap::new(),
 				flora_types: HashMap::new(),
@@ -165,7 +168,7 @@ pub fn start() {
 		};
 		
 		// Perform generation.
-		// Keep the order as is, because the data is incrfmentally
+		// Keep the order as is, because the data is incrementally
 		// generated and used for later generation process.
 		WS.print_prep_topog(); layer_ops::terrain_mapping::get(&mut lp);
 		WS.print_prep_climate(); layer_ops::climate_mapping::get(&mut lp);
@@ -187,5 +190,4 @@ pub fn start() {
 		// Increment seed for multiple worlds
 		world_seed += 1;
 	}
-// TODO: Add an empty prompt "continue..."
 }

@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/array_ops/gradients.rs] [Date: 2025-12-13]
+// Description: Temperature gradient generation based on polar configuration
+
 use lib_constants::generic as cg;
 use lib_constants::world as cw;
 use lib_unit_systems::coords::Index;

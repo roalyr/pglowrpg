@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_image_ops/src/combine/add.rs] [Date: 2025-12-13]
+// Description: Additive blending mode
+
 pub fn get(
 	idat: &mut Vec<u8>,
 	idat_bg: Vec<u8>,

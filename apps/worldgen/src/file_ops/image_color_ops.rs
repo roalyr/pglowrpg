@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/file_ops/image_color_ops.rs] [Date: 2025-12-13]
+// Description: Colorized map image generation with palettes
+
 use crate::LayerPack;
 use lib_constants::app as ca;
 use lib_constants::generic as cg;

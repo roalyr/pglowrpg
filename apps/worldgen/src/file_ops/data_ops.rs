@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/file_ops/data_ops.rs] [Date: 2025-12-13]
+// Description: World data serialization and LZ4 compression
+
 use crate::LayerPack;
 use dep::bincode::serialize;
 use lib_constants::app as ca;

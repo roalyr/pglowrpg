@@ -1,4 +1,7 @@
-// Print a block of text with different options.
+// [Revision: v0.1] [Path: libs/lib_text_ops/src/output.rs] [Date: 2025-12-13]
+// Description: Macros for printing formatted text with colors and wrapping
+
+/// Print a paragraph of text with optional color and text wrapping.
 #[macro_export]
 macro_rules! print_paragraph {
 	// A simple case without variables

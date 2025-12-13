@@ -1,12 +1,12 @@
+// [Revision: v0.1] [Path: libs/lib_game_data_codec/src/lib.rs] [Date: 2025-12-13]
+// Description: World data structures and bit-packed layer codecs
+
 #![allow(non_snake_case)]
 pub mod entities;
 use lib_constants::world as cw;
 use lib_unit_systems::coords::Index;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-
-// TODO: move all "Stuff" data structs that correspond to .ron
-// presets into this lib?
 
 ////////////////////////////////////////////////////////////////////////////////
 // WORLD PRESET
@@ -72,10 +72,7 @@ pub struct LayerPack {
 	pub climate: BitLayerClimate,
 	pub rivers: BitLayerRivers,
 
-	// Cachemaps. Basically, data is stored in HashMaps instead
-	// of vectors. Naturally, indexed by "ind" position respective to x, y.
-	// TODO: add methods (read, write)? Should methods be unique?
-	// implementation can be done at the bottom section.
+	// Cache layers store sparse data in HashMaps indexed by position.
 	pub flora: CacheLayerFlora,
 }
 
@@ -168,7 +165,6 @@ macro_rules! impl_with_masks {
 			) -> $val_type {
 				(self.data[index] & mask) >> mask.trailing_zeros()
 			}
-			// I don't remember why was this made. Maybe for debug.
 			pub fn expose(
 				&self,
 				index: usize,
@@ -220,17 +216,3 @@ impl_without_masks!(
 	BitLayerRiversID, u32;
 	BitLayerBiomes, u8;
 );
-
-//For table maps
-// vector of vectors filled with different things
-
-//For cache maps
-// vector of vectors with IDs
-
-//that's just queue
-//use Vec::with_capacity
-//expand it in chunks.
-
-//need a queue for every layer
-
-//caches not linked to maps and tables need a queue to track freed IDs

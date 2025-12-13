@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/array_ops/modify.rs] [Date: 2025-12-13]
+// Description: Array value filtering, leveling, and normalization
+
 use lib_constants::generic as cg;
 
 //FILTER

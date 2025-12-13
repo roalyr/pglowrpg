@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/layer_ops/river_mapping/waterbody_ops.rs] [Date: 2025-12-13]
+// Description: River endpoint detection for water bodies
+
 use crate::layer_ops::river_mapping::RgParams;
 use dep::line_drawing::BresenhamCircle;
 use lib_constants::generic as cg;

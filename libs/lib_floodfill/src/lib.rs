@@ -1,5 +1,10 @@
+// [Revision: v0.1] [Path: libs/lib_floodfill/src/lib.rs] [Date: 2025-12-13]
+// Description: Flood fill algorithm for region detection and mapping
+
 use lib_unit_systems::coords::Index;
 
+/// Flood fill state for contiguous region detection.
+/// Fills regions based on matching template values.
 pub struct FloodFill<'a, T> {
 	template_data: &'a Vec<T>, // input to determine adjacent cells
 	map_size: u32,
@@ -51,8 +56,7 @@ impl<T> FloodFill<'_, T> {
 				continue;
 			}
 			neighbors.clear();
-			// TODO: make match here instead.
-			// Also make saturating ops?
+			// Check bounds for each direction.
 			if i < size - 1 {
 				neighbors.push((i + 1, j))
 			};

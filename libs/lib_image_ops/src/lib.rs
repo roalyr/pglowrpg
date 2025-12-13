@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_image_ops/src/lib.rs] [Date: 2025-12-13]
+// Description: PNG image generation with blending modes and gradient palettes
+
 pub mod combine;
 pub mod gradients;
 
@@ -6,6 +9,7 @@ use dep::png;
 use std::io::BufWriter;
 use std::path::Path;
 
+/// Blending modes for combining two images.
 #[derive(Copy, Clone)]
 pub enum Mode {
 	Add,
@@ -16,6 +20,7 @@ pub enum Mode {
 	Screen,
 }
 
+/// Gradient modes for color mapping.
 #[derive(Copy, Clone)]
 pub enum GradMode {
 	PaletteTerrain,
@@ -41,7 +46,7 @@ pub enum GradMode {
 	Random,
 }
 
-// TODO: make things more neat here via macros?
+/// Generate a PNG with two layers combined using a blend mode.
 pub fn combined_png(
 	array_bg: &Vec<u8>,
 	array_fg: &Vec<u8>,
@@ -90,6 +95,7 @@ pub fn combined_png(
 	writer.write_image_data(&idat).unwrap();
 }
 
+/// Generate a simple single-layer PNG.
 pub fn simple_png(
 	array: &Vec<u8>,
 	path: &Path,
@@ -128,14 +134,14 @@ fn match_grad(
 			gradients::palettes::river_element::get(array)
 		}
 
-		//Value from finction (black-white image)
+		//Value from function (black-white image)
 		GradMode::Raw => gradients::raw::get(array),
 		GradMode::RawInverse => gradients::raw::get_inverse(array),
 		GradMode::RawCurved => gradients::raw::get_curved(array),
 		GradMode::RawBinary => gradients::raw::get_binary(array),
 		GradMode::RawBinaryInverse => gradients::raw::get_binary_inverse(array),
 
-		//Value from finction (black-blue image)
+		//Value from function (black-blue image)
 		GradMode::Blue => gradients::blue::get(array),
 		GradMode::BlueInverse => gradients::blue::get_inverse(array),
 		GradMode::BlueCurved => gradients::blue::get_curved(array),
@@ -147,6 +153,7 @@ fn match_grad(
 	}
 }
 
+/// Parse hex color string (e.g., "#FF00FF") to RGB bytes.
 pub fn from_hex(str_hex: &str) -> Vec<u8> {
 	let str_v = String::from(str_hex);
 	let s = &str_v[1..];

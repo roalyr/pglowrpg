@@ -1,5 +1,10 @@
+// [Revision: v0.1] [Path: libs/lib_unit_systems/src/coords.rs] [Date: 2025-12-13]
+// Description: 2D coordinate indexing with overflow protection
+
 use serde::{Deserialize, Serialize};
 
+/// Index calculator for 2D grid coordinates.
+/// Converts (x, y) coordinates to linear array indices.
 #[derive(Clone, Copy, Serialize, Deserialize, Debug)]
 pub struct Index {
 	pub map_size: u32,

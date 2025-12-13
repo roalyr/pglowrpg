@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_constants/src/app.rs] [Date: 2025-12-13]
+// Description: Application paths, file extensions, and naming constants
+
 ////////////////////////////////////////////////////////////////////////////////
 // PATHS
 pub const PATH_PRESETS_WORLD: &str = "./presets_default/world/";
@@ -29,13 +32,11 @@ pub const NAME_DATA_WORLD: &str = "world_data";
 pub const NAME_OPTIONS: &str = "options";
 
 ////////////////////////////////////////////////////////////////////////////////
-// STRINGS
+// STRINGS (locale file names)
 pub const NAME_STRINGS_WORLDGEN: &str = "worldgen_strings";
 pub const NAME_STRINGS_GAME: &str = "game_strings";
 pub const NAME_STRINGS_MENU: &str = "menu_strings";
 pub const NAME_STRINGS_UI: &str = "ui_strings";
-
-pub const NAME_STRINGS_COMMANDS: &str = "commands_strings";
 
 ////////////////////////////////////////////////////////////////////////////////
 // PALETTES

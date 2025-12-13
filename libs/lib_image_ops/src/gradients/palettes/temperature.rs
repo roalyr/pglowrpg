@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_image_ops/src/gradients/palettes/temperature.rs] [Date: 2025-12-13]
+// Description: Temperature palette color mapping
+
 use lib_io_ops::readron::palettes::temperature;
 
 use crate::from_hex;

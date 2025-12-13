@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/layer_ops/river_mapping/erosion_ops.rs] [Date: 2025-12-13]
+// Description: River erosion effects on terrain
+
 use crate::layer_ops::river_mapping::{ErosionEntry, RgParams, RiverEntry};
 use lib_constants::generic as cg;
 use lib_constants::world as cw;

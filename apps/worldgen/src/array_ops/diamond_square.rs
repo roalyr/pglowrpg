@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/array_ops/diamond_square.rs] [Date: 2025-12-13]
+// Description: Diamond-square fractal terrain generation algorithm
+
 use crate::array_ops::interpolate::mitchell;
 use lib_constants::generic as cg;
 use lib_unit_systems::coords::Index;

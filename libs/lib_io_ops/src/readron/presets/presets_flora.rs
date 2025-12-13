@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_io_ops/src/readron/presets/presets_flora.rs] [Date: 2025-12-13]
+// Description: Flora entity preset RON loader
+
 use dep::ron;
 use lib_constants::app::*;
 use lib_game_data_codec as gdc;

@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_image_ops/src/gradients/palettes/terrain.rs] [Date: 2025-12-13]
+// Description: Terrain elevation palette color mapping
+
 use lib_io_ops::readron::palettes::terrain;
 
 use crate::from_hex;

@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/layer_ops/climate_mapping.rs] [Date: 2025-12-13]
+// Description: Temperature and rainfall layer generation
+
 use crate::array_ops;
 use crate::array_ops::noise_maps::NoiseMode;
 use lib_constants::generic as cg;

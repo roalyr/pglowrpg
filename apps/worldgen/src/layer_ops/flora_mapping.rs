@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/layer_ops/flora_mapping.rs] [Date: 2025-12-13]
+// Description: Flora entity placement based on biome compatibility
+
 use lib_constants::generic as cg;
 use lib_constants::world as cw;
 use lib_game_data_codec as gdc;
@@ -123,7 +126,6 @@ pub fn get(lp: &mut LayerPack) {
 		);
 		let biome_id = lp.biomes.read(ind);
 		// Retrieve biome codename from the ID.
-		// TODO: make it a method for 'biomes' layer?
 		let biome_codename;
 		if cw::BIOMES_CODENAMES.contains_key(&biome_id.clone()) {
 			biome_codename = cw::BIOMES_CODENAMES[&biome_id.clone()].clone();

@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_io_ops/src/readron/palettes/rainfall.rs] [Date: 2025-12-13]
+// Description: Rainfall color palette RON loader
+
 use dep::ron;
 use lib_constants::app::*;
 use serde::{Deserialize, Serialize};

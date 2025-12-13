@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_image_ops/src/gradients/palettes/river_width.rs] [Date: 2025-12-13]
+// Description: River width palette color mapping
+
 use lib_io_ops::readron::palettes::river_width;
 
 use crate::from_hex;

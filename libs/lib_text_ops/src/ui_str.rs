@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_text_ops/src/ui_str.rs] [Date: 2025-12-13]
+// Description: UI element string output functions (banners, separators)
+
 use crate::UiStrings;
 use crate::{print_banner, print_paragraph, return_string};
 use dep::textwrap::{fill, termwidth, Options};

@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_io_ops/src/lib.rs] [Date: 2025-12-13]
+// Description: File I/O operations and LZ4 compression utilities
+
 pub mod readron;
 
 use dep::lz4::{Decoder, EncoderBuilder};
@@ -8,8 +11,7 @@ use std::io::Cursor;
 use std::io::Read;
 use std::path::{Path, PathBuf};
 
-// TODO: merge those two functions?
-// Return the file contents of the directory.
+/// Return the file names (without extension) in a directory matching an extension.
 pub fn dir_file_contents(
 	path_str: &str,
 	seek_extension: &str,
@@ -23,10 +25,8 @@ pub fn dir_file_contents(
 			std::process::exit(0);
 		}
 	};
-	// Make a vector for paths.
 	let mut contents = Vec::new();
 	for entry in contents_iter {
-		// TODO: make unwrap_or here?
 		let entry_unwrapped = entry.unwrap().path();
 		let entry_name = &entry_unwrapped.file_stem().unwrap().to_str().unwrap();
 		let entry_extension =
@@ -39,7 +39,7 @@ pub fn dir_file_contents(
 	contents
 }
 
-// Return the file contents of the directory.
+/// Return full paths of files in a directory matching an extension.
 pub fn dir_file_contents_full_paths(
 	path_str: &str,
 	seek_extension: &str,
@@ -53,12 +53,9 @@ pub fn dir_file_contents_full_paths(
 			std::process::exit(0);
 		}
 	};
-	// Make a vector for paths.
 	let mut contents = Vec::new();
 	for entry in contents_iter {
-		// TODO: make unwrap_or here?
 		let entry_unwrapped = entry.unwrap().path();
-		//let entry_name = &entry_unwrapped.file_stem().unwrap().to_str().unwrap();
 		let entry_extension =
 			&entry_unwrapped.extension().unwrap().to_str().unwrap();
 		// Gather the files by extension.
@@ -69,7 +66,7 @@ pub fn dir_file_contents_full_paths(
 	contents
 }
 
-// Returns the directories within a directory.
+/// Return subdirectory names within a directory.
 pub fn dir_dir_contents(path_str: &str) -> Vec<String> {
 	let path = Path::new(path_str);
 	// Get directory contents.
@@ -80,19 +77,16 @@ pub fn dir_dir_contents(path_str: &str) -> Vec<String> {
 			std::process::exit(0);
 		}
 	};
-	// Make a vector for paths.
 	let mut contents = Vec::new();
 	for entry in contents_iter {
-		// TODO: unwrap_or?
 		let entry_unwrapped = entry.unwrap().path();
 		let entry_name = &entry_unwrapped.file_stem().unwrap().to_str().unwrap();
-		//Clone raw data to vec
 		contents.push(entry_name.to_string());
 	}
 	contents
 }
 
-// Reads one file to string.
+/// Read a single file to string.
 pub fn single_file_to_string(path: std::path::PathBuf) -> String {
 	let mut data = String::new();
 	if let Ok(mut file) = File::open(&path) {
@@ -107,7 +101,7 @@ pub fn single_file_to_string(path: std::path::PathBuf) -> String {
 	data
 }
 
-// Reads file to string.
+/// Read first matching file from path vector to string.
 pub fn file_to_string(path_vec: &Vec<std::path::PathBuf>) -> String {
 	let mut data = String::new();
 	for path in path_vec.iter() {
@@ -140,7 +134,7 @@ pub fn file_to_string(path_vec: &Vec<std::path::PathBuf>) -> String {
 	data
 }
 
-// Make a directory.
+/// Create a directory (no error if already exists).
 pub fn create_dir(path: &Path) {
 	match std::fs::create_dir(path) {
 		Ok(()) => {}
@@ -154,7 +148,7 @@ pub fn create_dir(path: &Path) {
 	}
 }
 
-// Make a new file and overwrite if it exists.
+/// Create a new file (overwrite if exists).
 pub fn create_file_overwrite(path: &Path) -> File {
 	match File::create(path) {
 		Ok(f) => f,
@@ -166,8 +160,9 @@ pub fn create_file_overwrite(path: &Path) -> File {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// COMPRESSION
-// Read the data and write it down to storage in a .lz4
+// LZ4 COMPRESSION
+
+/// Compress data and write to storage as .lz4 file.
 pub fn compress_to_storage(
 	data: Vec<u8>,
 	path: &Path,
@@ -203,7 +198,7 @@ pub fn compress_to_storage(
 	}
 }
 
-// Read from storage the .lz4 data and return raw to memory as bytes.
+/// Read .lz4 file from storage and decompress to memory.
 pub fn decompress_to_memory(path: &Path) -> Vec<u8> {
 	let input_file = match File::open(path) {
 		Ok(f) => f,

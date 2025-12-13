@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/layer_ops/watermask_mapping.rs] [Date: 2025-12-13]
+// Description: Water body detection via flood fill
+
 use lib_constants::generic as cg;
 use lib_constants::world as cw;
 use lib_floodfill::FloodFill;

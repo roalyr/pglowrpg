@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_text_ops/src/worldgen_str.rs] [Date: 2025-12-13]
+// Description: Worldgen-related string output functions
+
 use crate::WgStrings;
 use crate::INTERFACE_STRINGS as UI;
 use crate::{

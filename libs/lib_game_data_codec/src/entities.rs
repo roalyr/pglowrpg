@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_game_data_codec/src/entities.rs] [Date: 2025-12-13]
+// Description: Entity data structures for flora and materials
+
 use lib_constants::world as cw;
 use serde::{Deserialize, Serialize};
 
@@ -16,7 +19,6 @@ pub struct EntityData {
 
 ////////////////////////////////////////////////////////////////////////////////
 // MATERIALS
-// TODO: generalize materials and define them via preset too.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MaterialProperties {
 	pub property: String,

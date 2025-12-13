@@ -1,4 +1,7 @@
-// Return absolute value from relative.
+// [Revision: v0.1] [Path: libs/lib_unit_systems/src/translate.rs] [Date: 2025-12-13]
+// Description: Value translation between relative and absolute units
+
+/// Convert relative value (0..val_cap) to absolute value (abs_min..abs_max)
 pub fn get_abs(
 	val_rel: f32,
 	val_cap: f32, // Maximum possible value (like 255.0).

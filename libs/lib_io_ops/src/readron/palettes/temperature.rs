@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_io_ops/src/readron/palettes/temperature.rs] [Date: 2025-12-13]
+// Description: Temperature color palette RON loader
+
 use dep::ron;
 use lib_constants::app::*;
 use serde::{Deserialize, Serialize};

@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_text_ops/src/menu_str.rs] [Date: 2025-12-13]
+// Description: Menu-related string output functions
+
 use crate::MnStrings;
 use crate::INTERFACE_STRINGS as UI;
 use crate::{print_menu, return_string};

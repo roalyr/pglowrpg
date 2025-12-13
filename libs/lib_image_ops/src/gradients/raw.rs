@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_image_ops/src/gradients/raw.rs] [Date: 2025-12-13]
+// Description: Raw grayscale gradient functions
+
 pub fn get(array: &Vec<u8>) -> Vec<u8> {
 	let size = array.len();
 	let mut idat = vec![0; size * 4];

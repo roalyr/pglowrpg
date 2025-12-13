@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/layer_ops/river_mapping.rs] [Date: 2025-12-13]
+// Description: River system generation with pathfinding and erosion
+
 pub mod erosion_ops;
 pub mod mapping_ops;
 pub mod path_ops;

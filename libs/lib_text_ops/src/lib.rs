@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_text_ops/src/lib.rs] [Date: 2025-12-13]
+// Description: Text output, input handling, and localized strings
+
 pub mod game_str;
 pub mod input;
 pub mod menu_str;
@@ -14,7 +17,7 @@ use std::collections::HashMap;
 use std::path::Path;
 
 ////////////////////////////////////////////////////////////////////////////////
-// LOCALE
+// LOCALIZED STRING CONTAINERS
 pub struct WgStrings {
 	s: HashMap<String, String>,
 }

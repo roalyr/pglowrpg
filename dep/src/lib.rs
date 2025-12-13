@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: dep/src/lib.rs] [Date: 2025-12-13]
+// Description: External dependency re-exports
+
 pub use bincode;
 pub use colored;
 // Deepsize not included. Import manually.

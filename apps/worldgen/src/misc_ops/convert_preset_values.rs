@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/misc_ops/convert_preset_values.rs] [Date: 2025-12-13]
+// Description: Preset value validation and capping
+
 use lib_constants::world::*;
 use lib_game_data_codec as gdc;
 

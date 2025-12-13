@@ -1,9 +1,12 @@
+// [Revision: v0.1] [Path: libs/lib_constants/src/world.rs] [Date: 2025-12-13]
+// Description: World generation constants - biomes, climate, terrain, rivers
+
 use dep::lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 ////////////////////////////////////////////////////////////////////////////////
-// WORLDGEN PRESET
+// WORLDGEN PRESET DEFAULTS
 pub const DEFAULT_SEED: u32 = 0;
 pub const DEFAULT_WORLDS_NUM: u32 = 1;
 
@@ -217,7 +220,7 @@ lazy_static! {
 		m.insert("biome_temperate_desert".to_string(), BIOME_TEMPERATE_DESERT);
 		m.insert("biome_tropical_desert".to_string(), BIOME_TROPICAL_DESERT);
 
-		m.insert("biome_ploar_snowy_glacier".to_string(), BIOME_POLAR_SNOWY_GLACIER);
+		m.insert("biome_polar_snowy_glacier".to_string(), BIOME_POLAR_SNOWY_GLACIER);
 		m.insert("biome_barren_tundra".to_string(), BIOME_BARREN_TUNDRA);
 
 		m.insert("biome_polar_mountain_top".to_string(), BIOME_POLAR_MOUNTAIN_TOP);
@@ -260,7 +263,7 @@ lazy_static! {
 
 // Same case, but swap keys and values, for cases when we need to find
 // The name by ID.
-// TODO: use a macro to do those two hashmaps?
+// Note: These two hashmaps could be generated via macro.
 #[rustfmt::skip]
 
 lazy_static! {
@@ -277,7 +280,7 @@ lazy_static! {
 		m.insert(BIOME_TEMPERATE_DESERT, "biome_temperate_desert".to_string());
 		m.insert(BIOME_TROPICAL_DESERT, "biome_tropical_desert".to_string());
 
-		m.insert(BIOME_POLAR_SNOWY_GLACIER, "biome_ploar_snowy_glacier".to_string());
+		m.insert(BIOME_POLAR_SNOWY_GLACIER, "biome_polar_snowy_glacier".to_string());
 		m.insert(BIOME_BARREN_TUNDRA, "biome_barren_tundra".to_string());
 
 		m.insert(BIOME_POLAR_MOUNTAIN_TOP, "biome_polar_mountain_top".to_string());
@@ -333,7 +336,5 @@ pub enum PlantLevel {
 	Underwater,
 }
 
-// How many different types of plants can be on each level.
-// TODO: Obsolete?
-pub const PLANT_LEVEL_TYPES_NUMBER_MAX: u8 = 5;
+/// Maximum plant spawning iterations per cell.
 pub const PLANT_SPAWNING_ITERATIONS: usize = 5;

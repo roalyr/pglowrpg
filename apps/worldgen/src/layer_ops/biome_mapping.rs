@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/layer_ops/biome_mapping.rs] [Date: 2025-12-13]
+// Description: Biome type assignment based on climate and elevation
+
 use lib_constants::generic as cg;
 use lib_constants::world::*;
 use lib_game_data_codec::LayerPack;

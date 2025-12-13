@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/layer_ops/terrain_mapping.rs] [Date: 2025-12-13]
+// Description: Terrain elevation layer generation
+
 use crate::array_ops;
 use crate::array_ops::noise_maps;
 use crate::array_ops::noise_maps::NoiseMode;
@@ -48,7 +51,7 @@ fn erode(
 	erosion_factor: f32,
 	seed: u32,
 ) {
-	//TODO: improve fine noise
+	// Multi-layered noise for erosion effect.
 	let nm1 = noise_maps::get(
 		size,
 		elevation_noise_size,

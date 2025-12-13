@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_image_ops/src/gradients/palettes/region_size.rs] [Date: 2025-12-13]
+// Description: Region size palette color mapping
+
 use lib_io_ops::readron::palettes::region_size;
 
 use crate::from_hex;

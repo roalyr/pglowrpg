@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/array_ops/interpolate.rs] [Date: 2025-12-13]
+// Description: Image interpolation/resizing using Mitchell filter
+
 use dep::resize;
 use dep::resize::Pixel::Gray8;
 use dep::resize::Type::Mitchell;

@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/layer_ops/river_mapping/vector_ops.rs] [Date: 2025-12-13]
+// Description: River direction vector operations
+
 use crate::layer_ops::river_mapping::RgParams;
 use lib_game_data_codec::LayerPack;
 

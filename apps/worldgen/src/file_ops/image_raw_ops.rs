@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/file_ops/image_raw_ops.rs] [Date: 2025-12-13]
+// Description: Raw grayscale map image generation
+
 use crate::LayerPack;
 use lib_constants::app as ca;
 use lib_constants::generic as cg;

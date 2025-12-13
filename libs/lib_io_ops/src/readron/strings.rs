@@ -1,4 +1,7 @@
-// Returns string file contents which is hashmap.
+// [Revision: v0.1] [Path: libs/lib_io_ops/src/readron/strings.rs] [Date: 2025-12-13]
+// Description: Macro for loading localized string hashmaps from RON files
+
+/// Load a hashmap of strings from a locale RON file.
 #[macro_export]
 macro_rules! get_strings_hashmaps {
 	($locale: expr, $filename: expr) => {{

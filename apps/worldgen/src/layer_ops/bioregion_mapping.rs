@@ -1,12 +1,11 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/layer_ops/bioregion_mapping.rs] [Date: 2025-12-13]
+// Description: Bioregion ID assignment via flood fill on biomes
+
 use lib_constants::generic as cg;
 use lib_constants::world as cw;
 use lib_floodfill::FloodFill;
 use lib_game_data_codec::LayerPack;
 use lib_unit_systems::translate;
-
-//TODO: improve georegions based on elevation too.
-//TODO: gather region data (size, location, cetroid, etc.).
-//TODO: second pass floodfill on final map to sort out overlayed regions.
 
 pub fn get(lp: &mut LayerPack) {
 	//Clean proxy maps for floodfill

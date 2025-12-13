@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_image_ops/src/gradients/palettes/river_element.rs] [Date: 2025-12-13]
+// Description: River element type palette color mapping
+
 use lib_io_ops::readron::palettes::river_element;
 
 use crate::from_hex;

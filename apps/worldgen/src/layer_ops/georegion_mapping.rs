@@ -1,8 +1,10 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/layer_ops/georegion_mapping.rs] [Date: 2025-12-13]
+// Description: Geographic region ID assignment via flood fill
+// Note: This implementation is a work in progress
+
 use lib_constants::generic as cg;
 use lib_floodfill::FloodFill;
 use lib_game_data_codec::LayerPack;
-
-//This code is unfinished
 
 pub fn get(lp: &mut LayerPack) {
 	//Clean proxy maps for floodfill

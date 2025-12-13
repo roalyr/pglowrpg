@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_text_ops/src/input.rs] [Date: 2025-12-13]
+// Description: Terminal input handling with colored prompts
+
 use crate::INTERFACE_STRINGS as UI;
 use dep::colored::{Color, Colorize};
 use lib_game_options::OPTIONS;
@@ -5,7 +8,7 @@ use lib_io_ops::readron::palettes;
 use std::io;
 use std::io::Write;
 
-// Prompts start after empty newline.
+/// Prompt for input with colored symbol, return trimmed input.
 fn new_line_input(prompt_symbol: &str) -> String {
 	let mut input = String::new();
 	// Chek if color from preset can be parsed, or fallback.

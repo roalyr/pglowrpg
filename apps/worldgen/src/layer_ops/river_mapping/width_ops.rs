@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/layer_ops/river_mapping/width_ops.rs] [Date: 2025-12-13]
+// Description: River width calculation and propagation
+
 use crate::layer_ops::river_mapping::{RgParams, RiverEntry};
 use lib_constants::generic as cg;
 use lib_constants::world as cw;

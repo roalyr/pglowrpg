@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/array_ops/noise_maps.rs] [Date: 2025-12-13]
+// Description: Procedural noise map generation (Perlin, Multi-fractal)
+
 use dep::noise::*;
 use lib_unit_systems::coords::Index;
 

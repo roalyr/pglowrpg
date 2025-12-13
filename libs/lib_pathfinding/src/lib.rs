@@ -1,13 +1,16 @@
+// [Revision: v0.1] [Path: libs/lib_pathfinding/src/lib.rs] [Date: 2025-12-13]
+// Description: A* pathfinding wrapper for weighted grid traversal
+
 use dep::pathfinding::prelude::astar;
 use lib_unit_systems::coords::Index;
 
-// Weights of moving orthogonally and diagonally.
-// If we imagine a square with a size of a side being 1,
-// then the diagonal will be 2^(1/2) ~ 1.41.
-// Here it is used as integer, so it is multiplied by 100.
-const W_ORT: u32 = 100; // Aka sqrt from 10000.
-const W_DIA: u32 = 141; // Aka sqrt from 20000.
+// Movement weights for orthogonal and diagonal directions.
+// Unit square side = 1, diagonal = sqrt(2) ≈ 1.41.
+// Multiplied by 100 for integer precision.
+const W_ORT: u32 = 100;
+const W_DIA: u32 = 141;
 
+/// Directional vector for pathfinding from (x0,y0) to (x1,y1).
 pub struct DirVector {
 	pub x0: u32,
 	pub y0: u32,
@@ -22,8 +25,7 @@ pub struct DirVector {
 pub struct Pos(pub u32, pub u32);
 
 impl Pos {
-	// Return approximate distance (as per source of information).
-	#[inline] // Is it necessary?
+	#[inline]
 	fn distance(
 		&self,
 		other: &Pos,
@@ -32,8 +34,7 @@ impl Pos {
 			+ (self.1 as i32 - other.1 as i32).abs()) as u32
 	}
 
-	// Returns a queue of neighbors adjacent, weighted.
-	#[inline] // Is it necessary?
+	#[inline]
 	fn neighbors<T>(
 		&self,
 		map: &Vec<T>,
@@ -125,7 +126,7 @@ impl Pos {
 	}
 }
 
-#[inline] // Is it necessary?
+#[inline]
 fn within_bounds(
 	i: u32,
 	j: u32,

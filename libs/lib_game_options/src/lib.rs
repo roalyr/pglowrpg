@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: libs/lib_game_options/src/lib.rs] [Date: 2025-12-13]
+// Description: Game options loading from RON configuration file
+
 use dep::lazy_static::lazy_static;
 use dep::ron;
 use lib_constants::app::*;
@@ -5,11 +8,12 @@ use lib_io_ops::file_to_string;
 use serde::{Deserialize, Serialize};
 use std::path::Path;
 
-// This is to initialize the options once and for all.
 lazy_static! {
+	/// Global game options loaded once at startup.
 	pub static ref OPTIONS: Stuff = get_options();
 }
 
+/// Game configuration options loaded from options.ron.
 #[derive(Serialize, Deserialize)]
 pub struct Stuff {
 	//General options

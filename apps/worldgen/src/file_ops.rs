@@ -1,3 +1,6 @@
+// [Revision: v0.1] [Path: apps/worldgen/src/file_ops.rs] [Date: 2025-12-13]
+// Description: World data and image file output operations
+
 pub mod data_ops;
 pub mod image_color_ops;
 pub mod image_raw_ops;
@@ -39,7 +42,6 @@ pub fn write_save(
 		world_dir = Path::new(ca::PATH_SAVE).to_path_buf().join(world_name);
 		create_dir(&save_dir);
 		create_dir(&world_dir);
-		// TODO: save a copy of preset into a save folder
 	}
 
 	// Write the data
