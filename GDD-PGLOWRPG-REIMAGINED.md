@@ -43,6 +43,8 @@ The game is not about saving the world. It is about finding your place in it.
 
 5. **Analog Compatibility:** If a mechanic cannot be explained with dice and paper, it's too complicated. The CLI is an oracle, not a hidden black box.
 
+6. **Death Ends a Life, Not a Story:** Characters die permanently—their skills, relationships, and progress are lost. But souls persist. Through reincarnation, echoes of past lives create new story seeds, emotional continuity, and a soft landing that distinguishes this from punishing roguelikes while maintaining meaningful stakes.
+
 ---
 
 # 1. Core Mechanics
@@ -891,16 +893,238 @@ The digital version is an **enhanced oracle**, not a replacement for imagination
 
 ---
 
-# 12. Open Questions
+# 12. Design Decisions (Resolved)
 
-These need resolution during development:
+These questions have been resolved:
 
-1. **Magic:** Include in Phase 1 as stub, or defer entirely to Phase 3?
-2. **Permadeath:** Full permadeath, or legacy system from start?
-3. **World Persistence:** Does the world state save between characters?
-4. **Difficulty Tuning:** How deadly should combat be?
-5. **Procedural NPCs:** Generate names/personalities, or use tables?
-6. **Multiplayer:** Ever? (Probably no, but document the decision.)
+---
+
+## 12.1 Magic
+
+**Decision:** Include in Phase 1 as a stub or very simple mechanics.
+
+Magic should be present from the start, even if minimal. A single "Ritual" asset type with 2-3 basic effects (e.g., Healer's Touch, Spirit Sight) establishes that magic *exists* without requiring a full system. This sets player expectations early: magic is rare, costly, and not a crutch.
+
+**Phase 1 Implementation:**
+* 1-2 Ritual assets available at character creation (optional)
+* Simple cost structure (spend Spirit to activate)
+* No complex interactions or spell lists
+
+---
+
+## 12.2 Permadeath & The Soul System
+
+**Decision:** Full permadeath, BUT with a soul/reincarnation mechanic inspired by Xianxia fiction.
+
+### The Core Concept
+
+Characters (player and NPC alike) possess **Souls**. When a character dies, their soul enters a cycle of reincarnation. Death is permanent for the *person*, but not for the *soul*.
+
+### Gameplay Implications
+
+| Event | Consequence |
+|-------|-------------|
+| **Character dies** | The person is gone. Their memories, relationships, skills—all lost. |
+| **Soul persists** | The soul enters the reincarnation queue. Eventually, a new person is born carrying that soul. |
+| **Soul marks** | The new person has no memory of their past life, but carries **Soul Marks**—echoes that manifest as inexplicable affinities, fears, or connections. |
+| **Recognition** | NPCs or locations tied to the previous life may trigger vague recognition or déjà vu moments. |
+
+### The Player Experience
+
+When your character dies:
+1. **The Chronicle records their story.** Their deeds become history.
+2. **Their soul is marked.** Significant relationships, vows fulfilled/forsaken, and manner of death leave imprints.
+3. **You create a new character.** Fresh person, fresh start.
+4. **Soul Marks emerge over time.** Your new character may feel drawn to places, people, or causes connected to their soul's past—without knowing why.
+
+### Why This Works
+
+* **Death still matters.** You lose everything personal—skills, relationships, progress. This preserves tension.
+* **Emotional continuity.** The companion who died saving you will be reborn. You might meet them again, as a child, as a stranger, as an enemy—and feel the echo.
+* **Plot hooks regenerate.** The soul system creates natural story seeds. Why does this stranger trust you? Why do you hate the sea?
+* **NPC depth.** NPCs also reincarnate. A villain's soul may return in an innocent. A lost love may find you again.
+* **Soft landing.** Total permadeath can feel punishing. This offers emotional softening without mechanical resurrection.
+
+### Soul Mechanics (Phase 2+)
+
+* **Soul Strength:** Souls accumulate weight through significant deeds. Stronger souls reincarnate faster and with more marks.
+* **Soul Dissipation:** The ultimate failure state. A soul can be *destroyed* through certain catastrophic events (betraying a sacred vow, certain magical attacks, dying forgotten and alone). This is true permadeath—no return.
+* **Fate Threads:** Souls that interacted intensely may be "bound"—they tend to reincarnate near each other, creating recurring relationships across lifetimes.
+
+### Design Pillar
+
+> **"Death ends a life, not a story."**
+
+This becomes a core pillar of the game's identity, distinguishing it from standard roguelikes while maintaining meaningful stakes.
+
+---
+
+## 12.3 World Persistence
+
+**Decision:** Yes. The world persists across all characters.
+
+### The Living World
+
+Like Dwarf Fortress, you generate one world and inhabit it with successive characters. The world accumulates history:
+* Events are logged in the Chronicle
+* NPCs live, die, and are remembered (or forgotten)
+* Factions rise and fall
+* Your previous characters become part of the world's history
+
+### The Metagaming Problem
+
+**Problem:** If the player remembers everything from their previous character, they could simply recreate relationships, find the same treasures, or pick up abandoned vows with perfect knowledge.
+
+**Solution: Knowledge Boundaries**
+
+| Knowledge Type | Persists for Player? | Persists for New Character? |
+|----------------|---------------------|----------------------------|
+| World geography | Yes (map explored) | Partial (common knowledge only) |
+| NPC existence | Yes | No (must meet again) |
+| Relationship status | Yes (as history) | No (stranger to them) |
+| Hidden locations | Yes (player knows) | No (must discover) |
+| Faction standings | No (character-specific) | Fresh start |
+| Vow progress | No | New vows required |
+
+### Mechanical Enforcement
+
+* **Fog of War Reset:** A new character starts with only "common knowledge" map visibility. Major settlements are known; secret locations are hidden again.
+* **Relationship Reset:** NPCs treat your new character as a stranger. You must rebuild trust. (Soul Marks may create shortcuts—an NPC might feel unexplained warmth toward you.)
+* **Chronicle Access:** Your new character can *hear stories* about previous heroes. "There was a wanderer named Kira who slew the beast of Thornwood..." This provides narrative continuity without mechanical advantage.
+
+### The Emotional Loop
+
+1. Play Character A. Build relationships. Die.
+2. Create Character B. The world remembers A. You're a stranger now.
+3. Encounter an NPC who knew A. They tell stories of your past self. You feel the echo.
+4. Soul Marks draw you toward unfinished business—but you must earn your place again.
+
+This creates a bittersweet, resonant experience that rewards long-term investment in a single world.
+
+---
+
+## 12.4 Difficulty & Death Spiral
+
+**Decision:** Ironsworn-style lethality with layered "fate-changing" safety nets.
+
+### Death is a Process, Not an Instant
+
+Combat and hardship should feel dangerous, but death should rarely come from a single bad roll. Instead, there's a cascade:
+
+### The Descent
+
+| Stage | Trigger | Consequence |
+|-------|---------|-------------|
+| **Healthy** | Default state | Normal play |
+| **Wounded** | Health reaches 0 | Must **Endure Harm**. On a miss, become... |
+| **Broken** | Failed Endure Harm | Severe penalties. One more serious harm and... |
+| **Death's Door** | Harm while Broken | Must **Face Death**. Roll to survive. |
+| **Dead** | Failed Face Death | Character dies. Soul enters reincarnation. |
+| **Soul Dissipation** | Special circumstances | True permadeath. No reincarnation. |
+
+### Fate-Changing Interventions
+
+At various stages, the player can invoke **Fate** to avoid the worst:
+
+| Intervention | Cost | Effect |
+|--------------|------|--------|
+| **Burn Momentum** | Reset momentum to +2 | Convert a miss to a weak hit (if momentum > challenge die) |
+| **Sacrifice Supply** | Lose all Supply | Escape a deadly situation (narratively justified) |
+| **Break a Bond** | Permanently damage a Connection | An ally intervenes, saving you but straining the relationship |
+| **Invoke a Vow** | Forsake a vow (lose all progress, gain "Forsaken" mark) | Desperate survival at the cost of your word |
+| **Soul Bargain** | Gain a permanent Soul Mark (negative) | Supernatural intervention saves you, but marks your soul |
+
+### The Final Deaths
+
+**Character Death:** Your body dies. Your soul persists. You create a new character. The world remembers the old one.
+
+**Soul Dissipation:** Triggered by:
+* Dying with a "Forsaken" mark on a sacred vow
+* Being slain by certain supernatural forces
+* Dying utterly alone, unmourned, with no bonds or legacy
+* (Rare) Choosing to let go
+
+Soul Dissipation is **true permadeath**. The soul is gone. No reincarnation. The Chronicle notes them as "Lost to the Void." This should be rare but possible—the ultimate consequence for a life of betrayal or isolation.
+
+---
+
+## 12.5 Procedural NPCs
+
+**Decision:** Combined approach—procedural generation with player control.
+
+### Default Mode: Procedural
+
+NPCs are generated using:
+* **Name tables** (culturally appropriate to region/faction)
+* **Descriptor tables** (personality traits, appearance, quirks)
+* **Role assignment** (based on location type)
+* **Goal generation** (what do they want?)
+
+### Player Override
+
+At any point, the player can:
+* **Accept the oracle's suggestion** (use generated NPC as-is)
+* **Reroll specific elements** (keep the name, change the personality)
+* **Input custom details** (fully define the NPC themselves)
+
+### Hybrid Flow Example
+
+```
+═══════════════════════════════════════════
+  NEW NPC ENCOUNTERED
+═══════════════════════════════════════════
+  
+  Oracle suggests:
+    Name: Torvin
+    Role: Traveling merchant
+    Trait: Suspicious, pragmatic
+    Want: Safe passage through the forest
+  
+  [1] Accept as generated
+  [2] Reroll name
+  [3] Reroll traits
+  [4] Custom input
+  [5] Reroll everything
+
+> _
+```
+
+This respects both the "oracle as collaborator" philosophy and player agency.
+
+---
+
+## 12.6 Multiplayer
+
+**Decision:** No multiplayer. Ever.
+
+### Rationale
+
+* **Solo play is the core identity.** The game is designed around a single wanderer's journey. Adding multiplayer would fundamentally alter the pacing, narrative control, and mechanical balance.
+* **Ironsworn works solo.** The inspiration is a solo/co-op TTRPG. The digital version should honor that.
+* **Scope control.** Multiplayer adds massive technical complexity (networking, synchronization, balance) for unclear benefit.
+* **The soul system is personal.** Reincarnation, fate threads, soul marks—these work because they're *your* story. Multiplayer dilutes this.
+
+### What About Co-op?
+
+If co-op were ever considered (it won't be), it would be:
+* Asynchronous (players in the same world, different times)
+* Narrative only (share chronicles, not mechanics)
+* Post-Phase-4 (after the solo game is complete)
+
+**For all practical purposes: This is a single-player game. Design accordingly.**
+
+---
+
+## 12.7 Summary Table
+
+| Question | Decision |
+|----------|----------|
+| Magic in Phase 1? | Yes, minimal stub (1-2 rituals) |
+| Permadeath? | Yes, but with soul/reincarnation system |
+| World persistence? | Yes, with knowledge boundaries for new characters |
+| Difficulty? | Layered death spiral with fate interventions |
+| Procedural NPCs? | Hybrid (generated + player override) |
+| Multiplayer? | No, never |
 
 ---
 
