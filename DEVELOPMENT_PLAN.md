@@ -44,51 +44,54 @@ pglowrpg/
 ### Phase 1: Core Systems Foundation
 **Target:** Basic gameplay loop without worldgen integration
 
-#### 1.1 Character System
-- [ ] Create `libs/lib_character/` module
-- [ ] Implement stat blocks (Edge, Heart, Iron, Shadow, Wits)
-- [ ] Resource tracking (Health, Spirit, Supply, Momentum)
-- [ ] Vow/Bond data structures
+#### 1.1 Character System ✅
+- [x] Create `libs/lib_character/` module
+- [x] Implement stat blocks (Edge, Heart, Iron, Shadow, Wits)
+- [x] Resource tracking (Health, Spirit, Supply, Momentum)
+- [x] Vow/Bond data structures
 - [ ] Character serialization (save/load)
 
-#### 1.2 Move Engine
-- [ ] Create `libs/lib_moves/` module
-- [ ] Implement 2d10 vs 2d10 action roll
-- [ ] Strong/Weak Hit/Miss resolution
-- [ ] Momentum system (burn, reset)
-- [ ] Progress track mechanics
+#### 1.2 Move Engine ✅
+- [x] Create `libs/lib_moves/` module
+- [x] Implement 2d10 vs 2d10 action roll
+- [x] Strong/Weak Hit/Miss resolution
+- [x] Momentum system (burn, reset)
+- [x] Progress track mechanics
 
-#### 1.3 Oracle System
-- [ ] Create `libs/lib_oracle/` module
-- [ ] D100 table lookup system
-- [ ] Weighted random selection
-- [ ] Name/place/event generation tables
-- [ ] Load tables from RON files
+#### 1.3 Oracle System ✅
+- [x] Create `libs/lib_oracle/` module
+- [x] D100 table lookup system
+- [x] Weighted random selection (Yes/No with likelihood)
+- [x] Action/Theme/Complication tables
+- [ ] Load tables from RON files (future extension)
 
-#### 1.4 Basic CLI Interface
-- [ ] Refactor `apps/game/` with proper command loop
-- [ ] Status display (character, resources, vows)
-- [ ] Action selection menu
-- [ ] Move resolution output
+#### 1.4 Basic CLI Interface ✅
+- [x] Refactor `apps/game/` with proper command loop
+- [x] Status display (character, resources, vows)
+- [x] Action selection menu
+- [x] Move resolution output
 - [ ] Simple journal/log system
 
 ### Phase 2: World Integration
 **Target:** Connect worldgen output to gameplay
 
-#### 2.1 Location Abstraction
-- [ ] Create `libs/lib_locations/` module
-- [ ] Extract significant points from LayerPack:
+#### 2.1 Location Abstraction ✅
+- [x] Create `libs/lib_location/` module
+- [x] Location types (Settlement, Ruin, Wilderness, Sacred, Landmark)
+- [x] Location rank system (Troublesome to Epic)
+- [x] Region management
   - River confluences/sources
   - Biome boundaries
   - Coastlines
   - Mountain passes
 - [ ] Location metadata (name, type, features)
 
-#### 2.2 Journey System
-- [ ] Travel between locations
-- [ ] Terrain-based difficulty modifiers
-- [ ] Supply consumption
-- [ ] Random encounter triggers
+#### 2.2 Journey System ✅
+- [x] Create `libs/lib_travel/` module
+- [x] Travel between locations
+- [x] Terrain-based difficulty modifiers
+- [x] Supply consumption on travel
+- [ ] Random encounter triggers (partially via Oracle)
 
 #### 2.3 Map Interface
 - [ ] ASCII region map display

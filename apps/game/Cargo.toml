@@ -18,6 +18,7 @@ lib_game_options = { path = "../../libs/lib_game_options" }
 lib_io_ops = { path = "../../libs/lib_io_ops" }
 lib_location = { path = "../../libs/lib_location" }
 lib_moves = { path = "../../libs/lib_moves" }
+lib_oracle = { path = "../../libs/lib_oracle" }
 lib_pseudo_rng = { path = "../../libs/lib_pseudo_rng" }
 lib_text_ops = { path = "../../libs/lib_text_ops" }
 lib_travel = { path = "../../libs/lib_travel" }

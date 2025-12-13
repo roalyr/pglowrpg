@@ -7,6 +7,7 @@ use lib_character::vows::VowRank;
 use lib_location::location_type::{Location, LocationRank, LocationType};
 use lib_location::region::{Region, RegionType};
 use lib_moves::moves::{adventure_moves, combat_moves, quest_moves};
+use lib_oracle::Oracle;
 use lib_text_ops::{input, INTERFACE_STRINGS as UI, GAME_STRINGS as GS};
 use lib_travel::journey::Journey;
 use lib_unit_systems::coords::Coord;
@@ -140,6 +141,9 @@ fn exploration_loop(state: &mut GameState) {
             gather_information_action(state);
         }
         "7" => {
+            oracle_menu(state);
+        }
+        "8" => {
             state.phase = GamePhase::GameOver;
         }
         _ => {
@@ -435,6 +439,136 @@ fn gather_information_action(state: &mut GameState) {
     UI.print_separator_thin("");
     GS.print_press_continue();
     input::prompt_option();
+}
+
+fn oracle_menu(state: &mut GameState) {
+    let oracle = Oracle::new();
+    
+    loop {
+        UI.print_newline();
+        UI.print_banner_block(GS.str_banner_oracle());
+        UI.print_newline();
+        
+        GS.print_oracle_menu();
+        
+        let choice = input::prompt_option();
+        
+        match choice.as_str() {
+            "1" => {
+                // Yes/No question with likelihood
+                UI.print_newline();
+                GS.print_oracle_likelihood();
+                let likelihood_choice = input::prompt_option();
+                
+                let likelihood = match likelihood_choice.as_str() {
+                    "1" => 90,  // Almost Certain
+                    "2" => 75,  // Likely
+                    "3" => 50,  // Fifty-Fifty
+                    "4" => 25,  // Unlikely
+                    "5" => 10,  // Small Chance
+                    _ => 50,    // Default
+                };
+                
+                let result = oracle.ask_yes_no(&mut state.rng, likelihood);
+                
+                UI.print_separator_thin("");
+                println!("  {}", GS.str_oracle_rolling());
+                println!();
+                println!("  {} {}", GS.str_oracle_answer(), result.description());
+                UI.print_separator_thin("");
+                
+                GS.print_press_continue();
+                input::prompt_option();
+            }
+            "2" => {
+                // Action + Theme
+                let (action, theme) = oracle.action_theme(&mut state.rng);
+                
+                UI.print_separator_thin("");
+                println!("  {}", GS.str_oracle_rolling());
+                println!();
+                println!("  {} {}", GS.str_oracle_action(), action);
+                println!("  {} {}", GS.str_oracle_theme(), theme);
+                UI.print_separator_thin("");
+                
+                GS.print_press_continue();
+                input::prompt_option();
+            }
+            "3" => {
+                // Complication
+                let result = oracle.complication(&mut state.rng);
+                
+                UI.print_separator_thin("");
+                println!("  {}", GS.str_oracle_rolling());
+                println!();
+                println!("  {}", result);
+                UI.print_separator_thin("");
+                
+                GS.print_press_continue();
+                input::prompt_option();
+            }
+            "4" => {
+                // Opportunity
+                let result = oracle.opportunity(&mut state.rng);
+                
+                UI.print_separator_thin("");
+                println!("  {}", GS.str_oracle_rolling());
+                println!();
+                println!("  {}", result);
+                UI.print_separator_thin("");
+                
+                GS.print_press_continue();
+                input::prompt_option();
+            }
+            "5" => {
+                // NPC Details
+                let (disposition, goal) = oracle.npc_details(&mut state.rng);
+                
+                UI.print_separator_thin("");
+                println!("  {}", GS.str_oracle_rolling());
+                println!();
+                println!("  {} {}", GS.str_oracle_npc_disposition(), disposition);
+                println!("  {} {}", GS.str_oracle_npc_goal(), goal);
+                UI.print_separator_thin("");
+                
+                GS.print_press_continue();
+                input::prompt_option();
+            }
+            "6" => {
+                // Location Feature
+                let result = oracle.location_feature(&mut state.rng);
+                
+                UI.print_separator_thin("");
+                println!("  {}", GS.str_oracle_rolling());
+                println!();
+                println!("  {} {}", GS.str_oracle_feature(), result);
+                UI.print_separator_thin("");
+                
+                GS.print_press_continue();
+                input::prompt_option();
+            }
+            "7" => {
+                // Pay the Price
+                let result = oracle.pay_price(&mut state.rng);
+                
+                UI.print_separator_thin("");
+                println!("  {}", GS.str_oracle_rolling());
+                println!();
+                println!("  {} {}", GS.str_oracle_price(), result);
+                UI.print_separator_thin("");
+                
+                GS.print_press_continue();
+                input::prompt_option();
+            }
+            "8" | "" => {
+                // Return
+                break;
+            }
+            _ => {
+                GS.print_invalid_choice();
+            }
+        }
+    }
 }
 
 fn game_over(state: &GameState) {

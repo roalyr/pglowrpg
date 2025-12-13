@@ -35,6 +35,11 @@ impl Rng {
         self.rng.rand_range(1..11) as u8
     }
 
+    /// Roll a d100 (1-100).
+    pub fn d100(&mut self) -> u8 {
+        self.rng.rand_range(1..101) as u8
+    }
+
     /// Roll a d6 (1-6).
     pub fn d6(&mut self) -> u8 {
         self.rng.rand_range(1..7) as u8

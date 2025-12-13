@@ -58,6 +58,9 @@ print_paragraph! {
 	print_over_journey_ends, "gm_over_journey_ends";
 	print_over_statistics, "gm_over_statistics";
 	
+	// Oracle
+	print_oracle_likelihood, "gm_oracle_likelihood";
+	
 	// General
 	print_invalid_choice, "gm_invalid_choice";
 	print_press_continue, "gm_press_continue";
@@ -100,6 +103,7 @@ print_menu! {
 			"gm_menu_make_camp",
 			"gm_menu_explore",
 			"gm_menu_gather_info",
+			"gm_menu_ask_oracle",
 			"gm_menu_quit",
 		];
 	print_combat_menu, "gm_combat_prompt",
@@ -120,6 +124,17 @@ print_menu! {
 			"gm_vow_protect",
 			"gm_vow_artifact",
 		];
+	print_oracle_menu, "gm_oracle_prompt",
+		[
+			"gm_oracle_yes_no",
+			"gm_oracle_action_theme",
+			"gm_oracle_complication",
+			"gm_oracle_opportunity",
+			"gm_oracle_npc",
+			"gm_oracle_location",
+			"gm_oracle_pay_price",
+			"gm_oracle_back",
+		];
 	)
 }
 
@@ -139,9 +154,18 @@ return_string! {
 	str_banner_gather_info, "gm_banner_gather_info";
 	str_banner_swear_vow, "gm_banner_swear_vow";
 	str_banner_game_over, "gm_banner_game_over";
+	str_banner_oracle, "gm_banner_oracle";
 	str_roll_strong_hit, "gm_roll_strong_hit";
 	str_roll_weak_hit, "gm_roll_weak_hit";
 	str_roll_miss, "gm_roll_miss";
 	str_roll_match, "gm_roll_match";
+	str_oracle_rolling, "gm_oracle_rolling";
+	str_oracle_answer, "gm_oracle_answer";
+	str_oracle_action, "gm_oracle_action";
+	str_oracle_theme, "gm_oracle_theme";
+	str_oracle_npc_disposition, "gm_oracle_npc_disposition";
+	str_oracle_npc_goal, "gm_oracle_npc_goal";
+	str_oracle_feature, "gm_oracle_feature";
+	str_oracle_price, "gm_oracle_price";
 	)
 }
