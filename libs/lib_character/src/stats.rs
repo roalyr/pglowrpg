@@ -85,3 +85,110 @@ impl Default for Stats {
         Self::new()
     }
 }
+
+// ============================================================================
+// UNIT TESTS
+// ============================================================================
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_stat_enum_equality() {
+        assert_eq!(Stat::Edge, Stat::Edge);
+        assert_ne!(Stat::Edge, Stat::Heart);
+    }
+
+    #[test]
+    fn test_stats_new_defaults_to_one() {
+        let stats = Stats::new();
+        assert_eq!(stats.edge, 1);
+        assert_eq!(stats.heart, 1);
+        assert_eq!(stats.iron, 1);
+        assert_eq!(stats.shadow, 1);
+        assert_eq!(stats.wits, 1);
+    }
+
+    #[test]
+    fn test_stats_with_values() {
+        let stats = Stats::with_values(3, 2, 2, 1, 3);
+        assert_eq!(stats.edge, 3);
+        assert_eq!(stats.heart, 2);
+        assert_eq!(stats.iron, 2);
+        assert_eq!(stats.shadow, 1);
+        assert_eq!(stats.wits, 3);
+    }
+
+    #[test]
+    fn test_stats_with_values_clamps_high() {
+        let stats = Stats::with_values(10, 10, 10, 10, 10);
+        assert_eq!(stats.edge, 3);
+        assert_eq!(stats.heart, 3);
+        assert_eq!(stats.iron, 3);
+        assert_eq!(stats.shadow, 3);
+        assert_eq!(stats.wits, 3);
+    }
+
+    #[test]
+    fn test_stats_with_values_clamps_low() {
+        let stats = Stats::with_values(0, 0, 0, 0, 0);
+        assert_eq!(stats.edge, 1);
+        assert_eq!(stats.heart, 1);
+        assert_eq!(stats.iron, 1);
+        assert_eq!(stats.shadow, 1);
+        assert_eq!(stats.wits, 1);
+    }
+
+    #[test]
+    fn test_stats_get() {
+        let stats = Stats::with_values(3, 2, 1, 2, 3);
+        assert_eq!(stats.get(Stat::Edge), 3);
+        assert_eq!(stats.get(Stat::Heart), 2);
+        assert_eq!(stats.get(Stat::Iron), 1);
+        assert_eq!(stats.get(Stat::Shadow), 2);
+        assert_eq!(stats.get(Stat::Wits), 3);
+    }
+
+    #[test]
+    fn test_stats_set() {
+        let mut stats = Stats::new();
+        stats.set(Stat::Edge, 3);
+        assert_eq!(stats.edge, 3);
+        stats.set(Stat::Heart, 2);
+        assert_eq!(stats.heart, 2);
+    }
+
+    #[test]
+    fn test_stats_set_clamps() {
+        let mut stats = Stats::new();
+        stats.set(Stat::Edge, 10);
+        assert_eq!(stats.edge, 3);
+        stats.set(Stat::Edge, 0);
+        assert_eq!(stats.edge, 1);
+    }
+
+    #[test]
+    fn test_stats_validate_total_standard() {
+        // Standard Ironsworn: 3+2+2+1+3 = 11
+        let stats = Stats::with_values(3, 2, 2, 1, 3);
+        assert!(stats.validate_total(11));
+    }
+
+    #[test]
+    fn test_stats_validate_total_fails() {
+        let stats = Stats::new(); // All 1s = 5
+        assert!(!stats.validate_total(11));
+        assert!(stats.validate_total(5));
+    }
+
+    #[test]
+    fn test_stats_default() {
+        let stats = Stats::default();
+        assert_eq!(stats.edge, 1);
+        assert_eq!(stats.heart, 1);
+        assert_eq!(stats.iron, 1);
+        assert_eq!(stats.shadow, 1);
+        assert_eq!(stats.wits, 1);
+    }
+}

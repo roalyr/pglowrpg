@@ -1,6 +1,7 @@
 // [Revision: v0.1] [Path: libs/lib_character/src/character.rs] [Date: 2025-12-13]
 // Description: Main character structure combining stats, resources, vows, and bonds
 
+use lib_economy::Inventory;
 use serde::{Deserialize, Serialize};
 
 use crate::resources::Resources;
@@ -15,6 +16,7 @@ pub struct Character {
     pub resources: Resources,
     pub vows: Vec<Vow>,
     pub bonds: Vec<Bond>,
+    pub inventory: Inventory,
 }
 
 impl Character {
@@ -26,6 +28,7 @@ impl Character {
             resources: Resources::default(),
             vows: Vec::new(),
             bonds: Vec::new(),
+            inventory: Inventory::default(),
         }
     }
 
@@ -37,6 +40,7 @@ impl Character {
             resources: Resources::default(),
             vows: Vec::new(),
             bonds: Vec::new(),
+            inventory: Inventory::default(),
         }
     }
 

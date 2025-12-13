@@ -224,3 +224,250 @@ impl Default for Resources {
         Self::new()
     }
 }
+
+// ============================================================================
+// UNIT TESTS
+// ============================================================================
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    // -------------------------------------------------------------------------
+    // Health tests
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn test_health_creation() {
+        let health = Health::new(5);
+        assert_eq!(health.current(), 5);
+        assert_eq!(health.max(), 5);
+    }
+
+    #[test]
+    fn test_health_default() {
+        let health = Health::default();
+        assert_eq!(health.current(), 5);
+        assert_eq!(health.max(), 5);
+    }
+
+    #[test]
+    fn test_health_negative_max_becomes_zero() {
+        let health = Health::new(-3);
+        assert_eq!(health.max(), 0);
+    }
+
+    #[test]
+    fn test_health_modify_positive() {
+        let mut health = Health::new(5);
+        health.modify(-3);
+        assert_eq!(health.current(), 2);
+        health.modify(1);
+        assert_eq!(health.current(), 3);
+    }
+
+    #[test]
+    fn test_health_modify_clamps_at_zero() {
+        let mut health = Health::new(5);
+        health.modify(-10);
+        assert_eq!(health.current(), 0);
+    }
+
+    #[test]
+    fn test_health_modify_clamps_at_max() {
+        let mut health = Health::new(5);
+        health.modify(-2);
+        health.modify(10);
+        assert_eq!(health.current(), 5);
+    }
+
+    #[test]
+    fn test_health_set_clamps_values() {
+        let mut health = Health::new(5);
+        health.set(100);
+        assert_eq!(health.current(), 5);
+        health.set(-100);
+        assert_eq!(health.current(), 0);
+    }
+
+    #[test]
+    fn test_health_is_depleted() {
+        let mut health = Health::new(5);
+        assert!(!health.is_depleted());
+        health.set(0);
+        assert!(health.is_depleted());
+    }
+
+    // -------------------------------------------------------------------------
+    // Spirit tests
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn test_spirit_creation() {
+        let spirit = Spirit::new(5);
+        assert_eq!(spirit.current(), 5);
+        assert_eq!(spirit.max(), 5);
+    }
+
+    #[test]
+    fn test_spirit_modify_clamps() {
+        let mut spirit = Spirit::new(5);
+        spirit.modify(-10);
+        assert_eq!(spirit.current(), 0);
+        spirit.modify(100);
+        assert_eq!(spirit.current(), 5);
+    }
+
+    #[test]
+    fn test_spirit_is_depleted() {
+        let mut spirit = Spirit::new(3);
+        spirit.modify(-3);
+        assert!(spirit.is_depleted());
+    }
+
+    // -------------------------------------------------------------------------
+    // Supply tests
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn test_supply_creation() {
+        let supply = Supply::new(5);
+        assert_eq!(supply.current(), 5);
+        assert_eq!(supply.max(), 5);
+    }
+
+    #[test]
+    fn test_supply_modify_clamps() {
+        let mut supply = Supply::new(5);
+        supply.modify(-6);
+        assert_eq!(supply.current(), 0);
+        supply.modify(10);
+        assert_eq!(supply.current(), 5);
+    }
+
+    #[test]
+    fn test_supply_is_depleted() {
+        let mut supply = Supply::new(3);
+        assert!(!supply.is_depleted());
+        supply.set(0);
+        assert!(supply.is_depleted());
+    }
+
+    // -------------------------------------------------------------------------
+    // Momentum tests
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn test_momentum_creation() {
+        let momentum = Momentum::new(2, 10);
+        assert_eq!(momentum.current(), 2);
+        assert_eq!(momentum.reset_value(), 2);
+        assert_eq!(momentum.max(), 10);
+    }
+
+    #[test]
+    fn test_momentum_default() {
+        let momentum = Momentum::default();
+        assert_eq!(momentum.current(), 2);
+        assert_eq!(momentum.reset_value(), 2);
+        assert_eq!(momentum.max(), 10);
+    }
+
+    #[test]
+    fn test_momentum_modify_positive() {
+        let mut momentum = Momentum::default();
+        momentum.modify(3);
+        assert_eq!(momentum.current(), 5);
+    }
+
+    #[test]
+    fn test_momentum_modify_negative() {
+        let mut momentum = Momentum::default();
+        momentum.modify(-4);
+        assert_eq!(momentum.current(), -2);
+    }
+
+    #[test]
+    fn test_momentum_clamps_at_max() {
+        let mut momentum = Momentum::new(2, 10);
+        momentum.modify(20);
+        assert_eq!(momentum.current(), 10);
+    }
+
+    #[test]
+    fn test_momentum_clamps_at_minimum() {
+        let mut momentum = Momentum::default();
+        momentum.modify(-100);
+        assert_eq!(momentum.current(), -6);
+    }
+
+    #[test]
+    fn test_momentum_reset() {
+        let mut momentum = Momentum::new(2, 10);
+        momentum.modify(5);
+        assert_eq!(momentum.current(), 7);
+        momentum.reset();
+        assert_eq!(momentum.current(), 2);
+    }
+
+    #[test]
+    fn test_momentum_suffer() {
+        let mut momentum = Momentum::default();
+        momentum.modify(4);
+        assert_eq!(momentum.current(), 6);
+        momentum.suffer(3);
+        assert_eq!(momentum.current(), 3);
+    }
+
+    #[test]
+    fn test_momentum_is_negative() {
+        let mut momentum = Momentum::default();
+        assert!(!momentum.is_negative());
+        momentum.set(-1);
+        assert!(momentum.is_negative());
+    }
+
+    #[test]
+    fn test_momentum_set_clamps() {
+        let mut momentum = Momentum::new(2, 10);
+        momentum.set(100);
+        assert_eq!(momentum.current(), 10);
+        momentum.set(-100);
+        assert_eq!(momentum.current(), -6);
+    }
+
+    // -------------------------------------------------------------------------
+    // Resources tests
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn test_resources_creation() {
+        let resources = Resources::new();
+        assert_eq!(resources.health.current(), 5);
+        assert_eq!(resources.spirit.current(), 5);
+        assert_eq!(resources.supply.current(), 5);
+        assert_eq!(resources.momentum.current(), 2);
+    }
+
+    #[test]
+    fn test_resources_is_critical() {
+        let mut resources = Resources::new();
+        assert!(!resources.is_critical());
+
+        resources.health.set(0);
+        assert!(resources.is_critical());
+
+        resources.health.set(5);
+        resources.spirit.set(0);
+        assert!(resources.is_critical());
+    }
+
+    #[test]
+    fn test_resources_default() {
+        let resources = Resources::default();
+        assert_eq!(resources.health.current(), 5);
+        assert_eq!(resources.spirit.current(), 5);
+        assert_eq!(resources.supply.current(), 5);
+        assert_eq!(resources.momentum.current(), 2);
+    }
+}

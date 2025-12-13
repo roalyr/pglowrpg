@@ -41,13 +41,44 @@
 // Exploration menu
 "gm_exploration_prompt" : "What do you want to do?",
 "gm_menu_view_character" : "View Character",
+"gm_menu_view_map" : "View Map",
+"gm_menu_view_journal" : "View Journal",
 "gm_menu_manage_vows" : "Manage Vows",
 "gm_menu_start_journey" : "Start Journey",
 "gm_menu_make_camp" : "Make Camp",
 "gm_menu_explore" : "Explore Current Location",
 "gm_menu_gather_info" : "Gather Information",
 "gm_menu_ask_oracle" : "Ask the Oracle",
+"gm_menu_save_game" : "Save Game",
 "gm_menu_quit" : "Quit Game",
+
+// Journal
+"gm_banner_journal" : "Journal",
+"gm_journal_empty" : "Your journal is empty.",
+"gm_journal_recent" : "Recent Entries:",
+"gm_journal_all" : "All Entries:",
+"gm_journal_view_recent" : "View Recent (10)",
+"gm_journal_view_all" : "View All",
+"gm_journal_view_category" : "View by Category",
+"gm_journal_add_note" : "Add Personal Note",
+"gm_journal_search" : "Search Journal",
+"gm_journal_back" : "Return",
+"gm_journal_note_prompt" : "Enter your note:",
+"gm_journal_search_prompt" : "Search for:",
+"gm_journal_search_results" : "Search Results:",
+"gm_journal_no_results" : "No entries found.",
+"gm_journal_category_prompt" : "Select category: (1) Story (2) Combat (3) Travel (4) Social (5) Quest (6) Notes (7) System",
+
+// Save/Load
+"gm_save_prompt" : "Enter save name (or empty for quick save):",
+"gm_save_success" : "Game saved successfully:",
+"gm_save_failed" : "Failed to save game:",
+"gm_load_prompt" : "Available saves:",
+"gm_load_success" : "Game loaded successfully.",
+"gm_load_failed" : "Failed to load game:",
+
+// Map
+"gm_banner_map" : "Region Map",
 
 // Oracle
 "gm_banner_oracle" : "Consult the Oracle",

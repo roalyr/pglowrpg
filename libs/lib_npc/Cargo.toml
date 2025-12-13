@@ -1,0 +1,14 @@
+[package]
+name = "lib_npc"
+version = "0.1.0"
+authors = ["roal_yr"]
+edition = "2024"
+
+[dependencies]
+# External crates (via dep)
+dep = { path = "../../dep" }
+serde = { version = "1.0", features = ["derive"] }
+
+# Internal libraries
+lib_oracle = { path = "../lib_oracle" }
+lib_pseudo_rng = { path = "../lib_pseudo_rng" }

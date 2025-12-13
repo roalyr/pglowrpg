@@ -144,7 +144,7 @@ mod tests {
     #[test]
     fn test_yes_no_oracle() {
         let oracle = Oracle::new();
-        let mut rng = Rng::from_seed(12345);
+        let mut rng = Rng::new(12345);
         
         // Just verify it doesn't panic
         for _ in 0..100 {
@@ -155,7 +155,7 @@ mod tests {
     #[test]
     fn test_table_lookups() {
         let oracle = Oracle::new();
-        let mut rng = Rng::from_seed(12345);
+        let mut rng = Rng::new(12345);
         
         // Verify all tables return something
         assert!(!oracle.action(&mut rng).is_empty());

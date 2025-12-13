@@ -1,8 +1,10 @@
 // [Revision: v0.1] [Path: libs/lib_oracle/src/tables.rs] [Date: 2025-12-13]
 // Description: Oracle table data structures and loading
 
+use serde::{Deserialize, Serialize};
+
 /// Result of a Yes/No oracle roll
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum YesNoResult {
     NoCritical,    // 1-10: No, and...
     No,            // 11-25: No
@@ -42,7 +44,7 @@ impl YesNoResult {
 }
 
 /// A single entry in an oracle table
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct OracleEntry {
     pub min: u8,
     pub max: u8,
@@ -64,7 +66,7 @@ impl OracleEntry {
 }
 
 /// An oracle table with weighted entries
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct OracleTable {
     pub name: String,
     pub entries: Vec<OracleEntry>,

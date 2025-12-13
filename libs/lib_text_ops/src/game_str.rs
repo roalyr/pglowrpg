@@ -43,6 +43,17 @@ print_paragraph! {
 	print_vows_choose_quest, "gm_vows_choose_quest";
 	print_vows_details_stub, "gm_vows_details_stub";
 	
+	// Journal
+	print_journal_banner, "gm_banner_journal";
+	print_journal_empty, "gm_journal_empty";
+	print_journal_recent, "gm_journal_recent";
+	print_journal_all, "gm_journal_all";
+	print_journal_note_prompt, "gm_journal_note_prompt";
+	print_journal_search_prompt, "gm_journal_search_prompt";
+	print_journal_search_results, "gm_journal_search_results";
+	print_journal_no_results, "gm_journal_no_results";
+	print_journal_category_prompt, "gm_journal_category_prompt";
+	
 	// Journey
 	print_journey_destinations, "gm_journey_destinations";
 	print_journey_choose, "gm_journey_choose";
@@ -98,13 +109,25 @@ print_menu! {
 	print_exploration_menu, "gm_exploration_prompt",
 		[
 			"gm_menu_view_character",
+			"gm_menu_view_map",
+			"gm_menu_view_journal",
 			"gm_menu_manage_vows",
 			"gm_menu_start_journey",
 			"gm_menu_make_camp",
 			"gm_menu_explore",
 			"gm_menu_gather_info",
 			"gm_menu_ask_oracle",
+			"gm_menu_save_game",
 			"gm_menu_quit",
+		];
+	print_journal_menu, "gm_banner_journal",
+		[
+			"gm_journal_view_recent",
+			"gm_journal_view_all",
+			"gm_journal_view_category",
+			"gm_journal_add_note",
+			"gm_journal_search",
+			"gm_journal_back",
 		];
 	print_combat_menu, "gm_combat_prompt",
 		[
@@ -155,6 +178,7 @@ return_string! {
 	str_banner_swear_vow, "gm_banner_swear_vow";
 	str_banner_game_over, "gm_banner_game_over";
 	str_banner_oracle, "gm_banner_oracle";
+	str_banner_map, "gm_banner_map";
 	str_roll_strong_hit, "gm_roll_strong_hit";
 	str_roll_weak_hit, "gm_roll_weak_hit";
 	str_roll_miss, "gm_roll_miss";

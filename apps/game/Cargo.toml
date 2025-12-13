@@ -9,21 +9,24 @@ edition = "2024"
 [dependencies]
 # External crates (via dep)
 dep = { path = "../../dep" }
+serde = { version = "1.0", features = ["derive"] }
 
 # Internal libraries
 lib_character = { path = "../../libs/lib_character" }
+lib_combat = { path = "../../libs/lib_combat" }
 lib_constants = { path = "../../libs/lib_constants" }
 lib_game_data_codec = { path = "../../libs/lib_game_data_codec" }
 lib_game_options = { path = "../../libs/lib_game_options" }
 lib_io_ops = { path = "../../libs/lib_io_ops" }
 lib_location = { path = "../../libs/lib_location" }
 lib_moves = { path = "../../libs/lib_moves" }
+lib_npc = { path = "../../libs/lib_npc" }
 lib_oracle = { path = "../../libs/lib_oracle" }
 lib_pseudo_rng = { path = "../../libs/lib_pseudo_rng" }
+lib_soul = { path = "../../libs/lib_soul" }
 lib_text_ops = { path = "../../libs/lib_text_ops" }
 lib_travel = { path = "../../libs/lib_travel" }
 lib_unit_systems = { path = "../../libs/lib_unit_systems" }
-
 
 
 

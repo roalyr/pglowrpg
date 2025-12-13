@@ -1,0 +1,8 @@
+[package]
+name = "lib_soul"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+lib_pseudo_rng = { path = "../lib_pseudo_rng" }
+serde = { version = "1.0", features = ["derive"] }
