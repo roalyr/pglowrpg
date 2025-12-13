@@ -2,6 +2,114 @@
 // Strings will be used as is, with tabs and newlines
 
 {
+// Banners and titles
+"gm_banner_ironsworn" : "pGLOWrpg - Ironsworn Adventure",
+"gm_banner_character_creation" : "Character Creation",
+"gm_banner_character_sheet" : "Character Sheet",
+"gm_banner_exploration" : "Exploration",
+"gm_banner_combat" : "Combat",
+"gm_banner_camp" : "Make Camp",
+"gm_banner_vows" : "Vow Management",
+"gm_banner_journey" : "Start Journey",
+"gm_banner_undertake_journey" : "Undertake a Journey",
+"gm_banner_explore" : "Explore",
+"gm_banner_gather_info" : "Gather Information",
+"gm_banner_swear_vow" : "Swear an Iron Vow",
+"gm_banner_game_over" : "Game Over",
+
+// Character creation
+"gm_char_name" : "Character:",
+"gm_char_stats_prompt" : "Assign your stats (11 points total, each stat 1-3):",
+"gm_char_stats_default" : "Default: Edge 2, Heart 2, Iron 3, Shadow 1, Wits 3",
+"gm_char_use_default" : "Use default stats? (y/n)",
+"gm_char_using_default" : "Using default stats for demo.",
+
+// Stats display
+"gm_stats_header" : "Stats:",
+"gm_stat_edge" : "  Edge:",
+"gm_stat_heart" : "  Heart:",
+"gm_stat_iron" : "  Iron:",
+"gm_stat_shadow" : "  Shadow:",
+"gm_stat_wits" : "  Wits:",
+
+// Resources
+"gm_resource_health" : "  Health:",
+"gm_resource_spirit" : "  Spirit:",
+"gm_resource_supply" : "  Supply:",
+"gm_resource_momentum" : "  Momentum:",
+
+// Exploration menu
+"gm_exploration_prompt" : "What do you want to do?",
+"gm_menu_view_character" : "View Character",
+"gm_menu_manage_vows" : "Manage Vows",
+"gm_menu_start_journey" : "Start Journey",
+"gm_menu_make_camp" : "Make Camp",
+"gm_menu_explore" : "Explore Current Location",
+"gm_menu_gather_info" : "Gather Information",
+"gm_menu_quit" : "Quit Game",
+
+// Combat
+"gm_combat_encounter" : "A hostile creature blocks your path!",
+"gm_combat_prompt" : "What do you do?",
+"gm_combat_strike" : "Strike (Edge)",
+"gm_combat_clash" : "Clash (Iron)",
+"gm_combat_escape" : "Face Danger to Escape (Shadow)",
+"gm_combat_enemy_strikes" : "The enemy strikes back!",
+"gm_combat_continue" : "Continue fighting? (y/n)",
+"gm_combat_escape_success" : "You escape combat!",
+
+// Camp
+"gm_camp_setup" : "You set up camp to rest and recover.",
+
+// Vows
+"gm_vows_active" : "Active Vows:",
+"gm_vows_none" : "  None",
+"gm_vows_menu_prompt" : "What do you want to do?",
+"gm_vows_menu_swear" : "Swear a New Vow",
+"gm_vows_menu_view" : "View Vow Details",
+"gm_vows_menu_back" : "Back to Exploration",
+"gm_vows_choose_quest" : "Choose a quest:",
+"gm_vow_temple" : "Explore the Forgotten Temple (Dangerous)",
+"gm_vow_protect" : "Protect Thornhaven from bandits (Formidable)",
+"gm_vow_artifact" : "Find the lost artifact (Extreme)",
+"gm_vows_details_stub" : "Vow details viewing not yet implemented.",
+
+// Journey
+"gm_journey_destinations" : "Available destinations:",
+"gm_journey_choose" : "Choose destination (or 0 to cancel):",
+"gm_journey_started" : "Journey started to:",
+"gm_journey_rank" : "Rank:",
+"gm_journey_progress" : "Journey progress:",
+"gm_journey_no_region" : "No region available.",
+
+// Exploration actions
+"gm_explore_discover" : "You discover something interesting!",
+"gm_explore_creature" : "A hostile creature appears!",
+
+// Dice rolls
+"gm_roll_action" : "  Action:",
+"gm_roll_challenge" : "  Challenge:",
+"gm_roll_result" : "  Result:",
+"gm_roll_strong_hit" : "STRONG HIT",
+"gm_roll_weak_hit" : "WEAK HIT",
+"gm_roll_miss" : "MISS",
+"gm_roll_match" : "MATCH!",
+
+// Game over
+"gm_over_fallen" : "You have fallen in battle.",
+"gm_over_broken" : "You have been broken by despair.",
+"gm_over_journey_ends" : "Your journey ends here.",
+"gm_over_statistics" : "Final Statistics:",
+"gm_over_turns" : "  Turns Played:",
+"gm_over_vows_completed" : "  Vows Completed:",
+"gm_over_vows_active" : "  Active Vows:",
+
+// General
+"gm_invalid_choice" : "Invalid choice.",
+"gm_press_continue" : "Press any key to continue...",
+"gm_turn" : "Turn",
+
+// Legacy strings for compatibility
 "gm1" : "",
 "gm2" : "
 (q) - quit
