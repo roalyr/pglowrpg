@@ -88,7 +88,9 @@ members = [
 [dependencies]
 lib_character = { path = "./libs/lib_character" }
 lib_game_options = { path = "./libs/lib_game_options" }
+lib_location = { path = "./libs/lib_location" }
 lib_moves = { path = "./libs/lib_moves" }
 lib_text_ops = { path = "./libs/lib_text_ops" }
+lib_travel = { path = "./libs/lib_travel" }
 worldgen = { path = "./apps/worldgen" }
 game = { path = "./apps/game" }

@@ -1,0 +1,13 @@
+[package]
+name = "lib_travel"
+version = "0.1.0"
+authors = ["roal_yr"]
+edition = "2024"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+lib_character = { path = "../lib_character" }
+lib_location = { path = "../lib_location" }
+lib_moves = { path = "../lib_moves" }
+lib_pseudo_rng = { path = "../lib_pseudo_rng" }
+lib_unit_systems = { path = "../lib_unit_systems" }

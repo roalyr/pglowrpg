@@ -1,7 +1,27 @@
-// [Revision: v0.1] [Path: libs/lib_unit_systems/src/coords.rs] [Date: 2025-12-13]
+// [Revision: v0.2] [Path: libs/lib_unit_systems/src/coords.rs] [Date: 2025-12-13]
 // Description: 2D coordinate indexing with overflow protection
 
 use serde::{Deserialize, Serialize};
+
+/// Simple 2D coordinate.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Coord {
+	pub x: u32,
+	pub y: u32,
+}
+
+impl Coord {
+	pub fn new(x: u32, y: u32) -> Self {
+		Self { x, y }
+	}
+
+	/// Calculate distance to another coordinate.
+	pub fn distance_to(&self, other: &Coord) -> f32 {
+		let dx = (self.x as f32) - (other.x as f32);
+		let dy = (self.y as f32) - (other.y as f32);
+		(dx * dx + dy * dy).sqrt()
+	}
+}
 
 /// Index calculator for 2D grid coordinates.
 /// Converts (x, y) coordinates to linear array indices.
