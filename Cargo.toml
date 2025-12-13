@@ -2,7 +2,7 @@
 name = "pglowrpg"
 version = "0.1.0"
 authors = ["roal_yr"]
-edition = "2018"
+edition = "2024"
 
 # The development profile, used for `cargo build`.
 [profile.dev]
@@ -90,4 +90,3 @@ lib_game_options = { path = "./libs/lib_game_options" }
 lib_text_ops = { path = "./libs/lib_text_ops" }
 worldgen = { path = "./apps/worldgen" }
 game = { path = "./apps/game" }
-dev_test_corner = { path = "./apps/dev_test_corner" }

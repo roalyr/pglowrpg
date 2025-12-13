@@ -14,7 +14,7 @@ pub fn point_multi(
 	i: usize,
 	j: usize,
 ) -> f32 {
-	let noise = BasicMulti::new();
+	let noise = BasicMulti::<Perlin>::new(seed);
 	let rotate = RotatePoint::new(&noise)
 		.set_x_angle(22.0)
 		.set_y_angle(22.0)
@@ -34,7 +34,7 @@ fn multi(
 	seed: u32,
 ) -> Vec<f32> {
 	let index = Index { map_size: size };
-	let noise = BasicMulti::new();
+	let noise = BasicMulti::<Perlin>::new(seed);
 	let rotate = RotatePoint::new(&noise)
 		.set_x_angle(22.0)
 		.set_y_angle(22.0)
@@ -60,7 +60,7 @@ fn perlin(
 	seed: u32,
 ) -> Vec<f32> {
 	let index = Index { map_size: size };
-	let noise = Perlin::new();
+	let noise = Perlin::new(seed);
 	let rotate = RotatePoint::new(&noise)
 		.set_x_angle(22.0)
 		.set_y_angle(22.0)

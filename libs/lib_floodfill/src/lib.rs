@@ -97,7 +97,7 @@ impl<T> FloodFill<'_, T> {
 	pub fn new(
 		template_data: &Vec<T>,
 		map_size: u32,
-	) -> FloodFill<T> {
+	) -> FloodFill<'_, T> {
 		let exclusion_map = vec![false; template_data.len()];
 		let region_map = vec![false; template_data.len()];
 		let region_size = 0;

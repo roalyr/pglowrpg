@@ -124,7 +124,7 @@ pub fn get(lp: &mut LayerPack) {
 		let biome_id = lp.biomes.read(ind);
 		// Retrieve biome codename from the ID.
 		// TODO: make it a method for 'biomes' layer?
-		let mut biome_codename = String::new();
+		let biome_codename;
 		if cw::BIOMES_CODENAMES.contains_key(&biome_id.clone()) {
 			biome_codename = cw::BIOMES_CODENAMES[&biome_id.clone()].clone();
 		} else {
@@ -148,7 +148,7 @@ pub fn get(lp: &mut LayerPack) {
 			iteration += 1;
 
 			for entry in flora_sorted_this_biome {
-				let flora_codename = entry.entity_codename.clone();
+				let _flora_codename = entry.entity_codename.clone();
 				let flora_type_uid = entry.type_uid.clone();
 				let flora_scarcity = (entry.scarcity.clone() as f32) / 100.0;
 				let flora_max_quantity = entry.local_max_quantity.clone();
