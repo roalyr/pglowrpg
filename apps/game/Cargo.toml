@@ -11,10 +11,13 @@ edition = "2024"
 dep = { path = "../../dep" }
 
 # Internal libraries
+lib_character = { path = "../../libs/lib_character" }
 lib_constants = { path = "../../libs/lib_constants" }
 lib_game_data_codec = { path = "../../libs/lib_game_data_codec" }
 lib_game_options = { path = "../../libs/lib_game_options" }
 lib_io_ops = { path = "../../libs/lib_io_ops" }
+lib_moves = { path = "../../libs/lib_moves" }
+lib_pseudo_rng = { path = "../../libs/lib_pseudo_rng" }
 lib_text_ops = { path = "../../libs/lib_text_ops" }
 
 
